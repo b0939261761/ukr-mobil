@@ -1,0 +1,93 @@
+{{ header }}
+
+<link rel="stylesheet" href="catalog/view/theme/default/stylesheet/egofoxlab/account-login.css" />
+
+  {% if success %}
+	  <div class="alert alert-success alert-dismissible">
+		  <i class="fa fa-check-circle"></i> {{ success }}</div>
+  {% endif %}
+
+<div class="container">
+
+	{% if error_warning %}
+		<div class="alert alert-danger alert-dismissible">
+			<i class="fa fa-exclamation-circle"></i>
+			{{ error_warning }}
+		</div>
+	{% endif %}
+
+	<div class="row">
+		<div
+				id="content"
+				style="float: none;"
+		>
+			<div class="row content-container">
+				<div class="well">
+					<h3>{{ text_returning_customer }}</h3>
+					<p>
+						<strong>{{ text_i_am_returning_customer }}</strong>
+					</p>
+					<form
+							action="{{ action }}"
+							method="post"
+							enctype="multipart/form-data"
+					>
+						<div class="form-group">
+							<label
+									class="control-label"
+									for="input-email"
+							>
+								{{ entry_email }}
+							</label>
+							<input
+									type="text"
+									name="email"
+									value="{{ email }}"
+									placeholder="{{ entry_email }}"
+									id="input-email"
+									class="form-control"
+							/>
+						</div>
+						<div class="form-group">
+							<label
+									class="control-label"
+									for="input-password"
+							>
+								{{ entry_password }}
+							</label>
+							<input
+									type="password"
+									name="password"
+									value="{{ password }}"
+									placeholder="{{ entry_password }}"
+									id="input-password"
+									class="form-control"
+							/>
+							<div class="forgotten-password">
+								<a href="{{ forgotten }}">
+									{{ text_forgotten }}
+								</a>
+							</div>
+						</div>
+						<input
+								type="submit"
+								value="{{ button_login }}"
+								class="btn btn-primary"
+						/>
+						<a href="{{ register }}">
+							{{ text_register }}
+						</a>
+						{% if redirect %}
+							<input
+									type="hidden"
+									name="redirect"
+									value="{{ redirect }}"
+							/>
+						{% endif %}
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{{ footer }}

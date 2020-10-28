@@ -1,0 +1,28 @@
+{{ header }}
+<div id="information-contact" class="container">
+	<div class="row">
+		<div id="content" class="col-sm-12">
+			<h1 class="page-title">{{ news.title }}</h1>
+
+			<div class="row content-container">
+				<div class="news-container">
+					<div class="row">
+						<div class="col-sm-3">
+							<img
+								src="{{ news.preview_image }}"
+								width="256px"
+							>
+						</div>
+						<div class="col-sm-9">
+							<div class="description">
+								{{ news.description|raw }}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{{ footer }}

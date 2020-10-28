@@ -1,0 +1,83 @@
+{{ header }}
+
+<div class="container">
+
+	<div class="row">
+		{{ column_left }}
+
+		{% if column_left and column_right %}
+			{% set class = 'col-sm-6' %}
+		{% elseif column_left or column_right %}
+			{% set class = 'col-sm-9' %}
+		{% else %}
+			{% set class = 'col-sm-12' %}
+		{% endif %}
+
+		<div class="{{ class }}">
+			{{ content_top }}
+			
+			<div id="app">
+				<div class="sc-tracking__wrapper-header">
+					<h1 class="sc-tracking__header">ПРОВЕРКА СТАТУСА ЗАКАЗА</h1>
+				</div>
+			
+				<p class="sc-tracking__hint">
+					Введите номер квитанции и номер телефона, который Вы указывали при оформлении заказа и узнайте текущий статус ремонта
+				</p>
+
+				<div class="sc-tracking__form">
+					<input v-model="orderId" class="sc-tracking__input input-text" placeholder="0"/>
+					<input ref="phoneInput" class="sc-tracking__input input-text" @mouseup="onFocusPhoneInput"/>
+					<button id="sc-tracking__button" class="button2" @click="onSearch">Проверить</button>
+				</div>
+
+				<div v-if='error' class='sc-tracking__error' v-text='error'>
+					
+				</div>
+				<template v-else>
+					<div v-if="states.length" class="sc-tracking__wrapping-tables">
+						<table class="sc-tracking__table sc-tracking__table--header">
+							<colgroup>
+								<col width="80"/>
+								<col />
+							</colgroup>
+							<tbody>
+								<tr>
+									<td>Наименование:</td>
+									<td class="sc-tracking__table-value" v-text="name"></td>	
+								</tr>
+								<tr>
+									<td>Цена:</td>
+									<td class="sc-tracking__table-value" v-text="price"></td>	
+								</tr>
+							</tbody>
+						</table>
+					
+						<table class="sc-tracking__table">
+							<colgroup>
+								<col width="140"/>
+								<col />
+							</colgroup>
+							<tbody>
+								<tr v-for="item in states">
+									<td v-text="item.datetime"></td>
+									<td v-text="item.state"></td>
+								</tr>	
+							</tbody>
+						</table>
+					</div>
+				</template>
+					
+				</div>
+			</div>
+
+			{{ content_bottom }}
+		</div>
+		{{ column_right }}
+	</div>
+</div>
+
+<script src="catalog/view/theme/{{ mytemplate }}/js/libs/vanillaTextMask.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="catalog/view/theme/{{ mytemplate }}/js/sc_tracking.js"></script>
+{{ footer }}

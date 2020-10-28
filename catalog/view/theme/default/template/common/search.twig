@@ -1,0 +1,172 @@
+<div id="search" class="input-group">
+  <input
+    name="search"
+    value="{{ search }}"
+    class="form-control input-lg"
+  />
+
+  <span class="input-group-btn">
+    <button class="btn btn-default btn-lg">
+      {{ text_search }}
+    </button>
+  </span>
+
+  <div class="search-suggestion hide">
+    <div class="content">
+      <div class="categories"></div>
+      <div class="products"></div>
+    </div>
+
+    <div class="show-all">
+      <button type="button">Показать все</button>
+    </div>
+  </div>
+
+  <div id="search-suggestion-category-item-tpl" class="hide">
+    <a class="item">
+      <span class="input"></span>
+      <span>в категории</span>
+      <span class="category0"></span>
+      <span> &#8658; </span>
+      <span class="category"></span>
+    </a>
+  </div>
+
+  <div id="search-suggestion-product-item-tpl" class="hide">
+    <a class="item">
+      <img class="image" />
+
+      <div class="info">
+        <div class="name"></div>
+        <div class="price">
+          <span class="price-text">От</span>
+          <span class="price-min"></span>
+          <span class="price-text">до</span>
+          <span class="price-max"></span>
+        </div>
+      </div>
+    </a>
+  </div>
+</div>
+
+<script>
+  window.addEventListener('load', function () {
+    const debounce = (func, interval = 200) => {
+      let timeout;
+
+      return (...args) => {
+        clearTimeout(timeout);
+        timeout = setTimeout(func.bind(null, ...args), interval);
+      };
+    }
+
+    function SearchComponent(context) {
+      BaseComponent.call(this, context);
+
+      const self = this;
+      const eSearchSuggestion = self.elementRef.find('.search-suggestion');
+
+      const getSuggestion = async input => {
+        const options = {
+          method: 'POST',
+          body: JSON.stringify({ input })
+        };
+
+        const response = await fetch('/index.php?route=common/search/getSuggestion', options);
+        if (response.ok) {
+          const json = await response.json();
+          return json.data;
+        } else {
+          this.error = `Ошибка HTTP: ${response.status}`;
+        }
+      }
+
+      const openSearchSuggestion = data => {
+        if (data.length) {
+          eSearchSuggestion.removeClass('hide');
+          self.elementRef.addClass('open-search-suggestion');
+        } else {
+          eSearchSuggestion.addClass('hide');
+          self.elementRef.removeClass('open-search-suggestion');
+        }
+      }
+
+      const renderSuggestion = (input, data) => {
+        const eCategories = eSearchSuggestion.find('.categories');
+        const eProducts  = eSearchSuggestion.find('.products');
+
+        eCategories.empty();
+        eProducts.empty();
+
+        data.forEach(item => {
+          const eCategoryTpl = self.elementRef.find('#search-suggestion-category-item-tpl').clone();
+          eCategoryTpl.find('a').attr('href', item.category_url);
+          eCategoryTpl.find('.input').text(input);
+          eCategoryTpl.find('.category0').text(item.category_name0);
+          eCategoryTpl.find('.category').text(item.category_name);
+          eCategories.append(eCategoryTpl.html());
+
+          const eProductTpl = self.elementRef.find('#search-suggestion-product-item-tpl').clone();
+          eProductTpl.find('a').attr('href', item.product_url);
+          eProductTpl.find('.image').attr('src', item.product_image);
+          eProductTpl.find('.name').text(item.product_name);
+          if (+item.is_owner) {
+            if (item.price_min === item.price_max) {
+              eProductTpl.find('.price').text(item.price_max);
+            } else {
+              eProductTpl.find('.price .price-min').text(item.price_min);
+              eProductTpl.find('.price .price-max').text(item.price_max);
+            }
+          } else {
+            eProductTpl.find('.price').text(item.product_price);
+          };
+
+          eProducts.append(eProductTpl.html());
+        });
+      }
+
+      const search = async propInput => {
+        const input = propInput.trim().replace(/\\/, '');
+        const data = input.length < 2 ? [] : await getSuggestion(input);
+        openSearchSuggestion(data);
+        renderSuggestion(input, data);
+      }
+
+      const debounceSearch = debounce(search, 500);
+
+      const initSuggestion = () => {
+        const eInput = self.elementRef.find('[name="search"]');
+        eInput.on('focusin', event => search(event.target.value));
+        eInput.on('keyup', event => debounceSearch(event.target.value));
+
+        $('*').on('click', event => {
+          if (!empty($(event.target).closest('#search').get(0))) return;
+          openSearchSuggestion([]);
+        });
+      }
+
+      initSuggestion();
+    }
+
+    SearchComponent.prototype = Object.create(BaseComponent.prototype);
+    SearchComponent.prototype.constructor = SearchComponent;
+
+    const searchComponent = new SearchComponent({elementRef: $('#search')});
+
+    const inputSearch = document.querySelector(`#search input[name='search']`);
+
+    const onGoSearch = evt => {
+      evt.preventDefault();
+      if (!inputSearch.value) return;
+      const url = new URL(`${window.location.protocol}//${window.location.hostname}/index.php`);
+      url.searchParams.set('route', 'product/search');
+      url.searchParams.set('search', inputSearch.value);
+      window.location = url.toString();
+    }
+
+    inputSearch.addEventListener('keypress', evt => evt.keyCode === 13 && onGoSearch(evt));
+
+    const buttonList = document.querySelectorAll('#search button');
+    buttonList.forEach(el => el.addEventListener('click', onGoSearch));
+  });
+</script>

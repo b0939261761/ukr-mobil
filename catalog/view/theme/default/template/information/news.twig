@@ -1,0 +1,31 @@
+{{ header }}
+
+<link rel="stylesheet" href="catalog/view/theme/default/stylesheet/egofoxlab/information-news.min.css" />
+
+<div id="information-news" class="container">
+	<div class="row">
+		<div id="content">
+			<h2 class="page-title">{{ heading_title }}</h2>
+
+			<div class="row content-container">
+				<div class="news-container row">
+					{% for item in news %}
+						<div class="col-sm-12 col-md-3 news-item">
+							<a href="{{ item.url }}">
+								<div
+									class="preview-image"
+									style="background-image: url({{ item.preview_image }})"
+								></div>
+								<div class="description">
+									{{ item.description }}
+								</div>
+							</a>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{{ footer }}

@@ -1,0 +1,97 @@
+{{ header }}
+{{ column_left }}
+
+<div id="content">
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="pull-right">
+				<a
+						href="{{ add }}"
+						data-toggle="tooltip"
+						title="{{ button_add }}"
+						class="btn btn-primary"
+				>
+					<i class="fa fa-plus"></i>
+				</a>
+			</div>
+			<h1>Posts</h1>
+			<ul class="breadcrumb">
+				{% for breadcrumb in breadcrumbs %}
+					<li>
+						<a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a>
+					</li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+	<div class="container-fluid">
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<form>
+					<div class="table-responsive">
+						<table class="table table-bordered table-hover">
+							<thead>
+								<tr>
+									<td class="text-left">Title</td>
+									<td class="text-left">Category</td>
+									<td class="text-right">Actions</td>
+								</tr>
+							</thead>
+							<tbody>
+								{% for item in postList %}
+									<tr data-id="{{ item.id }}">
+										<td>
+											<a href="{{ item.url }}">
+												{{ item.title }}
+											</a>
+										</td>
+										<td>{{ item.category }}</td>
+										<td>
+											<button
+													type="button"
+													title="Delete"
+													class="btn btn-danger ego-delete"
+											>
+												<i class="fa fa-trash-o"></i>
+											</button>
+										</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	$(function () {
+		var urlDelete = '{{ delete }}';
+
+		//region Delete Row
+		$('.ego-delete').click(function (e) {
+			var cardId = parseInt($(e.target).closest('tr').attr('data-id'));
+
+			_request({
+				url: urlDelete,
+				data: {
+					transferData: {
+						cardId: cardId
+					}
+				},
+				success: function (response) {
+					if (response.success) {
+						window.location.reload();
+					} else {
+						console.log(response.message);
+					}
+				}
+			});
+		});
+		//endregion
+	});
+</script>
+
+{{ footer }}

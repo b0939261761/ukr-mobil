@@ -1,0 +1,240 @@
+<div class="container footer-information">
+	<div class="header">
+		Информация
+	</div>
+
+	<div class="content">
+		<div class="col-info receive-calls">
+			<div class="header">
+				<div class="image">
+					<div style="background-image: url('/ego/assets/img/icon-calendar.png');"></div>
+				</div>
+				<span>
+					Прием звонков:
+				</span>
+			</div>
+			<div class="content">
+				<div class="item item--schedule">
+          <span>Пн</span>
+          <span>10:00 - 16:00</span>
+				</div>
+				<div class="item item--schedule">
+          <span>Вт - Пт</span>
+          <span>9:30 - 17:00</span>
+				</div>
+				<div class="item item--schedule">
+          <span>Сб</span>
+          <span>9:30 - 14:00</span>
+				</div>
+				<div class="item item--schedule">
+          <span>Вс</span>
+          <span>Выходной</span>
+				</div>
+			</div>
+		</div>
+
+		{#Phones#}
+		<div class="col-info phones">
+			<div class="header">
+				<div class="image">
+					<div style="background-image: url('/ego/assets/img/icon-call.png');"></div>
+				</div>
+				<span>Черновцы</span>
+			</div>
+			<div class="content">
+				<div class="item">
+					+38 050 274 2790
+				</div>
+				<div class="item">
+					+38 095 765 1080
+				</div>
+				<div class="item">
+					+38 093 765 1080
+				</div>
+				<div class="item">
+					+38 068 765 1080
+				</div>
+			</div>
+		</div>
+
+    {#Phones#}
+		<div class="col-info phones">
+			<div class="header">
+				<div class="image">
+					<div style="background-image: url('/ego/assets/img/icon-call.png');"></div>
+				</div>
+				<span>Ровно</span>
+			</div>
+			<div class="content">
+				<div class="item">
+          +38 096 907 5550
+				</div>
+				<div class="item">
+					+38 095 907 5550
+				</div>
+				<div class="item">
+          +38 073 907 5550
+				</div>
+			</div>
+		</div>
+
+		{#Phones#}
+		<div class="col-info phones">
+			<div class="header">
+				<div class="image">
+					<div style="background-image: url('/ego/assets/img/icon-call.png');"></div>
+				</div>
+				<span>Сервис Ровно</span>
+			</div>
+			<div class="content">
+				<div class="item">
+					+38 099 555 0001
+				</div>
+				<div class="item">
+					+38 096 555 0011
+				</div>
+				<div class="item">
+					+38 063 414 7777
+				</div>
+			</div>
+		</div>
+
+		{#Delivery#}
+		<div class="col-info phones">
+			<div class="header">
+				<div class="image">
+					<div style="background-image: url('/ego/assets/img/icon-delivery.png');"></div>
+				</div>
+				<span>
+					Доставка
+				</span>
+			</div>
+			<div class="content">
+				<div class="item">
+					Новая Почта
+					<br>
+					Самовывоз
+					<br>
+					Курьерская доставка по городу Черновцы
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Modal -->
+{# <div id="modal-payment-info" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">
+					{{ informationPaymentInfo.title }}
+				</h4>
+			</div>
+			<div class="modal-body">
+				{{ informationPaymentInfo.description|raw }}
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+
+	</div>
+</div> #}
+
+<footer>
+	<div id="footer">
+		<div class="container">
+			<div class="row">
+
+				{#Logo and send letter#}
+				<div class="col-md-3">
+					<a
+							class="logo"
+							href="{{ home }}"
+					>
+						<img src="{{ logo }}"
+							 title="{{ name }}"
+							 alt="{{ name }}"
+							 class="img-responsive"/>
+					</a>
+
+					{{ ego_newsletter }}
+
+					<div class="socials">
+						<div class="item telegram">
+							<a href="https://t.me/ukrmobil" target="_blank"></a>
+						</div>
+
+						<div class="item facebook">
+							<a href="https://www.facebook.com/Ukrmobil1/" target="_blank"></a>
+						</div>
+
+						<div class="item instagram">
+							<a href="https://www.instagram.com/ukrmobil_cv/" target="_blank"></a>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	{#Copyright#}
+	<address class="container">
+		©UKR-MOBIL 1991-2020 All rights reserved
+	</address>
+
+	<div class="wrapper-preloader">
+		<div class="preloader">
+			<div></div>
+			<div></div>
+			<div></div>
+		</div>
+	</div>
+</footer>
+
+{# {% for script in scripts %}
+	<script src="{{ script }}"</script>
+{% endfor %} #}
+
+<link rel="stylesheet" href="catalog/view/javascript/font-awesome/css/font-awesome.min.css" />
+<link rel="stylesheet" href="catalog/view/javascript/bootstrap/css/bootstrap.min.css" />
+<link rel="stylesheet" href="catalog/view/theme/{{ mytemplate }}/js/libs/proxima/proxima.popup.min.css" />
+<link rel="stylesheet" href="catalog/view/theme/{{ mytemplate }}/stylesheet/egofoxlab/main.min.css?20200921" />
+<link rel="stylesheet" href="catalog/view/theme/{{ mytemplate }}/stylesheet/megnor/animate.min.css" />
+<link rel="stylesheet" href="catalog/view/theme/{{ mytemplate }}/stylesheet/stylesheet.min.css?20201008"/>
+
+<script src="/ego/assets/js/egofoxlab/utils.js"></script>
+<script src="/ego/assets/js/egofoxlab/translate.js"></script>
+<script src="/ego/assets/js/egofoxlab/base.component.js"></script>
+
+<script src="catalog/view/theme/{{ mytemplate }}/js/egofoxlab/main.component.min.js"></script>
+<script src="catalog/view/theme/{{ mytemplate }}/js/egofoxlab/callback.component.min.js"></script>
+<script src="catalog/view/theme/{{ mytemplate }}/js/egofoxlab/newsletter.component.min.js"></script>
+
+<script src="catalog/view/javascript/common.min.js"></script>
+<script src="catalog/view/javascript/megnor/custom.min.js"></script>
+<script src="catalog/view/theme/{{ mytemplate }}/js/libs/proxima/proxima.popup.min.js"></script>
+
+<script>
+	$(function () {
+		window.translate.setLangCode('ru');
+		window.uiService = { popup: (new EgoProximaPopup()) };
+
+    var mainComponent = (new MainComponent({elementRef: $('body')}))
+			.isLogged('{{ is_logged }}' === 'true')
+			.init();
+
+		var cCallback = (new CallbackComponent({elementRef: null}))
+			.init();
+	});
+</script>
+
+<script src="catalog/view/javascript/bootstrap/js/bootstrap.min.js"></script>
+<script src="catalog/view/theme/{{ mytemplate }}/js/main.min.js?20200921"></script>
+</body>
+</html>

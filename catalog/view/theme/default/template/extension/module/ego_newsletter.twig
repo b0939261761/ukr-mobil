@@ -1,0 +1,26 @@
+<link rel="stylesheet" href="catalog/view/theme/default/stylesheet/egofoxlab/module-newsletter.css" />
+
+<div class="subscribe-on-news-and-stock">
+	<div class="header">
+		Узнайте первыми о скидках, новинках и других суперпредложениях
+	</div>
+	<div class="row"><form>
+			<input
+					type="text"
+					name="ego-form-field-email"
+					placeholder="Введите Ваш E-mail"
+					required
+			>
+			<button class="ego-btn-subscribe"></button>
+		</form>
+	</div>
+</div>
+
+<script>
+window.addEventListener('load', function () {
+	$(function () {
+		var component = new EgoNewsletterComponent({elementRef: $('.subscribe-on-news-and-stock')});
+		component.init();
+	});
+});
+</script>

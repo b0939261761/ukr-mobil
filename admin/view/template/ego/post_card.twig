@@ -1,0 +1,265 @@
+{{ header }}
+{{ column_left }}
+
+<div id="content">
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="pull-right">
+				<a
+						href="javascript:void(0);"
+						id="ego-save"
+						class="btn btn-primary"
+						data-toggle="tooltip"
+						title="Save"
+				>
+					<i class="fa fa-save"></i>
+				</a>
+			</div>
+			<h1>Posts</h1>
+			<ul class="breadcrumb">
+				{% for breadcrumb in breadcrumbs %}
+					<li>
+						<a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a>
+					</li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+	<div class="container-fluid">
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<form class="form-horizontal">
+					{#Top tabls#}
+					<ul class="nav nav-tabs">
+						<li class="active">
+							<a href="#tab-general"
+							   data-toggle="tab">
+								General
+							</a>
+						</li>
+					</ul>
+					<div class="tab-content">
+						<div
+								class="tab-pane active"
+								id="tab-general"
+						>
+
+							{#Category#}
+							<div class="form-group">
+								<label
+										class="col-sm-2 control-label"
+										for="ego-form-field-category"
+								>
+									Category
+								</label>
+								<div class="col-sm-10">
+									<input
+											type="text"
+											name="ego-form-field-category"
+											id="ego-form-field-category"
+											class="form-control"
+											value="{{ card.post.category }}"
+									>
+								</div>
+							</div>
+
+							{#Image#}
+							<div class="form-group">
+								<label
+										class="col-sm-2 control-label"
+								>
+									Image
+								</label>
+								<div class="col-sm-10">
+									<a
+											href=""
+											id="thumb-preview-image"
+											data-toggle="image"
+											data-original-title=""
+									>
+										<img
+												src="{% if card.post.preview_image is empty %}{{ thumb }}{% else %}{{ card.post.preview_image_thumb }}{% endif %}"
+												data-placeholder="{{ thumb }}"
+										>
+									</a>
+									<input
+											type="hidden"
+											id="input-preview-image"
+											name="ego-form-field-preview-image"
+											value="{{ card.post.preview_image }}"
+									>
+								</div>
+							</div>
+
+							{#Language tabs#}
+							<ul
+									id="language"
+									class="nav nav-tabs"
+							>
+								{% for language in languages %}
+									<li>
+										<a
+												href="#language{{ language.language_id }}"
+												data-toggle="tab"
+										>
+											<img src="language/{{ language.code }}/{{ language.code }}.png"
+												 title="{{ language.name }}"
+											/>
+											{{ language.name }}
+										</a>
+									</li>
+								{% endfor %}
+							</ul>
+						</div>
+					</div>
+					<div class="tab-content">
+						{% for language in languages %}
+							<div
+									id="language{{ language.language_id }}"
+									class="tab-pane"
+							>
+								{#Title#}
+								<div class="form-group required">
+									<label
+											class="col-sm-2 control-label"
+											for="ego-form-field-title-{{ language.language_id }}"
+									>
+										Title
+									</label>
+									<div class="col-sm-10">
+										<input
+												type="text"
+												name="ego-form-field-title"
+												id="ego-form-field-title-{{ language.language_id }}"
+												class="form-control"
+												value="{{ card.content[language.language_id] ? card.content[language.language_id].title }}"
+												data-language="{{ language.language_id }}"
+												required
+										>
+									</div>
+								</div>
+
+								{#Content#}
+								<div class="form-group required">
+									<label
+											class="col-sm-2 control-label"
+											for="ego-form-field-content-{{ language.language_id }}"
+									>
+										Content
+									</label>
+									<div class="col-sm-10">
+										<textarea
+												name="ego-form-field-content"
+												id="ego-form-field-content-{{ language.language_id }}"
+												class="form-control"
+												placeholder="Entry description"
+												data-toggle="summernote"
+												data-language="{{ language.language_id }}"
+												required
+										>{{ card.content[language.language_id] ? card.content[language.language_id].content }}</textarea>
+									</div>
+								</div>
+							</div>
+						{% endfor %}
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div>
+	<textarea
+			id="ego-languages"
+			class="hide"
+	>{{ languages|json_encode() }}</textarea>
+</div>
+
+<script type="text/javascript"
+		src="view/javascript/summernote/summernote.js"></script>
+<link href="view/javascript/summernote/summernote.css"
+	  rel="stylesheet"/>
+<script type="text/javascript"
+		src="view/javascript/summernote/summernote-image-attributes.js"></script>
+<script type="text/javascript"
+		src="view/javascript/summernote/opencart.js"></script>
+<script>
+	$(function () {
+		var cardId = parseInt('{{ card.post.id }}');
+		var urlSave = '{{ save }}';
+		var baseComponent = new BaseComponent({elementRef: $('#content')});
+		var languages = JSON.parse($('#ego-languages').val());
+
+		//region Init
+		$('#language a:first').tab('show');
+		//endregion
+
+		//region Save
+		baseComponent.elementRef.find('#ego-save').click(function () {
+			var formData = {
+				post: {
+					id: cardId,
+					category: baseComponent.elementRef.find('[name="ego-form-field-category"]').val(),
+					preview_image: baseComponent.elementRef.find('[name="ego-form-field-preview-image"]').val()
+				},
+				content: {}
+			};
+
+			for (var languageKey in languages) {
+				if (!languages.hasOwnProperty(languageKey)) {
+					continue;
+				}
+
+				var languageItem = languages[languageKey];
+				formData.content[languageItem.language_id] = collectFormData(
+					'[name^="' + baseComponent.fieldPrefix + '"][data-language="' + languageItem.language_id + '"]',
+					baseComponent.elementRef,
+					{
+						cutName: baseComponent.fieldPrefix
+					}
+				);
+
+				if (isRequiredFieldsEmpty(formData.content[languageItem.language_id])) {
+					(new EgoProximaPopup())
+						.setHeader('Warning')
+						.setBody('Fill required fields.')
+						.hideFooter()
+						.open();
+
+					return;
+				}
+			}
+
+			console.log(formData);
+
+			_request({
+				url: urlSave,
+				data: {
+					transferData: formData
+				},
+				success: function (response) {
+					if (response.success) {
+						if (!(cardId > 0)) {
+							cardId = response.data.cardId;
+						}
+
+						(new EgoProximaPopup())
+							.setHeader('Info')
+							.setBody('Successfully save card.')
+							.hideFooter()
+							.open();
+					} else {
+						(new EgoProximaPopup())
+							.setHeader('Error')
+							.setBody(response.message)
+							.hideFooter()
+							.open();
+					}
+				}
+			})
+		});
+		//endregion
+	});
+</script>
+
+{{ footer }}

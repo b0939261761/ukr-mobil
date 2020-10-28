@@ -1,0 +1,32 @@
+<link rel="stylesheet" href="/catalog/view/theme/default/stylesheet/egofoxlab/product-filter.min.css?20200921">
+
+<div class="product-filter">
+	{% for item in filters %}
+		<div class="wrapper-filter-option">
+			<label class="label" for="filter-{{ item.param }}">{{ item.name }}</label>
+			<select id="filter-{{ item.queryKey }}" class="select filter">
+				<option value>--Выберите значение--</option>
+				{% for value in item.values %}
+					<option
+            data-url="{{ value.link }}"
+            value="{{ value.id }}"
+            {{ value.selected }}
+          >
+            {{ value.name }}
+          </option>
+				{% endfor %}
+			</select>
+		</div>
+	{% endfor %}
+
+	<div class="wrapper-filter-option wrapper-filter-option--checkbox">
+		<input type="checkbox" id="filterAvailable" class="checkbox hidden" {{ available ? 'checked' : '' }} />
+		<label for="filterAvailable" class="checkbox-label">Наличие на складе</label>
+	</div>
+
+	<div class="wrapper-fitler-search">
+		<button id="filterSearch" class="button">Поиск</button>
+	</div>
+</div>
+
+<script src="catalog/view/theme/default/js/product/filter.min.js"></script>

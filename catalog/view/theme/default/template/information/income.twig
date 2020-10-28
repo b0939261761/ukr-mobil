@@ -1,0 +1,64 @@
+{{ header }}
+
+<div
+		id="information-contact"
+		class="container"
+>
+
+	<div class="row">
+		{{ column_left }}
+
+		{% if column_left and column_right %}
+			{% set class = 'col-sm-6' %}
+		{% elseif column_left or column_right %}
+			{% set class = 'col-sm-9' %}
+		{% else %}
+			{% set class = 'col-sm-12' %}
+		{% endif %}
+
+		<div class="{{ class }}">
+			{{ content_top }}
+			
+			<div class = "page-income">
+				<h1 class = "income-title">{{ heading_title }}</h1>
+
+				<div class="row content-container">
+					{% for document in documents %}
+						<details class = "income-details">
+							<summary class = "income-details-summary">{{text_heading_detail}} {{document.date}}</summary>
+							{% for product in document.products %}
+								<div class="income-details-block">
+									<img class = "income-details-image" src={{product.image}} />
+									<span class = "income-details-block__text income-details-block__text--code">{{product.code}}</span>
+									<a class = "income-details-block__text income-details-block__text--name" href ="{{product.href}}">{{product.name}}</a>
+									<span class = "income-details-block__text income-details-block__text--price">{{product.price}}</span>
+									<span class = "income-details-block__text income-details-block__text--quantity">{{product.quantity}}</span>
+								</div>
+							{% endfor %}
+						</details>
+					{% endfor %}
+				</div>
+
+				<div class = "wrapper-btn-subscribe-income">
+					{% if is_logged %}
+						{% if not is_newsletter %}
+							<button	id="btn-subscribe" class="btn-subscribe-income">
+								{{ text_subscibe_to_news }}
+							</button>
+						{% endif %}
+					{% else %}
+						<button	class="to-wishlist btn-subscribe-income ">
+							{{ text_subscibe_to_news }}
+						</button>
+					{% endif %}
+				</div>
+			</div>
+
+			{{ content_bottom }}
+		</div>
+		{{ column_right }}
+	</div>
+</div>
+
+<script src="catalog/view/theme/{{ mytemplate }}/js/income.js"></script>
+{{ footer }}

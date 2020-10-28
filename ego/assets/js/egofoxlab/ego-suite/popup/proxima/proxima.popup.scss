@@ -1,0 +1,73 @@
+.ego-suite-popup-proxima {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(107, 107, 107, 0.3607843137254902);
+    z-index: 9999;
+
+    .ego-suite-popup-wrap {
+        min-width: 300px;
+        max-width: 600px;
+        background-color: #fff;
+
+        .ego-suite-popup-header,
+        .ego-suite-popup-body,
+        .ego-suite-popup-footer {
+            padding-left: 35px;
+            padding-right: 35px;
+        }
+
+        .ego-suite-popup-header {
+            position: relative;
+            display: flex;
+            width: 100%;
+            padding-top: 35px;
+            padding-bottom: 35px;
+            justify-content: center;
+
+            .ego-suite-popup-header-content {
+                color: #3f64a5;
+                font-size: 24px;
+                font-weight: 600;
+            }
+
+            .ego-suite-popup-close-icon {
+                position: absolute;
+                top: 0;
+                right: 0;
+                display: flex;
+                width: 30px;
+                height: 30px;
+                justify-content: center;
+                align-items: center;
+                font-size: 16px;
+                color: #333;
+                cursor: pointer;
+            }
+        }
+
+        .ego-suite-popup-body {
+            margin-bottom: 35px;
+            text-align: center;
+            // min-height: 100px;
+
+            &, * {
+                text-transform: none;
+            }
+        }
+
+        .ego-suite-popup-footer {
+            padding-top: 15px;
+            padding-bottom: 15px;
+        }
+    }
+
+    .hide {
+        display: none;
+    }
+}

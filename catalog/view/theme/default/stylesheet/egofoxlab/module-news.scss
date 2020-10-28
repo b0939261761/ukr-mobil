@@ -1,0 +1,101 @@
+@charset "UTF-8";
+
+@import './config';
+
+body {
+    .module-ego-news {
+        padding-top: 30px;
+
+        .header {
+            margin-bottom: 30px;
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+            text-transform: uppercase;
+        }
+
+        .carousel-wrap {
+            position: relative;
+        }
+
+        .content {
+            display: flex;
+            flex-direction: row;
+
+            .post-item {
+                width: 250px;
+                margin-right: 45px;
+                margin: 0 auto;
+
+                a {
+                    display: block;
+
+                    &:hover {
+                        .preview-image {
+                            .description {
+                                visibility: visible;
+                            }
+                        }
+                    }
+
+                    .preview-image {
+                        position: relative;
+                        width: 100%;
+                        height: 180px;
+                        background-repeat: no-repeat;
+                        background-position: center;
+                        background-size: cover;
+
+                        .description {
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            display: flex;
+                            width: 100%;
+                            height: 100%;
+                            align-items: center;
+                            justify-content: center;
+                            background-color: rgba(51, 51, 51, 0.72);
+                            text-align: center;
+                            font-size: 16px;
+                            color: #fff;
+
+                            visibility: hidden;
+                        }
+                    }
+
+                    .date {
+                        margin-top: 5px;
+                        text-align: right;
+                        font-size: 16px;
+                        color: #686767;
+                    }
+                }
+            }
+        }
+    }
+
+    @media (max-width: 768px) {
+        .module-ego-news {
+            .content {
+                .post-item {
+                    width: 100%;
+                    margin-right: 0;
+                }
+            }
+        }
+    }
+
+    @media (max-width: 1024px) {
+        .module-ego-news {
+            .content {
+                flex-wrap: wrap;
+                justify-content: center;
+
+                .post-item {
+                    margin-bottom: 10px;
+                }
+            }
+        }
+    }
+}

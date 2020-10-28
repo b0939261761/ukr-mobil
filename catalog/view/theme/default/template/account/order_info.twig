@@ -1,0 +1,222 @@
+{{ header }}
+
+<div
+		id="account-order"
+		class="container"
+>
+	{% if success %}
+		<div class="alert alert-success alert-dismissible">
+			<i class="fa fa-check-circle"></i> {{ success }}
+			<button type="button"
+					class="close"
+					data-dismiss="alert">&times;
+			</button>
+		</div>
+	{% endif %}
+	{% if error_warning %}
+		<div class="alert alert-danger alert-dismissible">
+			<i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+			<button type="button"
+					class="close"
+					data-dismiss="alert">&times;
+			</button>
+		</div>
+	{% endif %}
+	<div class="row">
+		<div id="content" style="float: none;">
+
+			<table class="table table-bordered table-hover">
+				<thead>
+					<tr>
+						<td class="text-left"
+							colspan="2"
+						>
+							{{ text_order_detail }}
+						</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="text-left"
+							style="width: 50%;">
+							{#Order ID#}
+							<p>
+								<b>{{ text_order_id_2 }}</b>
+								#{{ order_id }}
+							</p>
+							<p>
+								<b>{{ text_date_added }}</b> {{ date_added }}
+							</p>
+							<p>
+								<b>{{ text_status }}</b>
+								<span>{{ status_name }}</span>
+							</p>
+						</td>
+						<td class="text-left"
+							style="width: 50%;">
+							{% if payment_method %}
+								<p>
+									<b>{{ text_payment_method }}</b>
+									{{ payment_method }}
+								</p>
+							{% endif %}
+							{% if shipping_method %}
+								<p>
+									<b>{{ text_shipping_method }}</b>
+									{{ shipping_method }}
+								</p>
+							{% endif %}
+							{#TTN#}
+							<p>
+								<b>
+									{{ text_ttn }}
+								</b>
+								{{ ttn }}
+							</p>
+							{#Tracking#}
+							<p>
+								<b>
+									{{ text_tracking }}
+								</b>
+								{{ ttn_status }}
+							</p>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<table class="table table-bordered table-hover">
+				<thead>
+					<tr>
+						<td class="text-left"
+							style="width: 50%; vertical-align: top;"
+						>
+							{{ text_payment_address }}
+						</td>
+            <td class="text-left"
+              style="width: 50%; vertical-align: top;"
+            >
+              {% if shipping_address %}
+               {{ text_shipping_address }}
+              {% endif %}
+            </td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="text-left">{{ shipping_address }}</td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="table-responsive">
+				<table class="table table-bordered table-hover">
+					<thead>
+						<tr>
+							<td class="text-left">{{ column_name }}</td>
+							<td class="text-left">{{ column_model }}</td>
+							<td class="text-right">{{ column_quantity }}</td>
+							<td class="text-right">{{ column_price }}</td>
+							<td class="text-right">{{ column_total }}</td>
+					</thead>
+					<tbody>
+
+						{% for product in products %}
+							<tr>
+								<td class="text-left">
+									{{ product.name }}
+									{% for option in product.option %}
+										<br/>
+										&nbsp;
+										<small> - {{ option.name }}: {{ option.value }}</small>
+									{% endfor %}
+								</td>
+								<td class="text-left">{{ product.model }}</td>
+								<td class="text-right">{{ product.quantity }}</td>
+								<td class="text-right">{{ product.price }}</td>
+								<td class="text-right">{{ product.total }}</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+
+					<tfoot>
+						{% for total in totals %}
+							<tr>
+								<td colspan="3"></td>
+								<td class="text-right">
+									<b>{{ total.title }}</b>
+								</td>
+								<td class="text-right">
+									{{ total.text }}
+								</td>
+							</tr>
+						{% endfor %}
+					</tfoot>
+
+				</table>
+			</div>
+			{% if comment %}
+				<table class="table table-bordered table-hover">
+					<thead>
+						<tr>
+							<td class="text-left">
+								{{ text_comment }}
+							</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="text-left">
+								{{ comment }}
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			{% endif %}
+			{% if histories %}
+				<h3>{{ text_history }}</h3>
+				<table class="table table-bordered table-hover">
+					<thead>
+						<tr>
+							<td class="text-left">{{ column_date_added }}</td>
+							<td class="text-left">{{ column_status }}</td>
+							<td class="text-left">{{ column_comment }}</td>
+						</tr>
+					</thead>
+					<tbody>
+
+						{% if histories %}
+							{% for history in histories %}
+								<tr>
+									<td class="text-left">{{ history.date_added }}</td>
+									<td class="text-left">{{ history.status }}</td>
+									<td class="text-left">{{ history.comment }}</td>
+								</tr>
+							{% endfor %}
+						{% else %}
+							<tr>
+								<td
+										colspan="3"
+										class="text-center"
+								>
+									{{ text_no_results }}
+								</td>
+							</tr>
+						{% endif %}
+					</tbody>
+
+				</table>
+			{% endif %}
+			<div class="buttons clearfix">
+				<div class="pull-right">
+					<a
+							href="{{ url_back }}"
+							class="btn btn-primary"
+					>
+						{{ text_button_back }}
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{{ footer }}

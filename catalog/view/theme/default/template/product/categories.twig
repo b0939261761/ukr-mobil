@@ -1,0 +1,45 @@
+<aside id="column-left" class="col-sm-3 hidden-xs">
+  <div class="box category-box module-category">
+    <div class="box-category-heading">Категории</div>
+    <div class="box-content megnor">
+      <ul class="box-category treeview-list treeview">
+        {% for child1 in categories %}
+          <li>
+            <a
+              href="{{ child1.href }}"
+              {{ child1.active ? 'class="active"' : '' }}
+            >
+              {{ child1.name }}
+            </a>
+
+            <ul>
+              {% for child2 in child1.children %}
+                <li>
+                  <a
+                    href="{{ child2.href }}"
+                    {{ child2.active ? 'class="active"' : '' }}
+                  >
+                    {{ child2.name }}
+                  </a>
+
+                  <ul>
+                    {% for child3 in child2.children %}
+                      <li>
+                        <a
+                          href="{{ child3.href }}"
+                          {{ child3.active ? 'class="active"' : '' }}
+                        >
+                          {{ child3.name }}
+                        </a>
+                      </li>
+                    {% endfor %}
+                  </ul>
+                </li>
+              {% endfor %}
+            </ul>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,39 @@
+{{ header }}
+
+<link rel="stylesheet" href="catalog/view/javascript/jquery/owl-carousel/owl.carousel.min.css" />
+<link rel="stylesheet" href="catalog/view/javascript/jquery/owl-carousel/owl.theme.default.min.css" />
+
+<div id="common-home" class="container">
+	<div class="row">
+		<div id="content" class="col-sm-12">
+			<div class="product-tab">
+				<ul class="nav nav-tabs">
+					<li class="active">
+						<a href="#tab-product-new" data-toggle="tab">
+							Новинки
+						</a>
+					</li>
+					<li>
+						<a href="#tab-product-stocks" data-toggle="tab">
+							Акции
+						</a>
+					</li>
+				</ul>
+				<div class="tab-content">
+					<div class="tab-pane active" id="tab-product-new">
+						{{ module_product_new }}
+					</div>
+					<div class="tab-pane" id="tab-product-stocks">
+						{{ module_product_stocks }}
+					</div>
+				</div>
+			</div>
+
+			{{ module_news }}
+		</div>
+	</div>
+</div>
+
+<script src="catalog/view/javascript/jquery/owl-carousel/owl.carousel.min.js" defer></script>
+
+{{ footer }}

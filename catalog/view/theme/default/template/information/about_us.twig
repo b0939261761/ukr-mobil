@@ -1,0 +1,38 @@
+{{ header }}
+
+<div class="container">
+	<div class="row">
+		<div id="content">
+			<h2 class="page-title">{{ heading_title }}</h2>
+		
+			<div class="row content-container">
+				<div class="row contact-info">
+
+					<div class="information-about-us__about-us">{{ about_us }}</div>
+
+					<a id = "delivery"></a>
+					<details id ="delivery-details" class = "information-about-us__details">
+						<summary class = "information-about-us__details-summary">Доставка</summary>
+						<div class = "information-about-us__details-body">{{ delivery }}</div>
+					</details>
+					
+					<a id = "warrantly"></a>
+					<details id = "warrantly-details" class = "information-about-us__details">
+						<summary class = "information-about-us__details-summary">Гарантии</summary>
+						<div class = "information-about-us__details-body">{{ warrantly }}</div>
+					</details>
+
+					<a id = "contact"></a>
+					<details id = "contact-details" class = "information-about-us__details">
+						<summary class = "information-about-us__details-summary">Контакты</summary>
+						<div class = "information-about-us__details-body">{{ contact }}</div>
+					</details>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="catalog/view/theme/default/js/about_us.js"></script>
+
+{{ footer }}

@@ -1,0 +1,611 @@
+{{ header }}
+
+<link rel="stylesheet" href="catalog/view/theme/{{ mytemplate }}/stylesheet/megnor/datatables.min.css"/>
+<link rel="stylesheet" href="catalog/view/theme/{{ mytemplate }}/stylesheet/megnor/daterangepicker.min.css"/>
+<link rel="stylesheet" href="catalog/view/theme/{{ mytemplate }}/stylesheet/egofoxlab/account-account.min.css">
+
+<div
+		id="account-account"
+		class="container"
+>
+
+	<div class="row">
+		{{ column_left }}
+
+		{% if column_left and column_right %}
+			{% set class = 'col-sm-6' %}
+		{% elseif column_left or column_right %}
+			{% set class = 'col-sm-9' %}
+		{% else %}
+			{% set class = 'col-sm-12' %}
+		{% endif %}
+
+		<div
+				id="content"
+				class="{{ class }}"
+		>
+			{{ content_top }}
+
+			<h1 class="page-title">{{ text_my_account }}</h1>
+
+			<div class="row">
+				<ul
+						id="ego-tab"
+						class="nav nav-tabs"
+						role="tablist"
+				>
+					<li class="nav-item active">
+						<a
+								id="tab-documents"
+								class="nav-link"
+								data-toggle="tab"
+								href="#tab-content-balance"
+								role="tab"
+						>
+							{{ text_documents }}
+						</a>
+						<div
+								class="info-tip"
+								data-toggle="tooltip"
+								data-placement="bottom"
+								title=""
+								data-original-title="В даной вкладке вы можете просматривать историю взаиморасчетов, а также ваш личный баланс на сайте."
+						>
+							<span>ⓘ</span>
+						</div>
+					</li>
+					<li class="nav-item">
+						<a
+								id="tab-orders"
+								class="nav-link"
+								data-toggle="tab"
+								href="#tab-content-purchases-history"
+								role="tab"
+						>
+							{{ text_orders_tab }}
+						</a>
+						<div
+								class="info-tip"
+								data-toggle="tooltip"
+								data-placement="bottom"
+								title=""
+								data-original-title="В этой вкладке вы можете просматривать историю своих заказов и всю
+								 	информацию о каждом из заказов, сформировать exel-файл по заказу, а
+								 	также отслеживать отправление прямо на сайте!"
+						>
+							<span>ⓘ</span>
+						</div>
+					</li>
+					<li class="nav-item">
+						<a
+								id="tab-profile"
+								class="nav-link active"
+								data-toggle="tab"
+								href="#tab-content-profile"
+								role="tab"
+						>
+							{{ text_profile }}
+						</a>
+						<div
+								class="info-tip"
+								data-toggle="tooltip"
+								data-placement="bottom"
+								title=""
+								data-original-title="Здесь вы можете изменить свои персональные данные, такие как имя,
+									фамилия, е-мейл и физический адрес, а также пароль и отделение Новой Почты."
+						>
+							<span>ⓘ</span>
+						</div>
+					</li>
+					<li class="nav-item">
+						<a
+								id="tab-terms"
+								class="nav-link active"
+								data-toggle="tab"
+								href="#tab-content-terms"
+								role="tab"
+						>
+							Условия продаж
+						</a>
+						<div
+								class="info-tip"
+								data-toggle="tooltip"
+								data-placement="bottom"
+								title=""
+								data-original-title=""
+						>
+							<span>ⓘ</span>
+						</div>
+					</li>
+				</ul>
+				<div
+						class="tab-content"
+						id="ego-tab-content"
+				>
+
+					{#Balance#}
+					<div
+							id="tab-content-balance"
+							class="tab-pane active"
+							role="tabpanel"
+							aria-labelledby="home-tab"
+					>
+						{#Date filter#}
+						<div class="row">
+							<div class="col-12 col-md-3 form-group">
+								<label>
+									Дата с:
+								</label>
+								<input
+										type="text"
+										class="form-control balance-date-from"
+										placeholder="Дата с"
+								>
+							</div>
+							<div class="col-12 col-md-3 form-group">
+								<label>
+									Дата по:
+								</label>
+								<input
+										type="text"
+										class="form-control balance-date-to"
+										placeholder="Дата по"
+								>
+							</div>
+						</div>
+
+						<table
+								id="order-balance-table"
+								class="table"
+						>
+							<thead>
+								<tr>
+									<th>
+										{{ text_balance_col_document_move }}
+									</th>
+									<th>
+										{{ text_balance_col_document_sum }}
+									</th>
+									<th>
+										{{ text_balance_col_balance }}
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+					</div>
+
+					{#Mutual settlements#}
+					<div
+							id="tab-content-mutual-settlements"
+							class="tab-pane"
+							role="tabpanel"
+							aria-labelledby="home-tab"
+					>
+						{{ text_settlements }}
+					</div>
+
+					{#Profile#}
+					<div
+							id="tab-content-profile"
+							class="tab-pane"
+							role="tabpanel"
+							aria-labelledby="home-tab"
+					>
+						<form class="form-horizontal">
+
+							{#Name#}
+							<div class="form-group">
+								<div class="row">
+									<div class="ego-control-input">
+										<div class="control-container">
+											<label for="ego-form-field-name">
+												<span class="required">*</span>
+												Имя
+											</label>
+											<input
+													type="text"
+													name="ego-form-field-name"
+													id="ego-form-field-name"
+													class="restrict-language"
+													value="{{ userInfo.firstName }}"
+													required
+											>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							{#Surname#}
+							<div class="form-group">
+								<div class="row">
+									<div class="ego-control-input">
+										<div class="control-container">
+											<label for="ego-form-field-surname">
+												<span class="required">*</span>
+												Фамилия
+											</label>
+											<input
+													type="text"
+													name="ego-form-field-surname"
+													id="ego-form-field-surname"
+													class="restrict-language"
+													value="{{ userInfo.lastName }}"
+													required
+											>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							{#Email#}
+							<div class="form-group">
+								<div class="row">
+									<div class="ego-control-input">
+										<div class="control-container">
+											<label for="ego-form-field-email">
+												<span class="required">*</span>
+												Email
+											</label>
+											<input
+													type="email"
+													name="ego-form-field-email"
+													id="ego-form-field-email"
+													value="{{ userInfo.email }}"
+													required
+											>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							{#Phone Number#}
+							<div class="form-group">
+								<div class="row">
+									<div class="ego-control-input">
+										<div class="control-container">
+											<label for="ego-form-field-phone-number">
+												<span class="required">*</span>
+												{{ text_phone_number }}
+											</label>
+											<input
+													type="text"
+													name="ego-form-field-phone-number"
+													id="ego-form-field-phone-number"
+													class=""
+													value="{{ userInfo.telephone }}"
+													required
+											>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							{#Password#}
+							<div class="form-group">
+								<div class="row">
+									<div class="ego-control-input">
+										<div class="control-container">
+											<label for="ego-form-field-password">
+												{{ text_password }}
+											</label>
+											<input
+													type="password"
+													name="ego-form-field-password"
+													id="ego-form-field-password"
+													value="{{ userInfo.password }}"
+											>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							{#Country#}
+							<div class="form-group">
+								<div class="row">
+									<div class="ego-control-input">
+										<div class="control-container">
+											<label for="ego-form-field-country">
+												{{ text_country }}
+											</label>
+											<input
+													type="text"
+													name="ego-form-field-country"
+													id="ego-form-field-country"
+													class="restrict-language"
+													value="{{ text_country_ukr }}"
+											>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							{#Region#}
+							<div class="form-group">
+								<div class="row">
+									<div class="ego-control-input">
+										<div class="control-container">
+											<label for="ego-form-field-region">
+												{{ text_region }}
+											</label>
+											<input
+													type="text"
+													name="ego-form-field-region"
+													id="ego-form-field-region"
+													class="restrict-language"
+													value="{{ userInfo.region }}"
+											>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							{#City#}
+							<div class="form-group">
+								<div class="row">
+									<div class="ego-control-input">
+										<div class="control-container">
+											<label for="ego-form-field-city">
+												{{ text_city }}
+											</label>
+											<input
+													type="text"
+													name="ego-form-field-city"
+													id="ego-form-field-city"
+													class="restrict-language"
+													value="{{ userInfo.city }}"
+											>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							{#Warehouse#}
+							<div class="form-group">
+								<div class="row">
+									<div class="ego-control-input">
+										<div class="control-container">
+											<label for="ego-form-field-warehouse">
+												{{ text_warehouse }}
+											</label>
+											<input
+													type="text"
+													name="ego-form-field-warehouse"
+													id="ego-form-field-warehouse"
+													class="restrict-language"
+													value="{{ userInfo.warehouse }}"
+											>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							{#Button `Save`#}
+							<div class="row">
+								<button
+										id="ego-profile-save"
+										class="btn btn-success pull-right"
+								>
+									{{ text_save }}
+								</button>
+							</div>
+
+						</form>
+					</div>
+
+					{#Purchases history#}
+					<div
+							id="tab-content-purchases-history"
+							class="tab-pane"
+							role="tabpanel"
+							aria-labelledby="home-tab"
+					>
+
+          <style>
+
+          </style>
+
+						<table
+              id="orderHistoryTable"
+              class="order-history-table"
+						>
+							<thead>
+								<tr class="order-history-table__row-desktop-show">
+									<th>Номер заказа</th>
+									<th>Дата</th>
+									<th>Статус</th>
+									<th>Способ оплаты</th>
+									<th>Тип доставки</th>
+									<th>Контрагент</th>
+									<th>ТТН</th>
+									<th>Склад отправки</th>
+									<th>Отслеживание</th>
+									<th>Сумма</th>
+									<th></th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for item in orderList %}
+									<tr
+                    data-url="{{ item.url }}"
+                    data-order-id="{{ item.order_id }}"
+                    class="order-history-table__row-desktop-show"
+									>
+										<td>{{ item.order_id }}</td>
+										<td>{{ item.date_added }}</td>
+										<td>{{ item.orderStatusName }}</td>
+										<td>{{ item.payment_type }}</td>
+										<td>{{ item.delivery_type }}</td>
+										<td>{{ item.shippingFullname }}</td>
+										<td>{{ item.ttn }}</td>
+										<td>{{ item.storeName }}</td>
+										<td>{{ item.ttnStatus }}</td>
+										<td>{{ item.total }}</td>
+										<td>
+											<a href="#" class="order-receipt-download" id="orderReceiptDownload"
+                      data-order-id="{{ item.order_id }}">
+												<img src="/ego/assets/img/download.png" />
+											</a>
+										</td>
+										<td>
+											<a href="{{ item.url }}" class="open">
+												<img src="/ego/assets/img/icon-search.png" width="20" />
+											</a>
+										</td>
+									</tr>
+                  <tr class="order-history-table__row-mobile-show">
+                    <td>
+                      <details class="order-history-table__mobile-accordion">
+                        <summary class="order-history-table__mobile-toggle">
+                          <ul class = "order-history-table__mobile-list-wrapper">
+                            <li class="order-history-table__mobile-list-item">
+                              <div class="order-history-table__mobile-list-item-title">Номер заказа</div>
+                              <div>{{ item.order_id }}</div>
+                            </li>
+                            <li class="order-history-table__mobile-list-item">
+                              <div class="order-history-table__mobile-list-item-title">Дата</div>
+                              <div>{{ item.date_added }}</div>
+                            </li>
+                            <li class="order-history-table__mobile-list-item">
+                              <div class="order-history-table__mobile-list-item-title">Статус</div>
+                              <div>{{ item.orderStatusName }}</div>
+                            </li>
+                            <li class="order-history-table__mobile-list-item">
+                              <div class="order-history-table__mobile-list-item-title">Тип доставки</div>
+                              <div>{{ item.delivery_type }}</div>
+                            </li>
+                            <li class="order-history-table__mobile-list-item">
+                              <div class="order-history-table__mobile-list-item-title">Сумма</div>
+                              <div>{{ item.total }}</div>
+                            </li>
+                          </ul>
+                        </summary>
+
+                        <ul class = "order-history-table__mobile-list-wrapper order-history-table__mobile-list-wrapper--content">
+                          <li class="order-history-table__mobile-list-item">
+                            <div class="order-history-table__mobile-list-item-title">Способ оплаты</div>
+                            <div>{{ item.payment_type }}</div>
+                          </li>
+                          <li class="order-history-table__mobile-list-item">
+                            <div class="order-history-table__mobile-list-item-title">Контрагент</div>
+                            <div>{{ item.shippingFullname }}</div>
+                          </li>
+                          <li class="order-history-table__mobile-list-item">
+                            <div class="order-history-table__mobile-list-item-title">ТТН</div>
+                            <div>{{ item.ttn }}</div>
+                          </li>
+                          <li class="order-history-table__mobile-list-item">
+                            <div class="order-history-table__mobile-list-item-title">Склад отправки</div>
+                            <div>{{ item.storeName }}</div>
+                          </li>
+                          <li class="order-history-table__mobile-list-item">
+                            <div class="order-history-table__mobile-list-item-title">Отслеживание</div>
+                            <div>{{ item.ttnStatus }}</div>
+                          </li>
+	                        <li class="order-history-table__mobile-list-item--button">
+                            <button
+                              id="orderReceiptDownload"
+                              class="btn-new btn-new--success"
+                              data-order-id="{{ item.order_id }}"
+                            >
+                              <span class="btn-new__wrapper-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                  <path d="M216 0h80c13.3 0 24 10.7 24 24v168h87.7c17.8 0 26.7 21.5 14.1 34.1L269.7 378.3c-7.5 7.5-19.8 7.5-27.3 0L90.1 226.1c-12.6-12.6-3.7-34.1 14.1-34.1H192V24c0-13.3 10.7-24 24-24zm296 376v112c0 13.3-10.7 24-24 24H24c-13.3 0-24-10.7-24-24V376c0-13.3 10.7-24 24-24h146.7l49 49c20.1 20.1 52.5 20.1 72.6 0l49-49H488c13.3 0 24 10.7 24 24zm-124 88c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20zm64 0c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20z"/>
+                                </svg>
+                              </span>
+                              <span class="btn-new__wrapper-text">
+                                Скачать
+                              </span>
+                            </button>
+                          </li>
+	                        <li class="order-history-table__mobile-list-item">
+                            <a
+                              class="btn-new btn-new--success"
+                              href="{{ item.url }}"
+                            >
+                              <span class="btn-new__wrapper-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                  <path d="M256 8C119.043 8 8 119.083 8 256c0 136.997 111.043 248 248 248s248-111.003 248-248C504 119.083 392.957 8 256 8zm0 110c23.196 0 42 18.804 42 42s-18.804 42-42 42-42-18.804-42-42 18.804-42 42-42zm56 254c0 6.627-5.373 12-12 12h-88c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h12v-64h-12c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h64c6.627 0 12 5.373 12 12v100h12c6.627 0 12 5.373 12 12v24z"/>
+                                </svg>
+                              </span>
+                              <span class="btn-new__wrapper-text">
+                                Информация
+                              </span>
+                            </a>
+                          </li>
+                        </ul>
+                      </details>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+
+					{#Terms#}
+					<div
+							id="tab-content-terms"
+							class="tab-pane"
+							role="tabpanel"
+							aria-labelledby="home-tab"
+					>
+						<div>{{ terms_of_sale }}</div>
+						<table class="account-table-terms">
+							<tbody>
+								<tr>
+									<td class="account-table-terms__cell-title">Тип цены:</td>
+									<td class="account-table-terms__cell-value">{{type_price}}</td>
+								</tr>
+								<tr>
+									<td class="account-table-terms__cell-title">Кредитный лимит:</td>
+									<td class="account-table-terms__cell-value">${{credit_limit}}</td>
+								</tr>
+								<tr>
+									<td class="account-table-terms__cell-title">Отсрочка оплаты:</td>
+									<td class="account-table-terms__cell-value">{{payment_delay}}</td>
+								</tr>
+								<tr>
+									<td class="account-table-terms__cell-title">Персональний менеджер:</td>
+									<td class="account-table-terms__cell-value">{{manager_fullname}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+				</div>
+			</div>
+
+			<div class="row logout">
+				<a href="{{ logout }}">
+					{{ text_logout }}
+				</a>
+			</div>
+
+			{{ content_bottom }}
+		</div>
+
+		{{ column_right }}
+
+	</div>
+</div>
+
+<script src="catalog/view/theme/{{ mytemplate }}/js/libs/moment.min.js"></script>
+<script src="catalog/view/theme/{{ mytemplate }}/js/libs/daterangepicker.min.js"></script>
+<script src="catalog/view/javascript/megnor/datatables.min.js"></script>
+<script src="catalog/view/theme/{{ mytemplate }}/js/libs/imask.min.js"></script>
+<script src="catalog/view/theme/{{ mytemplate }}/js/account/account.min.js"></script>
+
+{{ footer }}

@@ -1,0 +1,478 @@
+<style>
+.header-category {
+  background-color: #f2f2f2;
+  text-transform: uppercase;
+  font-size: 14px;
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 1240px) {
+  .header-category {
+    overflow: hidden;
+  }
+}
+
+.header-category--open {
+  padding-bottom: 5px;
+}
+
+.header-category__wrapper-toggle {
+  display: flex;
+  padding: 10px;
+}
+
+@media (min-width: 1241px) {
+  .header-category__wrapper-toggle {
+    display: none;
+  }
+}
+
+.header-category__toggle {
+  position: relative;
+  width: 50px;
+  height: 40px;
+  margin-left: auto;
+  background-color: transparent;
+  cursor: pointer;
+  border-radius: 4px !important;
+  border: 1px solid #ce4e56;
+}
+
+.header-category__toggle-icon,
+.header-category__toggle-icon::before,
+.header-category__toggle-icon::after {
+  position: absolute;
+  content: '';
+  left: 0;
+  width: 30px;
+  height: 2px;
+  background-color: #ce4e56;
+  transition: .5s;
+  border-radius: 3px;
+}
+
+.header-category__toggle-icon {
+  left: 10px;
+}
+
+.header-category__toggle-icon::before {
+  top: -7px;
+}
+
+.header-category__toggle-icon::after {
+  bottom: -7px;
+}
+
+.header-category--open .header-category__toggle-icon {
+  background-color: transparent;
+}
+
+.header-category--open .header-category__toggle-icon:before {
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.header-category--open .header-category__toggle-icon:after {
+  top: 50%;
+  transform: translateY(-50%) rotate(-45deg);
+}
+
+/* -------------------- */
+
+.header-category__level {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition-property: height, opacity;
+  transition-duration: .3s;
+}
+
+@media (min-width: 1241px) {
+  .header-category__level:hover {
+    overflow: visible;
+  }
+}
+
+.header-category__level1 {
+  display: flex;
+  justify-content: center;
+  max-width: 1220px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+@media (max-width: 1240px) {
+  .header-category__level1 {
+    display: block;
+    padding: 0 10px;
+  }
+
+  .header-category--open .header-category__level1,
+  .header-category__level1-item.header-category__level-item--open .header-category__level2,
+  .header-category__level2-item.header-category__level-item--open .header-category__level3 {
+    opacity: 1;
+    height: var(--height, 0);
+    overflow: visible;
+  }
+}
+
+@media (min-width: 1241px) {
+  .header-category__level1 {
+    height: auto;
+    opacity: 1;
+  }
+}
+
+.header-category__level-item {
+  transition: .3s box-shadow;
+}
+
+.header-category__level-item.header-category__level-item--open {
+  box-shadow: 0 0 6px rgba(0, 0, 0, .6);
+}
+
+.header-category__level-item--open + .header-category__level-item--open {
+  margin-top: 6px;
+}
+
+@media (min-width: 1241px) {
+  .header-category__level1-item {
+    position: relative;
+  }
+
+  .header-category__level1-item:hover {
+    box-shadow: 0 0 6px rgba(0, 0, 0, .6);
+  }
+}
+
+.header-category__link {
+  position: relative;
+  cursor: pointer;
+  color: #333 !important;
+  transition-property: background-color, color;
+  transition-duration: .3s;
+}
+
+.header-category__link--active {
+  background-color: #ce4e56 !important;
+  color: #fff !important;
+}
+
+.header-category__link--level1 {
+  display: flex !important;
+  align-items: center;
+  text-align: center;
+  height: 100%;
+  padding: 10px !important;
+}
+
+@media (max-width: 1240px) {
+  .header-category__link--level1 {
+    padding-left: 15px !important;
+  }
+}
+
+@media (min-width: 1241px) {
+  .header-category__level-item:hover > .header-category__link--level1 {
+    background-color: #ce4e56 !important;
+    color: #fff !important;
+  }
+}
+
+/* LEVEL 2 */
+
+@media (min-width: 1241px) {
+  .header-category__level2 {
+    position: absolute;
+    padding: 5px 0 0;
+    min-width: calc(100% + 5px);
+  }
+}
+
+@media (max-width: 1900px) {
+  .header-category__level1-item:nth-last-child(-n+2) .header-category__level2 {
+    right: 0;
+  }
+}
+
+/* https://qna.habr.com/q/833377 */
+/* Первый клик триггерит ховер в цсс а второй клик переход по ссылке. */
+/* https://developer.apple.com/library/archive/documentation/AppleApplications/Reference/SafariWebContent/HandlingEvents/HandlingEvents.html */
+@media (min-width: 1241px) {
+  .header-category__level1-item:hover .header-category__level2,
+  .header-category__level2-item:hover .header-category__level3 {
+    opacity: 1;
+    height: var(--height, auto);
+    overflow: visible;
+    z-index: 1;
+  }
+
+  .header-category__level2::before {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: 0;
+    height: calc(100% - 5px);
+    width: calc(100% - 5px);
+    box-shadow: 0 0 6px rgba(0, 0, 0, .6);
+  }
+}
+
+@media (max-width: 1900px) {
+  .header-category__level1-item:nth-last-child(-n+2) .header-category__level2::before {
+    left: 5px;
+  }
+}
+
+.header-category__level2-item {
+  position: relative;
+}
+
+@media (min-width: 1241px) and (max-width: 1900px) {
+  .header-category__level1-item:nth-last-child(-n+2) .header-category__level2-item {
+    padding-left: 5px;
+    padding-right: 0;
+  }
+}
+
+@media (max-width: 1240px) {
+  .header-category__level2-item {
+    margin-right: 10px;
+    margin-left: 20px;
+  }
+}
+
+@media (min-width: 1241px) {
+  .header-category__level2-item:first-child {
+    display: none;
+  }
+
+  .header-category__level2-item:hover {
+    color: #fff;
+  }
+
+  .header-category__level2-item::before {
+    content: '';
+    position: absolute;
+    background-color: #f2f2f2;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: calc(100% - 5px);
+    transition-property: background-color, box-shadow;
+    transition-duration: .3s;
+  }
+
+  .header-category__level2-item:hover::before {
+    background-color: #ce4e56;
+    box-shadow: 0 0 6px rgba(0, 0, 0, .6);
+  }
+}
+
+@media (min-width: 1241px) and (max-width: 1900px) {
+  .header-category__level1-item:nth-last-child(-n+2) .header-category__level2-item::before {
+    left: 5px;
+  }
+}
+
+.header-category__link--level2,
+.header-category__link--level3 {
+  display: block;
+  padding: 10px 10px !important;
+}
+
+@media (min-width: 1241px) {
+  .header-category__link--level2,
+  .header-category__link--level3 {
+    white-space: nowrap;
+  }
+
+  .header-category__level2-item:hover > .header-category__link {
+    color: inherit !important;
+  }
+}
+
+/* LEVEL 3 */
+
+@media (min-width: 1241px) {
+  .header-category__level3 {
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: translateX(100%);
+  }
+
+  .header-category__level3::before {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: 0;
+    height: calc(100% - 5px);
+    width: calc(100% - 5px);
+    box-shadow: 0 0 6px rgba(0, 0, 0, .6);
+  }
+}
+
+@media (min-width: 1241px) and (max-width: 1900px) {
+  .header-category__level1-item:nth-last-child(-n+2) .header-category__level3 {
+    left: 0;
+    transform: translateX(-100%);
+  }
+}
+
+@media (max-width: 1900px) {
+  .header-category__level1-item:nth-last-child(-n+2) .header-category__level3::before {
+    left: 5px;
+  }
+}
+</style>
+
+<div class="header-category">
+  <nav class="header-category__navbar">
+    <div class="header-category__wrapper-toggle">
+      <button class="header-category__toggle">
+        <span class="header-category__toggle-icon"></span>
+      </button>
+    </div>
+    <ul class="header-category__level header-category__level1">
+      {% for child1 in categories %}
+        <li class="header-category__level-item header-category__level1-item">
+          <a
+            href="{{ child1.href }}"
+            class="header-category__link header-category__link--level1"
+          >
+            {{ child1.name }}
+          </a>
+
+          {% if child1.children %}
+            <ul class="header-category__level header-category__level2">
+              <li class="header-category__level-item header-category__level2-item">
+                <a
+                  href="{{ child1.href }}"
+                  class="header-category__link header-category__link--level2"
+                >
+                  Все в {{ child1.name }}
+                </a>
+              </li>
+
+              {% for child2 in child1.children %}
+                <li class="header-category__level-item header-category__level2-item">
+                  <a
+                    href="{{ child2.href }}"
+                    class="header-category__link header-category__link--level2"
+                  >
+                    {{ child2.name }}
+                  </a>
+
+                  {% if child2.children %}
+                    <ul class="header-category__level header-category__level3">
+                      <li class="header-category__level-item header-category__level2-item">
+                        <a
+                          href="{{ child2.href }}"
+                          class="header-category__link header-category__link--level3"
+                        >
+                          Все в {{ child2.name }}
+                        </a>
+                      </li>
+
+                      {% for child3 in child2.children %}
+                        <li class="header-category__level-item header-category__level2-item">
+                          <a
+                            href="{{ child3.href }}"
+                            class="header-category__link header-category__link--level3"
+                          >
+                            {{ child3.name }}
+                          </a>
+                        </li>
+                      {% endfor %}
+                    </ul>
+                  {% endif %}
+                </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  </nav>
+</div>
+
+<script>
+window.addEventListener('load', () => {
+  const headerCategory = document.querySelector('.header-category');
+  const headerCategoryToggle = headerCategory.querySelector('.header-category__toggle');
+
+  const removeClass = className => {
+    const list = headerCategory.querySelectorAll(`.${className}`);
+    if (list) list.forEach(el => el.classList.remove(className));
+  }
+
+  const onClickheaderCategoryToggle = event => {
+    headerCategory.classList.toggle('header-category--open');
+    const listLevel1 = document.querySelector('.header-category__level1');
+    if (headerCategory.classList.contains('header-category--open')) {
+      listLevel1.style.setProperty('--height', `${listLevel1.scrollHeight}px`);
+    } else {
+      removeClass('header-category__level-item--open');
+      removeClass('header-category__link--active');
+    }
+  }
+
+  headerCategoryToggle.addEventListener('click', onClickheaderCategoryToggle);
+
+  // ----------------------------
+
+
+  const classToggleOpen = element => {
+    const className = 'header-category__level-item--open';
+    element.classList.toggle(className);
+    const hasClass = element.classList.contains(className);
+    if (hasClass) return hasClass;
+    const list = element.querySelectorAll(`.${className}`);
+    if (list) list.forEach(el => el.classList.remove(className));
+    return hasClass;
+  }
+
+  const classToggleActive = element => {
+    const className = 'header-category__link--active';
+    element.classList.toggle(className);
+    const hasClass = element.classList.contains(className);
+    const list = headerCategory.querySelectorAll(`.${className}`);
+    if (list) {
+      list.forEach(el => !el.parentElement.contains(element) && el.classList.remove(className));
+    }
+    return hasClass;
+  }
+
+  const onClickHeaderCategoryLink = event => {
+    if (!window.matchMedia('(max-width: 1240px)').matches) return;
+    const { target: element } = event;
+    const children = event.target.nextElementSibling;
+    if (!children) return;
+    event.preventDefault();
+
+    const headerCategoryLevelItem = element.closest('.header-category__level-item');
+
+    const isOpen = classToggleOpen(headerCategoryLevelItem);
+    const isActive = classToggleActive(element);
+
+    children.style.setProperty('--height', isOpen ? `${children.scrollHeight}px` : 0);
+    let headerCategoryLevel = element;
+    while (headerCategoryLevel = headerCategoryLevel.parentElement.closest('.header-category__level')) {
+      headerCategoryLevel.style.setProperty('--height', 'auto');
+    }
+
+    if (isActive) element.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  const headerCategoryLinkList = headerCategory.querySelectorAll('.header-category__link');
+  headerCategoryLinkList.forEach(el => el.addEventListener('click', onClickHeaderCategoryLink));
+});
+
+
+
+</script>
