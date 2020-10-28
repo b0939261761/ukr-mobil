@@ -1,10 +1,10 @@
 .idea
 config.php
-admin/config.php
-system/storage
-image
-vendor
-my_plugins
+/admin/config.php
+/system/storage
+/image
+/vendor
+/my_plugins
 .env
 robots.txt
 composer.phar
