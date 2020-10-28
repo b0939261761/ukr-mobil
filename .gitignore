@@ -5,6 +5,7 @@ config.php
 /image
 /vendor
 /my_plugins
+/ego/views/cache
 .env
 robots.txt
 composer.phar
