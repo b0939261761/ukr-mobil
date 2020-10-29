@@ -62,9 +62,14 @@ body {
   overflow: auto;
 }
 
+.wrapper-btn {
+  display: flex;
+  flex-direction: column;
+}
+
 @media (min-width: 768px) {
-  .page-cart--wrapper-btn-order {
-    max-width: 300px;
-    margin-left: auto;
+  .wrapper-btn {
+    flex-direction: row;
+    justify-content: flex-end;
   }
 }

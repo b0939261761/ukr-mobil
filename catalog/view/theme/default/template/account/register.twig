@@ -1,9 +1,9 @@
 {{ header }}
 
-<link rel="stylesheet" href="catalog/view/theme/default/stylesheet/egofoxlab/account-register.css">
+<link rel="stylesheet" href="/catalog/view/theme/default/stylesheet/egofoxlab/account-register.css">
 
 <div
-		id="account-register"
+	id="account-register"
 		class="container"
 >
 	{% if error_warning %}
@@ -574,7 +574,7 @@
 	</div>
 </div>
 
-<script src="catalog/view/theme/{{ mytemplate }}/js/libs/vanillaTextMask.js"></script>
+<script src="/catalog/view/theme/default/js/libs/vanillaTextMask.js"></script>
 
 <script>
   window.addEventListener('load', () => {
@@ -587,7 +587,6 @@
     const onFormSubmit = () => phoneElem.value = phoneElem.value.replace(/\(|\)|-|\+|_/g, '');
     const form = document.querySelector('form');
     form.addEventListener('submit', onFormSubmit);
-
   });
 </script>
 

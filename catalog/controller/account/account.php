@@ -1,5 +1,4 @@
-<?php
-
+<?
 use Ego\Controllers\BaseController;
 use Ego\Models\BaseModel;
 use Ego\Models\Customer;
@@ -10,17 +9,16 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class ControllerAccountAccount extends BaseController {
-
 	public function index() {
 		if (!$this->customer->isLogged()) {
-			$this->session->data['redirect'] = $this->url->link('account/account', '', true);
-			$this->response->redirect($this->url->link('account/login', '', true));
+			$this->session->data['redirect'] = $this->url->link('account/account');
+			$this->response->redirect($this->url->link('account/login'));
 		}
 
 		$this->load->language('account/account');
 		$this->document->setTitle($this->language->get('heading_title'));
 
-		$data['logout'] = $this->url->link('account/logout', '', true);
+		$data['logout'] = $this->url->link('account/logout');
 
 		//region Define Models
 		$customerModel = new Customer();
@@ -29,8 +27,6 @@ class ControllerAccountAccount extends BaseController {
 
 		//region Prepare data
 		$data['mytemplate'] = $this->config->get('theme_default_directory');
-
-		//region Current user info
 		$customer = $customerModel->get($this->customer->getId(), true);
 
 		$data['userInfo'] = [

@@ -1,5 +1,5 @@
 <?
-class ControllerProductSearch extends Ego\Controllers\BaseController {
+class ControllerProductSearch extends Controller {
   private function getPagination($data) {
     $pagination = new Pagination();
     $pagination->total = $data['total'];
@@ -7,21 +7,6 @@ class ControllerProductSearch extends Ego\Controllers\BaseController {
     $pagination->limit = $data['limit'];
     $pagination->url = $data['url'];
     return $pagination->render();
-  }
-
-  private function getBreadcrumbs($data) {
-    $route = $data['route'];
-    unset($data['route']);
-
-    $query = [];
-    foreach ($data as $key => $value) {
-      if (!empty($value)) $query[$key] = $value;
-    }
-
-    return [[
-      'text' => 'Поиск',
-      'href' => $this->url->link($route, $query)
-    ]];
   }
 
   public function index() {
@@ -37,14 +22,14 @@ class ControllerProductSearch extends Ego\Controllers\BaseController {
     $filters = $this->request->request['filters'];
     foreach ($filters as $filter) $data['queryUrl'][$filter['key']] = $filter['value'];
 
-    $data['heading_title'] = 'Поиск';
-		if (!empty($params['search'])) $data['heading_title'] = "{$data['heading_title']} - {$params['search']}";
-		$this->document->setTitle($data['heading_title']);
-		$this->document->addMeta(['name' => 'robots', 'content' => 'noindex, nofollow']);
+    $data['headingH1'] = 'Поиск';
+		if (!empty($data['queryUrl']['search'])) $data['headingH1'] .= " - {$data['queryUrl']['search']}";
+    $this->document->setTitle($data['headingH1']);
+    $this->document->addMeta(['name' => 'robots', 'content' => 'noindex, nofollow']);
 
     $products = (new \Ego\Providers\ProductFilterProvider($this->registry))->filter($data['queryUrl']);
     $data['products'] = $products['items'];
-    $data['breadcrumbs'] = $this->getBreadcrumbs($data['queryUrl']);
+    $data['breadcrumbs'] = [['text' => 'Поиск']];
     $data['categoryDescription'] = '';
     $data['productFilter'] = $this->load->controller('product/filter');
     $data['productCategories'] = $this->load->controller('product/categories');

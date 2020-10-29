@@ -1,319 +1,69 @@
-<?php
-use Ego\Controllers\BaseController;
-use Ego\Models\ProductDescription;
-use Ego\Providers\Util;
-
-class ControllerAccountOrder extends BaseController {
-
-	public function index() {
-		if (!$this->customer->isLogged()) {
-			$this->session->data['redirect'] = $this->url->link('account/order', '', true);
-
-			$this->response->redirect($this->url->link('account/login', '', true));
-		}
-
-		$this->load->language('account/order');
-
-		$this->document->setTitle($this->language->get('heading_title'));
-
-		$url = '';
-
-		if (isset($this->request->get['page'])) {
-			$url .= '&page=' . $this->request->get['page'];
-		}
-
-		$data['breadcrumbs'] = array();
-
-		$data['breadcrumbs'][] = array(
-			'text' => $this->language->get('text_home'),
-			'href' => $this->url->link('common/home')
-		);
-
-		$data['breadcrumbs'][] = array(
-			'text' => $this->language->get('text_account'),
-			'href' => $this->url->link('account/account', '', true)
-		);
-
-		$data['breadcrumbs'][] = array(
-			'text' => $this->language->get('heading_title'),
-			'href' => $this->url->link('account/order', $url, true)
-		);
-
-		if (isset($this->request->get['page'])) {
-			$page = $this->request->get['page'];
-		} else {
-			$page = 1;
-		}
-
-		$data['orders'] = array();
-
-		$this->load->model('account/order');
-
-		$order_total = $this->model_account_order->getTotalOrders();
-
-		$results = $this->model_account_order->getOrders(($page - 1) * 10, 10);
-
-		foreach ($results as $result) {
-			$product_total = $this->model_account_order->getTotalOrderProductsByOrderId($result['order_id']);
-			// $voucher_total = $this->model_account_order->getTotalOrderVouchersByOrderId($result['order_id']);
-
-			$data['orders'][] = array(
-				'order_id' => $result['order_id'],
-				'name' => $result['firstname'] . ' ' . $result['lastname'],
-				'status' => $result['status'],
-				'date_added' => date($this->language->get('date_format_short'), strtotime($result['date_added'])),
-				'products' => $product_total,
-				'total' => $this->currency->format($result['total'], $result['currency_code'], $result['currency_value']),
-				'view' => $this->url->link('account/order/info', 'order_id=' . $result['order_id'], true),
-			);
-		}
-
-		$pagination = new Pagination();
-		$pagination->total = $order_total;
-		$pagination->page = $page;
-		$pagination->limit = 10;
-		$pagination->url = $this->url->link('account/order', 'page={page}', true);
-
-		$data['pagination'] = $pagination->render();
-
-		$data['results'] = sprintf($this->language->get('text_pagination'), ($order_total) ? (($page - 1) * 10) + 1 : 0, ((($page - 1) * 10) > ($order_total - 10)) ? $order_total : ((($page - 1) * 10) + 10), $order_total, ceil($order_total / 10));
-
-		$data['continue'] = $this->url->link('account/account', '', true);
-
-		$data['column_left'] = $this->load->controller('common/column_left');
-		$data['column_right'] = $this->load->controller('common/column_right');
-		$data['content_top'] = $this->load->controller('common/content_top');
-		$data['content_bottom'] = $this->load->controller('common/content_bottom');
-		$data['footer'] = $this->load->controller('common/footer');
-		$data['header'] = $this->load->controller('common/header');
-
-		$this->response->setOutput($this->load->view('account/order_list', $data));
-	}
-
-	public function info() {
-		$this->load->language('account/order');
-
-		if (isset($this->request->get['order_id'])) {
-			$order_id = $this->request->get['order_id'];
-		} else {
-			$order_id = 0;
-		}
-
-		if (!$this->customer->isLogged()) {
-			$this->session->data['redirect'] = $this->url->link('account/order/info', 'order_id=' . $order_id, true);
-
-			$this->response->redirect($this->url->link('account/login', '', true));
-		}
-
-		$this->load->model('account/order');
-
-		$orderModel = new \Ego\Models\Order();
-
-		$order_info = $this->model_account_order->getOrder($order_id);
-		$order = $orderModel->get($order_id, true);
-
-		if ($order_info) {
-			$this->document->setTitle($this->language->get('text_order'));
-
-			$url = '';
-
-			if (isset($this->request->get['page'])) {
-				$url .= '&page=' . $this->request->get['page'];
-			}
-
-			if (isset($this->session->data['error'])) {
-				$data['error_warning'] = $this->session->data['error'];
-
-				unset($this->session->data['error']);
-			} else {
-				$data['error_warning'] = '';
-			}
-
-			if (isset($this->session->data['success'])) {
-				$data['success'] = $this->session->data['success'];
-
-				unset($this->session->data['success']);
-			} else {
-				$data['success'] = '';
-			}
-
-			$data['order_id'] = $this->request->get['order_id'];
-			$data['date_added'] = date($this->language->get('date_format_short'), strtotime($order_info['date_added']));
-      $data['status_name'] = $order->getOrderStatusName();
-		  $data['ttn'] = $order->getTtn();
-      $data['ttn_status'] = $order->getTtnStatus();
-
-			$data['payment_method'] = $order_info['payment_method'];
-			$data['shipping_address'] = $order_info['shipping_address_1'];
-			$data['shipping_method'] = $order_info['shipping_method'];
-
-			$this->load->model('catalog/product');
-			$this->load->model('tool/upload');
-
-			$languageId = (int)$this->config->get('config_language_id');
-
-			//region Define Models
-			$productDescriptionModel = new ProductDescription();
-			//endregion
-
-			// Products
-			$data['products'] = array();
-
-			$products = $this->model_account_order->getOrderProducts($this->request->get['order_id']);
-
-			foreach ($products as $product) {
-				$option_data = array();
-
-				$options = $this->model_account_order->getOrderOptions($this->request->get['order_id'], $product['order_product_id']);
-
-				foreach ($options as $option) {
-					if ($option['type'] != 'file') {
-						$value = $option['value'];
-					} else {
-						$upload_info = $this->model_tool_upload->getUploadByCode($option['value']);
-
-						if ($upload_info) {
-							$value = $upload_info['name'];
-						} else {
-							$value = '';
-						}
-					}
-
-					$option_data[] = array(
-						'name' => $option['name'],
-						'value' => (utf8_strlen($value) > 20 ? utf8_substr($value, 0, 20) . '..' : $value)
-					);
-				}
-
-				$product_info = $this->model_catalog_product->getProduct($product['product_id']);
-
-				if ($product_info) {
-					$reorder = $this->url->link('account/order/reorder', 'order_id=' . $order_id . '&order_product_id=' . $product['order_product_id'], true);
-				} else {
-					$reorder = '';
-				}
-
-				//	Product description
-				$productDescriptionRow = $productDescriptionModel->get((int)$product['product_id'], $languageId, true);
-
-				$data['products'][] = array(
-					'name' => empty($productDescriptionRow) ? '' : $productDescriptionRow->getName(),
-					'model' => $product['model'],
-					'option' => $option_data,
-					'quantity' => $product['quantity'],
-					'price' => $this->currency->format(
-						$product['price'] + ($this->config->get('config_tax') ? $product['tax'] : 0),
-						$this->session->data['currency']
-					),
-					'total' => $this->currency->format(
-						$product['total'] + ($this->config->get('config_tax') ? ($product['tax'] * $product['quantity']) : 0),
-						$this->session->data['currency']
-					),
-					'reorder' => $reorder
-				);
-			}
-			// Totals
-			$data['totals'] = array();
-
-			$totals = $this->model_account_order->getOrderTotals($this->request->get['order_id']);
-
-			foreach ($totals as $total) {
-				$data['totals'][] = array(
-					'title' => $total['title'],
-					'text' => $this->currency->format(
-						$total['value'],
-						$this->session->data['currency']
-					),
-				);
-			}
-
-			$data['comment'] = nl2br($order_info['comment']);
-
-			// History
-			$data['histories'] = array();
-
-			$results = $this->model_account_order->getOrderHistories($this->request->get['order_id']);
-
-			foreach ($results as $result) {
-				$data['histories'][] = array(
-					'date_added' => date($this->language->get('date_format_short'), strtotime($result['date_added'])),
-					'status' => $result['status'],
-					'comment' => $result['notify'] ? nl2br($result['comment']) : ''
-				);
-			}
-
-			$data['continue'] = $this->url->link('account/order', '', true);
-			$data['url_back'] = $this->url->link('account/account', '', true);
-
-			$data['column_left'] = $this->load->controller('common/column_left');
-			$data['footer'] = $this->load->controller('common/footer');
-			$data['header'] = $this->load->controller('common/header');
-
-			$this->response->setOutput($this->load->view('account/order_info', $data));
-		} else {
-			return new Action('error/not_found');
-		}
-	}
-
-	public function reorder() {
-		$this->load->language('account/order');
-
-		if (isset($this->request->get['order_id'])) {
-			$order_id = $this->request->get['order_id'];
-		} else {
-			$order_id = 0;
-		}
-
-		$this->load->model('account/order');
-
-		$order_info = $this->model_account_order->getOrder($order_id);
-
-		if ($order_info) {
-			if (isset($this->request->get['order_product_id'])) {
-				$order_product_id = $this->request->get['order_product_id'];
-			} else {
-				$order_product_id = 0;
-			}
-
-			$order_product_info = $this->model_account_order->getOrderProduct($order_id, $order_product_id);
-
-			if ($order_product_info) {
-				$this->load->model('catalog/product');
-
-				$product_info = $this->model_catalog_product->getProduct($order_product_info['product_id']);
-
-				if ($product_info) {
-					$option_data = array();
-
-					$order_options = $this->model_account_order->getOrderOptions($order_product_info['order_id'], $order_product_id);
-
-					foreach ($order_options as $order_option) {
-						if ($order_option['type'] == 'select' || $order_option['type'] == 'radio' || $order_option['type'] == 'image') {
-							$option_data[$order_option['product_option_id']] = $order_option['product_option_value_id'];
-						} elseif ($order_option['type'] == 'checkbox') {
-							$option_data[$order_option['product_option_id']][] = $order_option['product_option_value_id'];
-						} elseif ($order_option['type'] == 'text' || $order_option['type'] == 'textarea' || $order_option['type'] == 'date' || $order_option['type'] == 'datetime' || $order_option['type'] == 'time') {
-							$option_data[$order_option['product_option_id']] = $order_option['value'];
-						} elseif ($order_option['type'] == 'file') {
-							$option_data[$order_option['product_option_id']] = $this->encryption->encrypt($this->config->get('config_encryption'), $order_option['value']);
-						}
-					}
-
-					$this->cart->add($order_product_info['product_id'], $order_product_info['quantity'], $option_data);
-
-					$this->session->data['success'] = sprintf($this->language->get('text_success'), $this->url->link('product/product', 'product_id=' . $product_info['product_id']), $product_info['name'], $this->url->link('checkout/cart'));
-
-					unset($this->session->data['shipping_method']);
-					unset($this->session->data['shipping_methods']);
-					unset($this->session->data['payment_method']);
-					unset($this->session->data['payment_methods']);
-				} else {
-					$this->session->data['error'] = sprintf($this->language->get('error_reorder'), $order_product_info['name']);
-				}
-			}
-		}
-
-		$this->response->redirect($this->url->link('account/order/info', 'order_id=' . $order_id));
-	}
-
+<?
+class ControllerAccountOrder extends Controller {
+  public function info() {
+    $data['orderId'] = (int)($this->request->get['order_id'] ?? 0);
+
+    if (!$this->customer->isLogged()) {
+      $this->session->data['redirect'] = $this->url->link('account/order/info', ['order_id' => $data['orderId']]);
+      $this->response->redirect($this->url->link('account/login'));
+    }
+
+    $order = $this->getOrder($data['orderId']);
+    if (empty($order)) $this->response->redirect($this->url->link('error/not_found'));
+
+    $data = array_merge($data, $order);
+    $data['comment'] = nl2br($order['comment']);
+
+    $total = 0;
+    $data['products'] = $this->getOrderProducts($data['orderId']);
+    foreach ($data['products'] as &$product) {
+      $total += $product['total'];
+      $product['priceFormat'] = $this->currency->format($product['price']);
+      $product['totalFormat'] = $this->currency->format($product['total']);
+    }
+
+    $data['total'] = $this->currency->format( $total);
+    $data['linkOrders'] = "{$this->url->link('account/account')}#orders";
+    $data['headingH1'] = 'Детали заказа';
+    $this->document->setTitle($data['headingH1']);
+    $this->document->addMeta(['name' => 'robots', 'content' => 'noindex, nofollow']);
+    $data['header'] = $this->load->controller('common/header');
+    $data['footer'] = $this->load->controller('common/footer');
+    $this->response->setOutput($this->load->view('account/order_info', $data));
+  }
+
+  private function getOrder($orderId) {
+    $sql = "
+      SELECT
+        DATE_FORMAT(r.date_added, '%d.%m.%Y %T') AS dateAdded,
+        r.ttn,
+        r.ttn_status AS ttnStatus,
+        r.payment_method AS paymentMethod,
+        r.shipping_method AS shippingMethod,
+        r.shipping_address_1 AS shippingAddress,
+        r.comment,
+        oos.name as statusName
+      FROM oc_order r
+      LEFT JOIN oc_order_status oos on oos.order_status_id = r.order_status_id
+      WHERE r.order_id = $orderId
+    ";
+    return $this->db->query($sql)->row;
+  }
+
+  private function getOrderProducts($orderId) {
+    $sql = "
+      SELECT
+        oop.product_id AS productId,
+        opd.name,
+        oop.price,
+        oop.quantity,
+        oop.total
+      FROM oc_order_product oop
+      LEFT JOIN oc_product_description opd ON opd.product_id = oop.product_id
+      WHERE order_id = {$orderId} AND opd.language_id = 2
+      ORDER BY opd.name
+    ";
+
+    return $this->db->query($sql)->rows;
+  }
 }

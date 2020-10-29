@@ -194,9 +194,9 @@ function CallbackComponent(context) {
 		//	Set text
 		var template = data.template;
 		template = template
-			.replace('[title]', translate.get('callback.form.title'))
-			.replace('[placeholder_phone_number]', translate.get('callback.form.placeholder_phone_number'))
-			.replace('[btn_wait_call]', translate.get('callback.form.btn_wait_call'));
+			.replace('[title]', 'Заказать обратный звонок')
+			.replace('[placeholder_phone_number]', 'Номер телефона')
+			.replace('[btn_wait_call]', 'Жду звонка');
 
 		self.elementRef = $(template);
 
@@ -232,8 +232,8 @@ function CallbackComponent(context) {
 						self.closeModal();
 
 						uiService.popup
-							.setHeader(translate.get('callback.success.popup.title'))
-							.setBody(translate.get('callback.success.popup.body'))
+							.setHeader('Сообщение')
+							.setBody('Заявка на звонок отправлена. Ожидайте звонка.')
 							.hideFooter()
 							.open();
 					}

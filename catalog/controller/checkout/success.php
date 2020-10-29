@@ -1,7 +1,6 @@
-<?php
+<?
 class ControllerCheckoutSuccess extends Controller {
   public function index() {
-    $this->document->setTitle($this->language->get('heading_title'));
     $orders = $this->request->get['orders'];
     $products = $this->getOrderProducts($orders);
 
@@ -25,8 +24,11 @@ class ControllerCheckoutSuccess extends Controller {
     ";
 
     $this->document->setDataLayer($dataLayer);
-    $data['footer'] = $this->load->controller('common/footer');
+    $data['headingH1'] = 'Успешная покупка';
+    $this->document->setTitle($data['headingH1']);
+    $this->document->addMeta(['name' => 'robots', 'content' => 'noindex, nofollow']);
     $data['header'] = $this->load->controller('common/header');
+    $data['footer'] = $this->load->controller('common/footer');
     $this->response->setOutput($this->load->view('checkout/success', $data));
   }
 
@@ -46,7 +48,6 @@ class ControllerCheckoutSuccess extends Controller {
         AND opd.language_id = 2
 			GROUP BY oop.product_id
     ";
-
     return $this->db->query($sql)->rows;
   }
 }

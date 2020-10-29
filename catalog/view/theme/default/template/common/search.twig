@@ -7,7 +7,7 @@
 
   <span class="input-group-btn">
     <button class="btn btn-default btn-lg">
-      {{ text_search }}
+      Поиск
     </button>
   </span>
 
@@ -66,10 +66,10 @@
       const self = this;
       const eSearchSuggestion = self.elementRef.find('.search-suggestion');
 
-      const getSuggestion = async input => {
+      const getSuggestion = async search => {
         const options = {
           method: 'POST',
-          body: JSON.stringify({ input })
+          body: JSON.stringify({ search })
         };
 
         const response = await fetch('/index.php?route=common/search/getSuggestion', options);
@@ -100,25 +100,25 @@
 
         data.forEach(item => {
           const eCategoryTpl = self.elementRef.find('#search-suggestion-category-item-tpl').clone();
-          eCategoryTpl.find('a').attr('href', item.category_url);
+          eCategoryTpl.find('a').attr('href', item.categoryUrl);
           eCategoryTpl.find('.input').text(input);
-          eCategoryTpl.find('.category0').text(item.category_name0);
-          eCategoryTpl.find('.category').text(item.category_name);
+          eCategoryTpl.find('.category0').text(item.categoryName0);
+          eCategoryTpl.find('.category').text(item.categoryName);
           eCategories.append(eCategoryTpl.html());
 
           const eProductTpl = self.elementRef.find('#search-suggestion-product-item-tpl').clone();
-          eProductTpl.find('a').attr('href', item.product_url);
-          eProductTpl.find('.image').attr('src', item.product_image);
-          eProductTpl.find('.name').text(item.product_name);
-          if (+item.is_owner) {
-            if (item.price_min === item.price_max) {
-              eProductTpl.find('.price').text(item.price_max);
+          eProductTpl.find('a').attr('href', item.productUrl);
+          eProductTpl.find('.image').attr('src', item.productImage);
+          eProductTpl.find('.name').text(item.productName);
+          if (+item.isOwner) {
+            if (item.price_min === item.priceMax) {
+              eProductTpl.find('.price').text(item.priceMax);
             } else {
-              eProductTpl.find('.price .price-min').text(item.price_min);
-              eProductTpl.find('.price .price-max').text(item.price_max);
+              eProductTpl.find('.price .price-min').text(item.priceMin);
+              eProductTpl.find('.price .price-max').text(item.priceMax);
             }
           } else {
-            eProductTpl.find('.price').text(item.product_price);
+            eProductTpl.find('.price').text(item.productPrice);
           };
 
           eProducts.append(eProductTpl.html());

@@ -1,50 +1,39 @@
 <ul class="header-menu">
+  <li class="mobile-home">
+    <a href="/">Главная</a>
+  </li>
 
-	{#Home#}
-	<li class="mobile-home">
-		<a href="/">{{ text_home }}</a>
-	</li>
+  <li class="download-price-list">
+    <a href="{{ download_price_list }}" target="_blank">Скачать прайс</a>
+  </li>
 
-	{#Download price list#}
-	<li class="download-price-list">
-		<a
-				href="{{ download_price_list }}"
-				target="_blank"
-		>
-			{{ text_download_price_list }}
-		</a>
-	</li>
+  <li class="service">
+    <a href="{{ service }}"><span>Сервис</span></a>
+  </li>
 
-	<li class="service">
-		<a	href="{{ service }}"><span>{{ text_service }}</span></a>
-	</li>
+  <li>
+    <a href="{{ news }}">Новости</a>
+  </li>
 
-	{#News#}
-	<li>
-		<a href="{{ news }}">{{ text_news }}</a>
-	</li>
-
-	{#About us#}
-	<li class="dropdown about-us">
-		<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">	
-			О нас <span class="caret"></span>
-		</a>
-		<ul class="dropdown-menu">
-			<li><a href="{{ about_us }}">О компании</a></li>
-			<li><a href="{{ about_us_delivery }}">Доставка</a></li>
-			<li><a href="{{ about_us_warrantly }}">Гарантии</a></li>
-			<li><a href="{{ about_us_contact }}">Контакты</a></li>
+  <li class="dropdown about-us">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+      О нас <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu">
+      <li><a href="{{ about_us }}">О компании</a></li>
+      <li><a href="{{ about_us_delivery }}">Доставка</a></li>
+      <li><a href="{{ about_us_warrantly }}">Гарантии</a></li>
+      <li><a href="{{ about_us_contact }}">Контакты</a></li>
     </ul>
-	</li>
+  </li>
 
-	{#Income#}
-	<li class="dropdown income">
-		<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-			{{ text_income }} <span class="caret"></span>
-		</a>
-		<ul class="dropdown-menu">
-			<li><a href="{{ expected_income }}">{{ text_expected_income }}</a></li>
-			<li><a href="{{ last_income }}">{{ text_last_income }}</a></li>
+  <li class="dropdown income">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+      Поступления <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu">
+      <li><a href="{{ expected_income }}">Планируемые поступления</a></li>
+      <li><a href="{{ last_income }}">Последние поступления</a></li>
     </ul>
-	</li>
+  </li>
 </ul>

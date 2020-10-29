@@ -22,7 +22,7 @@ $_['text_no_results']       = 'Нет данных!';
 
 // Buttons
 $_['button_address_add']    = 'Добавить адрес';
-$_['button_back']           = 'Назад';
+// $_['button_back']           = 'Назад';
 $_['button_continue']       = 'Продолжить';
 $_['button_cart']           = 'В заказ';
 $_['button_cancel']         = 'Отмена';

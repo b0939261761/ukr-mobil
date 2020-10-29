@@ -78,7 +78,7 @@ class ControllerStartupSeoPro extends Controller {
       LEFT JOIN oc_category c ON c.category_id = cp.path_id
       LEFT JOIN oc_category_description cd ON cd.category_id = c.category_id
       WHERE cp.category_id = {$this->db->escape($categoryId)} AND cd.language_id = 2 AND c.status = 1
-      ORDER BY level DESC;
+      ORDER BY level
     ";
     return $this->db->query($sql)->rows;
   }
@@ -239,7 +239,7 @@ class ControllerStartupSeoPro extends Controller {
     // file_put_contents('./catalog/controller/startup/__LOG__.txt', json_encode($data) . "\n{$isCategory}\n\n", FILE_APPEND);
     if (isset($isFilters) && count($data)) {
       $dataQuery = $this->getFiltersByQuery($data);
-      file_put_contents('./catalog/controller/startup/__LOG__.txt', json_encode($dataQuery) . "\n\n", FILE_APPEND);
+      // file_put_contents('./catalog/controller/startup/__LOG__.txt', json_encode($dataQuery) . "\n\n", FILE_APPEND);
 
       if (!empty($dataQuery['filters'])) $seo_url .= '/' . implode('/', $dataQuery['filters']);
       $data = $dataQuery['queries'];
@@ -247,7 +247,7 @@ class ControllerStartupSeoPro extends Controller {
 
     if (count($data)) $seo_url .= '?' . http_build_query($data);
 
-    file_put_contents('./catalog/controller/startup/__LOG__.txt', "{$link}\n{$seo_url}\n\n", FILE_APPEND);
+    // file_put_contents('./catalog/controller/startup/__LOG__.txt', "{$link}\n{$seo_url}\n\n", FILE_APPEND);
 
     return $seo_url;
   }

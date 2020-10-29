@@ -80,7 +80,7 @@ function MainComponent(context) {
 	 * Init button "To wishlist"/"Notify me when product appear on site"
 	 */
 	function initToWishlist() {
-		$('body').on('click', '.to-wishlist', function (e) {
+		$('body').on('click', '.to-wishlist, #btnSubscribeWishlist', function (e) {
 			var target = $(e.target).closest('.to-wishlist');
 			var productId = parseInt(target.attr('data-product-id'));
 
@@ -95,21 +95,21 @@ function MainComponent(context) {
 					//	Only authorized users
 					if (response.code === 401) {
 						window.uiService.popup
-							.setHeader(translate.get('popup.title.error'))
+							.setHeader('Ошибка')
 							.setBody('\
 								<div class="add-to-wishlist">\
 									<div class="add-to-wishlist__message">\
-										' + translate.get('pages.product.product.popup.onlyAuthorizedUsers') + '\
+										' + 'Только авторизированные пользователи могут делать данную операцию.' + '\
 									</div>\
 									<div class="login-or-register">\
 										<div>\
 											<a href="/index.php?route=account/login">\
-												' + translate.get('auth.login') + '\
+												' + 'Войти' + '\
 											</a>\
 										</div>\
 										<div>\
 											<a href="/index.php?route=account/register">\
-												' + translate.get('auth.register') + '\
+												' + 'Регистрация' + '\
 											</a>\
 										</div>\
 									</div>\
@@ -129,8 +129,8 @@ function MainComponent(context) {
 
 					//	Notify user about success
 					window.uiService.popup
-						.setHeader(translate.get('popup.title.info'))
-						.setBody(translate.get('pages.product.product.popup.addedToWishlist'))
+						.setHeader('Информация')
+						.setBody('Продукт добавлен! Мы известим Вас как только он появится у нас!')
 						.hideFooter()
 						.open();
 

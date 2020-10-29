@@ -1,35 +1,29 @@
-<?php
+<?
 class ControllerInformationScTracking extends Controller {
-	private $error = array();
+  public function index() {
+    $data['headingH1'] = 'Проверка статуса заказа';
+    $this->document->setTitle("{$data['headingH1']} - интернет-магазин UKRMobil");
+    $this->document->setDescription("{$data['headingH1']} ✅ UKRMobil ✅ Фиксированные цены ✅ Гарантия ✅ Доставка по всей Украине");
+    $data['footer'] = $this->load->controller('common/footer');
+    $data['header'] = $this->load->controller('common/header');
+    $this->response->setOutput($this->load->view('information/sc_tracking', $data));
+  }
 
-	public function index() {
-		$this->document->setTitle('Проверка статуса заказа');
+  public function getStatus() {
+    $requestData = json_decode(file_get_contents('php://input'), true);
 
-		$data['column_left'] = $this->load->controller('common/column_left');
-		$data['column_right'] = $this->load->controller('common/column_right');
-		$data['content_top'] = $this->load->controller('common/content_top');
-		$data['content_bottom'] = $this->load->controller('common/content_bottom');
-		$data['footer'] = $this->load->controller('common/footer');
-		$data['header'] = $this->load->controller('common/header');
-		$data['mytemplate'] = $this->config->get('theme_default_directory');
+    if (!empty($requestData['orderId']) && !empty($requestData['phone'])) {
+      $sql = "
+        SELECT name, price, state, MAX(datetime) AS datetime
+        FROM sc_order_state_list
+        WHERE id = '{$requestData['orderId']}' AND phone = '{$requestData['phone']}'
+        GROUP BY state
+        ORDER BY datetime
+      ";
 
-		$data['is_logged'] = $this->customer->isLogged() ? true : false;
+      $list = $this->db->query($sql)->rows;
+    }
 
-		$this->response->setOutput($this->load->view('information/sc_tracking', $data));
-	}
-
-	public function getStatus() {
-		$order_id = $this->request->post['orderId'];
-		$phone =  $this->request->post['phone'];
-
-		$sql = "SELECT `name`, `price`, `state`, MAX(`datetime`) AS `datetime` "
-			. "FROM sc_order_state_list "
-			. "WHERE `id` = '" . $order_id . "' AND `phone` = '" . $phone . "' "
-			. "GROUP BY `state` "
-			. "ORDER BY `datetime`";
-
-		$list = $this->db->query($sql)->rows;
-
-		$this->response->setOutput(json_encode($list));
-	}
+    $this->response->setOutput(json_encode($list ?? []));
+  }
 }

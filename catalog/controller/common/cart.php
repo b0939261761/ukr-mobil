@@ -1,137 +1,43 @@
 <?php
 class ControllerCommonCart extends Controller {
-	public function index() {
-		$this->load->language('common/cart');
+  public function index() {
+    $this->load->language('common/cart');
+    $this->load->model('tool/image');
+    $configTheme = $this->config->get('config_theme');
+    $imageWidth = $this->config->get("theme_{$configTheme}_image_cart_width");
+    $imageHeight = $this->config->get("theme_{$configTheme}_image_cart_height");
 
-		// Totals
-		// $this->load->model('setting/extension');
+    $totalAll = 0;
+    $quantityAll = 0;
 
-		// $totals = [];
-		// $taxes = $this->cart->getTaxes();
-		// $total = 0;
+    foreach ($this->cart->getProducts() as $product) {
+      $image = $product['image'] ? $product['image'] : 'placeholder.png';
+      $total = $product['price'] * $product['quantity'];
+      $quantityAll += $product['quantity'];
+      $totalAll += $total;
 
-		// // Because __call can not keep var references so we put them into an array.
-		// $total_data = [
-		// 	'totals' => &$totals,
-		// 	'taxes'  => &$taxes,
-		// 	'total'  => &$total
-		// ];
+      $data['products'][] = [
+        'cart_id'   => $product['cart_id'],
+        'thumb'     => $this->model_tool_image->resize($image, $imageWidth, $imageHeight),
+        'name'      => $product['name'],
+        'quantity'  => $product['quantity'],
+        'price'     => $this->currency->format($product['price'], $this->session->data['currency']),
+        'total'     => $this->currency->format($total, $this->session->data['currency']),
+        'href'      => $this->url->link('product/product', ['product_id' => $product['product_id']])
+      ];
+    }
 
-		// Display prices
-		// if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
-		// 	$sort_order = array();
+    $data['total'] = [
+      'title' => 'Сумма (грн/$)',
+      'quantity' => $quantityAll,
+      'sum' => $this->currency->format($totalAll, $this->session->data['currency'])
+    ];
 
-		// 	$results = $this->model_setting_extension->getExtensions('total');
+    $data['cart'] = $this->url->link('checkout/cart');
+    return $this->load->view('common/cart', $data);
+  }
 
-		// 	foreach ($results as $key => $value) {
-		// 		$sort_order[$key] = $this->config->get('total_' . $value['code'] . '_sort_order');
-		// 	}
-
-		// 	array_multisort($sort_order, SORT_ASC, $results);
-
-		// 	foreach ($results as $result) {
-		// 		if ($this->config->get('total_' . $result['code'] . '_status')) {
-		// 			$this->load->model('extension/total/' . $result['code']);
-
-		// 			// We have to put the totals in an array so that they pass by reference.
-		// 			$this->{'model_extension_total_' . $result['code']}->getTotal($total_data);
-		// 		}
-		// 	}
-
-		// 	$sort_order = array();
-
-		// 	foreach ($totals as $key => $value) {
-		// 		$sort_order[$key] = $value['sort_order'];
-		// 	}
-
-		// 	array_multisort($sort_order, SORT_ASC, $totals);
-		// }
-
-		// $data['text_items'] = sprintf($this->language->get('text_items'), $this->cart->countProducts() + (isset($this->session->data['vouchers']) ? count($this->session->data['vouchers']) : 0), $this->currency->format($total, $this->session->data['currency']));
-		$data['text_items_count'] = $this->cart->countProducts();
-
-		$this->load->model('tool/image');
-		$this->load->model('tool/upload');
-
-		$data['products'] = [];
-
-		$totalAll = 0;
-		$quantityAll = 0;
-
-		foreach ($this->cart->getProducts() as $product) {
-			$image = $product['image'] 
-				? $this->model_tool_image->resize($product['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_cart_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_cart_height'))
-				: '';
-			
-			// $option_data = array();
-
-			// foreach ($product['option'] as $option) {
-			// 	if ($option['type'] != 'file') {
-			// 		$value = $option['value'];
-			// 	} else {
-			// 		$upload_info = $this->model_tool_upload->getUploadByCode($option['value']);
-
-			// 		if ($upload_info) {
-			// 			$value = $upload_info['name'];
-			// 		} else {
-			// 			$value = '';
-			// 		}
-			// 	}
-
-			// 	$option_data[] = array(
-			// 		'name'  => $option['name'],
-			// 		'value' => (utf8_strlen($value) > 20 ? utf8_substr($value, 0, 20) . '..' : $value),
-			// 		'type'  => $option['type']
-			// 	);
-			// }
-
-			// Display prices
-			// if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
-			// 	$unit_price = $this->tax->calculate($product['price'], $product['tax_class_id'], $this->config->get('config_tax'));
-
-			// } else {
-			// 	$price = false;
-			// 	$total = false;
-			// }
-
-			$total = $product['price'] * $product['quantity'];
-			$quantityAll += $product['quantity'];
-			$totalAll += $total;
-
-			$data['products'][] = [
-				'cart_id'   => $product['cart_id'],
-				'thumb'     => $image,
-				'name'      => $product['name'],
-				// 'option'    => $option_data,
-				// 'recurring' => ($product['recurring'] ? $product['recurring']['name'] : ''),
-				'quantity'  => $product['quantity'],
-				'price'     => $this->currency->format($product['price'], $this->session->data['currency']),
-				'total'     => $this->currency->format($total, $this->session->data['currency']),
-				'href'      => $this->url->link('product/product', ['product_id' => $product['product_id']])
-			];
-		}
-
-		$data['total'] = [
-			'title' => 'Сумма (грн/$)',
-			'quantity' => $quantityAll,
-			'sum' => $this->currency->format($totalAll, $this->session->data['currency'])		
-		];
-
-		// $data['totals'] = [];
-
-		// foreach ($totals as $total) {
-		// 	$data['totals'][] = [
-		// 		'title' => $total['title'],
-		// 		'text'  => $this->currency->format($total['value'], $this->session->data['currency']),
-		// 	];
-		// }
-		// $data['checkout'] = $this->url->link('checkout/checkout');
-
-		$data['cart'] = $this->url->link('checkout/cart');
-		return $this->load->view('common/cart', $data);
-	}
-
-	public function info() {
-		$this->response->setOutput($this->index());
-	}
+  public function info() {
+    $this->response->setOutput($this->index());
+  }
 }

@@ -578,24 +578,24 @@ body.modal-open {
 }
 
 .wrapper-form-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    z-index: 1000;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(0, 0, 0, 0.7);
-    transition: transform .5s ease-out;
-    overflow: hidden;
-    transform: scale(0);
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.7);
+  transition: transform .5s ease-out;
+  overflow: hidden;
+  transform: scale(0);
 }
 
 .wrapper-form-modal--open {
-    transform: scale(1);
+  transform: scale(1) !important;
 }
 
 .form-modal {

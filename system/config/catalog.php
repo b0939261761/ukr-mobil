@@ -36,7 +36,7 @@ $_['action_pre_action']  = array(
 	'startup/startup',
 	'startup/error',
 	'startup/event',
-	'startup/maintenance',
+	// 'startup/maintenance',
 	'startup/seo_pro'
 );
 
@@ -47,7 +47,7 @@ $_['action_event'] = array(
 	),
 	'controller/*/after' => array(
 		'event/language/after'
-	),	
+	),
 	'view/*/before' => array(
 		500  => 'event/theme/override',
 		998  => 'event/language',

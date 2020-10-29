@@ -1,41 +1,36 @@
-<?php
+<?
 class ControllerInformationLastIncome extends Controller {
-	private $error = array();
+  public function index() {
+    $data['headingH1'] = 'Последние поступления';
+    $this->document->setTitle("{$data['headingH1']} - интернет-магазин UKRMobil");
+    $this->document->setDescription("{$data['headingH1']} ✅ UKRMobil ✅ Фиксированные цены ✅ Гарантия ✅ Доставка по всей Украине");
+    $data['isLogged'] = $this->customer->isLogged() ? true : false;
+    $data['isNewsletter'] = empty($this->customer->getNewsLetter()) ? false : true;
+    $data['documents'] = $this->documents();
+    $data['headingDetail'] = 'Поступление от';
+    $data['footer'] = $this->load->controller('common/footer');
+    $data['header'] = $this->load->controller('common/header');
+    $this->response->setOutput($this->load->view('information/income', $data));
+  }
 
-	public function index() {
-		$data['column_left'] = $this->load->controller('common/column_left');
-		$data['column_right'] = $this->load->controller('common/column_right');
-		$data['content_top'] = $this->load->controller('common/content_top');
-		$data['content_bottom'] = $this->load->controller('common/content_bottom');
-		$data['footer'] = $this->load->controller('common/footer');
-		$data['header'] = $this->load->controller('common/header');
-		$data['mytemplate'] = $this->config->get('theme_default_directory');
+  private function documents() {
+    $this->load->model('tool/image');
+    $configTheme = $this->config->get('config_theme');
+    $imageWidth = $this->config->get("theme_{$configTheme}_image_product_width");
+    $imageHeight = $this->config->get("theme_{$configTheme}_image_product_height");
+    $customerGroupId = $this->customer->getGroupId() ?? 0;
 
-		$data['is_logged'] = $this->customer->isLogged() ? true : false;
-		$data['is_newsletter'] = empty($this->customer->getNewsLetter()) ? false : true;
-
-		$this->load->language('information/last_income');
-		$data['documents'] = $this->documents();
-
-		$this->document->setTitle($this->language->get('heading_title'));
-		$this->response->setOutput($this->load->view('information/income', $data));
-	}
-
-	private function documents() {
-		$this->load->model('tool/image');
-		$customerGroupId = $this->customer->getGroupId() ?? 0;
-
-		$sql_documents = "
+    $sqlDocuments = "
       SELECT income_number, date_income,
         DATE_FORMAT(date_income, '%d.%m.%Y') AS date
       FROM oc_product_last_income
       GROUP BY date_income, income_number
       ORDER BY date_income DESC, income_number DESC LIMIT 10
     ";
-		$documents = $this->db->query($sql_documents)->rows;
+    $documents = $this->db->query($sqlDocuments)->rows;
 
-		foreach ($documents as $index=>$value) {
-			$sql = "
+    foreach ($documents as &$document) {
+      $sql = "
         SELECT aa.product_id, bb.name, COALESCE(dd.price, cc.price) AS price,
           aa.quantity, cc.image
         FROM oc_product_last_income aa
@@ -43,29 +38,23 @@ class ControllerInformationLastIncome extends Controller {
         INNER JOIN oc_product cc ON cc.product_id = aa.product_id
         LEFT JOIN oc_product_discount dd ON dd.product_id = aa.product_id
           AND dd.customer_group_id = {$customerGroupId}
-        WHERE aa.income_number = '{$value['income_number']}'
-          AND aa.date_income = '{$value['date_income']}'
+        WHERE aa.income_number = '{$document['income_number']}'
+          AND aa.date_income = '{$document['date_income']}'
           AND bb.language_id = 2
         ORDER BY bb.name
       ";
 
-			foreach ($this->db->query($sql)->rows as $product) {
-				if ($product['image']) {
-					$image = $this->model_tool_image->resize($product['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_product_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_product_height'));
-				} else {
-					$image = $this->model_tool_image->resize('placeholder.png', $this->config->get('theme_' . $this->config->get('config_theme') . '_image_product_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_product_height'));
-				}
-
-				$documents[$index]['products'][] = array(
-					'image'       => $image,
-					'code'        => $this->language->get('text_code') . ": " . $product['product_id'],
-					'name'        => $product['name'],
-					'price'       => "$" . round($product['price'], 2),
-					'quantity'    => $product['quantity'] . " шт.",
-					'href'        => $this->url->link('product/product', 'product_id=' . $product['product_id'])
-				);
-			}
-		}
-		return $documents;
-	}
+      foreach ($this->db->query($sql)->rows as $product) {
+        $document['products'][] = [
+          'image'    => $this->model_tool_image->resize($product['image'], $imageWidth, $imageHeight),
+          'code'     => "Код: {$product['product_id']}",
+          'name'     => $product['name'],
+          'price'    => "$" . round($product['price'], 2),
+          'quantity' => "{$product['quantity']} шт.",
+          'href'     => $this->url->link('product/product', ['product_id' => $product['product_id']])
+        ];
+      }
+    }
+    return $documents;
+  }
 }

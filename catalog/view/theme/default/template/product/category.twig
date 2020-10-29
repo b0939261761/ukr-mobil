@@ -1,10 +1,9 @@
 {{ header }}
 
-<link rel="stylesheet" href="catalog/view/theme/default/stylesheet/egofoxlab/product-category.min.css?20201008-1" />
+<link rel="stylesheet" href="/catalog/view/theme/default/stylesheet/egofoxlab/product-category.min.css?20201029" />
 <script>const queryUrl = {{ queryUrl | json_encode() }};</script>
 
 <div id="product-category" class="container">
-  <div id="queryUrl" data-query = ""></div>
   <div class="row">
     {{ productCategories }}
 
@@ -21,13 +20,18 @@
 
           {% for breadcrumb in breadcrumbs %}
             <li class="breadcrumbs__item">
-              <a href="{{ breadcrumb.href }}" class="breadcrumbs__link">{{ breadcrumb.text }}</a>
+              {% if breadcrumb.link %}
+                <a href="{{ breadcrumb.link }}" class="breadcrumbs__link">{{ breadcrumb.text }}</a>
+              {% else %}
+                {{ breadcrumb.text }}
+              {% endif %}
             </li>
           {% endfor %}
         </ul>
       </div>
 
-      <h1 class="page-title-new">{{ headingTitle }}</h1>
+      <h1 class="page-title page-title--left">{{ headingH1 }}</h1>
+
       {{ productFilter }}
 
       {% if products %}
@@ -297,8 +301,8 @@
   </div>
 </div>
 
-<script src="catalog/view/javascript/megnor/bootstrap-notify.min.js"></script>
-<script src="catalog/view/javascript/megnor/jstree.min.js"></script>
-<script src="catalog/view/theme/default/js/product/category.min.js"></script>
+<script src="/catalog/view/javascript/megnor/bootstrap-notify.min.js"></script>
+<script src="/catalog/view/javascript/megnor/jstree.min.js"></script>
+<script src="/catalog/view/theme/default/js/product/category.min.js?20201029"></script>
 
 {{ footer }}

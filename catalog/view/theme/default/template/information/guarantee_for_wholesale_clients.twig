@@ -1,18 +1,4 @@
 {{ header }}
-
-<style>
-.wrapper-btn-continue {
-  display: flex;
-  justify-content: center;
-}
-
-@media (min-width: 768px) {
-  .wrapper-btn-continue {
-    justify-content: flex-end;
-  }
-}
-</style>
-
 <div class="container">
   <div class="wrapper-breadcrumbs">
     <ul class="breadcrumbs">
@@ -25,18 +11,15 @@
       </li>
 
       <li class="breadcrumbs__item">
-        {{ headingH1 }}
+       {{ headingH1 }}
       </li>
     </ul>
   </div>
 
-  <h1 class="page-title">{{ headingH1 }}</h1>
+  <h1 class="page-title">
+    {{ headingH1 }}
+  </h1>
 
-  {{ message }}
-
-  <div class="wrapper-btn-continue">
-    <a href="{{ link }}" class="btn-new btn-new--success btn-new--inline">Продолжить</a>
-  </div>
+  {{ content }}
 </div>
-
 {{ footer }}

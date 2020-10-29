@@ -1,42 +1,32 @@
 <div id="cart"
-	 class="btn-group btn-block">
-	<button type="button"
-			data-toggle="dropdown"
-			data-loading-text="{{ text_loading }}"
-			class="btn btn-inverse btn-block btn-lg dropdown-toggle">
-		<span id="cart-total">
-			{{ total.quantity }}
-		</span>
-	</button>
-	<ul class="dropdown-menu pull-right cart-menu">
-		{% if products %}
-			<li>
-				<table class="table table-striped">
-					{% for product in products %}
-						<tr>
-							<td class="text-center">{% if product.thumb %}
-									<a href="{{ product.href }}">
-										<img src="{{ product.thumb }}"
-											 alt="{{ product.name }}"
-											 title="{{ product.name }}"
-											 class="img-thumbnail"/>
-									</a> {% endif %}</td>
-							<td class="text-left">
-								<a href="{{ product.href }}">{{ product.name }}</a> 
-								{# {% if product.option %}
-									{% for option in product.option %}
-										<br/>
-										-
-										<small>{{ option.name }} {{ option.value }}</small> {% endfor %}
-								{% endif %}
-								{% if product.recurring %}
-									<br/>
-									-
-									<small>{{ text_recurring }} {{ product.recurring }}</small> {% endif %} #}
-							</td>
-							<td class="text-right">x {{ product.quantity }}</td>
-							<td class="text-right">{{ product.total }}</td>
-							<td style="vertical-align: middle;">
+   class="btn-group btn-block">
+  <button type="button"
+      data-toggle="dropdown"
+      data-loading-text="Загрузка..."
+      class="btn btn-inverse btn-block btn-lg dropdown-toggle">
+    <span id="cart-total">
+      {{ total.quantity }}
+    </span>
+  </button>
+  <ul class="dropdown-menu pull-right cart-menu">
+    {% if products %}
+      <li>
+        <table class="table table-striped">
+          {% for product in products %}
+            <tr>
+              <td class="text-center">{% if product.thumb %}
+                  <a href="{{ product.href }}">
+                    <img src="{{ product.thumb }}"
+                       alt="{{ product.name }}"
+                       title="{{ product.name }}"
+                       class="img-thumbnail"/>
+                  </a> {% endif %}</td>
+              <td class="text-left">
+                <a href="{{ product.href }}">{{ product.name }}</a>
+              </td>
+              <td class="text-right">x {{ product.quantity }}</td>
+              <td class="text-right">{{ product.total }}</td>
+              <td style="vertical-align: middle;">
                 <button
                   onclick="cart.remove('{{ product.cart_id }}');"
                   title="Удалить"
@@ -47,24 +37,22 @@
                       <path d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z"/>
                     </svg>
                   </span>
-								</button>
-							</td>
-						</tr>
-					{% endfor %}
-				</table>
-			</li>
-			<li>
-				<div>
-					<table class="table table-bordered">
-						{# {% for total in totals %} #}
-							<tr>
-								<td class="text-right">
-									<strong>{{ total.title }}</strong>
-								</td>
-								<td class="text-right">{{ total.sum }}</td>
-							</tr>
-						{# {% endfor %} #}
-					</table>
+                </button>
+              </td>
+            </tr>
+          {% endfor %}
+        </table>
+      </li>
+      <li>
+        <div>
+          <table class="table table-bordered">
+            <tr>
+              <td class="text-right">
+                <strong>{{ total.title }}</strong>
+              </td>
+              <td class="text-right">{{ total.sum }}</td>
+            </tr>
+          </table>
 
           <a
             href="{{ cart }}"
@@ -79,12 +67,12 @@
               Перейти в корзину
             </span>
           </a>
-				</div>
-			</li>
-		{% else %}
-			<li>
-				<p class="text-center">Ваша корзина пуста!</p>
-			</li>
-		{% endif %}
-	</ul>
+        </div>
+      </li>
+    {% else %}
+      <li>
+        <p class="text-center">Ваша корзина пуста!</p>
+      </li>
+    {% endif %}
+  </ul>
 </div>

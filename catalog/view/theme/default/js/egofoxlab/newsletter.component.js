@@ -46,13 +46,13 @@ function EgoNewsletterComponent(context) {
 				success: function (response) {
 					if (response.success) {
 						window.uiService.popup
-							.setHeader(translate.get('popup.title.info'))
-							.setBody(translate.get('module.newsletter.popup.success.body'))
+							.setHeader('Информация')
+							.setBody('Вы успешно подписались на новости!')
 							.hideFooter()
 							.open();
 					} else {
 						window.uiService.popup
-							.setHeader(translate.get('popup.title.error'))
+							.setHeader('Ошибка')
 							.setBody(response.message)
 							.hideFooter()
 							.open();

@@ -286,7 +286,7 @@ class ProductFilterProvider {
         SELECT p.product_id {$this->prepareWhereProduct()}
       ) a
     ";
-    return $this->db->query($sql)->rows[0]['total'];
+    return $this->db->query($sql)->row['total'];
   }
 
   private function getPagination() {

@@ -1,67 +1,51 @@
-<?php
-
-use Ego\Providers\Util;
-
+<?
 class ControllerInformationNews extends Controller {
+  public function index() {
+    $sql = "
+      SELECT
+        epc.epc_id AS id,
+        epc.epc_title AS title,
+        CONCAT('/image/', ep_preview_image) AS image
+      FROM ego_post ep
+      LEFT JOIN ego_post_content epc ON epc.epc_post = ep.ep_id
+      WHERE LOWER(ep.ep_category) = 'news' AND epc.epc_language = 2
+      ORDER by ep.ep_id DESC
+    ";
 
-	public function index() {
-		$postModel = new \Ego\Models\EgoPost();
-		$postContentModel = new \Ego\Models\EgoPostContent();
+    $data['news'] = $this->db->query($sql)->rows;
+    foreach ($data['news'] as &$item) {
+      $item['url'] = $this->url->link('information/news/read', ['news_id' => $item['id']]);
+    }
 
-		$data['mytemplate'] = $this->config->get('theme_default_directory');
+    $data['headingH1'] = 'Новости';
+    $this->document->setTitle("Новости от UKRMobil");
+    $this->document->setDescription("Новости от UKRMobil ✅ Актуально ✅ Полезно");
+    $data['footer'] = $this->load->controller('common/footer');
+    $data['header'] = $this->load->controller('common/header');
+    $this->response->setOutput($this->load->view('information/news', $data));
+  }
 
-		$data['news'] = [];
-		$newsList = $postModel->getByCategory('news', true) ?? [];
+  public function read() {
+    $sql = "
+      SELECT
+        epc.epc_title AS title,
+        epc.epc_content AS content,
+        CONCAT('/image/', ep_preview_image) AS image
+      FROM ego_post_content epc
+      LEFT JOIN ego_post ep ON ep.ep_id = epc.epc_post
+      WHERE epc.epc_id = 115 AND epc.epc_language = 2
+      LIMIT 1;
+    ";
+    $post = $this->db->query($sql)->row;
 
-		foreach ($newsList as $news) {
-			$newsContents = $postContentModel->getByPost($news->getId(), 2, false, true);
-			if (empty($newsContents) || empty($newsContents[0])) contimue;
-			
-			$data['news'][] = [
-				'preview_image' => "/image/{$news->getPreviewImage()}",
-				'title' => $newsContents[0]->getTitle(),
-				'description' => substr(strip_tags($newsContents[0]->getContent()), 0, 50),
-				'url' => $this->url->link('information/news/read', ['news_id' => $news->getId()])
-			];
-		}
-
-		$this->document->setTitle("Новости от UKRMobil");
-		$this->document->setDescription("Новости от UKRMobil ✅ Актуально ✅ Полезно");
-		$this->document->setKeywords('Новости');
-		$data['heading_title'] = 'Новости';
-		$data['footer'] = $this->load->controller('common/footer');
-		$data['header'] = $this->load->controller('common/header');
-		$this->response->setOutput($this->load->view('information/news', $data));
-	}
-
-	public function read() {
-		$postModel = new \Ego\Models\EgoPost();
-		$postContentModel = new \Ego\Models\EgoPostContent();
-
-		$data['news'] = [];
-		$title = '';
-		$news = $postModel->get($this->request->get['news_id'], true);
-
-		if (!empty($news)) {
-			$newsContents = $postContentModel->getByPost($news->getId(), 2, false, true);
-
-			if (!empty($newsContents) && !empty($newsContents[0])) {
-				$title = $newsContents[0]->getTitle();
-				$data['news'] = [
-					'preview_image' => "/image/{$news->getPreviewImage()}",
-					'title' => $title,
-					'description' => $newsContents[0]->getContent()
-				];
-			}
-		}
-	
-		$this->document->setTitle("{$title} - новости от UKRMobil");
-		$this->document->setDescription("{$title} ✅ Новости от UKRMobil ✅ Актуально ✅ Полезно");
-		$this->document->setKeywords('Новости');
-		$data['heading_title'] = $title;
-		$data['footer'] = $this->load->controller('common/footer');
-		$data['header'] = $this->load->controller('common/header');
-		$this->response->setOutput($this->load->view('information/news_read', $data));
-	}
-
+    $data['headingH1'] = $post['title'] ?? '';
+    $this->document->setTitle("{$data['headingH1']} - новости от UKRMobil");
+    $this->document->setDescription("{$data['headingH1']} ✅ Новости от UKRMobil ✅ Актуально ✅ Полезно");
+    $data['image'] = $post['image'] ?? '';
+    $data['content'] = $post['content'] ?? '';
+    $data['linkNews'] = $this->url->link('information/news');
+    $data['footer'] = $this->load->controller('common/footer');
+    $data['header'] = $this->load->controller('common/header');
+    $this->response->setOutput($this->load->view('information/news_read', $data));
+  }
 }

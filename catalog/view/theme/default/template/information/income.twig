@@ -1,64 +1,168 @@
 {{ header }}
+<style>
+  .page-income {
+    max-width: 650px;
+    margin: 0 auto;
+  }
 
-<div
-		id="information-contact"
-		class="container"
->
+  .income-details {
+    margin-left: 15px;
+  }
 
-	<div class="row">
-		{{ column_left }}
+  .income-details-summary {
+    margin-bottom: 20px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+  }
 
-		{% if column_left and column_right %}
-			{% set class = 'col-sm-6' %}
-		{% elseif column_left or column_right %}
-			{% set class = 'col-sm-9' %}
-		{% else %}
-			{% set class = 'col-sm-12' %}
-		{% endif %}
+  .income-details-image {
+    height: 60px;
+    width: 60px;
+    object-fit: contain;
+    flex-grow: 0;
+    flex-shrink: 0;
+    margin-right: 10px;
+  }
 
-		<div class="{{ class }}">
-			{{ content_top }}
-			
-			<div class = "page-income">
-				<h1 class = "income-title">{{ heading_title }}</h1>
 
-				<div class="row content-container">
-					{% for document in documents %}
-						<details class = "income-details">
-							<summary class = "income-details-summary">{{text_heading_detail}} {{document.date}}</summary>
-							{% for product in document.products %}
-								<div class="income-details-block">
-									<img class = "income-details-image" src={{product.image}} />
-									<span class = "income-details-block__text income-details-block__text--code">{{product.code}}</span>
-									<a class = "income-details-block__text income-details-block__text--name" href ="{{product.href}}">{{product.name}}</a>
-									<span class = "income-details-block__text income-details-block__text--price">{{product.price}}</span>
-									<span class = "income-details-block__text income-details-block__text--quantity">{{product.quantity}}</span>
-								</div>
-							{% endfor %}
-						</details>
-					{% endfor %}
-				</div>
+  @media only screen and (max-width: 650px) {
+    .income-details-image {
+      height: 120px;
+      width: 120px;
+      margin-right: 0;
+    }
+  }
 
-				<div class = "wrapper-btn-subscribe-income">
-					{% if is_logged %}
-						{% if not is_newsletter %}
-							<button	id="btn-subscribe" class="btn-subscribe-income">
-								{{ text_subscibe_to_news }}
-							</button>
-						{% endif %}
-					{% else %}
-						<button	class="to-wishlist btn-subscribe-income ">
-							{{ text_subscibe_to_news }}
-						</button>
-					{% endif %}
-				</div>
-			</div>
+  .income-details-block {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 20px;
+  }
 
-			{{ content_bottom }}
-		</div>
-		{{ column_right }}
-	</div>
+  @media only screen and (max-width: 650px) {
+    .income-details-block {
+      flex-direction: column;
+    }
+  }
+
+  .income-details-block__text {
+    color: inherit;
+  }
+
+  .income-details-block__text--code {
+    font-weight: 600;
+    color: #ce4e56;
+    width: 120px;
+    text-align: left;
+    flex-grow: 0;
+    flex-shrink: 0;
+  }
+
+  .income-details-block__text--name {
+    flex-grow: 1
+  }
+
+  .income-details-block__text--price,
+  .income-details-block__text--quantity {
+    font-weight: 600;
+    width: 80px;
+    text-align: right;
+    flex-grow: 0;
+    flex-shrink: 0;
+  }
+
+  @media only screen and (max-width: 650px) {
+    .income-details-block__text--code,
+    .income-details-block__text--name,
+    .income-details-block__text--price,
+    .income-details-block__text--quantity  {
+      text-align: center;
+    }
+  }
+
+  .wrapper-btn-subscribe-income {
+    display: flex;
+    justify-content: center;
+  }
+</style>
+
+<div class="container">
+  <div class = "page-income">
+    <div class="wrapper-breadcrumbs">
+      <ul class="breadcrumbs">
+        <li class="breadcrumbs__item">
+          <a href="/" class="breadcrumbs__link">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+              <path d="M280.37 148.26L96 300.11V464a16 16 0 0 0 16 16l112.06-.29a16 16 0 0 0 15.92-16V368a16 16 0 0 1 16-16h64a16 16 0 0 1 16 16v95.64a16 16 0 0 0 16 16.05L464 480a16 16 0 0 0 16-16V300L295.67 148.26a12.19 12.19 0 0 0-15.3 0zM571.6 251.47L488 182.56V44.05a12 12 0 0 0-12-12h-56a12 12 0 0 0-12 12v72.61L318.47 43a48 48 0 0 0-61 0L4.34 251.47a12 12 0 0 0-1.6 16.9l25.5 31A12 12 0 0 0 45.15 301l235.22-193.74a12.19 12.19 0 0 1 15.3 0L530.9 301a12 12 0 0 0 16.9-1.6l25.5-31a12 12 0 0 0-1.7-16.93z"/>
+            </svg>
+          </a>
+        </li>
+
+        <li class="breadcrumbs__item">
+          {{ headingH1 }}
+        </li>
+      </ul>
+    </div>
+
+    <h1 class = "page-title">{{ headingH1 }}</h1>
+
+    <div class="row content-container">
+      {% for document in documents %}
+        <details class = "income-details">
+          <summary class = "income-details-summary">{{ headingDetail }} {{ document.date }}</summary>
+          {% for product in document.products %}
+            <div class="income-details-block">
+              <img class = "income-details-image" src={{product.image}} />
+              <span class = "income-details-block__text income-details-block__text--code">{{product.code}}</span>
+              <a class = "income-details-block__text income-details-block__text--name" href ="{{product.href}}">{{product.name}}</a>
+              <span class = "income-details-block__text income-details-block__text--price">{{product.price}}</span>
+              <span class = "income-details-block__text income-details-block__text--quantity">{{product.quantity}}</span>
+            </div>
+          {% endfor %}
+        </details>
+      {% endfor %}
+    </div>
+
+    <div class = "wrapper-btn-subscribe-income">
+      {% if isLogged %}
+        {% if not isNewsletter %}
+          <button id="btnSubscribeIncome" class="btn-new btn-new--success btn-new--inline">
+            Подписаться на новости
+          </button>
+        {% endif %}
+      {% else %}
+        <button id="btnSubscribeWishlist" class="btn-new btn-new--success btn-new--inline">
+          Подписаться на новости
+        </button>
+      {% endif %}
+    </div>
+  </div>
 </div>
 
-<script src="catalog/view/theme/{{ mytemplate }}/js/income.js"></script>
+<script>
+window.addEventListener('load', () => {
+  const btnSubscribeIncome = document.getElementById('btnSubscribeIncome');
+
+  if (!btnSubscribeIncome) return;
+  const onSubscribe = async () => {
+    try {
+      await fetch('index.php?route=information/expected_income/newsletter');
+      btnSubscribeIncome.remove();
+      window.uiService.popup
+        .setHeader('Информация')
+        .setBody('Вы успешно подписались на новости!')
+        .hideFooter()
+        .open();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  btnSubscribeIncome.addEventListener('click', onSubscribe);
+});
+</script>
+
 {{ footer }}

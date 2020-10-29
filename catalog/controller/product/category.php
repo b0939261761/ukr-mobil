@@ -9,57 +9,71 @@ class ControllerProductCategory extends Ego\Controllers\BaseController {
     return $pagination->render();
   }
 
+  private function getCategory($category_id) {
+    $sql = "
+      SELECT
+        cd.header_h1,
+        meta_title,
+        meta_description,
+        cd.description
+      FROM oc_category c
+      LEFT JOIN oc_category_description cd ON cd.category_id = c.category_id
+      WHERE c.category_id = {$category_id} AND cd.language_id = 2 AND c.status = 1
+    ";
+    return $this->db->query($sql)->row;
+  }
+
   private function getProducts($data) {
     return (new \Ego\Providers\ProductFilterProvider($this->registry))->filter($data);
   }
 
-  private function getBreadcrumbs($categories) {
+  private function getBreadcrumbs() {
     $breadcrumbs = [];
     $path = [];
-    foreach ($categories as $category) {
+    foreach ($this->request->request['categories'] as $category) {
       $path[] = $category['category_id'];
-      $breadcrumbs[] = [
-        'text' => $category['name'],
-        'href' => $this->url->link('product/category', ['path' => implode('_', $path)])
-      ];
+      $breadcrumb = ['text' => $category['name']];
+
+      if ((int)$category['category_id'] != $this->request->request['category']) {
+        $breadcrumb['link'] = $this->url->link('product/category', ['path' => implode('_', $path)]);
+      }
+
+      $breadcrumbs[] = $breadcrumb;
     }
     return $breadcrumbs;
   }
 
   private function getSEO($category) {
     $categoryNameList = array_map(function($item) { return $item['name']; }, $this->request->request['categories']);
-    $headingTitleDef = implode(' : ', $categoryNameList);
+    $headingH1Def = implode(' : ', $categoryNameList);
 
     $filterText = '';
     if (!empty($this->request->request['filters'])){
       $filterNameList = array_map(function($item) { return $item['name']; }, $this->request->request['filters']);
       $filterText = implode(' , ', $filterNameList);
-      $headingTitleDef .= " : {$filterText}";
+      $headingH1Def .= " : {$filterText}";
     }
 
-    $headingTitle = empty($category['header_h1'])
-      ? $headingTitleDef
+    $headingH1 = empty($category['header_h1'])
+      ? $headingH1Def
       : str_replace('%filter%', $filterText, $category['header_h1']);
 
     $title = empty($category['meta_title'])
-      ? "{$headingTitleDef} - купить в Черновцах, Ровно, Украине в интернет-магазине UKRMobil"
+      ? "{$headingH1Def} - купить в Черновцах, Ровно, Украине в интернет-магазине UKRMobil"
       : str_replace('%filter%', $filterText, $category['meta_title']);
 
     $description = empty($category['meta_description'])
-      ? "{$headingTitleDef} ✅ UKRMobil ✅ Фиксированные цены ✅ Гарантия ✅ Доставка по всей Украине"
+      ? "{$headingH1Def} ✅ UKRMobil ✅ Фиксированные цены ✅ Гарантия ✅ Доставка по всей Украине"
       : str_replace('%filter%', $filterText, $category['meta_description']);
 
-
     return [
-      'headingTitle' => $headingTitle,
+      'headingH1' => $headingH1,
       'title' => $title,
 		  'description' => $description
     ];
   }
 
   public function index() {
-    $this->load->model('catalog/category');
-
     $data['queryUrl'] = [
       'route' => $this->request->get['route'],
       'search' => $this->request->get['search'] ?? '',
@@ -72,19 +86,19 @@ class ControllerProductCategory extends Ego\Controllers\BaseController {
     $filters = $this->request->request['filters'];
     foreach ($filters as $filter) $data['queryUrl'][$filter['key']] = $filter['value'];
 
-    $category = $this->model_catalog_category->getCategory($data['queryUrl']['category']);
+    $category = $this->getCategory($data['queryUrl']['category']);
     if (!$category) $this->response->redirect($this->url->link('error/not_found'));
 
     $seo = $this->getSEO($category);
+    $data['headingH1'] = $seo['headingH1'];
     $this->document->setTitle($seo['title']);
     $this->document->setDescription($seo['description']);
     if (count($filters) > 2) $this->document->addMeta(['name' => 'robots', 'content' => 'noindex, nofollow']);
-    $data['headingTitle'] = $seo['headingTitle'];
 
     $products = $this->getProducts($data['queryUrl']);
     $data['products'] = $products['items'];
-    $data['breadcrumbs'] = $this->getBreadcrumbs($this->request->request['categories']);
-    $data['categoryDescription'] = html_entity_decode($category['description']);
+    $data['breadcrumbs'] = $this->getBreadcrumbs();
+    $data['categoryDescription'] = $data['queryUrl']['page'] == 1 ? html_entity_decode($category['description']) : '';
     $data['productFilter'] = $this->load->controller('product/filter');
     $data['productCategories'] = $this->load->controller('product/categories');
     $data['pagination'] = $this->getPagination($products['pagination']);

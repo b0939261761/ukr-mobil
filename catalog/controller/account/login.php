@@ -140,14 +140,14 @@ class ControllerAccountLogin extends BaseController {
       $data['success'] = '';
     }
 
-    $data['email'] = isset($this->request->post['email']) 
+    $data['email'] = isset($this->request->post['email'])
       ? $this->request->post['email']
       : '';
 
-    $data['password'] = isset($this->request->post['password']) 
+    $data['password'] = isset($this->request->post['password'])
       ? $this->request->post['password']
       : '';
-    
+
 
     // //region Prepare Data
     // $data['mytemplate'] = $this->config->get('theme_default_directory');

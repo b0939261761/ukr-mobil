@@ -36,7 +36,8 @@ class ControllerCheckoutCart extends BaseController {
       }
     }
 
-    $this->document->setTitle('Оформление заказа');
+    $data['headingH1'] = 'Оформление заказа';
+    $this->document->setTitle($data['headingH1']);
     $this->document->addMeta(['name' => 'robots', 'content' => 'noindex, nofollow']);
 
     $data['firstName'] = $this->customer->getFirstName();
