@@ -12,20 +12,7 @@ class ControllerExtensionModuleStgHelper extends Controller {
 	public function __construct($registry) {
 		parent::__construct($registry);
 
-		if (version_compare(PHP_VERSION, '7.2') >= 0) {
-			$php_v = '72_73';
-		} elseif (version_compare(PHP_VERSION, '7.1') >= 0) {
-			$php_v = '71';
-		} elseif (version_compare(PHP_VERSION, '5.6.0') >= 0) {
-			$php_v = '56_70';
-		} elseif (version_compare(PHP_VERSION, '5.4.0') >= 0) {
-			$php_v = '54_56';
-		} else {
-			echo "Sorry! Version for PHP 5.3 Not Supported!<br>Please contact to author!";
-			exit;
-		}
-
-		require_once DIR_SYSTEM . 'library/seo_tags_generator/seo_tags_generator_' . $php_v . '.php';
+		require_once DIR_SYSTEM . 'library/seo_tags_generator/seo_tags_generator.php';
 
 		$this->stg = new SeoTagsGenerator();
 		$this->stg->setLicence($this->config->get('seo_tags_generator_licence'));
@@ -286,7 +273,7 @@ class ControllerExtensionModuleStgHelper extends Controller {
 		if ($this->isFollowedVar('original_text', $formulas_array)) {
 			$var_values['original_text'] = $this->stg->parse(html_entity_decode(html_entity_decode($category_info['description'], ENT_QUOTES, 'UTF-8'), ENT_QUOTES, 'UTF-8'), $var_values);
 		}
-		
+
 		// Борьба с багом со скобками при использовании функций
 		if (false !== strpos($var_values['category_name'], '(')) {
 			$var_values['category_name'] = str_replace(array('(', ')'), array('left_bracket', 'right_bracket'), $var_values['category_name']);
@@ -730,16 +717,16 @@ class ControllerExtensionModuleStgHelper extends Controller {
 		if ($this->isFollowedVar('original_text', $formulas_array)) {
 			$var_values['original_text'] = $this->stg->parse(html_entity_decode(html_entity_decode($product_info['description'], ENT_QUOTES, 'UTF-8'), ENT_QUOTES, 'UTF-8'), $var_values);
 		}
-		
+
 		// Борьба с багом со скобками при использовании функций
 		if (false !== strpos($var_values['product_name'], '(')) {
 			$var_values['product_name'] = str_replace(array('(', ')'), array('left_bracket', 'right_bracket'), $var_values['product_name']);
 		}
-		
+
 		if (false !== strpos($var_values['model'], '(')) {
 			$var_values['model'] = str_replace(array('(', ')'), array('left_bracket', 'right_bracket'), $var_values['model']);
 		}
-		
+
 		if (false !== strpos($var_values['sku'], '(')) {
 			$var_values['sku'] = str_replace(array('(', ')'), array('left_bracket', 'right_bracket'), $var_values['sku']);
 		}
@@ -971,7 +958,7 @@ class ControllerExtensionModuleStgHelper extends Controller {
 		if (!isset($manufacturer_info['meta_keyword'])) {
 			$manufacturer_info['meta_keyword'] = '';
 		}
-		
+
 		// Борьба с багом со скобками при использовании функций
 		if (false !== strpos($var_values['manufacturer_name'], '(')) {
 			$var_values['manufacturer_name'] = str_replace(array('(', ')'), array('left_bracket', 'right_bracket'), $var_values['manufacturer_name']);
@@ -1120,10 +1107,10 @@ class ControllerExtensionModuleStgHelper extends Controller {
 	private function cleanup($string) {
 		$string = strip_tags($string); // от Лайтшоп
 		$string = $this->escapeBugParentheses($string);
-		
+
 		return $string;
 	}
-	
+
 	private function escapeBugParentheses($string) {
 		$string = trim(preg_replace(array('/\s+/', '/\s\./', '/\"/'), array(' ', '.', '&quot;') , $string)); // Убрать двойные пробелы - некоторые криво вписывают названия товаров и формулы
 		$string = str_replace(array('left_bracket', 'right_bracket'), array('(', ')') , $string); // Борьба с багом со скобками при использовании функций

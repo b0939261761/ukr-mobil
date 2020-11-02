@@ -3,7 +3,7 @@ class ControllerInformationNews extends Controller {
   public function index() {
     $sql = "
       SELECT
-        epc.epc_id AS id,
+        ep.ep_id AS id,
         epc.epc_title AS title,
         CONCAT('/image/', ep_preview_image) AS image
       FROM ego_post ep
@@ -26,6 +26,8 @@ class ControllerInformationNews extends Controller {
   }
 
   public function read() {
+    $newsId = $this->request->get['news_id'] ?? 0;
+
     $sql = "
       SELECT
         epc.epc_title AS title,
@@ -33,7 +35,7 @@ class ControllerInformationNews extends Controller {
         CONCAT('/image/', ep_preview_image) AS image
       FROM ego_post_content epc
       LEFT JOIN ego_post ep ON ep.ep_id = epc.epc_post
-      WHERE epc.epc_id = 115 AND epc.epc_language = 2
+      WHERE epc.epc_post = {$newsId} AND epc.epc_language = 2
       LIMIT 1;
     ";
     $post = $this->db->query($sql)->row;

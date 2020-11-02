@@ -1,4 +1,4 @@
-<?php
+<?
 namespace Ego\Providers;
 
 class ProductFilterProvider {

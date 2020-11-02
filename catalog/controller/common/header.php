@@ -1,18 +1,12 @@
-<?php
-// use Ego\Controllers\BaseController;
+<?
 class ControllerCommonHeader extends Controller {
   public function index() {
-    $server = $this->config->get('config_' . $this->request->server['HTTPS'] ? 'ssl' : 'url');
-
-    // if (is_file(DIR_IMAGE . $this->config->get('config_icon'))) {
-    //   $this->document->addLink("{$server}image/{$this->config->get('config_icon')}", 'icon');
-    // }
+    $data['base'] = $this->config->get('config_' . ($this->request->server['HTTPS'] ? 'ssl' : 'url'));
 
     $uri = substr(explode('?', $this->request->server['REQUEST_URI'], 2)[0], 1);
-    $this->document->addLink("{$server}{$uri}", 'canonical');
+    $this->document->addLink("{$data['base']}{$uri}", 'canonical');
 
     $data['title'] = $this->document->getTitle();
-    $data['base'] = $server;
     $data['description'] = $this->document->getDescription();
     $data['keywords'] = $this->document->getKeywords();
     $data['metaList'] = $this->document->getMetaList();
@@ -22,12 +16,8 @@ class ControllerCommonHeader extends Controller {
     $data['styles'] = $this->document->getStyles();
     $data['scripts'] = $this->document->getScripts('header');
     $data['name'] = $this->config->get('config_name');
-    $data['logo'] = "{$server}/image/{$this->config->get('config_logo')}";
+    $data['logo'] = "{$data['base']}/image/{$this->config->get('config_logo')}";
 
-    // $this->load->language('common/header');
-
-    // $data['customerName'] = '';
-    // $data['balance'] = '';
     $data['isLogged'] = $this->customer->isLogged();
 
     if ($data['isLogged']) {
@@ -44,21 +34,10 @@ class ControllerCommonHeader extends Controller {
     $data['accountProfile'] = "{$this->url->link('account/account')}#profile";
     $data['accountTerms'] = "{$this->url->link('account/account')}#terms";
 
-    // $data['language'] = $this->load->controller('common/language');
-    // $data['currency'] = $this->load->controller('common/currency');
     $data['search'] = $this->load->controller('common/search');
     $data['cart'] = $this->load->controller('common/cart');
     $data['headerMenu'] = $this->load->controller('common/header_menu');
     $data['headerCategory'] = $this->load->controller('common/header_category');
-
-    // $type = "module";
-    // $this->load->model('setting/module');
-    // $result = $this->model_setting_module->getModule($type);
-    // foreach ($result as $result) {
-    //   if ($result['code'] === "blogger") {
-    //     $data['blog_enable'] = 1;
-    //   }
-    // }
 
     $usd = (new \Ego\Models\Currency())->get('UAH', true);
     $data['rate'] = number_format($usd->getValue() ?? 0, 2);

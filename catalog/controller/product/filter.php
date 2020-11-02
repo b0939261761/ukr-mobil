@@ -1,7 +1,5 @@
-<?php
-use Ego\Controllers\BaseController;
-
-class ControllerProductFilter extends BaseController {
+<?
+class ControllerProductFilter extends Controller {
   public function index() {
     $data['available'] = $this->request->get['available'] ?? null;
     $data['filters'] = $this->getFilters();

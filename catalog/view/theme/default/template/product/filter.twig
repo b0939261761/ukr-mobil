@@ -8,7 +8,7 @@
 				<option value>--Выберите значение--</option>
 				{% for value in item.values %}
 					<option
-            data-url="{{ value.link }}"
+            href="{{ value.link }}"
             value="{{ value.id }}"
             {{ value.selected }}
           >

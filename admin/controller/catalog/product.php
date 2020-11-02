@@ -713,12 +713,12 @@ class ControllerCatalogProduct extends Controller {
 		$this->load->model('setting/store');
 
 		$data['stores'] = array();
-		
+
 		$data['stores'][] = array(
 			'store_id' => 0,
 			'name'     => $this->language->get('text_default')
 		);
-		
+
 		$stores = $this->model_setting_store->getStores();
 
 		foreach ($stores as $store) {
@@ -935,7 +935,7 @@ if (isset($this->request->post['main_category_id'])) {
             } else {
                 $data['main_category_id'] = 0;
             }
-			
+
 		$data['product_categories'] = array();
 
 		foreach ($categories as $category_id) {
@@ -1096,7 +1096,7 @@ if (isset($this->request->post['main_category_id'])) {
 				'date_end'          => ($product_special['date_end'] != '0000-00-00') ? $product_special['date_end'] :  ''
 			);
 		}
-		
+
 		// Image
 		if (isset($this->request->post['image'])) {
 			$data['image'] = $this->request->post['image'];
@@ -1253,7 +1253,7 @@ if (isset($this->request->post['main_category_id'])) {
 		$this->load->model('design/layout');
 
 		$data['layouts'] = $this->model_design_layout->getLayouts();
-		
+
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['footer'] = $this->load->controller('common/footer');
@@ -1270,32 +1270,24 @@ if (isset($this->request->post['main_category_id'])) {
 			if ((utf8_strlen($value['name']) < 1) || (utf8_strlen($value['name']) > 255)) {
 				$this->error['name'][$language_id] = $this->language->get('error_name');
 			}
-
-			if ((utf8_strlen($value['meta_title']) < 1) || (utf8_strlen($value['meta_title']) > 255)) {
-				$this->error['meta_title'][$language_id] = $this->language->get('error_meta_title');
-			}
-		}
-
-		if ((utf8_strlen($this->request->post['model']) < 1) || (utf8_strlen($this->request->post['model']) > 64)) {
-			$this->error['model'] = $this->language->get('error_model');
 		}
 
 		if ($this->request->post['product_seo_url']) {
 			$this->load->model('design/seo_url');
-			
+
 			foreach ($this->request->post['product_seo_url'] as $store_id => $language) {
 				foreach ($language as $language_id => $keyword) {
 					if (!empty($keyword)) {
 						if (count(array_keys($language, $keyword)) > 1) {
 							$this->error['keyword'][$store_id][$language_id] = $this->language->get('error_unique');
-						}						
-						
+						}
+
 						$seo_urls = $this->model_design_seo_url->getSeoUrlsByKeyword($keyword);
-						
+
 						foreach ($seo_urls as $seo_url) {
 							if (($seo_url['store_id'] == $store_id) && (!isset($this->request->get['product_id']) || (($seo_url['query'] != 'product_id=' . $this->request->get['product_id'])))) {
 								$this->error['keyword'][$store_id][$language_id] = $this->language->get('error_keyword');
-								
+
 								break;
 							}
 						}

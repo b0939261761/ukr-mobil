@@ -34,7 +34,7 @@ class ControllerProductCategory extends Ego\Controllers\BaseController {
       $path[] = $category['category_id'];
       $breadcrumb = ['text' => $category['name']];
 
-      if ((int)$category['category_id'] != $this->request->request['category']) {
+      if ($category['category_id'] != $this->request->request['category']) {
         $breadcrumb['link'] = $this->url->link('product/category', ['path' => implode('_', $path)]);
       }
 
@@ -74,6 +74,10 @@ class ControllerProductCategory extends Ego\Controllers\BaseController {
   }
 
   public function index() {
+
+    file_put_contents('./catalog/controller/product/__LOG__.json', "-----------\n" . json_encode($this->request)."\n\n", FILE_APPEND);
+
+
     $data['queryUrl'] = [
       'route' => $this->request->get['route'],
       'search' => $this->request->get['search'] ?? '',

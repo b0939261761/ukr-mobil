@@ -8,7 +8,7 @@ class ControllerCommonHome extends Controller {
     $data['footer'] = $this->load->controller('common/footer');
     $data['module_product_new'] = $this->load->controller('extension/module/ego_product_new');
     $data['module_product_stocks'] = $this->load->controller('extension/module/ego_product_stocks');
-    $data['module_news'] = $this->load->controller('extension/module/ego_news');
+    $data['news'] = $this->load->controller('home/news');
     $this->response->setOutput($this->load->view('common/home', $data));
   }
 }

@@ -1,3 +1,5 @@
+
+<style>
 body .module-ego-news {
   padding-top: 30px;
 }
@@ -70,5 +72,45 @@ body .module-ego-news .content .post-item a .date {
     margin-bottom: 10px;
   }
 }
+</style>
 
-/*# sourceMappingURL=module-news.css.map */
+<div id="slideshow-product-new-news" class="module-ego-news">
+  <div class="carousel-wrap">
+    <div class="nav prev"></div>
+    <div class="nav next"></div>
+    <div class="owl-carousel content">
+      {% for item in news %}
+        <div class="post-item">
+          <a href="{{ item.url }}">
+            <div
+                class="preview-image"
+                style="background-image: url({{ item.image }})"
+            >
+              <div class="description">{{ item.title }}</div>
+            </div>
+            <div class="date">{{ item.date }}</div>
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<script>
+window.addEventListener('load', () => {
+  const elementRef = jQuery('#slideshow-product-new-news');
+  const owl = elementRef.find('.content').owlCarousel({
+    items: 4,
+    loop: true,
+    dots: true,
+    responsive: {
+      0: { items: 1 },
+      768: { items: 2 },
+      1024: { items: 4 }
+    }
+  });
+
+  elementRef.find('.nav.prev').click(() => owl.trigger('prev.owl.carousel'));
+  elementRef.find('.nav.next').click(() => owl.trigger('next.owl.carousel'));
+});
+</script>

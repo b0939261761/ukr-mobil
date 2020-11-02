@@ -26,6 +26,7 @@ class ControllerCommonSearch extends Controller {
     $sql = "
       SELECT
         aa.*,
+        CONCAT(cp.path_id, '_', aa.category_id) AS path,
         cd.name AS categoryName0,
         IF(aa.image0 = '',
         COALESCE(
@@ -98,11 +99,7 @@ class ControllerCommonSearch extends Controller {
     $data = $this->db->query($sql)->rows;
 
     foreach ($data as &$item) {
-      $categoryPath = [
-        'path' => $this->getCatagories($item['category_id']),
-        'search' => $search
-      ];
-
+      $categoryPath = ['path' => $item['path'], 'search' => $search];
       $item['categoryUrl'] = $this->url->link('product/search', $categoryPath);
       $item['productUrl'] = $this->url->link('product/product', ['product_id' => $item['product_id']]);
       $item['productImage'] = $this->model_tool_image->resize($item['image'], $imageWidth, $imageHeight);
@@ -116,17 +113,5 @@ class ControllerCommonSearch extends Controller {
 
     $this->response->addHeader('Content-Type: application/json');
     $this->response->setOutput(json_encode([ 'data' => $data ]));
-  }
-
-  private function getCatagories($categoryId) {
-    $sql = "
-      SELECT c.category_id AS id FROM oc_category_path cp
-      LEFT JOIN oc_category c ON c.category_id = cp.path_id
-      WHERE cp.category_id = {$categoryId} AND c.status = 1
-      ORDER BY level DESC;
-    ";
-
-    $categories = array_map(function($item) { return $item['id']; }, $this->db->query($sql)->rows);
-    return implode('_', $categories);
   }
 }
