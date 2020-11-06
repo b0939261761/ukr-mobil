@@ -171,26 +171,28 @@ class ControllerStartupSeoPro extends Controller {
     $route = $data['route'];
     unset($data['route']);
 
-    switch ($route) {
-      case 'product/search':
-        $isFilters = true;
+    // switch ($route) {
+    //   case 'product/search':
+    //     $isFilters = true;
+    //     break;
 
-      case 'product/category':
-        if (isset($data['path'])) {
-          $isFilters = true;
-          preg_match('/(?:_|)(\d+)$/', $data['path'], $categories);
-          $data['path'] = $this->getPathByCategory($categories[1]);
-          if (!$data['path']) return $link;
-        }
-        break;
+    //   case 'product/category':
+    //     $isFilters = true;
+        // if (isset($data['path'])) {
+        //   preg_match('/(?:_|)(\d+)$/', $data['path'], $categories);
+        //   $data['path'] = $this->getPathByCategory($categories[1]);
+        //   if (!$data['path']) return $link;
+        // }
+        // break;
 
-      case 'information/information/agree':
-      case 'product/filter/models':
-      case 'checkout/cart/remove':
-      case 'common/cart/info':
-        return $link;
-    }
+      // case 'information/information/agree':
+      // case 'product/filter/models':
+      // case 'checkout/cart/remove':
+      // case 'common/cart/info':
+      //   return $link;
+    // }
 
+    if (in_array($route, ['product/category', 'product/search'])) $isFilters = true;
     $link = "{$host}index.php?route={$route}";
 
     if (count($data)) $link .= '&' . http_build_query($data);
@@ -252,45 +254,45 @@ class ControllerStartupSeoPro extends Controller {
     return $seo_url;
   }
 
-  private function getPathByCategory($category_id) {
-    $category_id = (int)$category_id;
-    if ($category_id < 1) return false;
+  // private function getPathByCategory($category_id) {
+  //   $category_id = (int)$category_id;
+  //   if ($category_id < 1) return false;
 
-    static $path = null;
+  //   static $path = null;
 
-    if (!isset($path)) {
-      $path = $this->cache->get('category.seopath');
-      if (!isset($path)) $path = [];
-    }
+  //   if (!isset($path)) {
+  //     $path = $this->cache->get('category.seopath');
+  //     if (!isset($path)) $path = [];
+  //   }
 
-    if (!isset($path[$category_id])) {
-      $max_level = 10;
+  //   if (!isset($path[$category_id])) {
+  //     $max_level = 10;
 
-      $sql = "SELECT CONCAT_WS('_'";
-      for ($i = $max_level-1; $i >= 0; --$i) {
-        $sql .= ",t$i.category_id";
-      }
-      $sql .= ") AS path FROM " . DB_PREFIX . "category t0";
-      for ($i = 1; $i < $max_level; ++$i) {
-        $sql .= " LEFT JOIN " . DB_PREFIX . "category t$i ON (t$i.category_id = t" . ($i-1) . ".parent_id)";
-      }
-      $sql .= " WHERE t0.category_id = '" . $category_id . "'";
+  //     $sql = "SELECT CONCAT_WS('_'";
+  //     for ($i = $max_level-1; $i >= 0; --$i) {
+  //       $sql .= ",t$i.category_id";
+  //     }
+  //     $sql .= ") AS path FROM " . DB_PREFIX . "category t0";
+  //     for ($i = 1; $i < $max_level; ++$i) {
+  //       $sql .= " LEFT JOIN " . DB_PREFIX . "category t$i ON (t$i.category_id = t" . ($i-1) . ".parent_id)";
+  //     }
+  //     $sql .= " WHERE t0.category_id = '" . $category_id . "'";
 
-      $query = $this->db->query($sql);
+  //     $query = $this->db->query($sql);
 
-      $path[$category_id] = $query->num_rows ? $query->row['path'] : false;
+  //     $path[$category_id] = $query->num_rows ? $query->row['path'] : false;
 
-      $this->cache->set('category.seopath', $path);
-    }
+  //     $this->cache->set('category.seopath', $path);
+  //   }
 
-    return $path[$category_id];
-  }
+  //   return $path[$category_id];
+  // }
 
   private function validate() {
     if ($this->request->get['route'] == 'error/not_found') return;
     $uri = str_replace('&amp;', '&', ltrim($this->request->server['REQUEST_URI'], '/'));
 
-    if ($uri =='sitemap.xml') return ($this->request->get['route'] = 'extension/feed/google_sitemap');
+    // if ($uri =='sitemap.xml') return ($this->request->get['route'] = 'extension/feed/google_sitemap');
 
     $url = $this->config->get('config_' . ($_SERVER['HTTPS'] ? 'ssl' : 'url')) . $uri;
     $queries = array_filter($this->request->get, function($k) {return $k != 'route';}, ARRAY_FILTER_USE_KEY);

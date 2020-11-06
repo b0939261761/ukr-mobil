@@ -222,39 +222,7 @@ var voucher = {
       }
     });
   }
-}
-
-/* Agree to Terms */
-$(document).delegate('.agree', 'click', function(e) {
-  e.preventDefault();
-
-  $('#modal-agree').remove();
-
-  var element = this;
-
-  $.ajax({
-    url: $(element).attr('href'),
-    type: 'get',
-    dataType: 'html',
-    success: function(data) {
-      html  = '<div id="modal-agree" class="modal">';
-      html += '  <div class="modal-dialog">';
-      html += '    <div class="modal-content">';
-      html += '      <div class="modal-header">';
-      html += '        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
-      html += '        <h4 class="modal-title">' + $(element).text() + '</h4>';
-      html += '      </div>';
-      html += '      <div class="modal-body">' + data + '</div>';
-      html += '    </div>';
-      html += '  </div>';
-      html += '</div>';
-
-      $('body').append(html);
-
-      $('#modal-agree').modal('show');
-    }
-  });
-});
+};
 
 // Autocomplete */
 (function($) {

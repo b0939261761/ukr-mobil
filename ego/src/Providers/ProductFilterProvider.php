@@ -215,7 +215,7 @@ class ProductFilterProvider {
         IF(image = '',
           COALESCE(
             (SELECT image FROM oc_product_image
-              WHERE product_id = a.product_id ORDER BY sort_order ASC LIMIT 1),
+              WHERE product_id = a.product_id ORDER BY sort_order LIMIT 1),
             'placeholder.png'
           ), image) AS image,
         (SELECT COUNT(1) AS cnt FROM oc_customer_wishlist

@@ -121,37 +121,27 @@
 <footer>
   <div id="footer">
     <div class="container">
-      <div class="row">
+      <a class="logo" href="{{ home }}">
+        <img src="{{ logo }}" title="{{ name }}" alt="{{ name }}" class="img-responsive" />
+      </a>
 
-        <div class="col-md-3">
-          <a
-              class="logo"
-              href="{{ home }}"
-          >
-            <img src="{{ logo }}"
-               title="{{ name }}"
-               alt="{{ name }}"
-               class="img-responsive"/>
-          </a>
+      {{ ego_newsletter }}
 
-          {{ ego_newsletter }}
-
-          <div class="socials">
-            <div class="item telegram">
-              <a href="https://t.me/ukrmobil" target="_blank"></a>
-            </div>
-
-            <div class="item facebook">
-              <a href="https://www.facebook.com/Ukrmobil1/" target="_blank"></a>
-            </div>
-
-            <div class="item instagram">
-              <a href="https://www.instagram.com/ukrmobil_cv/" target="_blank"></a>
-            </div>
-          </div>
+      <div class="socials">
+        <div class="item telegram">
+          <a href="https://t.me/ukrmobil" target="_blank"></a>
         </div>
 
+        <div class="item facebook">
+          <a href="https://www.facebook.com/Ukrmobil1/" target="_blank"></a>
+        </div>
+
+        <div class="item instagram">
+          <a href="https://www.instagram.com/ukrmobil_cv/" target="_blank"></a>
+        </div>
       </div>
+
+      <a href="{{ sitemap }}">Карта сайта</a>
     </div>
   </div>
 
@@ -173,7 +163,7 @@
 <link rel="stylesheet" href="/catalog/view/theme/default/js/libs/proxima/proxima.popup.min.css" />
 <link rel="stylesheet" href="/catalog/view/theme/default/stylesheet/egofoxlab/main.min.css?20201029" />
 <link rel="stylesheet" href="/catalog/view/theme/default/stylesheet/megnor/animate.min.css" />
-<link rel="stylesheet" href="/catalog/view/theme/default/stylesheet/stylesheet.min.css?20201029"/>
+<link rel="stylesheet" href="/catalog/view/theme/default/stylesheet/stylesheet.min.css?20201104"/>
 
 <script src="/ego/assets/js/egofoxlab/utils.js"></script>
 <script src="/ego/assets/js/egofoxlab/base.component.js"></script>
@@ -189,16 +179,14 @@
 <script>
   $(function () {
     window.uiService = { popup: (new EgoProximaPopup()) };
-
     var mainComponent = (new MainComponent({elementRef: $('body')}))
-      .isLogged('{{ is_logged }}' === 'true')
+      .isLogged({{ isLogged }})
       .init();
-
     var cCallback = (new CallbackComponent({elementRef: null})).init();
   });
 </script>
 
 <script src="/catalog/view/javascript/bootstrap/js/bootstrap.min.js"></script>
-<script src="/catalog/view/theme/default/js/main.min.js?20201029"></script>
+<script src="/catalog/view/theme/default/js/main.min.js?20201104"></script>
 </body>
 </html>

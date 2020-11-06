@@ -21,9 +21,28 @@
     {{ headingH1 }}
   </h1>
 
-  {% for category in categories %}
-    <a href="{{ category.link }}">{{ category.name }}</a><br>
-  {% endfor %}
+  <ul>
+    {% for category1 in categories %}
+    <li>
+      <a href="{{ category1.link }}">{{ category1.name }}</a>
+      {% if category1.children %}
+      <ul>
+        {% for category2 in category1.children %}
+        <li><a href="{{ category2.link }}">{{ category2.name }}</a>
+          {% if category2.children %}
+          <ul>
+            {% for category3 in category2.children %}
+            <li><a href="{{ category3.link }}">{{ category3.name }}</a></li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </li>
+    {% endfor %}
+  </ul>
 
   <div class="pagination-container">
     {{ pagination }}

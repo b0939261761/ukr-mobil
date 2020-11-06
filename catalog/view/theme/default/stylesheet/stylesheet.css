@@ -44,12 +44,6 @@ a:hover {
   text-decoration: none;
 }
 
-legend {
-  font-size: 18px;
-  padding: 7px 0px
-}
-
-
 label {
   font-size: 14px;
   font-weight: normal;
@@ -1559,46 +1553,12 @@ a:hover {
   font-weight: 500;
 }
 
-.single-blog .view-comment .name, .single-blog .view-comment .date, .single-blog .view-comment .col-sm-8, .single-blog .view-comment .col-sm-3 {
-  width: 100%;
-}
-
 .view-comment .date {
   color: #808080;
   font-size: 12px;
 }
 
-.single-blog h4 {
-  font-size: 16px;
-  font-weight: 500;
-  color: inherit;
-}
 
-.single-blog .view-comment .panel {
-  background-color: #f9f9f9;
-  padding: 15px !important;
-}
-
-.single-blog .blog-desc {
-  padding: 10px 0;
-}
-
-.single-blog .panel {
-  border: none;
-  box-shadow: none;
-}
-
-.single-blog .panel legend {
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 1.1px;
-  color: inherit;
-  border: none;
-}
-
-.single-blog .panel fieldset {
-  margin-top: 30px;
-}
 
 .view-blog {
   float: left;
@@ -1706,10 +1666,6 @@ a:hover {
   width: auto;
   text-align: left;
   margin-bottom: 5px;
-}
-
-.single-blog textarea.form-control {
-  height: auto;
 }
 
 .write-comment a {
@@ -3843,9 +3799,7 @@ footer hr {
   border-bottom: 1px solid #666;
 }
 
-footer a {
-  color: #484848;
-}
+
 
 #footer .column li a {
 
@@ -3858,13 +3812,6 @@ footer a {
   line-height: 25px;
 }
 
-/*#footer .column li a:hover {
-  background: url("../image/megnor/cat_arrow_hover.png") no-repeat scroll left center transparent;
-}*/
-
-footer a:hover {
-  color: #1fb7dd;
-}
 
 footer h5 {
   color: #3a3a3a;
@@ -5081,10 +5028,6 @@ h2.price {
   resize: vertical;
 }
 
-.form-group a {
-  color: #7c7c7c;
-}
-
 .well .btn-primary {
   color: #000;
   background: transparent;
@@ -5240,19 +5183,6 @@ textarea.form-control {
   padding-left: 5px;
 }
 
-.account-register.layout-2.left-col legend {
-  display: inline-block;
-  padding: 0 0 10px;
-  width: 100%;
-  margin-bottom: 20px;
-  font-size: 15px;
-  line-height: inherit;
-  color: #22272a;
-  border: 0;
-  border-bottom: 1px solid #e5e5e5;
-  float: left;
-  font-weight: bold;
-}
 
 .account-register.layout-2.left-col .buttons a {
   color: #7c7c7c;
@@ -6157,21 +6087,6 @@ textarea.form-control {
   margin-left: -27px;
 }
 
-.product-product.layout-2.left-col legend {
-  display: inline-block;
-  padding: 0 0 10px;
-  width: 100%;
-  margin-bottom: 20px;
-  font-size: 15px;
-  line-height: inherit;
-  color: #22272a;
-  border: 0;
-  border-bottom: 1px solid #e5e5e5;
-  float: left;
-  font-weight: bold;
-  margin-left: 5px;
-}
-
 .product-info .product-image .thumbnail:hover a:focus {
   border-color: #ebebeb;
 }
@@ -6785,36 +6700,6 @@ textarea.form-control {
   color: #1fb7dd;
 }
 
-/* Checkout Edit*/
-#account-edit #content h1 {
-  font-size: 15px;
-  font-weight: 700;
-  color: #000;
-  border-bottom: medium none;
-  padding-top: 0px;
-  bottom: 0;
-  margin-bottom: 10px;
-  margin-top: 11px;
-}
-
-#content legend {
-  display: inline-block;
-  padding: 0 0 10px;
-  width: 100%;
-  margin-bottom: 5px;
-  font-size: 18px;
-  line-height: inherit;
-  color: #000;
-  border: 0;
-  border-bottom: none;
-  float: left;
-  font-weight: normal;
-  margin-top: 10px;
-}
-
-.single-blog#content #add-comment {
-  padding: 0 !important;
-}
 
 /* layout-42 */
 .checkout-checkout.layout-2.left-col .col-sm-9 h1 {
@@ -6842,10 +6727,6 @@ textarea.form-control {
   border-color: 1px solid #252525;
   font-weight: bold;
   text-transform: uppercase;
-}
-
-.checkout-checkout .pull-right .agree {
-  color: #7c7c7c;
 }
 
 .checkout-checkout .alert-danger .close {
@@ -10823,6 +10704,10 @@ input[type="radio"] + label:empty:before {
 
 .checkbox-label--bold {
   font-weight: bold !important;
+}
+
+.checkbox-label--inline {
+  display: inline-flex !important;
 }
 
 /* ------------------- */

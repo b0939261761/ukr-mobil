@@ -5,7 +5,7 @@ use Ego\Providers\Validator;
 
 class ControllerExtensionModuleEgoNewsletter extends \Ego\Controllers\BaseController {
 
-	public function index($setting) {
+	public function index() {
 		return $this->load->view('extension/module/ego_newsletter');
 	}
 

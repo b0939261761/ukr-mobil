@@ -1,11 +1,13 @@
 .idea
-config.php
+/config.php
 /admin/config.php
 /system/storage
 /image
 /vendor
 /my_plugins
 /ego/views/cache
-.env
-robots.txt
-composer.phar
+/.env
+/robots.txt
+/composer.phar
+/sitemap.xml
+/sitemapimages.xml

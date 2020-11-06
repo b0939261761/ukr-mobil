@@ -74,10 +74,6 @@ class ControllerProductCategory extends Ego\Controllers\BaseController {
   }
 
   public function index() {
-
-    file_put_contents('./catalog/controller/product/__LOG__.json', "-----------\n" . json_encode($this->request)."\n\n", FILE_APPEND);
-
-
     $data['queryUrl'] = [
       'route' => $this->request->get['route'],
       'search' => $this->request->get['search'] ?? '',
@@ -102,7 +98,7 @@ class ControllerProductCategory extends Ego\Controllers\BaseController {
     $products = $this->getProducts($data['queryUrl']);
     $data['products'] = $products['items'];
     $data['breadcrumbs'] = $this->getBreadcrumbs();
-    $data['categoryDescription'] = $data['queryUrl']['page'] == 1 ? html_entity_decode($category['description']) : '';
+    $data['categoryDescription'] = $data['queryUrl']['page'] == 1 && empty($filters) ? html_entity_decode($category['description']) : '';
     $data['productFilter'] = $this->load->controller('product/filter');
     $data['productCategories'] = $this->load->controller('product/categories');
     $data['pagination'] = $this->getPagination($products['pagination']);

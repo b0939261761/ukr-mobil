@@ -1,12 +1,9 @@
-<?php
-
+<?
 use Ego\Controllers\BaseController;
 use Ego\Models\Stocks;
 use Ego\Providers\Util;
 
 class ControllerProductProduct extends BaseController {
-	private $error = array();
-
 	// Костыль что бы вернуть закешированное изображение
 	public function picture() {
 		$this->load->model('tool/image');
@@ -62,7 +59,7 @@ class ControllerProductProduct extends BaseController {
 					'color' => $value['color'],
 					'active' => $value['active'],
 					'available' => $value['available'],
-					'link' => $this->url->link('product/product', "product_id={$value['product_id_link']}")
+					'link' => $this->url->link('product/product', ['product_id' => $value['product_id_link']])
         ];
 			}
 

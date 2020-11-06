@@ -16,7 +16,7 @@ class ControllerCommonHeader extends Controller {
     $data['styles'] = $this->document->getStyles();
     $data['scripts'] = $this->document->getScripts('header');
     $data['name'] = $this->config->get('config_name');
-    $data['logo'] = "{$data['base']}/image/{$this->config->get('config_logo')}";
+    $data['logo'] = "/image/{$this->config->get('config_logo')}";
 
     $data['isLogged'] = $this->customer->isLogged();
 

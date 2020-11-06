@@ -63,13 +63,13 @@ class ProductToStock extends BaseModel {
 	public function getListByProduct(int $productId, bool $isStruct = null) {
 		$sql = "
 			SELECT
-			
+
 				opts.product_id,
 				opts.stock_id,
 				opts.quantity
-			
+
 			FROM oc_product_to_stock opts
-			
+
 			WHERE 1
 				  AND opts.product_id = :product_id
 
@@ -112,13 +112,13 @@ class ProductToStock extends BaseModel {
 	public function getByProductAndStock(int $productId, int $stockId, bool $isStruct = null) {
 		$sql = "
 			SELECT
-			
+
 				opts.product_id,
 				opts.stock_id,
 				opts.quantity
-			
+
 			FROM oc_product_to_stock opts
-			
+
 			WHERE 1
 				  AND opts.product_id = :product_id
 				  AND opts.stock_id = :stock_id
@@ -185,13 +185,13 @@ class ProductToStock extends BaseModel {
 	public function getCountByProductAndStock(int $productId, int $stockId, bool $isStruct = null) {
 		$sql = "
 			SELECT
-			
+
 				opts.product_id,
 				opts.stock_id,
 				opts.quantity
-			
+
 			FROM oc_product_to_stock opts
-			
+
 			WHERE 1
 				  AND opts.product_id = :product_id
 				  AND opts.stock_id = :stock_id
@@ -224,9 +224,9 @@ class ProductToStock extends BaseModel {
 			WHERE 1
 				  AND opts.product_id = :product_id
 				  AND opts.quantity >= :quantity
-			
+
 			ORDER BY opts.quantity ASC
-			
+
 			LIMIT 1
 			";
 
@@ -262,18 +262,18 @@ class ProductToStock extends BaseModel {
 
 		$sql = "
 			SELECT
-				
+
 				opts.*,
 			    GROUP_CONCAT(opts.product_id) AS products,
 				COUNT(1) AS cnt
-			
-			
+
+
 			FROM oc_product_to_stock opts
-			
+
 			WHERE opts.product_id IN ({$strProductIds})
 				AND opts.quantity >= :quantity
-			
-			GROUP BY opts.stock_id ASC
+
+			GROUP BY opts.stock_id
 			";
 
 		$dataQuery = $this->_getDb()->prepare($sql);
@@ -299,15 +299,15 @@ class ProductToStock extends BaseModel {
 
 		$sql = "
 			SELECT
-				
+
 				op.product_id,
 			    0 AS stock_id,
 				GROUP_CONCAT(op.product_id) AS products,
 				COUNT(1) AS cnt
-			
-			
+
+
 			FROM oc_product op
-			
+
 			WHERE op.product_id IN ({$strProductIds})
 				AND op.quantity >= :quantity
 			";

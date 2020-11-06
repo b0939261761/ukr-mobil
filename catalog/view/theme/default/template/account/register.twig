@@ -1,577 +1,331 @@
 {{ header }}
 
-<link rel="stylesheet" href="/catalog/view/theme/default/stylesheet/egofoxlab/account-register.css">
+<link rel="stylesheet" href="/catalog/view/theme/default/stylesheet/egofoxlab/account-register.min.css?20201102">
 
-<div
-	id="account-register"
-		class="container"
->
-	{% if error_warning %}
-		<div class="alert alert-danger alert-dismissible">
-			<i class="fa fa-exclamation-circle"></i> {{ error_warning }}</div>
-	{% endif %}
+<div id="account-register" class="container">
+  <div class="wrapper-breadcrumbs">
+    <ul class="breadcrumbs">
+      <li class="breadcrumbs__item">
+        <a href="/" class="breadcrumbs__link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+            <path d="M280.37 148.26L96 300.11V464a16 16 0 0 0 16 16l112.06-.29a16 16 0 0 0 15.92-16V368a16 16 0 0 1 16-16h64a16 16 0 0 1 16 16v95.64a16 16 0 0 0 16 16.05L464 480a16 16 0 0 0 16-16V300L295.67 148.26a12.19 12.19 0 0 0-15.3 0zM571.6 251.47L488 182.56V44.05a12 12 0 0 0-12-12h-56a12 12 0 0 0-12 12v72.61L318.47 43a48 48 0 0 0-61 0L4.34 251.47a12 12 0 0 0-1.6 16.9l25.5 31A12 12 0 0 0 45.15 301l235.22-193.74a12.19 12.19 0 0 1 15.3 0L530.9 301a12 12 0 0 0 16.9-1.6l25.5-31a12 12 0 0 0-1.7-16.93z"/>
+          </svg>
+        </a>
+      </li>
 
-	<div class="row">
-		<div
-      id="content"
-      style="float: none;"
-		>
-			<p>{{ text_account_already }}</p>
+      <li class="breadcrumbs__item">
+       {{ headingH1 }}
+      </li>
+    </ul>
+  </div>
 
-			<form
-        action="{{ action }}"
-        method="post"
-        enctype="multipart/form-data"
-        class="form-horizontal"
+  <h1 class="page-title">
+    {{ headingH1 }}
+  </h1>
+
+  <p>
+    Если Вы уже зарегистрированы, перейдите на страницу <a href="{{ linkLogin }}">авторизации</a>.
+  </p>
+
+  {% if error.warning %}
+    <div class="alert alert-danger alert-dismissible">
+      <i class="fa fa-exclamation-circle"></i> {{ error.warning }}
+    </div>
+  {% endif %}
+
+  <form
+    action="{{ action }}"
+    method="post"
+    enctype="multipart/form-data"
+    class="form-horizontal"
+  >
+    <fieldset id="account">
+      <legend class="section__title">Основные данные</legend>
+
+      <div class="form-group required">
+        <label
+          class="col-sm-2 control-label"
+          for="input-firstname"
+        >
+          Имя
+        </label>
+        <div class="col-sm-10">
+          <input
+            name="firstname"
+            value="{{ firstname }}"
+            placeholder="Иван"
+            id="input-firstname"
+            class="form-control restrict-language"
+          />
+          {% if error.firstName %}
+            <div class="text-danger">{{ error.firstName }}</div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="form-group required">
+        <label
+          class="col-sm-2 control-label"
+          for="input-lastname"
+        >
+          Фамилия
+        </label>
+        <div class="col-sm-10">
+          <input
+            name="lastname"
+            value="{{ lastname }}"
+            placeholder="Иванов"
+            id="input-lastname"
+            class="form-control restrict-language"
+          />
+          {% if error.lastName %}
+            <div class="text-danger">{{ error.lastName }}</div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="form-group required">
+        <label
+          class="col-sm-2 control-label"
+          for="input-email"
+        >
+          E-Mail
+        </label>
+        <div class="col-sm-10">
+          <input
+            type="email"
+            name="email"
+            value="{{ email }}"
+            placeholder="user@example.coms"
+            id="input-email"
+            class="form-control"
+          />
+          {% if error.email %}
+            <div class="text-danger">{{ error.email }}</div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="form-group required">
+        <label
+          class="col-sm-2 control-label"
+          for="input-telephone"
+          >
+            Телефон
+          </label>
+        <div class="col-sm-10">
+          <input
+            name="telephone"
+            value="{{ telephone }}"
+            id="input-telephone"
+            class="form-control"
+          />
+          {% if error.telephone %}
+            <div class="text-danger">{{ error.telephone }}</div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label
+          for="region"
+          class="col-sm-2 control-label"
+        >
+          Область
+        </label>
+        <div class="col-sm-10">
+          <input
+            name="region"
+            id="region"
+            class="form-control restrict-language"
+            value="{{ region }}"
+            placeholder="Киевская"
+          />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label
+          for="city"
+          class="col-sm-2 control-label"
+        >
+          Город
+        </label>
+        <div class="col-sm-10">
+          <input
+            name="city"
+            id="city"
+            class="form-control restrict-language"
+            value="{{ city }}"
+            placeholder="Киев"
+          />
+        </div>
+      </div>
+
+      <div class="form-group control-label">
+        <label
+          for="warehouse"
+          class="col-sm-2 control-label"
+        >
+          Отделение
+        </label>
+        <div class="col-sm-10">
+          <input
+            name="warehouse"
+            id="warehouse"
+            class="form-control restrict-language"
+            value="{{ warehouse }}"
+            placeholder="Отделение №5"
+          />
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend class="section__title">Ваш пароль</legend>
+      <div class="form-group required">
+        <label
+          class="col-sm-2 control-label"
+          for="input-password"
+        >
+          Пароль
+        </label>
+        <div class="col-sm-10">
+          <input
+            type="password"
+            name="password"
+            value="{{ password }}"
+            id="input-password"
+            class="form-control"
+          />
+          {% if error.password %}
+            <div class="text-danger">{{ error.password }}</div>
+          {% endif %}
+        </div>
+      </div>
+      <div class="form-group required">
+        <label
+          class="col-sm-2 control-label"
+          for="input-confirm"
+        >
+          Подтверждение пароля
+        </label>
+        <div class="col-sm-10">
+          <input
+            type="password"
+            name="confirm"
+            value="{{ confirm }}"
+            id="input-confirm"
+            class="form-control"
+          />
+          {% if error.confirm %}
+            <div class="text-danger">{{ error.confirm }}</div>
+          {% endif %}
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend class="section__title">Подписаться на новости</legend>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Подписаться на новости</label>
+        <div class="col-sm-10">
+          <input
+            id="newsletter_yes"
+            type="radio"
+            name="newsletter"
+            value="1"
+            checked
+          />
+          <label for="newsletter_yes" class="radio-inline">Да</label>
+
+          <input
+            id="newsletter_no"
+            type="radio"
+            name="newsletter"
+            value="0"
+          />
+          <label for="newsletter_no" class="radio-inline">Нет</label>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset style="margin-bottom: 20px;">
+      <legend class="section__title">Защита от роботов</legend>
+      <div>
+        {{ captcha }}
+        {% if error.captcha %}
+          <div class="text-danger">{{ error.captcha }}</div>
+        {% endif %}
+      </div>
+    </fieldset>
+
+    <div class="wrapper-agree">
+      <input type="checkbox" id="agree" class="checkbox hidden" name="agree" value="1" />
+      <label for="agree" class="checkbox-label">
+        <span>
+          Я прочитал
+            <a href="{{ linkAgree }}" target="_blank">
+              <b>Политика конфиденциальности</b>
+            </a>
+            и согласен с условиями безопасности и обработки персональных данных
+        </span>
+      </label>
+    </div>
+
+    <div class="wrapper-buttons">
+      <button class="btn-new btn-new--success btn-new--inline">Продолжить</button>
+      <button
+        type="button"
+        data-toggle="modal"
+        data-target="#modal-help-with-registration"
+        class="btn-new btn-new--success btn-new--inline"
       >
-        <fieldset id="account">
-					<legend>{{ text_your_details }}</legend>
+        Помощь с регистрацией
+      </button>
+    </div>
+  </form>
 
-					<div class="form-group required"
-						 style="display: {% if customer_groups|length > 1 %} block {% else %} none {% endif %};">
-						<label class="col-sm-2 control-label">{{ entry_customer_group }}</label>
-						<div class="col-sm-10">{% for customer_group in customer_groups %}
-								{% if customer_group.customer_group_id == customer_group_id %}
-									<div class="radio">
-                    <input
-                      id="customer_group_id"
-                      type="radio"
-											name="customer_group_id"
-											value="{{ customer_group.customer_group_id }}"
-											checked="checked"
-                    />
-                    <label for="customer_group_id">{{ customer_group.name }}</label>
-									</div>
-								{% else %}
-									<div class="radio">
-                    <input
-                      id="customer_group_id"
-                      type="radio"
-											name="customer_group_id"
-											value="{{ customer_group.customer_group_id }}"
-                    />
-										<label for="customer_group_id">{{ customer_group.name }}</label>
-									</div>
-								{% endif %}
-							{% endfor %}</div>
-					</div>
+  <div id="modal-help-with-registration" class="modal fade" role="dialog">
+    <div class="modal-dialog">
 
-					{#First Name#}
-					<div class="form-group required">
-						<label class="col-sm-2 control-label"
-							   for="input-firstname">{{ entry_firstname }}</label>
-						<div class="col-sm-10">
-							<input type="text"
-								   name="firstname"
-								   value="{{ firstname }}"
-								   placeholder="{{ entry_firstname }}"
-								   id="input-firstname"
-								   class="form-control restrict-language"/>
-							{% if error_firstname %}
-								<div class="text-danger">{{ error_firstname }}</div>
-							{% endif %} </div>
-					</div>
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="phones">
+            <div class="title">Свяжитесь с нами</div>
+            <div class="header">
+              <div class="image">
+                <div style="background-image: url('/ego/assets/img/icon-call.png');"></div>
+              </div>
+              <span>Телефоны:</span>
+            </div>
+            <div class="content">
+              <div class="item">+38 050 274 2790</div>
+              <div class="item">+38 095 765 1080</div>
+              <div class="item">+38 093 765 1080</div>
+              <div class="item">+38 068 765 1080</div>
+            </div>
+          </div>
 
-					{#Last Name#}
-					<div class="form-group required">
-						<label class="col-sm-2 control-label"
-							   for="input-lastname">{{ entry_lastname }}</label>
-						<div class="col-sm-10">
-							<input
-									type="text"
-									name="lastname"
-									value="{{ lastname }}"
-									placeholder="{{ entry_lastname }}"
-									id="input-lastname"
-									class="form-control restrict-language"
-							/>
-							{% if error_lastname %}
-								<div class="text-danger">{{ error_lastname }}</div>
-							{% endif %} </div>
-					</div>
+          {#Get callback#}
+          <div class="get-callback">
+            <button
+              class="btn"
+              data-dismiss="modal"
+              onclick="$('body').trigger('open.ego-callback');"
+            >
+              Заказать обратный звонок
+            </button>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn" data-dismiss="modal">Закрыть</button>
+        </div>
+      </div>
 
-					{#Email#}
-					<div class="form-group required">
-						<label class="col-sm-2 control-label"
-							   for="input-email">{{ entry_email }}</label>
-						<div class="col-sm-10">
-							<input type="email"
-								   name="email"
-								   value="{{ email }}"
-								   placeholder="{{ entry_email }}"
-								   id="input-email"
-								   class="form-control"/>
-							{% if error_email %}
-								<div class="text-danger">{{ error_email }}</div>
-							{% endif %} </div>
-					</div>
-
-					{#Telephone#}
-					<div class="form-group required">
-						<label class="col-sm-2 control-label"
-							   for="input-telephone">{{ entry_telephone }}</label>
-						<div class="col-sm-10">
-							<input type="tel"
-								   name="telephone"
-								   value="{{ telephone }}"
-								   placeholder="{{ entry_telephone }}"
-								   id="input-telephone"
-								   class="form-control"/>
-							{% if error_telephone %}
-								<div class="text-danger">{{ error_telephone }}</div>
-							{% endif %} </div>
-					</div>
-
-					{#Region#}
-					<div class="form-group">
-						<label
-								for="ego-form-field-region"
-								class="col-sm-2 control-label"
-						>
-							{{ text_region }}
-						</label>
-						<div class="col-sm-10">
-							<input
-									type="text"
-									name="ego-form-field-region"
-									id="ego-form-field-region"
-									class="form-control restrict-language"
-									value="{{ userInfo.region }}"
-									placeholder="{{ text_region }}"
-							>
-						</div>
-					</div>
-
-					{#City#}
-					<div class="form-group">
-						<label
-								for="ego-form-field-city"
-								class="col-sm-2 control-label"
-						>
-							{{ text_city }}
-						</label>
-						<div class="col-sm-10">
-							<input
-									type="text"
-									name="ego-form-field-city"
-									id="ego-form-field-city"
-									class="form-control restrict-language"
-									value="{{ userInfo.city }}"
-									placeholder="{{ text_city }}"
-							>
-						</div>
-					</div>
-
-					{#Warehouse#}
-					<div class="form-group control-label">
-						<label
-								for="ego-form-field-warehouse"
-								class="col-sm-2 control-label"
-						>
-							{{ text_warehouse }}
-						</label>
-						<div class="col-sm-10">
-							<input
-									type="text"
-									name="ego-form-field-warehouse"
-									id="ego-form-field-warehouse"
-									class="form-control restrict-language"
-									value="{{ userInfo.warehouse }}"
-									placeholder="{{ text_warehouse }}"
-							>
-						</div>
-					</div>
-
-					{% for custom_field in custom_fields %}
-						{% if custom_field.type == 'select' %}
-							<div id="custom-field{{ custom_field.custom_field_id }}"
-								 class="form-group custom-field"
-								 data-sort="{{ custom_field.sort_order }}">
-								<label class="col-sm-2 control-label"
-									   for="input-custom-field{{ custom_field.custom_field_id }}">{{ custom_field.name }}</label>
-								<div class="col-sm-10">
-									<select name="custom_field[{{ custom_field.location }}][{{ custom_field.custom_field_id }}]"
-											id="input-custom-field{{ custom_field.custom_field_id }}"
-											class="form-control">
-										<option value="">{{ text_select }}</option>
-
-
-										{% for custom_field_value in custom_field.custom_field_value %}
-											{% if register_custom_field[custom_field.location][custom_field.custom_field_id] and custom_field_value.custom_field_value_id == register_custom_field[custom_field.custom_field_id] %}
-												<option
-														value="{{ custom_field_value.custom_field_value_id }}"
-														selected="selected"
-												>
-													{{ custom_field_value.name }}
-												</option>
-											{% else %}
-												<option value="{{ custom_field_value.custom_field_value_id }}">
-													{{ custom_field_value.name }}
-												</option>
-											{% endif %}
-										{% endfor %}
-
-									</select>
-
-									{% if error_custom_field[custom_field.custom_field_id] %}
-										<div class="text-danger">{{ error_custom_field[custom_field.custom_field_id] }}</div>
-									{% endif %}
-								</div>
-							</div>
-						{% endif %}
-						{% if custom_field.type == 'radio' %}
-							<div id="custom-field{{ custom_field.custom_field_id }}"
-								 class="form-group custom-field"
-								 data-sort="{{ custom_field.sort_order }}">
-								<label class="col-sm-2 control-label">{{ custom_field.name }}</label>
-								<div class="col-sm-10">
-									<div> {% for custom_field_value in custom_field.custom_field_value %}
-											<div class="radio">{% if register_custom_field[custom_field.custom_field_id] and custom_field_value.custom_field_value_id == register_custom_field[custom_field.custom_field_id] %}
-                          <input
-                            type="radio"
-                            name="custom_field[{{ custom_field.location }}][{{ custom_field.custom_field_id }}]"
-                            value="{{ custom_field_value.custom_field_value_id }}"
-                            checked="checked"
-                          />
-													<label>{{ custom_field_value.name }}</label>
-												{% else %}
-													<label>
-														<input type="radio"
-															   name="custom_field[{{ custom_field.location }}][{{ custom_field.custom_field_id }}]"
-															   value="{{ custom_field_value.custom_field_value_id }}"/>
-														{{ custom_field_value.name }}</label>
-												{% endif %} </div>
-										{% endfor %}</div>
-									{% if error_custom_field[custom_field.custom_field_id] %}
-										<div class="text-danger">{{ error_custom_field[custom_field.custom_field_id] }}</div>
-									{% endif %}</div>
-							</div>
-						{% endif %}
-						{% if custom_field.type == 'checkbox' %}
-							<div id="custom-field{{ custom_field.custom_field_id }}"
-								 class="form-group custom-field"
-								 data-sort="{{ custom_field.sort_order }}">
-								<label class="col-sm-2 control-label">{{ custom_field.name }}</label>
-								<div class="col-sm-10">
-									<div> {% for custom_field_value in custom_field.custom_field_value %}
-											<div class="checkbox">{% if register_custom_field[custom_field.custom_field_id] and custom_field_value.custom_field_value_id in register_custom_field[custom_field.custom_field_id] %}
-													<label>
-														<input type="checkbox"
-															   name="custom_field[{{ custom_field.location }}][{{ custom_field.custom_field_id }}][]"
-															   value="{{ custom_field_value.custom_field_value_id }}"
-															   checked="checked"/>
-														{{ custom_field_value.name }}</label>
-												{% else %}
-													<label>
-														<input type="checkbox"
-															   name="custom_field[{{ custom_field.location }}][{{ custom_field.custom_field_id }}][]"
-															   value="{{ custom_field_value.custom_field_value_id }}"/>
-														{{ custom_field_value.name }}</label>
-												{% endif %} </div>
-										{% endfor %} </div>
-									{% if error_custom_field[custom_field.custom_field_id] %}
-										<div class="text-danger">{{ error_custom_field[custom_field.custom_field_id] }}</div>
-									{% endif %} </div>
-							</div>
-						{% endif %}
-						{% if custom_field.type == 'text' %}
-							<div id="custom-field{{ custom_field.custom_field_id }}"
-								 class="form-group custom-field"
-								 data-sort="{{ custom_field.sort_order }}">
-								<label class="col-sm-2 control-label"
-									   for="input-custom-field{{ custom_field.custom_field_id }}">{{ custom_field.name }}</label>
-								<div class="col-sm-10">
-									<input type="text"
-										   name="custom_field[{{ custom_field.location }}][{{ custom_field.custom_field_id }}]"
-										   value="{% if register_custom_field[custom_field.custom_field_id] %}{{ register_custom_field[custom_field.custom_field_id] }}{% else %}{{ custom_field.value }}{% endif %}"
-										   placeholder="{{ custom_field.name }}"
-										   id="input-custom-field{{ custom_field.custom_field_id }}"
-										   class="form-control"/>
-									{% if error_custom_field[custom_field.custom_field_id] %}
-										<div class="text-danger">{{ error_custom_field[custom_field.custom_field_id] }}</div>
-									{% endif %} </div>
-							</div>
-						{% endif %}
-						{% if custom_field.type == 'textarea' %}
-							<div id="custom-field{{ custom_field.custom_field_id }}"
-								 class="form-group custom-field"
-								 data-sort="{{ custom_field.sort_order }}">
-								<label class="col-sm-2 control-label"
-									   for="input-custom-field{{ custom_field.custom_field_id }}">{{ custom_field.name }}</label>
-								<div class="col-sm-10">
-									<textarea
-											name="custom_field[{{ custom_field.location }}][{{ custom_field.custom_field_id }}]"
-											rows="5"
-											placeholder="{{ custom_field.name }}"
-											id="input-custom-field{{ custom_field.custom_field_id }}"
-											class="form-control">{% if register_custom_field[custom_field.custom_field_id] %}{{ register_custom_field[custom_field.custom_field_id] }}{% else %}{{ custom_field.value }}{% endif %}</textarea>
-									{% if error_custom_field[custom_field.custom_field_id] %}
-										<div class="text-danger">{{ error_custom_field[custom_field.custom_field_id] }}</div>
-									{% endif %} </div>
-							</div>
-						{% endif %}
-						{% if custom_field.type == 'file' %}
-							<div id="custom-field{{ custom_field.custom_field_id }}"
-								 class="form-group custom-field"
-								 data-sort="{{ custom_field.sort_order }}">
-								<label class="col-sm-2 control-label">{{ custom_field.name }}</label>
-								<div class="col-sm-10">
-									<button type="button"
-											id="button-custom-field{{ custom_field.custom_field_id }}"
-											data-loading-text="{{ text_loading }}"
-											class="btn btn-default">
-										<i class="fa fa-upload"></i> {{ button_upload }}</button>
-									<input type="hidden"
-										   name="custom_field[{{ custom_field.location }}][{{ custom_field.custom_field_id }}]"
-										   value="{% if register_custom_field[custom_field.custom_field_id] %}  {{ register_custom_field[custom_field.custom_field_id] }} {% endif %}"/>
-									{% if error_custom_field[custom_field.custom_field_id] %}
-										<div class="text-danger">{{ error_custom_field[custom_field.custom_field_id] }}</div>
-									{% endif %}</div>
-							</div>
-						{% endif %}
-						{% if custom_field.type == 'date' %}
-							<div id="custom-field{{ custom_field.custom_field_id }}"
-								 class="form-group custom-field"
-								 data-sort="{{ custom_field.sort_order }}">
-								<label class="col-sm-2 control-label"
-									   for="input-custom-field{{ custom_field.custom_field_id }}">{{ custom_field.name }}</label>
-								<div class="col-sm-10">
-									<div class="input-group date">
-										<input type="text"
-											   name="custom_field[{{ custom_field.location }}][{{ custom_field.custom_field_id }}]"
-											   value="{% if register_custom_field[custom_field.custom_field_id] %}{{ register_custom_field[custom_field.custom_field_id] }}{% else %}{{ custom_field.value }}{% endif %}"
-											   placeholder="{{ custom_field.name }}"
-											   data-date-format="YYYY-MM-DD"
-											   id="input-custom-field{{ custom_field.custom_field_id }}"
-											   class="form-control"/>
-										<span class="input-group-btn">
-											<button type="button"
-													class="btn btn-default">
-												<i class="fa fa-calendar"></i>
-											</button>
-										</span>
-									</div>
-									{% if error_custom_field[custom_field.custom_field_id] %}
-										<div class="text-danger">{{ error_custom_field[custom_field.custom_field_id] }}</div>
-									{% endif %} </div>
-							</div>
-						{% endif %}
-						{% if custom_field.type == 'time' %}
-							<div id="custom-field{{ custom_field.custom_field_id }}"
-								 class="form-group custom-field"
-								 data-sort="{{ custom_field.sort_order }}">
-								<label class="col-sm-2 control-label"
-									   for="input-custom-field{{ custom_field.custom_field_id }}">{{ custom_field.name }}</label>
-								<div class="col-sm-10">
-									<div class="input-group time">
-										<input type="text"
-											   name="custom_field[{{ custom_field.location }}][{{ custom_field.custom_field_id }}]"
-											   value="{% if register_custom_field[custom_field.custom_field_id] %}{{ register_custom_field[custom_field.custom_field_id] }}{% else %}{{ custom_field.value }}{% endif %}"
-											   placeholder="{{ custom_field.name }}"
-											   data-date-format="HH:mm"
-											   id="input-custom-field{{ custom_field.custom_field_id }}"
-											   class="form-control"/>
-										<span class="input-group-btn">
-											<button type="button"
-													class="btn btn-default">
-												<i class="fa fa-calendar"></i>
-											</button>
-										</span>
-									</div>
-									{% if error_custom_field[custom_field.custom_field_id] %}
-										<div class="text-danger">{{ error_custom_field[custom_field.custom_field_id] }}</div>
-									{% endif %} </div>
-							</div>
-						{% endif %}
-						{% if custom_field.type == 'time' %}
-							<div id="custom-field{{ custom_field.custom_field_id }}"
-								 class="form-group custom-field"
-								 data-sort="{{ custom_field.sort_order }}">
-								<label class="col-sm-2 control-label"
-									   for="input-custom-field{{ custom_field.custom_field_id }}">{{ custom_field.name }}</label>
-								<div class="col-sm-10">
-									<div class="input-group datetime">
-										<input type="text"
-											   name="custom_field[{{ custom_field.location }}][{{ custom_field.custom_field_id }}]"
-											   value="{% if register_custom_field[custom_field.custom_field_id] %}{{ register_custom_field[custom_field.custom_field_id] }}{% else %}{{ custom_field.value }}{% endif %}"
-											   placeholder="{{ custom_field.name }}"
-											   data-date-format="YYYY-MM-DD HH:mm"
-											   id="input-custom-field{{ custom_field.custom_field_id }}"
-											   class="form-control"/>
-										<span class="input-group-btn">
-											<button type="button"
-													class="btn btn-default">
-												<i class="fa fa-calendar"></i>
-											</button>
-										</span>
-									</div>
-									{% if error_custom_field[custom_field.custom_field_id] %}
-										<div class="text-danger">{{ error_custom_field[custom_field.custom_field_id] }}</div>
-									{% endif %} </div>
-							</div>
-						{% endif %}
-					{% endfor %}
-				</fieldset>
-				<fieldset>
-					<legend>{{ text_your_password }}</legend>
-					<div class="form-group required">
-						<label class="col-sm-2 control-label"
-							   for="input-password">{{ entry_password }}</label>
-						<div class="col-sm-10">
-							<input type="password"
-								   name="password"
-								   value="{{ password }}"
-								   placeholder="{{ entry_password }}"
-								   id="input-password"
-								   class="form-control"/>
-							{% if error_password %}
-								<div class="text-danger">{{ error_password }}</div>
-							{% endif %} </div>
-					</div>
-					<div class="form-group required">
-						<label class="col-sm-2 control-label"
-							   for="input-confirm">{{ entry_confirm }}</label>
-						<div class="col-sm-10">
-							<input type="password"
-								   name="confirm"
-								   value="{{ confirm }}"
-								   placeholder="{{ entry_confirm }}"
-								   id="input-confirm"
-								   class="form-control"/>
-							{% if error_confirm %}
-								<div class="text-danger">{{ error_confirm }}</div>
-							{% endif %} </div>
-					</div>
-				</fieldset>
-				<fieldset>
-					<legend>{{ entry_newsletter }}</legend>
-					<div class="form-group">
-						<label class="col-sm-2 control-label">{{ entry_newsletter }}</label>
-						<div class="col-sm-10">
-							<input
-                id="newsletter_yes"
-                type="radio"
-							  name="newsletter"
-								value="1"
-								checked
-              />
-							<label for="newsletter_yes" class="radio-inline">{{ text_yes }}</label>
-
-              <input
-                id="newsletter_no"
-                type="radio"
-                name="newsletter"
-                value="0"
-              />
-              <label  for="newsletter_no" class="radio-inline">{{ text_no }}</label>
-						</div>
-					</div>
-				</fieldset>
-				{{ captcha }}
-				{% if text_agree %}
-					<div class="buttons">
-						<div class="pull-right">
-							{{ text_agree }}
-							{% if agree %}
-								<input type="checkbox"
-									   name="agree"
-									   value="1"
-									   checked="checked"/>
-							{% else %}
-								<input type="checkbox"
-									   name="agree"
-									   value="1"/>
-							{% endif %}
-							&nbsp;
-							<input type="submit"
-								   value="{{ button_continue }}"
-								   class="btn btn-primary"/>
-						</div>
-					</div>
-				{% else %}
-					<div class="buttons">
-						<div class="pull-right">
-							<input type="submit"
-								   value="{{ button_continue }}"
-								   class="btn btn-primary"/>
-						</div>
-					</div>
-				{% endif %}
-			</form>
-
-			{#Help with registration#}
-			<div id="help-with-registration">
-				<button
-						type="button"
-						data-toggle="modal"
-						data-target="#modal-help-with-registration"
-				>
-					{{ text_help_with_registration }}
-				</button>
-			</div>
-
-			{#MODAL. Help with registration#}
-			<div id="modal-help-with-registration" class="modal fade" role="dialog">
-				<div class="modal-dialog">
-
-					<!-- Modal content-->
-					<div class="modal-content">
-						<div class="modal-body">
-							<div class="phones">
-								<div class="title">
-									{{ text_help_with_registration_contact_with_us }}
-								</div>
-								<div class="header">
-									<div class="image">
-										<div style="background-image: url('/ego/assets/img/icon-call.png');"></div>
-									</div>
-									<span>
-										{{ text_help_with_registration_contact_phones }}
-									</span>
-								</div>
-								<div class="content">
-									<div class="item">
-										+38 050 274 2790
-									</div>
-									<div class="item">
-										+38 095 765 1080
-									</div>
-									<div class="item">
-										+38 093 765 1080
-									</div>
-									<div class="item">
-										+38 068 765 1080
-									</div>
-								</div>
-							</div>
-
-							{#Get callback#}
-							<div class="get-callback">
-								<button
-										type="button"
-										class="btn"
-										data-dismiss="modal"
-										onclick="$('body').trigger('open.ego-callback');"
-								>
-									{{ text_modal_get_callback }}
-								</button>
-							</div>
-						</div>
-						<div class="modal-footer">
-							<button
-									type="button"
-									class="btn"
-									data-dismiss="modal"
-							>
-								{{ text_modal_close }}
-							</button>
-						</div>
-					</div>
-
-				</div>
-			</div>
-		</div>
-	</div>
+    </div>
+  </div>
 </div>
 
 <script src="/catalog/view/theme/default/js/libs/vanillaTextMask.js"></script>

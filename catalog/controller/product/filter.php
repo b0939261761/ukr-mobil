@@ -37,6 +37,7 @@ class ControllerProductFilter extends Controller {
       'values' => $this->getModels((int)($this->request->get['brand'] ?? 0), $category, $search)
     ];
 
+    // TODO use db.store
     $stocks = [
       'name' => 'Склад',
       'queryKey' => 'stock',

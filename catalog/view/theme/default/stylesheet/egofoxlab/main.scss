@@ -1,7 +1,3 @@
-@charset "UTF-8";
-
-@import './config.scss';
-
 body {
     //region Header
     #top {
@@ -21,10 +17,7 @@ body {
         .currency-container {
             display: inline-flex;
             margin-left: 15px;
-
-            &, * {
-                color: $color_3;
-            }
+            color: #fff;
 
             b {
                 padding-left: 3px;
@@ -419,7 +412,7 @@ body {
     //region Left column
     .box-category-heading {
         border-radius: 0;
-        background: $color_1;
+        // background: $color_1;
     }
 
     //endregion
@@ -743,6 +736,7 @@ body {
             display: flex;
             flex-direction: row;
             padding-top: 20px;
+            margin-bottom: 20px;
 
             .item {
                 margin-right: 15px;
@@ -1623,4 +1617,11 @@ body {
 
 .page-title--left {
   text-align: left;
+}
+
+.section__title {
+  font-size: 18px;
+  border-bottom: none;
+  text-transform: uppercase;
+  margin-bottom: 10px;
 }

@@ -15,6 +15,10 @@ $_['db_password']        = DB_PASSWORD;
 $_['db_database']        = DB_DATABASE;
 $_['db_port']            = DB_PORT;
 
+// Cache
+$_['cache_engine']         = 'file'; // apc, file, mem or memcached
+$_['cache_expire']         = 3600;
+
 // Session
 $_['session_autostart']  = true;
 $_['session_engine']     = 'db';

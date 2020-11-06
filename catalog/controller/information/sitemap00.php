@@ -2,80 +2,37 @@
 class ControllerInformationSitemap extends Controller {
   public function index() {
     $page = (int)($this->request->get['page'] ?? 1);
-    $limit = 150;
-    $start = ($page - 1) * $limit;
-    $end = $start + $limit - 1;
-    $links = $this->getLinks($this->getCategoryList(), 0, $start, $end);
-    $data['categories'] = $links['list'];
-    $data['pagination'] = $this->getPagination($page, $links['index'], $limit);
+
+    $pages = 1;
+    $countPages = 0;
+    foreach ($this->getCategoryList() as $category1) {
+      $category1['link'] = $this->url->link('product/category', ['path' => $category1['path']]);
+
+      $countPages += $category1['count'];
+      if ($countPages > 150) {
+        $countPages = $category1['count'];
+        ++$pages;
+      }
+
+      if ($pages == $page) $data['categories'][] = $category1;
+
+      foreach ($category1['children'] as &$category2) {
+        $category2['link'] = $this->url->link('product/category', ['path' => $category2['path']]);
+
+        foreach ($category2['children'] as &$category3) {
+          $category3['link'] = $this->url->link('product/category', ['path' => $category3['path']]);
+        }
+      }
+    }
+
+    $url = $this->url->link('information/sitemap', ['page' => '{page}']);
+    $data['pagination'] = $this->getPagination($page, $pages, $url);
     $data['headingH1'] = 'Карта сайта';
     $this->document->setTitle("{$data['headingH1']} - интернет-магазин UKRMobil");
     $this->document->setDescription("{$data['headingH1']} ✅ UKRMobil ✅ Фиксированные цены ✅ Гарантия ✅ Доставка по всей Украине");
     $data['header'] = $this->load->controller('common/header');
     $data['footer'] = $this->load->controller('common/footer');
     $this->response->setOutput($this->load->view('information/sitemap', $data));
-  }
-
-  private function getPagination($page, $total, $limit) {
-    $pagination = new Pagination();
-    $pagination->page = $page;
-    $pagination->total = $total;
-    $pagination->limit = $limit;
-    $pagination->url = $this->url->link('information/sitemap', ['page' => '{page}']);
-    return $pagination->render();
-  }
-
-  private function getLinks($categories, $index, $start, $end) {
-    $result = [];
-    foreach ($categories as $category) {
-      $queriesCategory = ['path' => $category['path']];
-      $nameCategory = $category['name'];
-
-      if ($index >= $start && $index <= $end) {
-        $result[] = [
-          'name' => $nameCategory,
-          'link' => $this->url->link('product/category', $queriesCategory)
-        ];
-      }
-
-      ++$index;
-
-      foreach ($category['brands'] as $brand) {
-        $queriesBrand = array_merge($queriesCategory, ['brand' => $brand['id']]);
-        $nameBrand = "{$nameCategory} : {$brand['name']}";
-
-        if ($index >= $start && $index <= $end) {
-          $result[] = [
-            'name' => $nameBrand,
-            'link' => $this->url->link('product/category', $queriesBrand)
-          ];
-        }
-
-        ++$index;
-
-        foreach ($brand['models'] as $model) {
-          $queriesModel = array_merge($queriesBrand, ['model' => $model['id']]);
-          $nameModel = "{$nameBrand}, {$model['name']}";
-
-          if ($index >= $start && $index <= $end) {
-            $result[] = [
-              'name' => $nameModel,
-              'link' => $this->url->link('product/category', $queriesModel)
-            ];
-          }
-
-          ++$index;
-        }
-      }
-
-      if (isset($category['children'])) {
-        $chidrenResult = $this->getLinks($category['children'], $index, $start, $end);
-        $index = $chidrenResult['index'];
-        if (!empty($chidrenResult['list'])) $result = array_merge($result, $chidrenResult['list']);
-      }
-    }
-
-    return ['index' => $index, 'list' => $result];
   }
 
   private function getCategoryList() {
@@ -118,14 +75,11 @@ class ControllerInformationSitemap extends Controller {
           ) AS t
           GROUP BY category_id, brand_id
         ),
-        tmpGroupCategories AS (
-          SELECT DISTINCT category_id FROM tmpCatagoriesBrandsModels
-        ),
         tmpBrands AS (
           SELECT
             category_id,
             JSON_ARRAYAGG(JSON_OBJECT('id', t.id, 'name', t.name, 'models', t.models)) AS brands
-          FROM tmpGroupCategories tgc,
+          FROM tmpGroupCategoriesBrands tgcb,
           LATERAL (
             SELECT
               brand_id AS id,
@@ -133,7 +87,7 @@ class ControllerInformationSitemap extends Controller {
               (SELECT models FROM tmpModels WHERE category_id = tm.category_id
                 AND brand_id = tm.brand_id) AS models
             FROM tmpModels tm
-            WHERE category_id = tgc.category_id
+            WHERE category_id = tgcb.category_id
             ORDER BY brand_ord, brand_name
             ) AS t
           GROUP BY category_id
@@ -180,5 +134,37 @@ class ControllerInformationSitemap extends Controller {
     ";
 
     return json_decode($this->db->query($sql)->row['value'], true);
+  }
+
+  private function getPagination($page, $pages, $url) {
+    if (empty($pages)) return '';
+    $url = str_replace('%7Bpage%7D', '{page}', $url);
+    $output = '<ul class="pagination">';
+
+    $linkFirst = str_replace(['?page={page}', '&page={page}'], '', $url);
+    if ($page > 1) {
+      $output .= "<li><a href=\"{$linkFirst}\">|&lt;</a></li>";
+      $linkPrev = $page - 1 === 1 ? $linkFirst : str_replace('{page}', $page - 1, $url);
+      $output .= "<li><a href=\"{$linkPrev}\">&lt;</a></li>";
+    }
+
+    for ($i = 1; $i <= $pages; $i++) {
+      if ($page == $i) {
+        $output .= "<li class=\"active\"><span>{$i}</span></li>";
+      } else {
+        $link = $i === 1 ? $linkFirst : str_replace('{page}', $i, $url);
+        $output .= "<li><a href=\"{$link}\">{$i}</a></li>";
+      }
+    }
+
+    if ($page < $pages) {
+      $linkFirst = str_replace('{page}', $page + 1, $url);
+      $output .= "<li><a href=\"{$linkFirst}\">&gt;</a></li>";
+      $linkLast = str_replace('{page}', $pages, $url);
+      $output .= "<li><a href=\"{$linkPrev}\">&gt;|</a></li>";
+    }
+
+    $output .= '</ul>';
+    return $output;
   }
 }

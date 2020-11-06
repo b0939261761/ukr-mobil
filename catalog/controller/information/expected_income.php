@@ -31,18 +31,26 @@ class ControllerInformationExpectedIncome extends Controller {
 
     foreach ($documents as &$document) {
       $sql = "
-        SELECT aa.product_id, bb.name, COALESCE(dd.price, cc.price) AS price,
-           aa.quantity,
-           IF(cc.image = '', 'placeholder.png',cc.image) AS image
-        FROM oc_product_expected_income aa
-        INNER JOIN oc_product_description bb ON bb.product_id = aa.product_id
-        INNER JOIN oc_product cc ON cc.product_id = aa.product_id
-        LEFT JOIN oc_product_discount dd ON dd.product_id = aa.product_id
-          AND dd.customer_group_id = {$customerGroupId}
-        WHERE aa.income_number = '{$document['income_number']}'
-          AND aa.date_expected_income = '{$document['date_expected_income']}'
-          AND bb.language_id = 2
-        ORDER BY bb.name
+        SELECT
+          pei.product_id,
+          pd.name,
+          COALESCE(pdc.price, p.price) AS price,
+          pei.quantity,
+          IF(p.image = '',
+            COALESCE(
+              (SELECT image FROM oc_product_image
+                WHERE product_id = p.product_id ORDER BY sort_order LIMIT 1),
+              'placeholder.png'
+            ), p.image) AS image
+        FROM oc_product_expected_income pei
+        INNER JOIN oc_product_description pd ON pd.product_id = pei.product_id
+        INNER JOIN oc_product p ON p.product_id = pei.product_id
+        LEFT JOIN oc_product_discount pdc ON pdc.product_id = pei.product_id
+          AND pdc.customer_group_id = 0
+        WHERE pei.income_number = '{$document['income_number']}'
+          AND pei.date_expected_income = '{$document['date_expected_income']}'
+          AND pd.language_id = 2
+        ORDER BY pd.name
       ";
 
       foreach ($this->db->query($sql)->rows as $product) {

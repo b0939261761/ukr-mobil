@@ -1,121 +1,100 @@
-@charset "UTF-8";
 
-@import "./config";
+#modal-help-with-registration {
+    .modal-body {
+        .phones {
+            display: flex;
+            width: 100%;
+            flex-direction: column;
+            align-items: center;
 
-body {
-    #account-register {
-        select {
-            width: 90% !important;
-            height: 41px !important;
+            .title {
+                margin-bottom: 10px;
+                font-size: 22px;
+                font-weight: 600;
+                color: #333;
+            }
 
-            & + .customSelect {
-                display: inline-flex !important;
+            .header {
+                display: flex;
                 align-items: center;
-                justify-content: center;
-                width: 100%;
-                height: 41px;
-                background-repeat: no-repeat !important;
-                background-position: center right !important;
-                background-position-x: 97% !important;
-                background: url(../../image/megnor/select-arrow-down.gif);
+
+                .image {
+                    display: inline-block;
+                    width: 32px;
+                    height: 32px;
+
+                    div {
+                        width: 100%;
+                        height: 100%;
+                        background-repeat: no-repeat;
+                        background-size: contain;
+                        background-position: center;
+                    }
+                }
 
                 span {
-                    width: 85% !important;
-                    overflow: hidden;
-                    text-align: center;
-                    background: none !important;
+                    margin-left: 10px;
+                    font-size: 20px;
+                    font-weight: 600;
+                    color: #333;
                 }
+            }
+
+            .content {
+                margin-top: 5px;
             }
         }
 
-        //region Help with registration
-        #help-with-registration {
-            button {
-                width: 100%;
+        .get-callback {
+            margin-top: 10px;
+            text-align: center;
+
+            .btn {
                 padding: 10px;
                 border: none;
                 outline: none;
                 box-shadow: none;
-                background-color: #ed4d56;
+                background-color: #ed863f;
                 font-size: 18px;
                 color: #fff;
             }
         }
-
-        #modal-help-with-registration {
-            .modal-body {
-                .phones {
-                    display: flex;
-                    width: 100%;
-                    flex-direction: column;
-                    align-items: center;
-
-                    .title {
-                        margin-bottom: 10px;
-                        font-size: 22px;
-                        font-weight: 600;
-                        color: #333;
-                    }
-
-                    .header {
-                        display: flex;
-                        align-items: center;
-
-                        .image {
-                            display: inline-block;
-                            width: 32px;
-                            height: 32px;
-
-                            div {
-                                width: 100%;
-                                height: 100%;
-                                background-repeat: no-repeat;
-                                background-size: contain;
-                                background-position: center;
-                            }
-                        }
-
-                        span {
-                            margin-left: 10px;
-                            font-size: 20px;
-                            font-weight: 600;
-                            color: #333;
-                        }
-                    }
-
-                    .content {
-                        margin-top: 5px;
-                    }
-                }
-
-                .get-callback {
-                    margin-top: 10px;
-                    text-align: center;
-
-                    .btn {
-                        padding: 10px;
-                        border: none;
-                        outline: none;
-                        box-shadow: none;
-                        background-color: #ed863f;
-                        font-size: 18px;
-                        color: #fff;
-                    }
-                }
-            }
-
-            .modal-footer {
-                .btn {
-                    padding: 10px;
-                    border: none;
-                    outline: none;
-                    box-shadow: none;
-                    background-color: #ed4d56;
-                    font-size: 18px;
-                    color: #fff;
-                }
-            }
-        }
-        //endregion
     }
+
+    .modal-footer {
+        .btn {
+            padding: 10px;
+            border: none;
+            outline: none;
+            box-shadow: none;
+            background-color: #ed4d56;
+            font-size: 18px;
+            color: #fff;
+        }
+    }
+}
+
+.wrapper-agree {
+  margin-bottom: 20px;
+}
+
+.wrapper-buttons {
+  display: flex;
+  flex-direction: column;
+}
+
+.wrapper-buttons :first-child {
+  margin-bottom: 20px;
+}
+
+@media (min-width: 576px) {
+  .wrapper-buttons {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .wrapper-buttons :first-child {
+    margin-bottom: 0;
+    order: 1;
+  }
 }
