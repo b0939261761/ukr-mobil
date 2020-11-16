@@ -6,15 +6,12 @@ class ControllerAccountSuccess extends Controller {
       просмотр истории заказов, печать счета, изменение своей контактной информации
       и адресов доставки и многое другое.</p>";
 
-    $data['link'] = $this->cart->hasProducts()
-      ? $this->url->link('checkout/cart')
-      : $this->url->link('account/account');
-
+    $data['linkContinue'] = $this->url->link('account/account');
     $data['headingH1'] = 'Регистрация';
     $this->document->setTitle($data['headingH1']);
     $this->document->addMeta(['name' => 'robots', 'content' => 'noindex, nofollow']);
     $data['footer'] = $this->load->controller('common/footer');
     $data['header'] = $this->load->controller('common/header');
-    $this->response->setOutput($this->load->view('common/success', $data));
+    $this->response->setOutput($this->load->view('account/success', $data));
   }
 }

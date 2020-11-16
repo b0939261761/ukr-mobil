@@ -24,9 +24,9 @@
 		>
 			<div class="row content-container">
 				<div class="well">
-					<h3>{{ text_returning_customer }}</h3>
+					<h3>Войти в Личный Кабинет</h3>
 					<p>
-						<strong>{{ text_i_am_returning_customer }}</strong>
+						<strong>Войти в Личный Кабинет</strong>
 					</p>
 					<form
 							action="{{ action }}"
@@ -38,13 +38,13 @@
 									class="control-label"
 									for="input-email"
 							>
-								{{ entry_email }}
+								E-Mail
 							</label>
 							<input
 									type="text"
 									name="email"
 									value="{{ email }}"
-									placeholder="{{ entry_email }}"
+									placeholder="E-Mail"
 									id="input-email"
 									class="form-control"
 							/>
@@ -54,29 +54,29 @@
 									class="control-label"
 									for="input-password"
 							>
-								{{ entry_password }}
+								Пароль
 							</label>
 							<input
 									type="password"
 									name="password"
 									value="{{ password }}"
-									placeholder="{{ entry_password }}"
+									placeholder="Пароль"
 									id="input-password"
 									class="form-control"
 							/>
 							<div class="forgotten-password">
 								<a href="{{ forgotten }}">
-									{{ text_forgotten }}
+									Забыли пароль?
 								</a>
 							</div>
 						</div>
 						<input
 								type="submit"
-								value="{{ button_login }}"
+								value="Войти"
 								class="btn btn-primary"
 						/>
 						<a href="{{ register }}">
-							{{ text_register }}
+							Регистрация
 						</a>
 						{% if redirect %}
 							<input

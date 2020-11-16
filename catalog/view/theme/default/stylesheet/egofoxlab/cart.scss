@@ -35,21 +35,18 @@ body {
             }
 
             .delete-item {
-                cursor: pointer;
+              border: none;
+              background-color: transparent;
+            }
 
-                i {
-                    font-size: 17px;
-                }
+            .delete-item svg {
+              height: 17px;
+              pointer-events: none;
             }
 
             .total {
                 text-align: right;
             }
-        }
-
-        .attention-message {
-            color: #ce4e56;
-            margin-bottom: 20px;
         }
     }
 }
@@ -60,6 +57,55 @@ body {
 
 #products-table {
   overflow: auto;
+}
+
+.form-section {
+  margin-bottom: 15px;
+}
+
+.cod-attention {
+  border-radius: 3px;
+  background-color: #f9dfdf;
+  padding: 5px 10px 5px 25px;
+  margin-bottom: 0;
+}
+
+.table {
+  margin-bottom: 10px !important;
+}
+
+#products-table td {
+  vertical-align: middle;
+}
+
+.cart__product-table-total {
+  text-align: right;
+  width: 100%;
+  background-color: #f2f2f2;
+  margin-bottom: 20px;
+  table-layout: fixed;
+}
+
+.cart__product-table-total-title {
+  vertical-align: middle;
+  padding: 5px;
+  font-weight: bold;
+}
+
+.cart__product-table-total-value {
+  max-width: 200px;
+  padding: 5px;
+}
+
+.block-attention {
+  border-radius: 3px;
+  display: flow-root;
+  background-color: #f9dfdf;
+  margin-bottom: 15px;
+}
+
+.block-attention__item {
+  margin: 5px 10px;
 }
 
 .wrapper-btn {

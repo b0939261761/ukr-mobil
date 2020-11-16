@@ -1,95 +1,74 @@
-<?php
-
+<?
 class ControllerCommonHeaderCategory extends Controller {
-  private function getCategories($categoryId) {
-    $sql = "
-      SELECT c.category_id, cd.name FROM oc_category c
-      LEFT JOIN oc_category_description cd ON cd.category_id = c.category_id
-      WHERE c.parent_id = {$categoryId} AND cd.language_id = 2 AND c.status = 1
-      ORDER BY c.sort_order, LCASE(cd.name)
-    ";
-
-    $baseModel = new \Ego\Models\BaseModel();
-    $dataQuery = $baseModel->_getDb()->prepare($sql);
-    $dataQuery->execute();
-    return $dataQuery->fetchAll();
-  }
-
-	public function index() {
-    $search = $this->request->get['search'] ?? '';
-    $categoryId = $this->request->request['category'] ?? 0;
-
-    $urlRoute = 'product/category';
-		$searchParams = '';
-		if (!empty($search)) {
-      $urlRoute = 'product/search';
-  		$searchParams = "&search={$search}";
-		}
-
-    $sql = "
-      SELECT c.category_id FROM oc_category_path cp
-      LEFT JOIN oc_category c ON c.category_id = cp.path_id
-	    LEFT JOIN oc_category_description cd ON cd.category_id = c.category_id
-	    WHERE cp.category_id = :categoryId AND cd.language_id = 2 AND c.status = 1
-      ORDER BY level DESC
-    ";
-
-    $baseModel = new \Ego\Models\BaseModel();
-    $dataQuery = $baseModel->_getDb()->prepare($sql);
-    $dataQuery->bindValue(':categoryId', $categoryId, \PDO::PARAM_INT);
-    $dataQuery->execute();
-    $categories = $dataQuery->fetchAll();
-
+  public function index() {
     $data['categories'] = [];
 
-		foreach ($this->getCategories(0) as $child0) {
-      $categoryId0 = $child0['category_id'];
+    foreach ($this->getCategoryList() as $child0) {
       $childrenData0 = [];
-      $active0 = false;
 
-			if ($categoryId0 == ($categories[0]['category_id'] ?? 0)) {
-        $active0 = true;
-      }
-
-      foreach ($this->getCategories($categoryId0) as $child1) {
-        $categoryId1 = $child1['category_id'];
+      foreach ($child0['children'] as $child1) {
         $childrenData1 = [];
-        $active1 = false;
 
-        if ($categoryId1 == ($categories[1]['category_id'] ?? 0)) {
-          $active1 = true;
-        }
-
-        foreach ($this->getCategories($categoryId1) as $child2) {
-          $categoryId2 = $child2['category_id'];
-          $active2 = false;
-          if ($categoryId2 == ($categories[2]['category_id'] ?? 0)) $active2 = true;
-
-          $params2 = "path={$categoryId0}_{$categoryId1}_{$categoryId2}{$searchParams}";
+        foreach ($child1['children'] as $child2) {
           $childrenData1[] = [
             'name' => $child2['name'],
-            'active' => $active2,
-            'href' => $this->url->link($urlRoute, $params2)
+            'link' => $this->url->link('product/category', ['path' => $child2['path']]),
           ];
         }
 
-        $params1 = "path={$categoryId0}_{$categoryId1}{$searchParams}";
         $childrenData0[] = [
           'name' => $child1['name'],
-          'children' => $childrenData1,
-          'active' => $active1,
-          'href' => $this->url->link($urlRoute, $params1)
+          'link' => $this->url->link('product/category', ['path' => $child1['path']]),
+          'children' => $childrenData1
         ];
       }
 
-			$data['categories'][] = [
-				'name' => $child0['name'],
-        'children' => $childrenData0,
-        'active' => $active0,
-				'href' => $this->url->link($urlRoute, "path={$categoryId0}{$searchParams}")
+      $data['categories'][] = [
+        'name' => $child0['name'],
+        'link' => $this->url->link('product/category', ['path' => $child0['path']]),
+        'children' => $childrenData0
       ];
-		}
+    }
 
-		return $this->load->view('common/header_category', $data);
-	}
+    return $this->load->view('common/header_category', $data);
+  }
+
+  private function getCategoryList() {
+    $sql = "
+      SELECT
+        IF(count(path), JSON_ARRAYAGG(JSON_OBJECT('path', path, 'name', name, 'children', children)), JSON_ARRAY()) AS value
+      FROM (
+        SELECT
+          c1.category_id AS path,
+          cd1.name,
+          IF(count(t2.path), JSON_ARRAYAGG(JSON_OBJECT('path', t2.path, 'name', t2.name, 'children', t2.children)), JSON_ARRAY()) AS children
+          FROM oc_category c1
+        LEFT JOIN oc_category_description cd1 ON cd1.category_id = c1.category_id
+        LEFT JOIN LATERAL (
+          SELECT
+            CONCAT(c1.category_id, '_', c2.category_id) AS path,
+            cd2.name,
+            IF(count(t3.path), JSON_ARRAYAGG(JSON_OBJECT('path', t3.path, 'name', t3.name)), JSON_ARRAY()) AS children
+          FROM oc_category c2
+          LEFT JOIN oc_category_description cd2 ON cd2.category_id = c2.category_id
+          LEFT JOIN LATERAL (
+            SELECT
+              CONCAT(c1.category_id, '_', c2.category_id, '_', c3.category_id) AS path,
+              cd3.name
+            FROM oc_category c3
+            LEFT JOIN oc_category_description cd3 ON cd3.category_id = c3.category_id
+            WHERE c3.parent_id = c2.category_id AND cd3.language_id = 2 AND c3.status = 1
+            ORDER BY c3.sort_order, cd3.name
+          ) AS t3 ON true
+          WHERE c2.parent_id = c1.category_id AND cd2.language_id = 2 AND c2.status = 1
+          GROUP BY c2.category_id
+          ORDER BY c2.sort_order, cd2.name
+        ) AS t2 ON true
+        WHERE c1.parent_id = 0 AND cd1.language_id = 2 AND c1.status = 1
+        GROUP BY c1.category_id
+        ORDER BY c1.sort_order, cd1.name
+      ) AS t1
+    ";
+    return json_decode($this->db->query($sql)->row['value'], true);
+  }
 }

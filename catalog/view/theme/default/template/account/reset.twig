@@ -81,4 +81,17 @@
     </div>
   </form>
 </div>
+
+<script>
+window.addEventListener('load', () => {
+  const addClassError = el => {
+    const formGroup = el.closest('.form-group');
+    if (formGroup) formGroup.classList.add('has-error');
+  };
+
+  const textDangerList = document.querySelectorAll('.text-danger');
+  if (textDangerList) textDangerList.forEach(addClassError);
+});
+</script>
+
 {{ footer }}

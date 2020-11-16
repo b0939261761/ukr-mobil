@@ -35,7 +35,10 @@ class ControllerCommonHeader extends Controller {
     $data['accountTerms'] = "{$this->url->link('account/account')}#terms";
 
     $data['search'] = $this->load->controller('common/search');
-    $data['cart'] = $this->load->controller('common/cart');
+
+    if ($this->request->get['route'] != 'checkout/cart') {
+      $data['cart'] = $this->load->controller('common/cart');
+    }
     $data['headerMenu'] = $this->load->controller('common/header_menu');
     $data['headerCategory'] = $this->load->controller('common/header_category');
 

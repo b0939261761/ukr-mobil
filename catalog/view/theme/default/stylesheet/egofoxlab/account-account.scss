@@ -37,13 +37,11 @@ body {
                     box-shadow: 0 0 4px #ccc;
                     color: #697582;
                     cursor: pointer;
-                    z-index: 9;
                 }
             }
         }
 
         .tab-content {
-
             display: block;
         }
 
@@ -219,6 +217,8 @@ body {
   display: none
 }
 
+
+
 /* Убираем стандартный маркер Firefox */
 .order-history-table__mobile-toggle {
   list-style: none;
@@ -242,3 +242,14 @@ body {
 
 /* ------------ */
 
+.wrapper-btn {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 768px) {
+  .wrapper-btn {
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+}

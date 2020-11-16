@@ -29,6 +29,7 @@ class ControllerAccountRegister extends Controller {
 
     $data['action'] = $this->url->link('account/register');
     $data['linkAgree'] = $this->url->link('information/agree_to_terms');
+    $data['linkLogin'] = $this->url->link('account/login');
 
     $data['firstname'] = $this->request->post['firstname'] ?? '';
     $data['lastname'] = $this->request->post['lastname'] ?? '';

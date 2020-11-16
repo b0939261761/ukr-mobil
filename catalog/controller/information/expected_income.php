@@ -46,7 +46,7 @@ class ControllerInformationExpectedIncome extends Controller {
         INNER JOIN oc_product_description pd ON pd.product_id = pei.product_id
         INNER JOIN oc_product p ON p.product_id = pei.product_id
         LEFT JOIN oc_product_discount pdc ON pdc.product_id = pei.product_id
-          AND pdc.customer_group_id = 0
+          AND pdc.customer_group_id = {$customerGroupId}
         WHERE pei.income_number = '{$document['income_number']}'
           AND pei.date_expected_income = '{$document['date_expected_income']}'
           AND pd.language_id = 2

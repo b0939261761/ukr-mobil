@@ -140,7 +140,7 @@
         eInput.on('keyup', event => debounceSearch(event.target.value));
 
         $('*').on('click', event => {
-          if (!empty($(event.target).closest('#search').get(0))) return;
+          if ($(event.target).closest('#search').get(0)) return;
           openSearchSuggestion([]);
         });
       }

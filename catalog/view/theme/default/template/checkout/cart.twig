@@ -1,5 +1,5 @@
 {{ header }}
-<link rel="stylesheet" href="/catalog/view/theme/default/stylesheet/egofoxlab/cart.min.css">
+<link rel="stylesheet" href="/catalog/view/theme/default/stylesheet/egofoxlab/cart.min.css?20201114">
 
 <div id="checkout-checkout" class="container">
   <div class="row">
@@ -22,21 +22,21 @@
 
       <h1 class="page-title">{{ headingH1 }}</h1>
 
-      <form id="formDoOrder" class="row content-container">
+      <form id="formOrder">
         <div class="col-sm-12 col-md-6">
+
           <div class="form-group">
             <div class="row">
               <div class="col-sm-4">
                 <label for="firstName" class="control-label">
-                  <span class="required">*</span>
-                  Имя Получателя
+                  * Имя Получателя
                 </label>
               </div>
               <div class="col-sm-8">
                 <input
                   id="firstName"
                   class="form-control restrict-language"
-                  value="{{ firstName }}"
+                  value="{{ customer.firstName }}"
                   placeholder="Иванов"
                   required
                 >
@@ -48,15 +48,14 @@
             <div class="row">
               <div class="col-sm-4">
                 <label for="lastName" class="control-label">
-                  <span class="required">*</span>
-                  Фамилия Получателя
+                  * Фамилия Получателя
                 </label>
               </div>
               <div class="col-sm-8">
                 <input
                   id="lastName"
                   class="form-control restrict-language"
-                  value="{{ lastName }}"
+                  value="{{ customer.lastName }}"
                   placeholder="Иван"
                   required
                 >
@@ -68,15 +67,14 @@
             <div class="row">
               <div class="col-sm-4">
                 <label for="phone" class="control-label">
-                  <span class="required">*</span>
-                  Телефон Получателя
+                  * Телефон Получателя
                 </label>
               </div>
               <div class="col-sm-8">
                 <input
                   id="phone"
                   class="form-control"
-                  value="{{ phone }}"
+                  value="{{ customer.phone }}"
                   required
                 >
               </div>
@@ -87,15 +85,14 @@
             <div class="row">
               <div class="col-sm-4">
                 <label for="email" class="control-label">
-                  <span class="required">*</span>
-                  Email
+                  * Email
                 </label>
               </div>
               <div class="col-sm-8">
                 <input
                   id="email"
                   class="form-control"
-                  value="{{ email }}"
+                  value="{{ customer.email }}"
                   placeholder="user@example.com"
                   required
                 >
@@ -103,81 +100,80 @@
             </div>
           </div>
 
-          <div class="form-group">
-            <div><b>Способ доставки</b></div>
+          <fieldset class="form-section">
+            <legend class="form-section__title">Способ доставки</legend>
 
-            <div class="radio-block">
+            <label class="input-radio">
               <input
                 type="radio"
                 name="shipping-method"
-                id="rovnoPickup"
+                class="input-radio__input"
                 value="Самовывоз из г. Ровно"
               >
-              <label for="rovnoPickup" class="control-label">
+              <span class="input-radio__text">
                 Самовывоз из г. Ровно
-              </label>
-            </div>
+              </span>
+            </label>
 
-            <div class="radio-block">
+            <label class="input-radio">
               <input
                 type="radio"
                 name="shipping-method"
-                id="chernovciPickup"
+                class="input-radio__input"
                 value="Самовывоз из г. Черновцы"
               >
-              <label for="chernovciPickup" class="control-label">
+              <span class="input-radio__text">
                 Самовывоз из г. Черновцы
-              </label>
-            </div>
+              </span>
+            </label>
 
-            <div class="radio-block">
+            <label class="input-radio">
               <input
                 type="radio"
                 name="shipping-method"
-                id="novaPoshta"
+                class="input-radio__input"
                 value="Новая Почта"
                 checked
               >
-              <label for="novaPoshta" class="control-label">
+              <span class="input-radio__text">
                 Отправка службой "Новая почта"
-              </label>
-            </div>
+              </span>
+            </label>
 
-            <div class="radio-block">
+            <label class="input-radio">
               <input
                 type="radio"
                 name="shipping-method"
-                id="novaPoshtaDelivery"
+                class="input-radio__input"
                 value="Курьерская доставка &quot;Новая Почта&quot;"
               >
-              <label for="novaPoshtaDelivery" class="control-label">
+              <span class="input-radio__text">
                 Курьерская доставка "Новая почта"
-              </label>
-            </div>
+              </span>
+            </label>
 
-            <div class="radio-block">
+            <label class="input-radio">
               <input
                 type="radio"
                 name="shipping-method"
-                id="rovnoDelivery"
+                class="input-radio__input"
                 value="Курьерская доставка г. Ровно"
               >
-              <label for="rovnoDelivery" class="control-label">
+              <span class="input-radio__text">
                 Курьерская доставка г. Ровно
-              </label>
-            </div>
-          </div>
+              </span>
+            </label>
+          </fieldset>
 
           <div class="form-group" id="formRegion">
             <div class="row">
               <div class="col-sm-4">
-                <label for="region" class="control-label">
-                  <span class="required">*</span>
-                  Область
+                <label for="npRegion" class="control-label">
+                  * Область
                 </label>
               </div>
               <div class="col-sm-8">
-                <select class="select" id="region">
+                <select class="select" id="npRegion" data-selected-value="{{ customer.region }}">
                   <option value="" disabled selected>-- Выберите значение --</option>
                 </select>
               </div>
@@ -187,13 +183,12 @@
           <div class="form-group" id="formCity">
             <div class="row">
               <div class="col-sm-4">
-                <label for="city" class="control-label">
-                  <span class="required">*</span>
-                  Город
+                <label for="npCity" class="control-label">
+                  * Город
                 </label>
               </div>
               <div class="col-sm-8">
-                <select class="select" id="city">
+                <select class="select" id="npCity" data-selected-value="{{ customer.city }}">
                   <option value="" disabled selected>-- Выберите значение --</option>
                 </select>
               </div>
@@ -203,13 +198,12 @@
           <div class="form-group" id="formWarehouse">
             <div class="row">
               <div class="col-sm-4">
-                <label for="warehouse" class="control-label">
-                  <span class="required">*</span>
-                  Отделение
+                <label for="npWarehouse" class="control-label">
+                  * Отделение
                 </label>
               </div>
               <div class="col-sm-8">
-                <select class="select" id="warehouse">
+                <select class="select" id="npWarehouse" data-selected-value="{{ customer.warehouse }}">
                   <option value="" disabled selected>-- Выберите значение --</option>
                 </select>
               </div>
@@ -220,8 +214,7 @@
             <div class="row">
               <div class="col-sm-4">
                 <label for="address" class="control-label">
-                  <span class="required">*</span>
-                  Адрес
+                  * Адрес
                 </label>
               </div>
               <div class="col-sm-8">
@@ -234,58 +227,67 @@
             </div>
           </div>
 
-          <div class="form-group" id="wrapperPaymentMethods">
-            <div><b>Метод оплаты</b></div>
+          <fieldset id="wrapperPaymentMethods" class="form-section">
+            <legend class="form-section__title">Метод оплаты</legend>
 
-            <div class="radio-block" id="formNonCash">
+            <label class="input-radio" id="formNonCash">
               <input
                 type="radio"
                 name="payment-method"
-                id="nonCash"
+                class="input-radio__input"
                 value="Безналичная оплата на счет юридического лица"
               >
-              <label for="nonCash" class="control-label">
+              <span class="input-radio__text">
                 Безналичная оплата на счет юридического лица (реквизиты будут отправлены на электронную почту)
-              </label>
-            </div>
+              </span>
+            </label>
 
-            <div class="radio-block" id="formCredit">
+            <label class="input-radio" id="formCredit">
               <input
                 type="radio"
                 name="payment-method"
-                id="credit"
+                class="input-radio__input"
                 value="В долг"
               >
-              <label for="credit" class="control-label">
+              <span class="input-radio__text">
                 В долг
-              </label>
-            </div>
+              </span>
+            </label>
 
-            <div class="radio-block" id="formPrivatBank">
+            <label class="input-radio" id="formPrivatBank">
               <input
                 type="radio"
                 name="payment-method"
-                id="privantBank"
                 value="Оплата на карту Приват Банка"
+                class="input-radio__input"
                 checked
               >
-              <label for="privantBank" class="control-label">
+              <span class="input-radio__text">
                 Оплата на карту Приват Банка (реквизиты будут отправлены в смс)
-              </label>
-            </div>
+              </span>
+            </label>
 
-            <div class="radio-block" id="formCod">
+            <label class="input-radio" id="formCod">
               <input
                 type="radio"
                 name="payment-method"
-                id="cod"
                 value="Наложеный платеж"
+                class="input-radio__input"
               >
-              <label for="cod" class="control-label">
+              <span class="input-radio__text">
                 Наложеный платеж
-              </label>
-            </div>
-          </div>
+              </span>
+            </label>
+
+            <ul id="codAttention" class="cod-attention hide">
+              <li>При получении посылки вы оплачиваете доставку</li>
+              <li>
+                Дополнительно вы оплачиваете 4% комиссию (минимум&nbsp;10 грн.)
+                за перевод средств по наложенному платежу.
+                Комиссия за наложенный платеж будет включена в суму заказа.
+              </li>
+            </ul>
+          </fieldset>
 
           <div class="form-group">
             <div class="row">
@@ -314,7 +316,7 @@
 
         <div class="col-sm-12 col-md-6">
           <div id="products-table">
-            <table class="table">
+            <table class="table" id="checkoutCartProductsTable">
               <thead>
                 <tr>
                   <th>Фото</th>
@@ -325,11 +327,35 @@
                   <th></th>
                 </tr>
               </thead>
-              <tbody>
-              </tbody>
+              <tbody></tbody>
             </table>
           </div>
-          <div class="attention-message"></div>
+
+          <table class="cart__product-table-total">
+            <tbody>
+              <tr>
+                <td class="cart__product-table-total-title">Всего:</td>
+                <td class="cart__product-table-total-value" id="checkoutCartOrderTotal"></td>
+              </tr>
+              <tr>
+                <td class="cart__product-table-total-title">Комиссия за перевод:</td>
+                <td class="cart__product-table-total-value" id="checkoutCartOrderCommisssion"></td>
+              </tr>
+              <tr>
+                <td class="cart__product-table-total-title">К оплате:</td>
+                <td class="cart__product-table-total-value" id="checkoutCartOrderToPay"></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="block-attention">
+            <p data-shipping-method="Самовывоз из г. Черновцы" class="block-attention__item hide">
+              Самовывоз из г. Черновцы не доступен из-за недостаточного количества товара на складе
+            </p>
+            <p data-shipping-method="Самовывоз из г. Ровно" class="block-attention__item hide">
+              Самовывоз из г. Ровно не доступен из-за недостаточного количества товара на складе
+            </p>
+          </div>
         </div>
 
         <div class="col-sm-12">
@@ -346,13 +372,13 @@
             </button>
           </div>
         </div>
-
       </form>
     </div>
   </div>
 </div>
 
 <script src="/catalog/view/theme/default/js/libs/vanillaTextMask.js"></script>
-<script src="/catalog/view/theme/default/js/checkout/cart.min.js?20201029"></script>
+<script src="/catalog/view/theme/default/js/novaposhta.min.js?20201114"></script>
+<script src="/catalog/view/theme/default/js/checkout/cart.min.js?20201110"></script>
 
 {{ footer }}

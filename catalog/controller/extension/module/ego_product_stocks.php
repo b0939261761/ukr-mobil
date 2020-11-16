@@ -23,7 +23,7 @@ class ControllerExtensionModuleEgoProductStocks extends \Ego\Controllers\BaseCon
 
 			$stockList = [
 				[
-					'name' => $this->language->get('text_main_stock'),
+					'name' => 'г. Черновцы',
 					'quantity' => $product->getQuantity()
 				]
 			];
@@ -63,8 +63,8 @@ class ControllerExtensionModuleEgoProductStocks extends \Ego\Controllers\BaseCon
 				'link' => $this->url->link('product/product', 'product_id=' . $product->getProductId()),
 				'image' => $productImage,
 				'name' => empty($description) ? '' : $description->getName(),
-				'price' => $this->currency->format($price, $this->session->data['currency']),
-				'special' => $this->currency->format($priceSpecial, $this->session->data['currency']),
+				'price' => $this->currency->format($price),
+				'special' => $this->currency->format($priceSpecial),
 				'sku' => $product->getSku(),
 				'productCount' => $this->getProductCount($product->getProductId()),
 				'stockList' => $stockList

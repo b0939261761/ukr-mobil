@@ -205,7 +205,7 @@ final class Openbay {
 		// Text
 		$text  = $language->get('text_new_received') . "\n\n";
 		$text .= $language->get('text_new_order_id') . ' ' . $order_info['order_id'] . "\n";
-		$text .= $language->get('text_new_date_added') . ' ' . date($language->get('date_format_short'), strtotime($order_info['date_added'])) . "\n";
+		$text .= $language->get('text_new_date_added') . ' ' . date('d.m.Y', strtotime($order_info['date_added'])) . "\n";
 		$text .= $language->get('text_new_order_status') . ' ' . $order_status . "\n\n";
 		$text .= $language->get('text_new_products') . "\n";
 

@@ -622,169 +622,6 @@ body {
         margin-right: 0;
     }
 
-    //region Footer
-    .footer-information {
-        padding-top: 30px;
-
-        > .header {
-            font-size: 20px;
-            font-weight: 600;
-            color: #333;
-            text-transform: uppercase;
-        }
-
-        > .content {
-            display: flex;
-            width: 100%;
-            margin-top: 20px;
-
-            .col-info {
-                width: 25%;
-
-                .header {
-                    display: flex;
-                    align-items: center;
-
-                    .image {
-                        display: inline-block;
-                        width: 32px;
-                        height: 32px;
-
-                        div {
-                            width: 100%;
-                            height: 100%;
-                            background-repeat: no-repeat;
-                            background-size: contain;
-                            background-position: center;
-                        }
-                    }
-
-                    span {
-                        margin-left: 10px;
-                        font-size: 20px;
-                        font-weight: 600;
-                        color: #333;
-                    }
-                }
-
-                .content {
-                    margin-top: 5px;
-                    padding-left: 42px;
-
-                    &, * {
-                        font-size: 16px;
-                        color: #333;
-                    }
-
-                  .item--schedule {
-                    display: flex;
-                  }
-
-                  .item--schedule :first-child {
-                    width: 70px;
-                  }
-                }
-
-                &.another-info {
-                    .content {
-                        button.btn-payment-info {
-                            padding: 7px 15px;
-                            background-color: #ce4e56;
-                            text-align: center;
-                            font-size: 16px;
-                            font-weight: 600;
-                            color: #fff;
-                            border: none;
-                            outline: none;
-                            text-decoration: none;
-                            border-radius: 5px !important;
-                            box-shadow: 2px 2px 6px #65656566;
-
-                            &:hover {
-                                background-color: #ce4148;
-                            }
-                        }
-
-                        a.btn-payment-info {
-                            color: #5486e2;
-
-                            &:hover {
-                                text-decoration: underline;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    #footer {
-        margin-top: 50px;
-        margin-bottom: 0;
-        padding: 0;
-        padding-top: 15px;
-        border-top: 1px solid #eee;
-        background: none;
-
-        .logo {
-            img {
-                width: 193px;
-            }
-        }
-
-        .socials {
-            display: flex;
-            flex-direction: row;
-            padding-top: 20px;
-            margin-bottom: 20px;
-
-            .item {
-                margin-right: 15px;
-
-                &.telegram {
-                    a {
-                        background-image: url('/ego/assets/img/icon-telegram.png');
-                    }
-                }
-
-                &.facebook {
-                    a {
-                        background-image: url('/ego/assets/img/icon-facebook.png');
-                    }
-                }
-
-                &.instagram {
-                    a {
-                        background-image: url('/ego/assets/img/icon-instagram.png');
-                    }
-                }
-
-                a {
-                    display: block;
-                    width: 25px;
-                    height: 25px;
-                    background-repeat: no-repeat;
-                    background-size: contain;
-                    background-position: center;
-                }
-            }
-        }
-    }
-
-    footer {
-        padding-bottom: 30px;
-        background: none;
-
-        address {
-            width: 100%;
-            margin: 0;
-            margin-top: 20px;
-            padding: 15px 0 !important;
-            border-top: 1px solid #ddd;
-            text-align: center;
-            color: #777;
-        }
-    }
 
     //endregion
 
@@ -1420,19 +1257,6 @@ body {
                 width: 80px;
             }
         }
-
-        //endregion
-
-        .footer-information {
-            > .content {
-                flex-wrap: wrap;
-
-                .col-info {
-                    width: 50%;
-                    margin-bottom: 20px;
-                }
-            }
-        }
     }
 }
 
@@ -1561,12 +1385,6 @@ body {
     }
 }
 
-@media (max-width: 480px) {
-    body .footer-information > .content .col-info {
-        width: 100%;
-    }
-}
-
 .wrapper-breadcrumbs {
   display: flex;
   justify-content: flex-end;
@@ -1592,7 +1410,7 @@ body {
 }
 
 .breadcrumbs__item:not(:last-child)::after {
-  content: '/';
+  content: '>';
   margin-left: 5px;
   color: currentColor;
 }
@@ -1625,3 +1443,63 @@ body {
   text-transform: uppercase;
   margin-bottom: 10px;
 }
+
+
+
+/* ------------------------------------ */
+
+
+.input-radio {
+  font-size: 14px;
+  position: relative;
+  display: block;
+}
+
+.input-radio--inline {
+  display: inline-block;
+}
+
+.input-radio--inline:not(:last-child) {
+  margin-right: 20px;
+}
+
+.input-radio:hover .input-radio__text::before,
+.input-radio__input:focus + .input-radio__text::before {
+  border-color: #ce4e56;
+}
+
+.input-radio__input {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+}
+
+.input-radio__text {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.input-radio__text::before {
+  flex-shrink: 0;
+  content: '';
+  border-radius: 100%;
+  border: 1px solid #b4b4b4;
+  width: 15px;
+  height: 15px;
+  margin-right: 15px;
+  transition: all 250ms ease;
+}
+
+.input-radio__text:empty::before {
+  margin-right: 0;
+}
+
+.input-radio__input:checked + .input-radio__text::before {
+  background-color: #ce4e56;
+  box-shadow: inset 0 0 0 3px #f4f4f4;
+}
+
+/* ------------------------------------ */

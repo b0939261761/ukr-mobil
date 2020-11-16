@@ -43,8 +43,10 @@ $sql = "
 $errorFileImage = './error_exists_file_image.txt';
 if (is_file($errorFileImage)) unlink($errorFileImage);
 
+$i = 0;
 foreach ($db->query($sql)->rows as $product) {
-  $loc = "<loc>{$url->link('product/product', ['product_id' => $product['id']])}</loc>";
+  $link = str_replace('&', '&amp;', $url->link('product/product', ['product_id' => $product['id']]));
+  $loc = "<loc>{$link}</loc>";
   $sitemap .= "<url>{$loc}</url>";
   $images = json_decode($product['images'], true);
 
@@ -167,15 +169,18 @@ function getLinks($categories, $url) {
   $sitemap = '';
   foreach ($categories as $category) {
     $queriesCategory = ['path' => $category['path']];
-    $sitemap .= "<url><loc>{$url->link('product/category', $queriesCategory)}</loc></url>\n";
+    $linkCategory = str_replace('&', '&amp;', $url->link('product/category', $queriesCategory));
+    $sitemap .= "<url><loc>{$linkCategory}</loc></url>";
 
     foreach ($category['brands'] as $brand) {
       $queriesBrand = array_merge($queriesCategory, ['brand' => $brand['id']]);
-      $sitemap .= "<url><loc>{$url->link('product/category', $queriesBrand)}</loc></url>\n";
+      $linkBrand = str_replace('&', '&amp;', $url->link('product/category', $queriesBrand));
+      $sitemap .= "<url><loc>{$linkBrand}</loc></url>";
 
       foreach ($brand['models'] as $model) {
         $queriesModel = array_merge($queriesBrand, ['model' => $model['id']]);
-        $sitemap .= "<url><loc>{$url->link('product/category', $queriesModel)}</loc></url>\n";
+        $linkModel = str_replace('&', '&amp;', $url->link('product/category', $queriesModel));
+        $sitemap .= "<url><loc>{$linkModel}</loc></url>";
       }
     }
 

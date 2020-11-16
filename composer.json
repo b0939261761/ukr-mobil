@@ -1,6 +1,5 @@
 {
     "require": {
-        "guzzlehttp/guzzle": "^7.2",
         "phpoffice/phpspreadsheet": "^1.15",
         "scssphp/scssphp": "^1.2",
         "swiftmailer/swiftmailer": "^6.0",

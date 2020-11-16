@@ -46,7 +46,7 @@ class ControllerInformationLastIncome extends Controller {
         INNER JOIN oc_product_description pd ON pd.product_id = pli.product_id
         INNER JOIN oc_product p ON p.product_id = pli.product_id
         LEFT JOIN oc_product_discount pdc ON pdc.product_id = pli.product_id
-          AND pdc.customer_group_id = 0
+          AND pdc.customer_group_id = {$customerGroupId}
         WHERE pli.income_number = '{$document['income_number']}'
           AND pli.date_income = '{$document['date_income']}'
           AND pd.language_id = 2

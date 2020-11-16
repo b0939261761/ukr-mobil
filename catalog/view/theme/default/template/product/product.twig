@@ -1,477 +1,426 @@
 {{ header }}
 
-<link rel="stylesheet" href="/catalog/view/theme/default/js/libs/lightgallery/css/lightgallery.min.css" />
+<link rel="stylesheet" href="/catalog/view/theme/default/js/libs/lightgallery/css/lightgallery.min.css?1.4.1-beta.0" />
 <link rel="stylesheet" href="/catalog/view/javascript/jquery/owl-carousel/owl.carousel.min.css" />
 <link rel="stylesheet" href="/catalog/view/javascript/jquery/owl-carousel/owl.theme.default.min.css" />
-<link rel="stylesheet" href="/catalog/view/theme/default/stylesheet/egofoxlab/product.min.css?20201029" />
+<link rel="stylesheet" href="/catalog/view/theme/default/stylesheet/egofoxlab/product.min.css?20201112" />
 
-<div
-		id="product-product"
-		class="container"
->
-	<div class="row">
-		{{ column_left }}
+<div id="product-product" class="container">
+  <div class="wrapper-breadcrumbs">
+    <ul class="breadcrumbs">
+      <li class="breadcrumbs__item">
+        <a href="/" class="breadcrumbs__link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+            <path d="M280.37 148.26L96 300.11V464a16 16 0 0 0 16 16l112.06-.29a16 16 0 0 0 15.92-16V368a16 16 0 0 1 16-16h64a16 16 0 0 1 16 16v95.64a16 16 0 0 0 16 16.05L464 480a16 16 0 0 0 16-16V300L295.67 148.26a12.19 12.19 0 0 0-15.3 0zM571.6 251.47L488 182.56V44.05a12 12 0 0 0-12-12h-56a12 12 0 0 0-12 12v72.61L318.47 43a48 48 0 0 0-61 0L4.34 251.47a12 12 0 0 0-1.6 16.9l25.5 31A12 12 0 0 0 45.15 301l235.22-193.74a12.19 12.19 0 0 1 15.3 0L530.9 301a12 12 0 0 0 16.9-1.6l25.5-31a12 12 0 0 0-1.7-16.93z"/>
+          </svg>
+        </a>
+      </li>
 
-		{% if column_left and column_right %}
-			{% set class = 'col-sm-6 productpage' %}
-		{% elseif column_left or column_right %}
-			{% set class = 'col-sm-9 productpage' %}
-		{% else %}
-			{% set class = 'col-sm-12 productpage' %}
-		{% endif %}
+      {% for breadcrumb in breadcrumbs %}
+        <li class="breadcrumbs__item">
+          {% if breadcrumb.link %}
+            <a href="{{ breadcrumb.link }}" class="breadcrumbs__link">{{ breadcrumb.text }}</a>
+          {% else %}
+            {{ breadcrumb.text }}
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
 
-		<div
-				id="content"
-				class="{{ class }}"
-		>
-			{{ content_top }}
+  <div class="product-info">
+    <div class="product__images">
+      <img
+        src="{{ images[0].link }}"
+        alt="{{ images[0].alt }}"
+        title="{{ images[0].title }}"
+        class="product__preview"
+        data-lg-index="1"
+      />
 
-			<div class="row">
+      <div
+        id="productGallery"
+        class="product__gallery"
+      >
+        {% for image in images %}
+          <a href="{{ image.link }}" class="product__gallery-item">
+            <img
+              src="{{ image.thumb }}"
+              alt="{{ image.alt }}"
+              title="{{ image.title }}"
+              class="product__gallery-item-img"
+            />
+          </a>
+        {% endfor %}
+      </div>
+    </div>
 
-				<div class="product-info">
-					{#Images#}
-					<div class="images">
-						{#Preview Image#}
-						<div class="preview">
-							<div style="background-image: url('{{ images[0] }}');"></div>
-						</div>
+    <div class="product__content">
+      <div class="product__code">
+        Код: <span id="productId">{{ product_id }}</span>
+      </div>
 
-						<div
-								id="lightgallery"
-								class="thumbs"
-						>
-							{% for image in images %}
-								<a href="{{ image }}" class="item">
-									<div
-											style="background-image: url({{ image }});"
-											data-image="{{ image }}"
-									></div>
-								</a>
-							{% endfor %}
-						</div>
-					</div>
+      <h1 class="product__name">{{ headingH1 }}</h1>
 
-					{#Content#}
-					<div class="content">
-						{#Code#}
-						<div class="code">
-							{{ text_code }}:
-              <span id="productId">{{ product_id }}</span>
-						</div>
+      <table>
+        <colgroup>
+          <col class="product-property__col-name">
+          <col>
+        </colgroup>
+        <tbody>
+          {% for product_property in product_properties %}
+          <tr>
+            <td class = "product-property__name">
+              {{ product_property.name }}:
+            </td>
+            <td class="product-property__wrapper-items">
+              <div class = 'product-property__items'>
+                {% for value in product_property.values %}
 
-						{#Product name#}
-						<div class="name">
-							{{ heading_title }}
-						</div>
+                  <a
+                    href = '{{ value.link }}'
+                    class = 'product-property__item
+                            {{ value.active ? "product-property__item--active" : "" }}
+                            {{ value.available ? "" : "product-property__item--disabled" }}'
+                  >
+                    {% if value.color %}
+                      <span
+                        class="product-property__item-color"
+                        style="background-color: {{value.color}};"
+                      ></span>
+                    {% endif %}
+                    <span class="product-property__item-text">{{ value.name }}{{item.color}}</span>
+                  </a>
+                {% endfor %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
 
-						<table>
-							<colgroup>
-								<col class="product-property__col-name">
-								<col>
-							</colgroup>
-							<tbody>
-								{% for product_property in product_properties %}
-								<tr>
-									<td class = "product-property__name">
-										{{ product_property.name }}:
-									</td>
-									<td class="product-property__wrapper-items">
-										<div class = 'product-property__items'>
-											{% for value in product_property.values %}
+      <div class="wrapper-info-buttons">
+        <button
+          class="info-button"
+          data-modal-id="modalDelivery"
+        >
+          <span class="info-button__icon"></span>
+          Условия оплаты и доставки
+          </button>
+        <button
+          data-modal-id="modalWarranty"
+          class="info-button"
+          >
+          <span class="info-button__icon"></span>
+          Гарантия
+        </button>
+      </div>
 
-												<a
-													href = '{{ value.link }}'
-													class = 'product-property__item
-																	{{ value.active ? "product-property__item--active" : "" }}
-																	{{ value.available ? "" : "product-property__item--disabled" }}'
-												>
-													{% if value.color %}
-														<span
-															class="product-property__item-color"
-															style="background-color: {{value.color}};"
-														></span>
-													{% endif %}
-													<span class="product-property__item-text">{{ value.name }}{{item.color}}</span>
-												</a>
-											{% endfor %}
-									</td>
-								</tr>
-								{% endfor %}
-							</tbody>
-						</table>
+      <fieldset class="product-stocks">
+        <legend class="product-stocks__caption">Наличие на складах</legend>
 
-						<div class="wrapper-info-buttons">
-							<button
-								class="info-button"
-								data-modal-id="modalDelivery"
-							>
-								<span class="info-button__icon"></span>
-								Условия оплаты и доставки
-								</button>
-							<button
-								data-modal-id="modalWarranty"
-								class="info-button"
-								>
-								<span class="info-button__icon"></span>
-								Гарантия
-							</button>
-						</div>
+        {% if productCount > 0 and productCount <= 2 %}
+          <div
+              class="product-stocks__warning"
+              data-toggle="tooltip"
+              data-placement="bottom"
+              title="Товар заканчивается"
+          >
+            <span>!</span>
+          </div>
+        {% endif %}
 
-						<fieldset class="product-stocks">
-							<legend class="product-stocks__caption">Наличие на складах</legend>
+        <div class="product-stocks__stores">
+          {% for stock in stockList %}
+            <div>
+              <div class="product-stock__store-name">
+                {{ stock.name }}
+              </div>
+              <div class="product-stock__store-quantity">
+                {{ stock.quantity }} шт.
+              </div>
+            </div>
+          {% endfor %}
+      </fieldset>
 
-							{% if productCount > 0 and productCount <= 2 %}
-								<div
-										class="product-stocks__warning"
-										data-toggle="tooltip"
-										data-placement="bottom"
-										title="Товар заканчивается"
-								>
-									<span>!</span>
-								</div>
-							{% endif %}
+      {% if special_usd > 0 %}
+        <div class="product-price product-price--old">
+          <div class="product-price__uah">
+            <span class="product-price__sum-uah">{{price_uah}}</span><span class="product-price__symbol-uah">грн.</span>
+          </div>
+          <div class="product-price__usd">
+            <span class="product-price__symbol-usd">$</span><span class="product-price__sum-usd">{{price_usd}}</span>
+          </div>
+        </div>
+      {% endif %}
 
-							<div class="product-stocks__stores">
-								{% for stock in stockList %}
-									<div>
-										<div class="product-stock__store-name">
-											{{ stock.name }}
-										</div>
-										<div class="product-stock__store-quantity">
-											{{ stock.quantity }} шт.
-										</div>
-									</div>
-								{% endfor %}
-						</fieldset>
+      <div class="product-price">
+        <div class="product-amount">
+          <button
+            id="btnSubtract"
+            class="product-amount__button product-amount__button--subtract"
+            disabled
+          ></button>
+          <input
+            type="number"
+            name="quantity"
+            min="1"
+            value="1"
+            size="2"
+            class="product-amount__input"
+          />
+          <button
+            id="btnAdd"
+            class="product-amount__button product-amount__button--add"
+          ></button>
+        </div>
 
-						{% if special_usd > 0 %}
-							<div class="product-price product-price--old">
-								<div class="product-price__uah">
-									<span class="product-price__sum-uah">{{price_uah}}</span><span class="product-price__symbol-uah">грн.</span>
-								</div>
-								<div class="product-price__usd">
-									<span class="product-price__symbol-usd">$</span><span class="product-price__sum-usd">{{price_usd}}</span>
-								</div>
-							</div>
-						{% endif %}
+        <div class="product-price__uah">
+          <span class="product-price__sum-uah">{{special_usd > 0 ? special_uah : price_uah}}</span><span class="product-price__symbol-uah">грн.</span>
+        </div>
 
-						<div class="product-price">
-							<div class="product-amount">
-								<button
-									id="btnSubtract"
-									class="product-amount__button product-amount__button--subtract"
-									disabled
-								></button>
-								<input
-									type="number"
-									name="quantity"
-									min="{{ minimum }}"
-									value="{{ minimum }}"
-									size="2"
-									class="product-amount__input"
-								/>
-								<button
-									id="btnAdd"
-									class="product-amount__button product-amount__button--add"
-								></button>
-							</div>
+        <div class="product-price__usd">
+          <span class="product-price__symbol-usd">$</span><span class="product-price__sum-usd">{{special_usd > 0 ? special_usd : price_usd}}</span>
+        </div>
+      </div>
 
-							<div class="product-price__uah">
-								<span class="product-price__sum-uah">{{special_usd > 0 ? special_uah : price_uah}}</span><span class="product-price__symbol-uah">грн.</span>
-							</div>
+      <div class="wrapper-product-button">
+        {% if productCount > 0 %}
+          <button
+            id="button-cart"
+            data-loading-text="Загрузка..."
+            class="product-button"
+            >
+              В заказ
+          </button>
+        {% elseif productInWishlist == false %}
+          <button
+            class="to-wishlist"
+            data-product-id="{{ product_id }}"
+          >
+            Оповестить о наличии
+          </button>
+        {% endif %}
+      </div>
+    </div>
+  </div>
 
-							<div class="product-price__usd">
-								<span class="product-price__symbol-usd">$</span><span class="product-price__sum-usd">{{special_usd > 0 ? special_usd : price_usd}}</span>
-							</div>
-						</div>
 
-						<div class="wrapper-product-button">
-							{% if productCount > 0 %}
-								<button
-									id="button-cart"
-									data-loading-text="Загрузка..."
-									class="product-button"
-									>
-										В заказ
-								</button>
-							{% elseif productInWishlist == false %}
-								<button
-									class="to-wishlist"
-									data-product-id="{{ product_id }}"
-								>
-									Оповестить о наличии
-								</button>
-							{% endif %}
-						</div>
-					</div>
-				</div>
+  <div id="tabs_info" class="product-tab">
+    <ul class="nav nav-tabs">
+      <li class="active">
+        <a href="#tab-description" data-toggle="tab">Описание</a>
+      </li>
+      {% if review_status %}
+        <li>
+          <a
+              href="#tab-review"
+              data-toggle="tab"
+          >{{ tab_review }}</a>
+        </li>
+      {% endif %}
+    </ul>
+    <div class="tab-content">
+      <div
+          class="tab-pane active"
+          id="tab-description"
+      >{{ description }}</div>
+      {% if review_status %}
+        <div
+            class="tab-pane"
+            id="tab-review"
+        >
+          <form
+              class="form-horizontal"
+              id="form-review"
+          >
+            <div id="review"></div>
+            <h4>Написать отзыв</h4>
+            {% if review_guest %}
+              <div class="form-group required">
+                <div class="col-sm-12">
+                  <label class="control-label" for="input-name">Ваше имя:</label>
+                  <input
+                      type="text"
+                      name="name"
+                      value="{{ customer_name }}"
+                      id="input-name"
+                      class="form-control"
+                  />
+                </div>
+              </div>
+              <div class="form-group required">
+                <div class="col-sm-12">
+                  <label
+                      class="control-label"
+                      for="input-review"
+                  >Ваш отзыв:</label>
+                  <textarea
+                      name="text"
+                      rows="5"
+                      id="input-review"
+                      class="form-control"
+                  ></textarea>
+                  <div class="help-block">
+                    <span style="color: #FF0000;">
+                      Примечание:</span> HTML разметка не поддерживается! Используйте обычный текст.
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group required">
+                <div class="col-sm-12">
+                  <label class="control-label">Оценка:</label>
+                  &nbsp;&nbsp;&nbsp;Плохо&nbsp;
 
-				<!-- product page tab code start-->
-				{% if column_left and column_right %}
-					{% set class = 'col-sm-6' %}
-				{% elseif column_left or column_right %}
-					{% set class = 'col-sm-12' %}
-				{% else %}
-					{% set class = 'col-sm-12' %}
-				{% endif %}
-				<div
-						id="tabs_info"
-						class="product-tab {{ class }}"
-				>
-					<ul class="nav nav-tabs">
-						<li class="active">
-							<a
-									href="#tab-description"
-									data-toggle="tab"
-							>{{ tab_description }}</a>
-						</li>
-						{% if attribute_groups %}
-							<li>
-								<a
-										href="#tab-specification"
-										data-toggle="tab"
-								>{{ tab_attribute }}</a>
-							</li>
-						{% endif %}
-						{% if review_status %}
-							<li>
-								<a
-										href="#tab-review"
-										data-toggle="tab"
-								>{{ tab_review }}</a>
-							</li>
-						{% endif %}
-					</ul>
-					<div class="tab-content">
-						<div
-								class="tab-pane active"
-								id="tab-description"
-						>{{ description }}</div>
-						{% if attribute_groups %}
-							<div
-									class="tab-pane"
-									id="tab-specification"
-							>
-								<table class="table table-bordered">
-									{% for attribute_group in attribute_groups %}
-										<thead>
-											<tr>
-												<td colspan="2">
-													<strong>{{ attribute_group.name }}</strong>
-												</td>
-											</tr>
-										</thead>
-										<tbody>
-											{% for attribute in attribute_group.attribute %}
-												<tr>
-													<td>{{ attribute.name }}</td>
-													<td>{{ attribute.text }}</td>
-												</tr>
-											{% endfor %}
-										</tbody>
-									{% endfor %}
-								</table>
-							</div>
-						{% endif %}
-						{% if review_status %}
-							<div
-									class="tab-pane"
-									id="tab-review"
-							>
-								<form
-										class="form-horizontal"
-										id="form-review"
-								>
-									<div id="review"></div>
-									<h4>{{ text_write }}</h4>
-									{% if review_guest %}
-										<div class="form-group required">
-											<div class="col-sm-12">
-												<label
-														class="control-label"
-														for="input-name"
-												>{{ entry_name }}</label>
-												<input
-														type="text"
-														name="name"
-														value="{{ customer_name }}"
-														id="input-name"
-														class="form-control"
-												/>
-											</div>
-										</div>
-										<div class="form-group required">
-											<div class="col-sm-12">
-												<label
-														class="control-label"
-														for="input-review"
-												>{{ entry_review }}</label>
-												<textarea
-														name="text"
-														rows="5"
-														id="input-review"
-														class="form-control"
-												></textarea>
-												<div class="help-block">{{ text_note }}</div>
-											</div>
-										</div>
-										<div class="form-group required">
-											<div class="col-sm-12">
-												<label class="control-label">{{ entry_rating }}</label>
-												&nbsp;&nbsp;&nbsp; {{ entry_bad }}&nbsp;
-												<input id="rating1" type="radio" name="rating" value="1" />
-                        <label for="rating1"></label>
+                  <label class="input-radio">
+                    <input type="radio" name="rating" class="input-radio__input" value="1" />
+                    <span class="input-radio__text input-radio__text--inline"></span>
+                  </label>
 
-												&nbsp;
-												<input id="rating2" type="radio" name="rating" value="2" />
-                        <label for="rating2"></label>
+                  <label class="input-radio">
+                    <input type="radio" name="rating" class="input-radio__input" value="2" />
+                    <span class="input-radio__text input-radio__text--inline"></span>
+                  </label>
 
-												&nbsp;
-												<input id="rating3" type="radio" name="rating" value="3" />
-                        <label for="rating3"></label>
+                  <label class="input-radio">
+                    <input type="radio" name="rating" class="input-radio__input" value="3" />
+                    <span class="input-radio__text input-radio__text--inline"></span>
+                  </label>
 
-												&nbsp;
-												<input id="rating4" type="radio" name="rating" value="4" />
-                        <label for="rating4"></label>
+                  <label class="input-radio">
+                    <input type="radio" name="rating" class="input-radio__input" value="4" />
+                    <span class="input-radio__text input-radio__text--inline"></span>
+                  </label>
 
-												&nbsp;
-												<input id="rating5" type="radio" name="rating" value="5" />
-                        <label for="rating5"></label>
-												&nbsp;{{ entry_good }}
+                  <label class="input-radio">
+                    <input type="radio" name="rating" class="input-radio__input" value="5" />
+                    <span class="input-radio__text input-radio__text--inline"></span>
+                  </label>
+                  &nbsp;Хорошо
+                </div>
+              </div>
+              {# {{ captcha }} #}
+              <div class="buttons clearfix">
+                <div class="pull-right">
+                  <button
+                      type="button"
+                      id="button-review"
+                      data-loading-text="Загрузка..."
+                      class="btn btn-primary"
+                  >Продолжить</button>
+                </div>
+              </div>
+            {% else %}
+
+            {% endif %}
+          </form>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  {% if products %}
+    <div class="box related">
+      <div class="box-heading">
+        <span class="title_inner">Рекомендуемые товары</span>
+      </div>
+      <div class="box-content">
+        <div class="carousel-wrap">
+          <div class="nav prev"></div>
+          <div class="nav next"></div>
+          <div class="owl-carousel owl-theme related-carousel">
+            {% for product in products %}
+              <div class="item">
+                <div class="product-block product-thumb transition">
+                  <div class="product-block-inner">
+                    <div class="product-image-block-inner">
+                      <div class="image">
+                        {% if product.thumb_swap %}
+                          <a href="{{ product.href }}">
+                            <img
+                                src="{{ product.thumb }}"
+                                title="{{ product.name }}"
+                                alt="{{ product.name }}"
+                                class="img-responsive reg-image"
+                            />
+                            <img
+                                class="img-responsive hover-image"
+                                src="{{ product.thumb_swap }}"
+                                title="{{ product.name }}"
+                                alt="{{ product.name }}"
+                            />
+                          </a>
+                        {% else %}
+                          <a href="{{ product.href }}">
+                            <img
+                                src="{{ product.thumb }}"
+                                title="{{ product.name }}"
+                                alt="{{ product.name }}"
+                                class="img-responsive"
+                            />
+                          </a>
+                        {% endif %}
+                        {% if not product.special %}
+                        {% else %}
+                          <span class="saleicon sale">Sale</span>
+                        {% endif %}
                       </div>
-										</div>
-										{{ captcha }}
-										<div class="buttons clearfix">
-											<div class="pull-right">
-												<button
-														type="button"
-														id="button-review"
-														data-loading-text="{{ text_loading }}"
-														class="btn btn-primary"
-												>{{ button_continue }}</button>
-											</div>
-										</div>
-									{% else %}
-										{{ text_login }}
-									{% endif %}
-								</form>
-							</div>
-						{% endif %}
-					</div>
-				</div>
+                    </div>
+                    <div class="product-details">
+                      <div class="caption">
+                        <div>
+                          <a href="{{ product.href }} ">{{ product.name }} </a>
+                        </div>
 
-				{% if products %}
-					<div class="box related">
-						<div class="box-heading">
-							<span class="title_inner">{{ text_related }}</span>
-						</div>
-						<div class="box-content">
-							<div class="carousel-wrap">
-								<div class="nav prev"></div>
-								<div class="nav next"></div>
-								<div class="owl-carousel owl-theme related-carousel">
-									{% for product in products %}
-										<div class="item">
-											<div class="product-block product-thumb transition">
-												<div class="product-block-inner">
-													<div class="product-image-block-inner">
-														<div class="image">
-															{% if product.thumb_swap %}
-																<a href="{{ product.href }}">
-																	<img
-																			src="{{ product.thumb }}"
-																			title="{{ product.name }}"
-																			alt="{{ product.name }}"
-																			class="img-responsive reg-image"
-																	/>
-																	<img
-																			class="img-responsive hover-image"
-																			src="{{ product.thumb_swap }}"
-																			title="{{ product.name }}"
-																			alt="{{ product.name }}"
-																	/>
-																</a>
-															{% else %}
-																<a href="{{ product.href }}">
-																	<img
-																			src="{{ product.thumb }}"
-																			title="{{ product.name }}"
-																			alt="{{ product.name }}"
-																			class="img-responsive"
-																	/>
-																</a>
-															{% endif %}
-															{% if not product.special %}
-															{% else %}
-																<span class="saleicon sale">Sale</span>
-															{% endif %}
-														</div>
-													</div>
-													<div class="product-details">
-														<div class="caption">
-															<h4>
-																<a href="{{ product.href }} ">{{ product.name }} </a>
-															</h4>
-
-															{% if product.price %}
-																<p class="price">
-																	{% if not product.special %}
-																		{{ product.price }}
-																	{% else %}
-																		<span class="price-new">{{ product.special }}</span>
-																		<span class="price-old">{{ product.price }}</span>
-																	{% endif %}
-																	{% if product.tax %}
-																		<span class="price-tax">{{ text_tax }} {{ product.tax }}</span>
-																	{% endif %}
-																</p>
-															{% endif %}
-														</div>
-													</div>
-													<span
-															class="related_default_width"
-															style="display:none; visibility:hidden"
-													></span>
-													<!-- Megnor Related Products Start -->
-												</div>
-											</div>
-										</div>
-									{% endfor %}
-								</div>
-							</div>
-						</div>
-					</div>
-				{% endif %}
-
-			</div>
-
-			{{ content_bottom }}
-		</div>
-		{{ column_right }}
-	</div>
+                        {% if product.price %}
+                          <p class="price">
+                            {% if not product.special %}
+                              {{ product.price }}
+                            {% else %}
+                              <span class="price-new">{{ product.special }}</span>
+                              <span class="price-old">{{ product.price }}</span>
+                            {% endif %}
+                          </p>
+                        {% endif %}
+                      </div>
+                    </div>
+                    <span
+                        class="related_default_width"
+                        style="display:none; visibility:hidden"
+                    ></span>
+                    <!-- Megnor Related Products Start -->
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
 </div>
 
 <div class="wrapper-form-modal" id="modalWarranty" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="form-modal">
-		<header class="form-modal__header">
-			<button class="form-modal__btn-close" aria-label="Закрыть">&times;</button>
-		</header>
-		<div class="form-modal__body">{{ warranty }}</div>
-	</div>
+  <div class="form-modal">
+    <header class="form-modal__header">
+      <button class="form-modal__btn-close" aria-label="Закрыть">&times;</button>
+    </header>
+    <div class="form-modal__body">{{ warranty }}</div>
+  </div>
 </div>
 
 <div class="wrapper-form-modal" id="modalDelivery" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="form-modal">
-		<header class="form-modal__header">
-			<button class="form-modal__btn-close" aria-label="Закрыть">&times;</button>
-		</header>
-		<div class="form-modal__body">{{ delivery }}</div>
-	</div>
+  <div class="form-modal">
+    <header class="form-modal__header">
+      <button class="form-modal__btn-close" aria-label="Закрыть">&times;</button>
+    </header>
+    <div class="form-modal__body">{{ delivery }}</div>
+  </div>
 </div>
 
 <script src="/catalog/view/javascript/megnor/bootstrap-notify.min.js"></script>
 <script src="/catalog/view/javascript/jquery/owl-carousel/owl.carousel.min.js"></script>
-<script src="/catalog/view/theme/default/js/libs/lightgallery/js/lightgallery.min.js"></script>
-<script src="/catalog/view/theme/default/js/product/product.min.js?20201030"></script>
+<script src="/catalog/view/theme/default/js/libs/lightgallery/js/lightgallery.min.js?1.4.1-beta.0"></script>
+<script src="/catalog/view/theme/default/js/product/product.min.js?20201112"></script>
 
 {{ footer }}

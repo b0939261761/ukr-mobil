@@ -1,0 +1,71 @@
+<style>
+.subscribe-on-news-and-stock {
+  max-width: 300px;
+  margin-bottom: 20px;
+}
+
+.subscribe-on-news-and-stock .header {
+  font-size: 12px;
+  color: #333;
+}
+
+.subscribe-on-news-and-stock form {
+  position: relative;
+  display: flex;
+  margin-top: 5px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.subscribe-on-news-and-stock form input {
+  width: 100%;
+  height: 50px;
+  padding-left: 10px;
+  padding-right: 40px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+}
+
+.subscribe-on-news-and-stock form button {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 35px;
+  height: 100%;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-size: 16px;
+  background-position: center;
+  background-image: url(/ego/assets/img/icon-send-button.png);
+}
+
+.subscribe-on-news-and-stock form button:hover,
+.subscribe-on-news-and-stock form button:active,
+.subscribe-on-news-and-stock form button:focus {
+  background-color: #3333330d;
+}
+</style>
+
+<div class="subscribe-on-news-and-stock">
+  <div class="header">
+    Узнайте первыми о скидках, новинках и других суперпредложениях
+  </div>
+  <div class="row"><form>
+      <input
+          type="text"
+          name="ego-form-field-email"
+          placeholder="Введите ваш e-mail"
+          required
+      >
+      <button class="ego-btn-subscribe"></button>
+    </form>
+  </div>
+</div>
+
+<script>
+window.addEventListener('load', () => {
+  (new EgoNewsletterComponent({elementRef: $('.subscribe-on-news-and-stock')})).init();
+});
+</script>

@@ -46,7 +46,21 @@ class ProductFilterProvider {
       if (empty($this->model)) $sql .= " LEFT JOIN models m ON m.id = pm.model_id ";
     }
 
-    if (!empty($this->filters)) $sql .= " LEFT JOIN products_filters pf ON pf.product_id = p.product_id";
+    if (!empty($this->filters)) {
+      $filters = [];
+      foreach ($this->filters as $value) $filters[] = "filter_value_id = {$value}";
+      $filtersSQL = implode(' OR ', $filters);
+      $countFilter = count($this->filters);
+
+      $sql .= "
+        INNER JOIN LATERAL (
+          SELECT product_id FROM products_filters
+          WHERE product_id = p.product_id AND {$filtersSQL}
+          GROUP BY product_id
+          HAVING COUNT(*) = {$countFilter}
+        ) pf ON pf.product_id = p.product_id
+      ";
+    }
 
     $sql .= "
       LEFT JOIN oc_product_description pd ON p.product_id = pd.product_id
@@ -70,13 +84,6 @@ class ProductFilterProvider {
 
     if (!empty($this->model)) $sql .= " AND pm.model_id = {$this->model}";
     elseif (!empty($this->brand)) $sql .= " AND m.brand_id = {$this->brand}";
-
-    if (!empty($this->filters)) {
-      $filters = [];
-      foreach ($this->filters as $value) $filters[] = "pf.filter_value_id = {$value}";
-      $filtersSQL = implode(' AND ', $filters);
-      $sql .= " AND {$filtersSQL}";
-    }
 
     if (!empty($this->stock)) {
       if ($this->stock == 1) $sql .= " AND p.quantity > 0";
@@ -103,7 +110,21 @@ class ProductFilterProvider {
       if (empty($this->model)) $sql .= " LEFT JOIN models m ON m.id = pm.model_id ";
     }
 
-    if (!empty($this->filters)) $sql .= " LEFT JOIN products_filters pf ON pf.product_id = p.product_id";
+    if (!empty($this->filters)) {
+      $filters = [];
+      foreach ($this->filters as $value) $filters[] = "filter_value_id = {$value}";
+      $filtersSQL = implode(' OR ', $filters);
+      $countFilter = count($this->filters);
+
+      $sql .= "
+        INNER JOIN LATERAL (
+          SELECT product_id FROM products_filters
+          WHERE product_id = p.product_id AND {$filtersSQL}
+          GROUP BY product_id
+          HAVING COUNT(*) = {$countFilter}
+        ) pf ON pf.product_id = p.product_id
+      ";
+    }
 
     $sql .= "
       LEFT JOIN oc_product_description pd ON p.product_id = pd.product_id
@@ -129,14 +150,6 @@ class ProductFilterProvider {
 
     if (!empty($this->model)) $sql .= " AND pm.model_id = {$this->model}";
     elseif (!empty($this->brand)) $sql .= " AND m.brand_id = {$this->brand}";
-
-    if (!empty($this->filters)) {
-      $filters = [];
-      foreach ($this->filters as $value) $filters[] = "pf.filter_value_id = {$value}";
-      $filtersSQL = implode(' AND ', $filters);
-      $sql .= " AND {$filtersSQL}";
-    }
-
 
     if (!empty($this->stock) || !empty($this->available)) {
       $sql .= " AND po.quantity > 0";
@@ -262,6 +275,7 @@ class ProductFilterProvider {
     ";
 
     // file_put_contents('./ego/src/Providers/___LOG___.txt', $sql);
+
     $items = $this->db->query($sql)->rows;
 
     foreach ($items as &$item) {

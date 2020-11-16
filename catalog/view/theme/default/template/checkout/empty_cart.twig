@@ -1,4 +1,18 @@
 {{ header }}
+
+<style>
+  .wrapper-btn {
+    display: flex;
+    justify-content: center;
+  }
+
+  @media (min-width: 577px) {
+    .wrapper-btn {
+      justify-content: flex-end;
+    }
+  }
+</style>
+
 <div class="container">
   <div class="wrapper-breadcrumbs">
     <ul class="breadcrumbs">
@@ -18,6 +32,15 @@
 
   <h1 class="page-title">{{ headingH1 }}</h1>
 
-  Ваша корзина пуста!
+  <p>Ваша корзина пуста!</p>
+
+  <div class="wrapper-btn">
+    <a href="{{ linkHome }}" class="btn-new btn-new--success btn-new--inline">
+      <span class="btn-new__wrapper-text">
+        Продолжить
+      </span>
+    </a>
+  </div>
 </div>
+
 {{ footer }}

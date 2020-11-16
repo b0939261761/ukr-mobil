@@ -56,15 +56,5 @@ function BaseComponent(context) {
 		return formData;
 	};
 
-	function init() {
-
-	}
-
-	init();
-
-	//region Auxiliary functions
-
-	//endregion
-
 	return self;
 }

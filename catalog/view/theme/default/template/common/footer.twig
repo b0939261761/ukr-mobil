@@ -1,192 +1,201 @@
-<div class="container footer-information">
-  <div class="header">
-    Информация
-  </div>
+<style>
+  .footer {
+    padding-top: 30px;
+  }
 
-  <div class="content">
-    <div class="col-info receive-calls">
-      <div class="header">
-        <div class="image">
-          <div style="background-image: url('/ego/assets/img/icon-calendar.png');"></div>
+  .footer__title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+
+  .footer__wrapper-information {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: -20px;
+  }
+
+  .footer__information {
+    padding-left: 40px;
+    position: relative;
+    width: 220px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+  }
+
+  .footer__information::before {
+    content: '';
+    left: 0;
+    position: absolute;
+    background-image: url('/ego/assets/img/icon-calendar.png');
+    height: 32px;
+    width: 32px;
+  }
+
+  .footer__information--schedule::before {
+    background-image: url('/ego/assets/img/icon-calendar.png');
+  }
+
+  .footer__information--phones::before {
+    background-image: url('/ego/assets/img/icon-call.png');
+  }
+
+  .footer__information--phones::before {
+    background-image: url('/ego/assets/img/icon-delivery.png');
+  }
+
+  .footer__information-title {
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 32px;
+    margin-bottom: 10px;
+  }
+
+  .footer__information-content {
+    font-size: 16px;
+  }
+
+  .footer__information--schedule .footer__information-content-item :first-child {
+    display: inline-block;
+    width: 70px;
+  }
+
+  .footer__logo {
+    width: 193px;
+    margin-bottom: 15px;
+  }
+
+  .footer__wrapper-socials {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .footer__social{
+    margin-right: 15px;
+    width: 25px;
+    height: 25px;
+    background-size: contain;
+    background-position: center;
+  }
+
+  .footer__social--telegram {
+    background-image: url('/ego/assets/img/icon-telegram.png');
+  }
+
+  .footer__social--facebook {
+    background-image: url('/ego/assets/img/icon-facebook.png');
+  }
+
+  .footer__social--instagram {
+    background-image: url('/ego/assets/img/icon-instagram.png');
+  }
+
+  .footer__address {
+    text-align: center;
+    color: #777;
+    margin-bottom: 5px;
+  }
+</style>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__title">
+      ИНФОРМАЦИЯ
+    </div>
+
+    <div class="footer__wrapper-information">
+      <div class="footer__information footer__information--schedule">
+        <div class="footer__information-title">Прием звонков:</div>
+        <div class="footer__information-content">
+          <div class="footer__information-content-item">
+            <span>Пн</span>
+            <span>10:00 - 16:00</span>
+          </div>
+          <div class="footer__information-content-item">
+            <span>Вт - Пт</span>
+            <span>9:30 - 17:00</span>
+          </div>
+          <div class="footer__information-content-item">
+            <span>Сб</span>
+            <span>9:30 - 14:00</span>
+          </div>
+          <div class="footer__information-content-item">
+            <span>Вс</span>
+            <span>Выходной</span>
+          </div>
         </div>
-        <span>
-          Прием звонков:
-        </span>
       </div>
-      <div class="content">
-        <div class="item item--schedule">
-          <span>Пн</span>
-          <span>10:00 - 16:00</span>
+
+      <div class="footer__information footer__information--phones">
+        <div class="footer__information-title">Черновцы</div>
+        <div class="footer__information-content">
+          <div class="footer__information-content-item">+38 050 274 2790</div>
+          <div class="footer__information-content-item">+38 095 765 1080</div>
+          <div class="footer__information-content-item">+38 093 765 1080</div>
+          <div class="footer__information-content-item">+38 068 765 1080</div>
         </div>
-        <div class="item item--schedule">
-          <span>Вт - Пт</span>
-          <span>9:30 - 17:00</span>
+      </div>
+
+      <div class="footer__information footer__information--phones">
+        <div class="footer__information-title">Ровно</div>
+        <div class="footer__information-content">
+          <div class="footer__information-content-item">+38 096 907 5550</div>
+          <div class="footer__information-content-item">+38 095 907 5550</div>
+          <div class="footer__information-content-item">+38 073 907 5550</div>
         </div>
-        <div class="item item--schedule">
-          <span>Сб</span>
-          <span>9:30 - 14:00</span>
+      </div>
+
+      <div class="footer__information footer__information--phones">
+        <div class="footer__information-title">Сервис Ровно</div>
+        <div class="footer__information-content">
+          <div class="footer__information-content-item">+38 099 555 0001</div>
+          <div class="footer__information-content-item">+38 096 555 0011</div>
+          <div class="footer__information-content-item">+38 063 414 7777</div>
         </div>
-        <div class="item item--schedule">
-          <span>Вс</span>
-          <span>Выходной</span>
+      </div>
+
+      <div class="footer__information footer__information--delivery">
+        <div class="footer__information-title">Доставка</div>
+        <div class="footer__information-content">
+          <div class="footer__information-content-item">Новая Почта</div>
+          <div class="footer__information-content-item">Самовывоз</div>
+          <div class="footer__information-content-item">Курьерская доставка по городу Черновцы</div>
         </div>
       </div>
     </div>
 
-    <div class="col-info phones">
-      <div class="header">
-        <div class="image">
-          <div style="background-image: url('/ego/assets/img/icon-call.png');"></div>
-        </div>
-        <span>Черновцы</span>
-      </div>
-      <div class="content">
-        <div class="item">
-          +38 050 274 2790
-        </div>
-        <div class="item">
-          +38 095 765 1080
-        </div>
-        <div class="item">
-          +38 093 765 1080
-        </div>
-        <div class="item">
-          +38 068 765 1080
-        </div>
-      </div>
+    <img class="footer__logo" src="{{ logoImage }}" alt="{{ logoTitle }}" />
+
+    {{ footer_newsletter }}
+
+    <div class="footer__wrapper-socials">
+      <a class="footer__social footer__social--telegram" href="https://t.me/ukrmobil" target="_blank"></a>
+      <a class="footer__social footer__social--facebook" href="https://www.facebook.com/Ukrmobil1/" target="_blank"></a>
+      <a class="footer__social footer__social--instagram" href="https://www.instagram.com/ukrmobil_cv/" target="_blank"></a>
+      <a href="{{ linkSitemap }}">Карта сайта</a>
     </div>
 
-    <div class="col-info phones">
-      <div class="header">
-        <div class="image">
-          <div style="background-image: url('/ego/assets/img/icon-call.png');"></div>
-        </div>
-        <span>Ровно</span>
-      </div>
-      <div class="content">
-        <div class="item">
-          +38 096 907 5550
-        </div>
-        <div class="item">
-          +38 095 907 5550
-        </div>
-        <div class="item">
-          +38 073 907 5550
-        </div>
-      </div>
-    </div>
-
-    <div class="col-info phones">
-      <div class="header">
-        <div class="image">
-          <div style="background-image: url('/ego/assets/img/icon-call.png');"></div>
-        </div>
-        <span>Сервис Ровно</span>
-      </div>
-      <div class="content">
-        <div class="item">
-          +38 099 555 0001
-        </div>
-        <div class="item">
-          +38 096 555 0011
-        </div>
-        <div class="item">
-          +38 063 414 7777
-        </div>
-      </div>
-    </div>
-
-    <div class="col-info phones">
-      <div class="header">
-        <div class="image">
-          <div style="background-image: url('/ego/assets/img/icon-delivery.png');"></div>
-        </div>
-        <span>
-          Доставка
-        </span>
-      </div>
-      <div class="content">
-        <div class="item">
-          Новая Почта
-          <br>
-          Самовывоз
-          <br>
-          Курьерская доставка по городу Черновцы
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<footer>
-  <div id="footer">
-    <div class="container">
-      <a class="logo" href="{{ home }}">
-        <img src="{{ logo }}" title="{{ name }}" alt="{{ name }}" class="img-responsive" />
-      </a>
-
-      {{ ego_newsletter }}
-
-      <div class="socials">
-        <div class="item telegram">
-          <a href="https://t.me/ukrmobil" target="_blank"></a>
-        </div>
-
-        <div class="item facebook">
-          <a href="https://www.facebook.com/Ukrmobil1/" target="_blank"></a>
-        </div>
-
-        <div class="item instagram">
-          <a href="https://www.instagram.com/ukrmobil_cv/" target="_blank"></a>
-        </div>
-      </div>
-
-      <a href="{{ sitemap }}">Карта сайта</a>
-    </div>
-  </div>
-
-  <address class="container">
-    ©UKR-MOBIL 1991-2020 All rights reserved
-  </address>
-
-  <div class="wrapper-preloader">
-    <div class="preloader">
-      <div></div>
-      <div></div>
-      <div></div>
-    </div>
+    <address class="footer__address">
+      ©UKR-MOBIL 1991-2020 All rights reserved
+    </address>
   </div>
 </footer>
 
 <link rel="stylesheet" href="/catalog/view/javascript/font-awesome/css/font-awesome.min.css" />
 <link rel="stylesheet" href="/catalog/view/javascript/bootstrap/css/bootstrap.min.css" />
 <link rel="stylesheet" href="/catalog/view/theme/default/js/libs/proxima/proxima.popup.min.css" />
-<link rel="stylesheet" href="/catalog/view/theme/default/stylesheet/egofoxlab/main.min.css?20201029" />
+<link rel="stylesheet" href="/catalog/view/theme/default/stylesheet/egofoxlab/main.min.css?20201114" />
 <link rel="stylesheet" href="/catalog/view/theme/default/stylesheet/megnor/animate.min.css" />
-<link rel="stylesheet" href="/catalog/view/theme/default/stylesheet/stylesheet.min.css?20201104"/>
+<link rel="stylesheet" href="/catalog/view/theme/default/stylesheet/stylesheet.min.css?20201114"/>
 
-<script src="/ego/assets/js/egofoxlab/utils.js"></script>
+<script src="/ego/assets/js/egofoxlab/utils.js?20201113"></script>
 <script src="/ego/assets/js/egofoxlab/base.component.js"></script>
 
-<script src="/catalog/view/theme/default/js/egofoxlab/main.component.min.js?20201029"></script>
 <script src="/catalog/view/theme/default/js/egofoxlab/callback.component.min.js?20201029"></script>
 <script src="/catalog/view/theme/default/js/egofoxlab/newsletter.component.min.js?20201029"></script>
-
-<script src="/catalog/view/javascript/common.min.js?20201029"></script>
-<script src="/catalog/view/javascript/megnor/custom.min.js?20201029"></script>
 <script src="/catalog/view/theme/default/js/libs/proxima/proxima.popup.min.js?20201029"></script>
-
-<script>
-  $(function () {
-    window.uiService = { popup: (new EgoProximaPopup()) };
-    var mainComponent = (new MainComponent({elementRef: $('body')}))
-      .isLogged({{ isLogged }})
-      .init();
-    var cCallback = (new CallbackComponent({elementRef: null})).init();
-  });
-</script>
-
 <script src="/catalog/view/javascript/bootstrap/js/bootstrap.min.js"></script>
-<script src="/catalog/view/theme/default/js/main.min.js?20201104"></script>
+<script src="/catalog/view/theme/default/js/main.min.js?20201116"></script>
 </body>
 </html>

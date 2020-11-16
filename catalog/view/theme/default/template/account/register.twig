@@ -127,56 +127,35 @@
       </div>
 
       <div class="form-group">
-        <label
-          for="region"
-          class="col-sm-2 control-label"
-        >
-          Область
+        <label for="npRegion" class="control-label col-sm-2">
+          * Область
         </label>
         <div class="col-sm-10">
-          <input
-            name="region"
-            id="region"
-            class="form-control restrict-language"
-            value="{{ region }}"
-            placeholder="Киевская"
-          />
+          <select class="select" id="npRegion" name="region" data-selected-value="{{ region }}">
+            <option value="" disabled selected>-- Выберите значение --</option>
+          </select>
         </div>
       </div>
 
       <div class="form-group">
-        <label
-          for="city"
-          class="col-sm-2 control-label"
-        >
-          Город
+        <label for="npCity" class="control-label col-sm-2">
+          * Город
         </label>
         <div class="col-sm-10">
-          <input
-            name="city"
-            id="city"
-            class="form-control restrict-language"
-            value="{{ city }}"
-            placeholder="Киев"
-          />
+          <select class="select" id="npCity" name="city" data-selected-value="{{ city }}">
+            <option value="" disabled selected>-- Выберите значение --</option>
+          </select>
         </div>
       </div>
 
-      <div class="form-group control-label">
-        <label
-          for="warehouse"
-          class="col-sm-2 control-label"
-        >
-          Отделение
+      <div class="form-group">
+        <label for="npWarehouse" class="col-sm-2 control-label">
+          * Отделение
         </label>
         <div class="col-sm-10">
-          <input
-            name="warehouse"
-            id="warehouse"
-            class="form-control restrict-language"
-            value="{{ warehouse }}"
-            placeholder="Отделение №5"
-          />
+          <select class="select" id="npWarehouse" name="warehouse" data-selected-value="{{ warehouse }}">
+            <option value="" disabled selected>-- Выберите значение --</option>
+          </select>
         </div>
       </div>
     </fieldset>
@@ -230,22 +209,27 @@
       <div class="form-group">
         <label class="col-sm-2 control-label">Подписаться на новости</label>
         <div class="col-sm-10">
-          <input
-            id="newsletter_yes"
-            type="radio"
-            name="newsletter"
-            value="1"
-            checked
-          />
-          <label for="newsletter_yes" class="radio-inline">Да</label>
 
-          <input
-            id="newsletter_no"
-            type="radio"
-            name="newsletter"
-            value="0"
-          />
-          <label for="newsletter_no" class="radio-inline">Нет</label>
+          <label class="input-radio input-radio--inline">
+            <input
+              type="radio"
+              name="newsletter"
+              class="input-radio__input"
+              value="1"
+              checked
+            />
+            <span class="input-radio__text">Да</span>
+          </label>
+
+          <label class="input-radio input-radio--inline">
+            <input
+              type="radio"
+              name="newsletter"
+              class="input-radio__input"
+              value="0"
+            />
+            <span class="input-radio__text">Нет</span>
+          </label>
         </div>
       </div>
     </fieldset>
@@ -308,7 +292,6 @@
             </div>
           </div>
 
-          {#Get callback#}
           <div class="get-callback">
             <button
               class="btn"
@@ -329,19 +312,35 @@
 </div>
 
 <script src="/catalog/view/theme/default/js/libs/vanillaTextMask.js"></script>
+<script src="/catalog/view/theme/default/js/novaposhta.min.js?20201114"></script>
 
 <script>
-  window.addEventListener('load', () => {
-    const phoneElem = document.getElementById('input-telephone');
-    const phoneValue = phoneElem.value;
-    phoneElem.value = phoneValue.replace(/^38/, '');
-    const mask = ['+', '3', '8','(', /\d/, /\d/, /\d/, ')', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/];
-    vanillaTextMask.maskInput({ inputElement: phoneElem, mask, showMask: true });
+window.addEventListener('load', () => {
+  const phoneElem = document.getElementById('input-telephone');
+  const phoneValue = phoneElem.value;
+  phoneElem.value = phoneValue.replace(/^38/, '');
+  const mask = ['+', '3', '8','(', /\d/, /\d/, /\d/, ')', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/];
+  vanillaTextMask.maskInput({ inputElement: phoneElem, mask, showMask: true });
 
-    const onFormSubmit = () => phoneElem.value = phoneElem.value.replace(/\(|\)|-|\+|_/g, '');
-    const form = document.querySelector('form');
-    form.addEventListener('submit', onFormSubmit);
-  });
+  const onFormSubmit = () => phoneElem.value = phoneElem.value.replace(/\(|\)|-|\+|_/g, '');
+  const form = document.querySelector('form');
+  form.addEventListener('submit', onFormSubmit);
+
+  const addClassError = el => {
+    const formGroup = el.closest('.form-group');
+    if (formGroup) formGroup.classList.add('has-error');
+  };
+
+  const textDangerList = document.querySelectorAll('.text-danger');
+  if (textDangerList) textDangerList.forEach(addClassError);
+
+  //-----------------------------------
+
+  const setRegions = async () => {
+    const regions = await novaPoshta.getRegions();
+    regions.forEach(el => region.append(new Option(el.Description, el.Ref)));
+  }
+});
 </script>
 
 {{ footer }}

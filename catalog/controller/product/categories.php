@@ -66,21 +66,19 @@ class ControllerProductCategories extends BaseController {
               $active2 = false;
               if ($categoryId2 == ($categories[2]['category_id'] ?? 0)) $active2 = true;
 
-              $params2 = "path={$categoryId0}_{$categoryId1}_{$categoryId2}{$searchParams}";
 							$childrenData1[] = [
                 'name' => $child2['name'],
                 'active' => $active2,
-								'href' => $this->url->link($urlRoute, $params2)
+								'href' => $this->url->link('product/category', ['path' => "path={$categoryId0}_{$categoryId1}_{$categoryId2}"])
               ];
 						}
 					}
 
-          $params1 = "path={$categoryId0}_{$categoryId1}{$searchParams}";
           $childrenData0[] = [
             'name' => $child1['name'],
             'children' => $childrenData1,
             'active' => $active1,
-						'href' => $this->url->link($urlRoute, $params1)
+						'href' => $this->url->link('product/category', ['path' => "{$categoryId0}_{$categoryId1}"])
 					];
 				}
 			}
@@ -89,7 +87,7 @@ class ControllerProductCategories extends BaseController {
 				'name' => $child0['name'],
         'children' => $childrenData0,
         'active' => $active0,
-				'href' => $this->url->link($urlRoute, "path={$categoryId0}{$searchParams}")
+				'href' => $this->url->link('product/category', ['path' => "{$categoryId0}"])
       ];
 		}
 

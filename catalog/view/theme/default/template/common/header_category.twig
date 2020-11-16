@@ -344,7 +344,7 @@
       {% for child1 in categories %}
         <li class="header-category__level-item header-category__level1-item">
           <a
-            href="{{ child1.href }}"
+            href="{{ child1.link }}"
             class="header-category__link header-category__link--level1"
           >
             {{ child1.name }}
@@ -354,7 +354,7 @@
             <ul class="header-category__level header-category__level2">
               <li class="header-category__level-item header-category__level2-item">
                 <a
-                  href="{{ child1.href }}"
+                  href="{{ child1.link }}"
                   class="header-category__link header-category__link--level2"
                 >
                   Все в {{ child1.name }}
@@ -364,7 +364,7 @@
               {% for child2 in child1.children %}
                 <li class="header-category__level-item header-category__level2-item">
                   <a
-                    href="{{ child2.href }}"
+                    href="{{ child2.link }}"
                     class="header-category__link header-category__link--level2"
                   >
                     {{ child2.name }}
@@ -374,7 +374,7 @@
                     <ul class="header-category__level header-category__level3">
                       <li class="header-category__level-item header-category__level2-item">
                         <a
-                          href="{{ child2.href }}"
+                          href="{{ child2.link }}"
                           class="header-category__link header-category__link--level3"
                         >
                           Все в {{ child2.name }}
@@ -384,7 +384,7 @@
                       {% for child3 in child2.children %}
                         <li class="header-category__level-item header-category__level2-item">
                           <a
-                            href="{{ child3.href }}"
+                            href="{{ child3.link }}"
                             class="header-category__link header-category__link--level3"
                           >
                             {{ child3.name }}
@@ -427,7 +427,6 @@ window.addEventListener('load', () => {
   headerCategoryToggle.addEventListener('click', onClickheaderCategoryToggle);
 
   // ----------------------------
-
 
   const classToggleOpen = element => {
     const className = 'header-category__level-item--open';
@@ -474,7 +473,4 @@ window.addEventListener('load', () => {
   const headerCategoryLinkList = headerCategory.querySelectorAll('.header-category__link');
   headerCategoryLinkList.forEach(el => el.addEventListener('click', onClickHeaderCategoryLink));
 });
-
-
-
 </script>

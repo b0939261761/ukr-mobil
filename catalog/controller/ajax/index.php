@@ -14,7 +14,6 @@ class ControllerAjaxIndex extends BaseController {
 
 		try {
 			$this->onlyPost();
-			$this->load->language('ajax/index');
 
 			//region Input Data
 			$transferData = $this->getInput('transferData');
@@ -41,7 +40,7 @@ class ControllerAjaxIndex extends BaseController {
 				->setView('mails.callback')
 				->setBodyData([
 					'header-title' => 'New callback',
-					'text' => sprintf($this->language->get('callback_mail_text'), $phoneNumber)
+					'text' => "Поступил запрос на обратный звонок <b>{$phoneNumber}</b>"
 				])
 				->sendMail();
 
