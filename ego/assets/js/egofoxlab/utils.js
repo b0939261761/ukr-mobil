@@ -41,6 +41,7 @@ function _request(params) {
 	$.ajax(defaults);
 }
 
+
 function collectFormData(selector, container, options) {
 	var $ = jQuery;
 	options = empty(options) ? {} : options;

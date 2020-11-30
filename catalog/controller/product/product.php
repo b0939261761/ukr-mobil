@@ -147,7 +147,7 @@ class ControllerProductProduct extends BaseController {
       $data['special_uah'] = number_format(round($special_usd * $currency_course, 0), 0, '.', '');
     }
 
-    $data['review_status'] = $this->config->get('config_review_status');
+    // $data['review_status'] = $this->config->get('config_review_status');
     $data['review_guest'] = $this->config->get('config_review_guest') || $this->customer->isLogged();
 
     $data['customer_name'] = $this->customer->isLogged()
@@ -298,82 +298,61 @@ class ControllerProductProduct extends BaseController {
   }
 
   public function review() {
-    $this->load->language('product/product');
+    $productId = (int)($this->request->get['productId'] ?? 0);
+    $page = (int)($this->request->get['page'] ?? 1);
 
-    $this->load->model('catalog/review');
+    $limit = 5;
+    $start = ($page - 1) * $limit;
 
-    if (isset($this->request->get['page'])) {
-      $page = $this->request->get['page'];
-    } else {
-      $page = 1;
-    }
+    $sql = "
+      SELECT
+        review_id,
+        author,
+        rating,
+        text,
+        DATE_FORMAT(date_added, '%d.%m.%Y') AS date
+      FROM oc_review
+      WHERE product_id = {$productId} AND status
+      ORDER BY date_added DESC
+      LIMIT {$start}, {$limit}
+    ";
 
-    $data['reviews'] = array();
+    $data['reviews'] = $this->db->query($sql)->rows;
+    foreach ($data['reviews'] as &$item) $item['text'] = nl2br($item['text']);
 
-    $review_total = $this->model_catalog_review->getTotalReviewsByProductId($this->request->get['product_id']);
-
-    $results = $this->model_catalog_review->getReviewsByProductId($this->request->get['product_id'], ($page - 1) * 5, 5);
-
-    foreach ($results as $result) {
-      $data['reviews'][] = array(
-        'author' => $result['author'],
-        'text' => nl2br($result['text']),
-        'rating' => (int)$result['rating'],
-        'date_added' => date('d.m.Y', strtotime($result['date_added']))
-      );
-    }
+    $sql = "SELECT COUNT(*) AS total FROM oc_review WHERE product_id = {$productId} AND status";
+    $total = $this->db->query($sql)->row['total'];
 
     $pagination = new Pagination();
-    $pagination->total = $review_total;
+    $pagination->total = $total;
     $pagination->page = $page;
-    $pagination->limit = 5;
-    $pagination->url = $this->url->link('product/product/review', 'product_id=' . $this->request->get['product_id'] . '&page={page}');
-
+    $pagination->limit = $limit;
+    $query = ['productId' => $productId, 'page' => '{page}'];
+    $pagination->url = $this->url->link('product/product/review', $query);
     $data['pagination'] = $pagination->render();
 
-    $data['results'] = sprintf($this->language->get('text_pagination'), ($review_total) ? (($page - 1) * 5) + 1 : 0, ((($page - 1) * 5) > ($review_total - 5)) ? $review_total : ((($page - 1) * 5) + 5), $review_total, ceil($review_total / 5));
-    $data['header'] = $this->load->controller('common/header');
     $this->response->setOutput($this->load->view('product/review', $data));
   }
 
-  public function write() {
-    $this->load->language('product/product');
+  public function reviewAdd() {
+    $requestData = json_decode(file_get_contents('php://input'), true);
 
-    $json = [];
+    $customerId = (int)$this->customer->getId();
+    $name = $this->db->escape($requestData['name'] ?? '');
+    $text = $this->db->escape($requestData['text'] ?? '');
+    $rating = (int)($requestData['rating'] ?? 0);
+    $productId = (int)($requestData['productId'] ?? 0);
 
-    if ($this->request->server['REQUEST_METHOD'] == 'POST') {
-      if ((utf8_strlen($this->request->post['name']) < 3) || (utf8_strlen($this->request->post['name']) > 25)) {
-        $json['error'] = 'Имя должно быть от 3 до 25 символов!';
-      }
+    $sql = "
+      INSERT INTO oc_review (
+        author, customer_id, product_id, text, rating, date_added
+      ) VALUES (
+        '{$name}', {$customerId}, {$productId}, '{$text}', {$rating}, NOW()
+      )
+    ";
 
-      if ((utf8_strlen($this->request->post['text']) < 25) || (utf8_strlen($this->request->post['text']) > 1000)) {
-        $json['error'] = 'Текст отзыва должен быть от 25 до 1000 символов!';
-      }
-
-      if (empty($this->request->post['rating']) || $this->request->post['rating'] < 0 || $this->request->post['rating'] > 5) {
-        $json['error'] = 'Пожалуйста, выберите оценку!';
-      }
-
-      // Captcha
-      if ($this->config->get('captcha_' . $this->config->get('config_captcha') . '_status') && in_array('review', (array)$this->config->get('config_captcha_page'))) {
-        $captcha = $this->load->controller('extension/captcha/' . $this->config->get('config_captcha') . '/validate');
-
-        if ($captcha) {
-          $json['error'] = $captcha;
-        }
-      }
-
-      if (!isset($json['error'])) {
-        $this->load->model('catalog/review');
-
-        $this->model_catalog_review->addReview($this->request->get['product_id'], $this->request->post);
-
-        $json['success'] = 'Спасибо за ваш отзыв. Он поступил администратору для проверки на спам и вскоре будет опубликован.';
-      }
-    }
-
-    $this->response->addHeader('Content-Type: application/json');
-    $this->response->setOutput(json_encode($json));
+    $this->db->query($sql);
+    $this->response->setOutput('');
   }
 
 

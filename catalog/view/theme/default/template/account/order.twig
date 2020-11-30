@@ -1,16 +1,26 @@
 {{ header }}
 <style>
-.wrapper-btn {
-  display: flex;
-  flex-direction: column;
-}
-
-@media (min-width: 768px) {
-  .wrapper-btn {
-    flex-direction: row;
-    justify-content: flex-end;
+  .shipping-info {
+    list-style: none;
+    padding-left: 15px;
+    margin-bottom: 0;
   }
-}
+
+  .shipping-info__item:not(:last-child) {
+    margin-bottom: 5px;
+  }
+
+  .wrapper-btn {
+    display: flex;
+    flex-direction: column;
+  }
+
+  @media (min-width: 768px) {
+    .wrapper-btn {
+      flex-direction: row;
+      justify-content: flex-end;
+    }
+  }
 </style>
 
 <div class="container">
@@ -42,16 +52,22 @@
     <tbody>
       <tr>
         <td style="width: 50%;">
-          <p><b>Заказ №</b> {{ order.orderId }}</p>
+          <p><b>Заказ №</b> {{ orderId }}</p>
           <p><b>Добавлено</b> {{ order.dateAdded }}</p>
           <p><b>Статус</b> {{ order.statusName }}</p>
+          <p><b>Получатель:</b></p>
+          <ul class="shipping-info">
+            <li class="shipping-info__item">{{ order.shippingFullName }}</li>
+            <li class="shipping-info__item">{{ order.shippingPhone }}</li>
+            <li class="shipping-info__item">{{ order.email }}</li>
+          </ul>
         </td>
         <td style="width: 50%;">
-          {% if paymentMethod %}
+          {% if order.paymentMethod %}
             <p><b>Способ оплаты</b> {{ order.paymentMethod }}</p>
           {% endif %}
           <p><b>Способ доставки</b> {{ order.shippingMethod }}</p>
-          {% if ttn %}
+          {% if order.ttn %}
             <p><b>ТТН</b> {{ order.ttn }}</p>
             <p><b>Отслеживание</b> {{ order.ttnStatus }}</p>
           {% endif %}
@@ -60,7 +76,7 @@
     </tbody>
   </table>
 
-  {% if shippingAddress %}
+  {% if order.shippingAddress %}
     <table class="table table-bordered table-hover">
       <thead><tr><th>Платёжный адрес</th></tr></thead>
       <tbody><tr><td>{{ order.shippingAddress }}</td></tr>
@@ -118,7 +134,14 @@
 
   <div class="wrapper-btn">
     <a href="{{ linkOrders }}" class="btn-new btn-new--success btn-new--inline">
-      Назад
+      <span class="btn-new__wrapper-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+          <path d="M257.5 445.1l-22.2 22.2c-9.4 9.4-24.6 9.4-33.9 0L7 273c-9.4-9.4-9.4-24.6 0-33.9L201.4 44.7c9.4-9.4 24.6-9.4 33.9 0l22.2 22.2c9.5 9.5 9.3 25-.4 34.3L136.6 216H424c13.3 0 24 10.7 24 24v32c0 13.3-10.7 24-24 24H136.6l120.5 114.8c9.8 9.3 10 24.8.4 34.3z"/>
+        </svg>
+      </span>
+      <span class="btn-new__wrapper-text">
+        Назад
+      </span>
     </a>
   </div>
 </div>

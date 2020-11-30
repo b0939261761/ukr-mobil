@@ -1,6 +1,7 @@
 <?
 class ControllerCommonHeader extends Controller {
   public function index() {
+    header('Cache-Control: no-store');
     $data['base'] = $this->config->get('config_' . ($this->request->server['HTTPS'] ? 'ssl' : 'url'));
 
     $uri = substr(explode('?', $this->request->server['REQUEST_URI'], 2)[0], 1);
@@ -36,9 +37,10 @@ class ControllerCommonHeader extends Controller {
 
     $data['search'] = $this->load->controller('common/search');
 
-    if ($this->request->get['route'] != 'checkout/cart') {
+    if (!isset($this->request->get['route']) || $this->request->get['route'] != 'checkout/cart') {
       $data['cart'] = $this->load->controller('common/cart');
     }
+
     $data['headerMenu'] = $this->load->controller('common/header_menu');
     $data['headerCategory'] = $this->load->controller('common/header_category');
 

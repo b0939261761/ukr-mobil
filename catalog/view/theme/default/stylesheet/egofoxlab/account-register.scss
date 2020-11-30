@@ -83,7 +83,7 @@
   flex-direction: column;
 }
 
-.wrapper-buttons :first-child {
+.wrapper-buttons > :first-child {
   margin-bottom: 20px;
 }
 
@@ -93,7 +93,7 @@
     justify-content: space-between;
   }
 
-  .wrapper-buttons :first-child {
+  .wrapper-buttons > :first-child {
     margin-bottom: 0;
     order: 1;
   }

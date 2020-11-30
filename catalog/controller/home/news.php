@@ -1,7 +1,7 @@
 <?
 class ControllerHomeNews extends Controller {
   public function index() {
-      $sql = "
+    $sql = "
       SELECT
         ep.ep_id AS id,
         DATE_FORMAT(ep.ep_date_update, '%d.%m.%Y') AS date,

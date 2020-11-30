@@ -69,7 +69,7 @@ class ControllerProductCategories extends BaseController {
 							$childrenData1[] = [
                 'name' => $child2['name'],
                 'active' => $active2,
-								'href' => $this->url->link('product/category', ['path' => "path={$categoryId0}_{$categoryId1}_{$categoryId2}"])
+								'href' => $this->url->link('product/category', ['path' => "{$categoryId0}_{$categoryId1}_{$categoryId2}"])
               ];
 						}
 					}

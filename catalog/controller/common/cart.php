@@ -5,7 +5,7 @@ class ControllerCommonCart extends Controller {
 
     $sessionId = $this->db->escape($this->session->getId());
     $customerId = (int)$this->customer->getId();
-    $customerGroupId = (int)$this->customer->getGroupId();
+    $customerGroupId = (int)($this->customer->getGroupId() ?? 1);
 
     $sql = "
       WITH

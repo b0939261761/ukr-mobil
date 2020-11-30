@@ -1,7 +1,7 @@
 <?
 require_once(__DIR__ . '/../config.php');
 require_once(DIR_SYSTEM . 'startup.php');
-require_once(__DIR__ . '/../catalog/controller/startup/seo_pro.php');
+require_once(DIR_APPLICATION . 'controller/startup/seo_pro.php');
 
 $registry = new Registry();
 
@@ -9,7 +9,7 @@ $config = new Config();
 $config->load('catalog');
 
 $db = new DB(DB_DRIVER, DB_HOSTNAME, DB_USERNAME, DB_PASSWORD, DB_DATABASE, DB_PORT);
-$url = new Url(HTTP_SERVER, HTTPS_SERVER);
+$url = new Url(HTTPS_SERVER, HTTPS_SERVER);
 
 $registry->set('db', $db);
 $registry->set('cache', new Cache($config->get('cache_engine'), $config->get('cache_expire')));

@@ -65,7 +65,7 @@
             data-placement="bottom"
             title=""
             data-original-title="В этой вкладке вы можете просматривать историю своих заказов и всю
-              информацию о каждом из заказов, сформировать exel-файл по заказу, а
+              информацию о каждом из заказов, а
               также отслеживать отправление прямо на сайте!"
         >
           <span>ⓘ</span>
@@ -127,24 +127,24 @@
       >
         <div class="row">
           <div class="col-sm-12 col-md-3 form-group">
-            <label>
+            <label for="balanceDateFrom">
               Дата с:
             </label>
             <input
-              id="balance-date-from"
+              id="balanceDateFrom"
               class="form-control"
-              value="{{ balanceDateFrom }}"
+              value="{{ dateFrom }}"
               readonly
             />
           </div>
           <div class="col-sm-12 col-md-3 form-group">
-            <label>
+            <label for="balanceDateTo">
               Дата по:
             </label>
             <input
-              id="balance-date-to"
+              id="balanceDateTo"
               class="form-control"
-              value="{{ balanceDateTo }}"
+              value="{{ dateTo }}"
               readonly
             >
           </div>
@@ -333,6 +333,31 @@
           role="tabpanel"
           aria-labelledby="home-tab"
       >
+        <div class="row">
+          <div class="col-sm-12 col-md-3 form-group">
+            <label for="dateFrom">
+              Дата с:
+            </label>
+            <input
+              id="historyDateFrom"
+              class="form-control"
+              value="{{ dateFrom }}"
+              readonly
+            />
+          </div>
+          <div class="col-sm-12 col-md-3 form-group">
+            <label for="historyDateTo">
+              Дата по:
+            </label>
+            <input
+              id="historyDateTo"
+              class="form-control"
+              value="{{ historyDateTo }}"
+              readonly
+            >
+          </div>
+        </div>
+
         <table
           id="orderHistoryTable"
           class="order-history-table"
@@ -354,130 +379,7 @@
             </tr>
           </thead>
           <tbody>
-            {% for item in products %}
-              <tr
-                data-url="{{ item.link }}"
-                data-order-id="{{ item.orderId }}"
-                class="order-history-table__row-desktop-show"
-              >
-                <td>{{ item.orderId }}</td>
-                <td>{{ item.date }}</td>
-                <td>{{ item.orderStatusName }}</td>
-                <td>{{ item.paymentMethod }}</td>
-                <td>{{ item.shippingMethod }}</td>
-                <td>{{ item.shippingFullName }}</td>
-                <td>{{ item.ttn }}</td>
-                <td>{{ item.storeName }}</td>
-                <td>{{ item.ttnStatus }}</td>
-                <td>{{ item.totalUAH }}&nbsp;грн.<br>${{ item.totalUSD }}</td>
-                <td>
-                  <a href="#" class="order-receipt-download" id="orderReceiptDownload"
-                  data-order-id="{{ item.orderId }}">
-                    <img src="/ego/assets/img/download.png" />
-                  </a>
-                </td>
-                <td>
-                  <a href="{{ item.link }}" class="open">
-                    <img src="/ego/assets/img/icon-search.png" width="20" />
-                  </a>
-                </td>
-              </tr>
-              <tr class="order-history-table__row-mobile-show">
-                <td>
-                  <details class="order-history-table__mobile-accordion">
-                    <summary class="order-history-table__mobile-toggle">
-                      <ul class = "order-history-table__mobile-list-wrapper">
-                        <li class="order-history-table__mobile-list-item">
-                          <div class="order-history-table__mobile-list-item-title">Номер заказа</div>
-                          <div>{{ item.orderId }}</div>
-                        </li>
-                        <li class="order-history-table__mobile-list-item">
-                          <div class="order-history-table__mobile-list-item-title">Дата</div>
-                          <div>{{ item.date }}</div>
-                        </li>
-                        <li class="order-history-table__mobile-list-item">
-                          <div class="order-history-table__mobile-list-item-title">Статус</div>
-                          <div>{{ item.orderStatusName }}</div>
-                        </li>
-                        <li class="order-history-table__mobile-list-item">
-                          <div class="order-history-table__mobile-list-item-title">Тип доставки</div>
-                          <div>{{ item.shippingMethod }}</div>
-                        </li>
-                        <li class="order-history-table__mobile-list-item">
-                          <div class="order-history-table__mobile-list-item-title">Сумма</div>
-                          <div>{{ item.totalUAH }}&nbsp;грн. (${{ item.totalUSD }})</div>
-                        </li>
-                      </ul>
-                    </summary>
 
-                    <ul class = "order-history-table__mobile-list-wrapper order-history-table__mobile-list-wrapper--content">
-                      <li class="order-history-table__mobile-list-item">
-                        <div class="order-history-table__mobile-list-item-title">Способ оплаты</div>
-                        <div>{{ item.paymentMethod }}</div>
-                      </li>
-                      <li class="order-history-table__mobile-list-item">
-                        <div class="order-history-table__mobile-list-item-title">Контрагент</div>
-                        <div>{{ item.shippingFullName }}</div>
-                      </li>
-                      <li class="order-history-table__mobile-list-item">
-                        <div class="order-history-table__mobile-list-item-title">ТТН</div>
-                        <div>{{ item.ttn }}</div>
-                      </li>
-                      <li class="order-history-table__mobile-list-item">
-                        <div class="order-history-table__mobile-list-item-title">Склад отправки</div>
-                        <div>{{ item.storeName }}</div>
-                      </li>
-                      <li class="order-history-table__mobile-list-item">
-                        <div class="order-history-table__mobile-list-item-title">Отслеживание</div>
-                        <div>{{ item.ttnStatus }}</div>
-                      </li>
-                      <li class="order-history-table__mobile-list-item--button">
-                        <button
-                          id="orderReceiptDownload"
-                          class="btn-new btn-new--success"
-                          data-order-id="{{ item.orderId }}"
-                        >
-                          <span class="btn-new__wrapper-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                              <path d="M216 0h80c13.3 0 24 10.7 24 24v168h87.7c17.8 0 26.7 21.5 14.1 34.1L269.7 378.3c-7.5 7.5-19.8 7.5-27.3 0L90.1 226.1c-12.6-12.6-3.7-34.1 14.1-34.1H192V24c0-13.3 10.7-24 24-24zm296 376v112c0 13.3-10.7 24-24 24H24c-13.3 0-24-10.7-24-24V376c0-13.3 10.7-24 24-24h146.7l49 49c20.1 20.1 52.5 20.1 72.6 0l49-49H488c13.3 0 24 10.7 24 24zm-124 88c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20zm64 0c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20z"/>
-                            </svg>
-                          </span>
-                          <span class="btn-new__wrapper-text">
-                            Скачать
-                          </span>
-                        </button>
-                      </li>
-                      <li class="order-history-table__mobile-list-item">
-                        <a
-                          class="btn-new btn-new--success"
-                          href="{{ item.link }}"
-                        >
-                          <span class="btn-new__wrapper-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                              <path d="M256 8C119.043 8 8 119.083 8 256c0 136.997 111.043 248 248 248s248-111.003 248-248C504 119.083 392.957 8 256 8zm0 110c23.196 0 42 18.804 42 42s-18.804 42-42 42-42-18.804-42-42 18.804-42 42-42zm56 254c0 6.627-5.373 12-12 12h-88c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h12v-64h-12c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h64c6.627 0 12 5.373 12 12v100h12c6.627 0 12 5.373 12 12v24z"/>
-                            </svg>
-                          </span>
-                          <span class="btn-new__wrapper-text">
-                            Информация
-                          </span>
-                        </a>
-                      </li>
-                    </ul>
-                  </details>
-                </td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-            {% endfor %}
           </tbody>
         </table>
       </div>
@@ -525,6 +427,6 @@
 <script src="/catalog/view/javascript/megnor/datatables.min.js?1.10.22"></script>
 <script src="/catalog/view/theme/default/js/libs/vanillaTextMask.js"></script>
 <script src="/catalog/view/theme/default/js/novaposhta.min.js?20201114"></script>
-<script src="/catalog/view/theme/default/js/account/account.min.js?20201117"></script>
+<script src="/catalog/view/theme/default/js/account/account.min.js?20201119-1"></script>
 
 {{ footer }}

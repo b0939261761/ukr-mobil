@@ -5,19 +5,22 @@ class ControllerAccountForgotten extends Controller {
   public function index() {
     if ($this->customer->isLogged()) $this->response->redirect($this->url->link('account/account'));
 
-    $this->load->model('account/customer');
-    $data['linkLogin'] = $this->url->link('account/login');
-
-    if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
-      $this->model_account_customer->editCode($this->request->post['email'], token(40));
-      $this->session->data['success'] = 'Новый пароль был выслан на Ваш E-Mail.';
-      $this->response->redirect($data['linkLogin']);
+    if ($this->request->server['REQUEST_METHOD'] == 'POST' && $this->validate()) {
+      $code = token(40);
+      $email = $this->db->escape(($this->request->post['email']));
+      $sql = "UPDATE oc_customer SET code = '${code}' WHERE LOWER(email) = LOWER('${email}')";
+      $this->db->query($sql);
+      $message = 'Новый пароль был выслан на Ваш E-Mail';
+      $this->sendEmail($email, $code);
+      $redirect = $this->url->link('account/login', ['success' => $message]);
+      $this->response->redirect($redirect);
     }
 
     $data['warning'] = $this->warning;
     $data['action'] = $this->url->link('account/forgotten');
     $data['email'] = $this->request->post['email'] ?? '';
 
+    $data['linkLogin'] = $this->url->link('account/login');
     $data['headingH1'] = 'Восстановние пароля';
     $this->document->setTitle($data['headingH1']);
     $this->document->addMeta(['name' => 'robots', 'content' => 'noindex, nofollow']);
@@ -27,17 +30,26 @@ class ControllerAccountForgotten extends Controller {
   }
 
   private function validate() {
-    if (!isset($this->request->post['email']) ||
-        !$this->model_account_customer->getTotalCustomersByEmail($this->request->post['email'])) {
-      $this->warning = 'E-Mail адрес не найден, проверьте и попробуйте еще раз!';
-      return false;
-    }
+    $email = $this->db->escape(($this->request->post['email']));
+    $sql = "SELECT status FROM oc_customer WHERE LOWER(email) = LOWER('{$email}')";
+    $customer = $this->db->query($sql)->row;
 
-    $customer_info = $this->model_account_customer->getCustomerByEmail($this->request->post['email']);
-    if ($customer_info && !$customer_info['status']) {
-      $this->warning = 'Внимание! Ваш аккаунт еще не активирован.';
-    }
-
+    if (empty($customer)) $this->warning = 'E-Mail адрес не найден, проверьте и попробуйте еще раз!';
+    elseif (!$customer['status']) $this->warning = 'Внимание! Ваш аккаунт еще не активирован.';
     return !$this->warning;
+  }
+
+  private function sendEmail($email, $code) {
+    $configService = new \Ego\Services\ConfigService();
+    (new \Ego\Providers\MailProvider())
+      ->setTo($email)
+      ->setFrom($configService->getEmailAdministratorMain(), $configService->getSiteTitle())
+      ->setSubject('UkrMobil - Восcтановление пароля')
+      ->setView('mails.forgotten')
+      ->setBodyData([
+        'linkReset' => $this->url->link('account/reset', ['code' => $code]),
+        'ip'        => $this->request->server['REMOTE_ADDR']
+      ])
+      ->sendMail();
   }
 }

@@ -27,6 +27,9 @@ class ControllerAccountOrder extends Controller {
     $sql = "
       SELECT
         DATE_FORMAT(o.date_added, '%d.%m.%Y %T') AS dateAdded,
+        CONCAT(o.shipping_firstname, ' ', o.shipping_lastname) AS shippingFullName,
+        email,
+        shipping_telephone AS shippingPhone,
         o.ttn,
         o.ttn_status AS ttnStatus,
         o.payment_method AS paymentMethod,

@@ -25,7 +25,7 @@ class ControllerStartupSeoPro extends Controller {
   private function getFiltersByKeyword($keywords) {
     $keywordList = [];
     foreach ($keywords as $keyword) $keywordList[] = "'{$this->db->escape($keyword)}'";
-    $sqlKeywords = implode(',', $keywordList);
+    $sqlKeywords = $this->db->escape(implode(',', $keywordList));
 
     if (empty($sqlKeywords)) return [];
 
@@ -81,11 +81,31 @@ class ControllerStartupSeoPro extends Controller {
 
   // ------------------------------------------
 
+  private function getRedirect($uri) {
+    $sql = "SELECT seo_url_actual AS url
+      FROM oc_seo_url_generator_redirects WHERE seo_url_old = '{$uri}'";
+    return $this->db->query($sql)->row['url'] ?? '';
+  }
+
+  // ------------------------------------------
+
   public function index() {
     // file_put_contents('./catalog/controller/startup/__LOG__.json', "-----------\n" . json_encode($this->request)."\n\n", FILE_APPEND);
-    $this->url->addRewrite($this);
 
-    if (!isset($this->request->get['_route_'])) return $this->validate();
+    $uri = str_replace('&amp;', '&', ltrim($this->request->server['REQUEST_URI'], '/'));
+    $redirect = $this->getRedirect($uri);
+    if ($redirect) return $this->response->redirect($redirect);
+
+    $this->url->addRewrite($this);
+    if (!isset($this->request->get['_route_'])) {
+      if ($this->request->get['route'] == 'error/not_found') return;
+
+      $url = $this->config->get('config_' . ($_SERVER['HTTPS'] ? 'ssl' : 'url')) . $uri;
+      $queries = array_filter($this->request->get, function($k) {return $k != 'route';}, ARRAY_FILTER_USE_KEY);
+      $seo = $this->url->link($this->request->get['route'], $queries);
+      if ($url != $seo) $this->response->redirect($seo);
+      return;
+    }
 
     $route = $this->request->get['_route_'];
     unset($this->request->get['_route_']);
@@ -159,17 +179,6 @@ class ControllerStartupSeoPro extends Controller {
 
   // ------------------------------------------
 
-  private function validate() {
-    if ($this->request->get['route'] == 'error/not_found') return;
-    $uri = str_replace('&amp;', '&', ltrim($this->request->server['REQUEST_URI'], '/'));
-    $url = $this->config->get('config_' . ($_SERVER['HTTPS'] ? 'ssl' : 'url')) . $uri;
-    $queries = array_filter($this->request->get, function($k) {return $k != 'route';}, ARRAY_FILTER_USE_KEY);
-    $seo = $this->url->link($this->request->get['route'], $queries);
-    if ($url != $seo) $this->response->redirect($seo);
-  }
-
-  // ------------------------------------------
-
   public function rewrite($link) {
     $url = parse_url($link);
     $host = "{$url['scheme']}://{$url['host']}/";
@@ -179,6 +188,7 @@ class ControllerStartupSeoPro extends Controller {
     unset($data['route']);
 
     if (in_array($route, ['product/category', 'product/search'])) $isFilters = true;
+    elseif ($route == 'product/product/review') return $link;
     $link = "{$host}index.php?route={$route}";
     if (count($data)) $link .= '&' . http_build_query($data);
 

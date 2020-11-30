@@ -18,3 +18,29 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_URI} !.*\.(ico|gif|jpg|jpeg|png|js|css)
 RewriteRule ^([^?]*) index.php?_route_=$1 [L,QSA]
 
+<FilesMatch "\.(webm|mp4|ico|jpg|jpeg|png|gif|svg|webp|js|css|woff2|woff|ttf|eot)$">
+  Header set Cache-Control "max-age=604800, must-revalidate"
+</FilesMatch>
+
+<IfModule mod_expires.c>
+  ExpiresActive on
+
+  ExpiresByType video/webm "access plus 7 days"
+  ExpiresByType video/mp4 "access plus 7 days"
+
+  ExpiresByType application/javascript "access plus 7 days"
+  ExpiresByType text/javascript "access plus 7 days"
+  ExpiresByType text/css "access plus 7 days"
+
+  ExpiresByType image/x-icon "access plus 7 days"
+  ExpiresByType image/jpeg "access plus 7 days"
+  ExpiresByType image/png "access plus 7 days"
+  ExpiresByType image/gif "access plus 7 days"
+  ExpiresByType image/webp "access plus 7 days"
+  ExpiresByType image/svg+xml "access plus 7 days"
+
+  ExpiresByType application/x-font-otf "access plus 7 days"
+  ExpiresByType application/x-font-ttf "access plus 7 days"
+  ExpiresByType application/font-woff "access plus 7 days"
+  ExpiresByType application/font-woff2 "access plus 7 days"
+</IfModule>

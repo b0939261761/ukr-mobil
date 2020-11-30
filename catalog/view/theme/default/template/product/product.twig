@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="/catalog/view/theme/default/js/libs/lightgallery/css/lightgallery.min.css?1.4.1-beta.0" />
 <link rel="stylesheet" href="/catalog/view/javascript/jquery/owl-carousel/owl.carousel.min.css" />
 <link rel="stylesheet" href="/catalog/view/javascript/jquery/owl-carousel/owl.theme.default.min.css" />
-<link rel="stylesheet" href="/catalog/view/theme/default/stylesheet/egofoxlab/product.min.css?20201112" />
+<link rel="stylesheet" href="/catalog/view/theme/default/stylesheet/egofoxlab/product.min.css?20201119" />
 
 <div id="product-product" class="container">
   <div class="wrapper-breadcrumbs">
@@ -210,112 +210,107 @@
       <li class="active">
         <a href="#tab-description" data-toggle="tab">Описание</a>
       </li>
-      {% if review_status %}
-        <li>
-          <a
-              href="#tab-review"
-              data-toggle="tab"
-          >{{ tab_review }}</a>
-        </li>
-      {% endif %}
+      <li>
+        <a href="#tab-review" data-toggle="tab">{{ tab_review }}</a>
+      </li>
     </ul>
     <div class="tab-content">
-      <div
-          class="tab-pane active"
-          id="tab-description"
-      >{{ description }}</div>
-      {% if review_status %}
-        <div
-            class="tab-pane"
-            id="tab-review"
-        >
-          <form
-              class="form-horizontal"
-              id="form-review"
-          >
-            <div id="review"></div>
-            <h4>Написать отзыв</h4>
-            {% if review_guest %}
-              <div class="form-group required">
-                <div class="col-sm-12">
-                  <label class="control-label" for="input-name">Ваше имя:</label>
-                  <input
-                      type="text"
-                      name="name"
-                      value="{{ customer_name }}"
-                      id="input-name"
-                      class="form-control"
-                  />
-                </div>
+      <div class="tab-pane active" id="tab-description">
+        {{ description }}
+      </div>
+
+      <div class="tab-pane" id="tab-review">
+        <form class="form-horizontal" id="formReview">
+          <div id="review"></div>
+          <div class="review-success hide" id="reviewSuccess">
+            Спасибо за ваш отзыв. Он поступил администратору для проверки на спам и вскоре будет опубликован
+          </div>
+
+          <div>Написать отзыв</div>
+
+          <div class="form-group required">
+            <div class="col-sm-12">
+              <label class="control-label" for="reviewName">Ваше имя:</label>
+              <input
+                name="name"
+                value="{{ customer_name }}"
+                id="reviewName"
+                class="form-control"
+                required
+                minLength=3
+                maxLength=25
+              />
+            </div>
+          </div>
+          <div class="form-group required">
+            <div class="col-sm-12">
+              <label class="control-label" for="reviewText">Ваш отзыв:</label>
+              <textarea
+                name="text"
+                rows="5"
+                id="reviewText"
+                class="form-control"
+                required
+                minLength=25
+                maxLength=1000
+              ></textarea>
+              <div class="help-block">
+                <span style="color: #FF0000;">
+                  Примечание:</span> HTML разметка не поддерживается! Используйте обычный текст.
+                </span>
               </div>
-              <div class="form-group required">
-                <div class="col-sm-12">
-                  <label
-                      class="control-label"
-                      for="input-review"
-                  >Ваш отзыв:</label>
-                  <textarea
-                      name="text"
-                      rows="5"
-                      id="input-review"
-                      class="form-control"
-                  ></textarea>
-                  <div class="help-block">
-                    <span style="color: #FF0000;">
-                      Примечание:</span> HTML разметка не поддерживается! Используйте обычный текст.
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <div class="form-group required">
-                <div class="col-sm-12">
-                  <label class="control-label">Оценка:</label>
-                  &nbsp;&nbsp;&nbsp;Плохо&nbsp;
+            </div>
+          </div>
 
-                  <label class="input-radio">
-                    <input type="radio" name="rating" class="input-radio__input" value="1" />
-                    <span class="input-radio__text input-radio__text--inline"></span>
-                  </label>
+          <div class="wrapper-rating">
+            <div class="rating-title">* Оценка:</div>
+            <div class="wrapper-rating-input">
+              <span class="review-rating-text--bad">Плохо</span>
 
-                  <label class="input-radio">
-                    <input type="radio" name="rating" class="input-radio__input" value="2" />
-                    <span class="input-radio__text input-radio__text--inline"></span>
-                  </label>
+              <label class="input-radio input-radio--inline">
+                <input type="radio" name="rating" class="input-radio__input" value="1" required />
+                <span class="input-radio__text"></span>
+              </label>
 
-                  <label class="input-radio">
-                    <input type="radio" name="rating" class="input-radio__input" value="3" />
-                    <span class="input-radio__text input-radio__text--inline"></span>
-                  </label>
+              <label class="input-radio input-radio--inline">
+                <input type="radio" name="rating" class="input-radio__input" value="2" required />
+                <span class="input-radio__text"></span>
+              </label>
 
-                  <label class="input-radio">
-                    <input type="radio" name="rating" class="input-radio__input" value="4" />
-                    <span class="input-radio__text input-radio__text--inline"></span>
-                  </label>
+              <label class="input-radio input-radio--inline">
+                <input type="radio" name="rating" class="input-radio__input" value="3" required />
+                <span class="input-radio__text"></span>
+              </label>
 
-                  <label class="input-radio">
-                    <input type="radio" name="rating" class="input-radio__input" value="5" />
-                    <span class="input-radio__text input-radio__text--inline"></span>
-                  </label>
-                  &nbsp;Хорошо
-                </div>
-              </div>
-              {# {{ captcha }} #}
-              <div class="buttons clearfix">
-                <div class="pull-right">
-                  <button
-                      type="button"
-                      id="button-review"
-                      data-loading-text="Загрузка..."
-                      class="btn btn-primary"
-                  >Продолжить</button>
-                </div>
-              </div>
-            {% else %}
+              <label class="input-radio input-radio--inline">
+                <input type="radio" name="rating" class="input-radio__input" value="4" required />
+                <span class="input-radio__text"></span>
+              </label>
 
-            {% endif %}
-          </form>
-        </div>
-      {% endif %}
+              <label class="input-radio input-radio--inline">
+                <input type="radio" name="rating" class="input-radio__input" value="5" required />
+                <span class="input-radio__text"></span>
+              </label>
+              <span class="review-rating-text--good">Хорошо</span>
+            </div>
+          </div>
+
+          <div class="col-sm-12">
+            <div class="wrapper-btn">
+              <button class="btn-new btn-new--success btn-new--inline">
+                <span class="btn-new__wrapper-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                    <path d="M433.941 129.941l-83.882-83.882A48 48 0 0 0 316.118 32H48C21.49 32 0 53.49 0 80v352c0 26.51 21.49 48 48 48h352c26.51 0 48-21.49 48-48V163.882a48 48 0 0 0-14.059-33.941zM224 416c-35.346 0-64-28.654-64-64 0-35.346 28.654-64 64-64s64 28.654 64 64c0 35.346-28.654 64-64 64zm96-304.52V212c0 6.627-5.373 12-12 12H76c-6.627 0-12-5.373-12-12V108c0-6.627 5.373-12 12-12h228.52c3.183 0 6.235 1.264 8.485 3.515l3.48 3.48A11.996 11.996 0 0 1 320 111.48z"/>
+                  </svg>
+                </span>
+                <span class="btn-new__wrapper-text">
+                  Отправить
+                </span>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 
@@ -421,6 +416,6 @@
 <script src="/catalog/view/javascript/megnor/bootstrap-notify.min.js"></script>
 <script src="/catalog/view/javascript/jquery/owl-carousel/owl.carousel.min.js"></script>
 <script src="/catalog/view/theme/default/js/libs/lightgallery/js/lightgallery.min.js?1.4.1-beta.0"></script>
-<script src="/catalog/view/theme/default/js/product/product.min.js?20201112"></script>
+<script src="/catalog/view/theme/default/js/product/product.min.js?20201119"></script>
 
 {{ footer }}

@@ -30,7 +30,7 @@ class ControllerCheckoutCart extends Controller {
 
     $sessionId = $this->db->escape($this->session->getId());
     $customerId = (int)$this->customer->getId();
-    $customerGroupId = (int)$this->customer->getGroupId();
+    $customerGroupId = (int)($this->customer->getGroupId() ?? 1);
 
     $sql = "
       WITH
@@ -172,7 +172,7 @@ class ControllerCheckoutCart extends Controller {
 
     $sessionId = $this->db->escape($this->session->getId());
     $customerId = (int)$this->customer->getId();
-    $customerGroupId = (int)$this->customer->getGroupId();
+    $customerGroupId = (int)($this->customer->getGroupId() ?? 1);
 
     $shippingFirstName = $this->db->escape($requestData['firstName'] ?? '');
     $shippingLastName = $this->db->escape($requestData['lastName'] ?? '');
@@ -184,6 +184,10 @@ class ControllerCheckoutCart extends Controller {
     $isValidPhone = (int)($requestData['isValidPhone'] ?? 0);
     $isValidEmail = (int)($requestData['isValidEmail'] ?? 0);
     $comment = $this->db->escape($requestData['comment'] ?? '');
+
+    $region = $this->db->escape($requestData['region'] ?? '');
+    $city = $this->db->escape($requestData['city'] ?? '');
+    $warehouse = $this->db->escape($requestData['warehouse'] ?? '');
 
     $firstName = $shippingFirstName;
     $lastName = $shippingLastName;
@@ -289,6 +293,19 @@ class ControllerCheckoutCart extends Controller {
 
     $sql = "DELETE FROM oc_cart WHERE session_id = '{$sessionId}' AND customer_id = {$customerId}";
     $this->db->query($sql);
+
+    if ($customerId && $warehouse) {
+      $sql = "
+        UPDATE oc_customer SET
+          region = '{$region}',
+          city = '{$city}',
+          warehouse = '{$warehouse}',
+          updated = 1
+        WHERE customer_id = {$customerId} AND warehouse = ''
+      ";
+      $this->db->query($sql);
+    }
+
     $this->response->setOutput($this->url->link('checkout/success', ['orders' => $orderIds]));
   }
 

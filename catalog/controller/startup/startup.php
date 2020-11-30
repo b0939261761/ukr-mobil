@@ -110,7 +110,33 @@ class ControllerStartupStartup extends Controller {
 
 		// Customer
 		$customer = new Cart\Customer($this->registry);
-		$this->registry->set('customer', $customer);
+    $this->registry->set('customer', $customer);
+
+
+    // CART -------------------------
+    $this->db->query("DELETE FROM oc_cart WHERE customer_id = 0 AND date_added < DATE_SUB(NOW(), INTERVAL 1 HOUR)");
+
+    $customerId = (int)$this->customer->getId();
+    if ($customerId) {
+      $sessionId = $this->db->escape($this->session->getId());
+      $sql = "UPDATE oc_cart SET session_id = '{$sessionId}' WHERE customer_id = {$customerId}";
+      $this->db->query($sql);
+
+      $sql = "
+        INSERT INTO oc_cart (session_id, customer_id, product_id, quantity)
+          SELECT * FROM (
+            SELECT session_id, {$customerId}, product_id, quantity AS newQuantity
+              FROM oc_cart WHERE customer_id = 0 AND session_id = '{$sessionId}'
+          ) t
+          ON DUPLICATE KEY UPDATE quantity = quantity + newQuantity
+      ";
+
+      $this->db->query($sql);
+
+      $sql = "DELETE FROM oc_cart WHERE customer_id = 0 AND session_id = '{$sessionId}'";
+      $this->db->query($sql);
+    }
+    // CART END ------------------------
 
 		// Customer Group
 		if (isset($this->session->data['customer']) && isset($this->session->data['customer']['customer_group_id'])) {
@@ -176,17 +202,17 @@ class ControllerStartupStartup extends Controller {
 		// Tax
 		$this->registry->set('tax', new Cart\Tax($this->registry));
 
-		if (isset($this->session->data['shipping_address'])) {
-			$this->tax->setShippingAddress($this->session->data['shipping_address']['country_id'], $this->session->data['shipping_address']['zone_id']);
-		} elseif ($this->config->get('config_tax_default') == 'shipping') {
-			$this->tax->setShippingAddress($this->config->get('config_country_id'), $this->config->get('config_zone_id'));
-		}
+		// if (isset($this->session->data['shipping_address'])) {
+		// 	$this->tax->setShippingAddress($this->session->data['shipping_address']['country_id'], $this->session->data['shipping_address']['zone_id']);
+		// } elseif ($this->config->get('config_tax_default') == 'shipping') {
+		// 	$this->tax->setShippingAddress($this->config->get('config_country_id'), $this->config->get('config_zone_id'));
+		// }
 
-		if (isset($this->session->data['payment_address'])) {
-			$this->tax->setPaymentAddress($this->session->data['payment_address']['country_id'], $this->session->data['payment_address']['zone_id']);
-		} elseif ($this->config->get('config_tax_default') == 'payment') {
-			$this->tax->setPaymentAddress($this->config->get('config_country_id'), $this->config->get('config_zone_id'));
-		}
+		// if (isset($this->session->data['payment_address'])) {
+		// 	$this->tax->setPaymentAddress($this->session->data['payment_address']['country_id'], $this->session->data['payment_address']['zone_id']);
+		// } elseif ($this->config->get('config_tax_default') == 'payment') {
+		// 	$this->tax->setPaymentAddress($this->config->get('config_country_id'), $this->config->get('config_zone_id'));
+		// }
 
 		$this->tax->setStoreAddress($this->config->get('config_country_id'), $this->config->get('config_zone_id'));
 

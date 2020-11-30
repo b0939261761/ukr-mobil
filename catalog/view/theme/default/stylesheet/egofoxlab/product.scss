@@ -600,3 +600,59 @@ body.modal-open {
 .form-modal__btn-close:hover {
     color: #000;
 }
+
+// ---------------------
+
+.wrapper-rating {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+  .wrapper-rating {
+    flex-direction: column;
+  }
+}
+
+.rating-title {
+  margin-right: 15px;
+}
+
+@media (max-width: 768px) {
+  .rating-title {
+    margin-bottom: 15px;
+  }
+}
+
+.wrapper-rating-input {
+  display: flex;
+  align-items: center;
+}
+
+.review-rating-text--bad {
+  margin-right: 15px;
+}
+
+.review-rating-text--good {
+  margin-right: 15px;
+}
+
+.review-success {
+  border-radius: 3px;
+  display: flow-root;
+  background-color: #f9dfdf;
+  padding: 10px;
+  margin: 15px 0;
+}
+
+.wrapper-btn {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 768px) {
+  .wrapper-btn {
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+}

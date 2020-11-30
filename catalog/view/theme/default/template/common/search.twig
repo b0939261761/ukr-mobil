@@ -126,7 +126,7 @@
       }
 
       const search = async propInput => {
-        const input = propInput.trim().replace(/\\/, '');
+        const input = propInput.trim().replace(/\\/g, '');
         const data = input.length < 2 ? [] : await getSuggestion(input);
         openSearchSuggestion(data);
         renderSuggestion(input, data);
@@ -160,7 +160,8 @@
       if (!inputSearch.value) return;
       const url = new URL(`${window.location.protocol}//${window.location.hostname}/index.php`);
       url.searchParams.set('route', 'product/search');
-      url.searchParams.set('search', inputSearch.value);
+      const search = inputSearch.value.trim().replace(/\\/g, '');
+      if (search) url.searchParams.set('search', search);
       window.location = url.toString();
     }
 
