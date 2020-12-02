@@ -114,10 +114,6 @@ div.required .control-label:before {
   padding: 0px 0 0;
 }
 
-#common-home #column-left {
-  margin-top: 0;
-}
-
 .container {
   position: relative;
   margin-left: auto;
@@ -820,11 +816,6 @@ a:hover {
 
 .header-top-cms .special-off a:hover {
   color: #7c7c7c;
-}
-
-.common-home .a {
-  color: #7c7c7c;
-  text-decoration: none;
 }
 
 .call-us a {
@@ -2271,16 +2262,6 @@ nav.nav-container {
   direction: ltr;
 }
 
-#common-home {
-  padding-top: 15px;
-  padding-bottom: 20px;
-  width: 1220px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 10px;
-  padding-right: 10px;
-}
-
 .menu-container {
   width: 1200px;
 }
@@ -2499,11 +2480,6 @@ nav.nav-container {
   padding: 0px;
 }
 
-/* 3-col layout */
-
-#common-home .row {
-  margin-left: auto;
-}
 
 #column-left {
   width: 22.5%;
@@ -2555,11 +2531,6 @@ nav.nav-container {
   font-weight: normal;
   padding: 4px 0 4px 13px;
   border: none;
-}
-
-
-.common-home.layout-2.left-col #content {
-  margin-top: 0;
 }
 
 #column-left #banner0 {
@@ -2724,22 +2695,8 @@ nav.nav-container {
   margin-bottom: 20px;
   border: 1px solid transparent;
   border-radius: 0px;
-  -webkit-border-radius: 0px;
-  -khtml-border-radius: 0px;
-  -moz-border-radius: 0px;
 }
 
-.common-home .alert-success .close {
-  float: right;
-  right: 0px;
-  top: -2px;
-  color: #000;
-}
-
-.common-home .alert-success a {
-  color: #7c7c7c;
-
-}
 
 #account-register .alert-danger {
   background-color: #f2dede;
@@ -8343,10 +8300,6 @@ a.list-group-item {
     padding: 0 10px;
   }
 
-  .header_cms.container, #common-home {
-    width: 980px;
-  }
-
   .left-col .container .nav-container {
     width: 69% !important;
   }
@@ -8427,10 +8380,6 @@ a.list-group-item {
 
   #column-left .box-product .image, #column-right .box-product .image {
     margin-right: 10px;
-  }
-
-  #common-home .row, .left-col .row {
-    margin: 0;
   }
 }
 
@@ -8872,10 +8821,6 @@ a.list-group-item {
     display: none;
   }
 
-  .header_cms.container, #common-home {
-    width: 724px;
-  }
-
   .layout-2.left-col #column-left {
     padding: 0;
   }
@@ -9174,10 +9119,6 @@ a.list-group-item {
 
   .swiper-viewport-banner #banner3 {
     float: left;
-  }
-
-  #common-home {
-    width: 100%;
   }
 
   .product-list .product-block .list_left {

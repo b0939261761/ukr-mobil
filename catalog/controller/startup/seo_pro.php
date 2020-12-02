@@ -25,7 +25,7 @@ class ControllerStartupSeoPro extends Controller {
   private function getFiltersByKeyword($keywords) {
     $keywordList = [];
     foreach ($keywords as $keyword) $keywordList[] = "'{$this->db->escape($keyword)}'";
-    $sqlKeywords = $this->db->escape(implode(',', $keywordList));
+    $sqlKeywords = implode(',', $keywordList);
 
     if (empty($sqlKeywords)) return [];
 
@@ -54,11 +54,8 @@ class ControllerStartupSeoPro extends Controller {
       ORDER BY ord
     ";
 
-    $query = $this->db->query($sql);
-    $rows = $query->rows;
-
     $filters = [];
-    foreach ($query->rows as $row) {
+    foreach ($this->db->query($sql)->rows as $row) {
       unset($data[$row['key']]);
       $filters[] = $row['keyword'];
     }

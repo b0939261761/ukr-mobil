@@ -3,35 +3,47 @@
 <link rel="stylesheet" href="/catalog/view/javascript/jquery/owl-carousel/owl.carousel.min.css" />
 <link rel="stylesheet" href="/catalog/view/javascript/jquery/owl-carousel/owl.theme.default.min.css" />
 
-<div id="common-home" class="container">
-	<div class="row">
-		<div id="content" class="col-sm-12">
-			<div class="product-tab">
-				<ul class="nav nav-tabs">
-					<li class="active">
-						<a href="#tab-product-new" data-toggle="tab">
-							Новинки
-						</a>
-					</li>
-					<li>
-						<a href="#tab-product-stocks" data-toggle="tab">
-							Акции
-						</a>
-					</li>
-				</ul>
-				<div class="tab-content">
-					<div class="tab-pane active" id="tab-product-new">
-						{{ module_product_new }}
-					</div>
-					<div class="tab-pane" id="tab-product-stocks">
-						{{ module_product_stocks }}
-					</div>
-				</div>
-			</div>
+<style>
+  .product-tab {
+    margin-top: 20px;
+  }
 
-			{{ news }}
-		</div>
-	</div>
+  .tab-content.tab-content {
+    display: block;
+  }
+
+ .page-title--home.page-title--home {
+   margin-bottom: 0;
+ }
+</style>
+
+<div class="container">
+  <div class="product-tab">
+    <ul class="nav nav-tabs">
+      <li class="active">
+        <a href="#tab-product-new" data-toggle="tab">
+          Новинки
+        </a>
+      </li>
+      <li>
+        <a href="#tab-product-stocks" data-toggle="tab">
+          Акции
+        </a>
+      </li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane active" id="tab-product-new">
+        {{ product_new }}
+      </div>
+      <div class="tab-pane" id="tab-product-stocks">
+        {{ product_stocks }}
+      </div>
+    </div>
+  </div>
+
+  {{ news }}
+
+  <h1 class="page-title page-title--home">{{ headingH1 }}</h1>
 </div>
 
 <script src="/catalog/view/javascript/jquery/owl-carousel/owl.carousel.min.js" defer></script>
