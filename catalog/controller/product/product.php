@@ -119,12 +119,11 @@ class ControllerProductProduct extends BaseController {
     foreach ($images as $key=>$image) {
       $index = $key + 1;
       $indexImage = count($images) > 1 ? ", фото № {$index}" : '';
-      $thumb = $this->model_tool_image->resize($image, 80, 80);
       $data['images'][] = [
-        'link'  => "/image/{$image}",
-        'thumb' => $thumb,
-        'alt'   => "{$data['headingH1']}{$indexImage} - ukr-mobil.com",
-        'title' => "{$data['headingH1']}{$indexImage}"
+        'link'    => $this->model_tool_image->resize($image, 0, 0, false),
+        'thumb'   => $this->model_tool_image->resize($image, 80, 80),
+        'alt'      => "{$data['headingH1']}{$indexImage} - ukr-mobil.com",
+        'title'    => "{$data['headingH1']}{$indexImage}"
       ];
     }
 

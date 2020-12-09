@@ -1,12 +1,12 @@
 <?
-class ControllerInformationScTracking extends Controller {
+class ControllerInformationTracking extends Controller {
   public function index() {
     $data['headingH1'] = 'Проверка статуса заказа';
     $this->document->setTitle("{$data['headingH1']} - интернет-магазин UKRMobil");
     $this->document->setDescription("{$data['headingH1']} ✅ UKRMobil ✅ Фиксированные цены ✅ Гарантия ✅ Доставка по всей Украине");
     $data['footer'] = $this->load->controller('common/footer');
     $data['header'] = $this->load->controller('common/header');
-    $this->response->setOutput($this->load->view('information/sc_tracking', $data));
+    $this->response->setOutput($this->load->view('information/tracking', $data));
   }
 
   public function getStatus() {

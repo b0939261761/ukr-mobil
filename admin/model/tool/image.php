@@ -12,11 +12,11 @@ class ModelToolImage extends Model {
 
 		if (!is_file(DIR_IMAGE . $image_new) || (filemtime(DIR_IMAGE . $image_old) > filemtime(DIR_IMAGE . $image_new))) {
 			list($width_orig, $height_orig, $image_type) = getimagesize(DIR_IMAGE . $image_old);
-				 
-			if (!in_array($image_type, array(IMAGETYPE_PNG, IMAGETYPE_JPEG, IMAGETYPE_GIF))) { 
+
+			if (!in_array($image_type, array(IMAGETYPE_PNG, IMAGETYPE_JPEG, IMAGETYPE_GIF))) {
 				return DIR_IMAGE . $image_old;
 			}
- 
+
 			$path = '';
 
 			$directories = explode('/', dirname($image_new));
@@ -27,7 +27,9 @@ class ModelToolImage extends Model {
 				if (!is_dir(DIR_IMAGE . $path)) {
 					@mkdir(DIR_IMAGE . $path, 0777);
 				}
-			}
+      }
+
+
 
 			if ($width_orig != $width || $height_orig != $height) {
 				$image = new Image(DIR_IMAGE . $image_old);

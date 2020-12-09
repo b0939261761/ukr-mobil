@@ -1,0 +1,186 @@
+{{ header }}
+{{ column_left }}
+
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button
+          form="formSeoFilters"
+          data-toggle="tooltip"
+          title="Сохранить"
+          class="btn btn-primary"
+          onclick="false"
+        >
+          <i class="fa fa-save"></i>
+        </button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+          <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">{% if error_warning %}
+    <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ headingForm }}</h3>
+      </div>
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="formSeoFilters" class="form-horizontal">
+          <input type="hidden" name="id" value="{{ id }}" />
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="categoryName">Категория</label>
+            <div class="col-sm-10">
+              <input
+                type="hidden"
+                name="categoryId"
+                value="{{ categoryId }}"
+                id="categoryId"
+                class="form-control"
+              />
+
+              <input
+                value="{{ categoryName }}"
+                placeholder="Категория"
+                id="categoryName"
+                class="form-control"
+              />
+           </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="filter1Name">* Фильтр 1</label>
+            <div class="col-sm-10">
+              <input
+                type="hidden"
+                name="filter1Id"
+                value="{{ filter1Id }}"
+                id="filter1Id"
+                class="form-control"
+                required
+              />
+
+              <input
+                value="{{ filter1Name }}"
+                placeholder="Фильтр 1"
+                id="filter1Name"
+                class="form-control"
+                required
+              />
+           </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="filter2Name">Фильтр 2</label>
+            <div class="col-sm-10">
+              <input
+                type="hidden"
+                name="filter2Id"
+                value="{{ filter2Id }}"
+                id="filter2Id"
+                class="form-control"
+              />
+
+              <input
+                value="{{ filter2Name }}"
+                placeholder="Фильтр 2"
+                id="filter2Name"
+                class="form-control"
+              />
+           </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="headingH1">Заголовок H1</label>
+            <div class="col-sm-10">
+              <input
+                name="headingH1"
+                value="{{ headingH1 }}"
+                placeholder="Заголовок H1"
+                id="headingH1"
+                class="form-control"
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="title">Мета-тег Title</label>
+            <div class="col-sm-10">
+              <input
+                name="title"
+                value="{{ title }}"
+                placeholder="Мета-тег Title"
+                id="title"
+                class="form-control"
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="description">Мета-тег Description</label>
+            <div class="col-sm-10">
+              <textarea
+                name="metaDescription"
+                rows="5"
+                placeholder="Мета-тег Description"
+                id="description"
+                class="form-control"
+              >{{ metaDescription }}</textarea>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="description">Описание</label>
+            <div class="col-sm-10">
+              <textarea
+                name="description"
+                rows="5"
+                placeholder="Описание"
+                id="description"
+                class="form-control"
+                data-toggle="summernote"
+                data-lang="ru-RU"
+              >{{ description }}</textarea>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="view/javascript/summernote/summernote.js"></script>
+<link href="view/javascript/summernote/summernote.css" rel="stylesheet" />
+<script src="view/javascript/summernote/summernote-image-attributes.js"></script>
+<script src="view/javascript/summernote/opencart.js"></script>
+
+<script>
+const userToken = (new URLSearchParams(window.location.search)).get('user_token');
+
+$('#categoryName, #filter1Name, #filter2Name').autocomplete({
+  source: function (request, response) {
+    const uri = this.id === 'categoryName' ? 'category' : 'filter';
+    $.ajax({
+      url: `index.php?route=design/seo_filters/${uri}Autocomplete&user_token=${userToken}&name=${request}`,
+      dataType: 'json',
+      success: json => {
+        json.unshift({ id: 0, name: '--- Не выбрано ---' });
+        response(json.map(item => ({ value: item['id'], label: item['name']})));
+      }
+    });
+  },
+  select: function (item) {
+    document.getElementById(this.id.replace('Name', 'Id')).value = item['value'];
+    this.value = item['label'];
+  }
+});
+</script>
+
+{{ footer }}

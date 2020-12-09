@@ -30,7 +30,7 @@ class ControllerStartupSeoPro extends Controller {
     if (empty($sqlKeywords)) return [];
 
     $sql = "
-      SELECT queryKey AS `key`, queryValue AS value, keyword, name
+      SELECT id, queryKey AS `key`, queryValue AS value, keyword, name
       FROM seo_filter_url
       WHERE keyword IN ({$sqlKeywords})
       ORDER BY ord
@@ -78,26 +78,21 @@ class ControllerStartupSeoPro extends Controller {
 
   // ------------------------------------------
 
-  private function getRedirect($uri) {
-    $sql = "SELECT seo_url_actual AS url
-      FROM oc_seo_url_generator_redirects WHERE seo_url_old = '{$uri}'";
-    return $this->db->query($sql)->row['url'] ?? '';
-  }
-
-  // ------------------------------------------
-
   public function index() {
     // file_put_contents('./catalog/controller/startup/__LOG__.json', "-----------\n" . json_encode($this->request)."\n\n", FILE_APPEND);
+    $domain = $_SERVER['HTTPS'] ? HTTPS_SERVER : HTTP_SERVER;
+    $uri = str_replace('&amp;', '&', trim($this->request->server['REQUEST_URI'], '/'));
 
-    $uri = str_replace('&amp;', '&', ltrim($this->request->server['REQUEST_URI'], '/'));
-    $redirect = $this->getRedirect($uri);
-    if ($redirect) return $this->response->redirect($redirect);
+    $sql = "SELECT seo_url_actual AS url
+      FROM oc_seo_url_generator_redirects WHERE seo_url_old = '{$uri}'";
+    $redirect = $this->db->query($sql)->row['url'] ?? '';
+    if ($redirect) return $this->response->redirect("{$domain}{$redirect}");
 
     $this->url->addRewrite($this);
     if (!isset($this->request->get['_route_'])) {
       if ($this->request->get['route'] == 'error/not_found') return;
 
-      $url = $this->config->get('config_' . ($_SERVER['HTTPS'] ? 'ssl' : 'url')) . $uri;
+      $url = "{$domain}{$uri}";
       $queries = array_filter($this->request->get, function($k) {return $k != 'route';}, ARRAY_FILTER_USE_KEY);
       $seo = $this->url->link($this->request->get['route'], $queries);
       if ($url != $seo) $this->response->redirect($seo);
