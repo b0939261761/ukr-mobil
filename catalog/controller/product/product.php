@@ -114,18 +114,22 @@ class ControllerProductProduct extends BaseController {
     $images[] = $product_info['image'] ? $product_info['image'] : 'placeholder.png';
     foreach ($this->model_catalog_product->getProductImages($product_id) as $image) $images[] = $image['image'];
 
+    $microdataImage = $this->model_tool_image->resize($images[0], 0, 0);
     $data['headingH1'] = $product_info['name'];
 
     foreach ($images as $key=>$image) {
       $index = $key + 1;
       $indexImage = count($images) > 1 ? ", фото № {$index}" : '';
       $data['images'][] = [
-        'link'    => $this->model_tool_image->resize($image, 0, 0, false),
+        'link'    => $this->model_tool_image->resize($image, 0, 0, true),
+        'preview' => $this->model_tool_image->resize($image, 540, 256),
         'thumb'   => $this->model_tool_image->resize($image, 80, 80),
-        'alt'      => "{$data['headingH1']}{$indexImage} - ukr-mobil.com",
-        'title'    => "{$data['headingH1']}{$indexImage}"
+        'alt'     => "{$data['headingH1']}{$indexImage} - ukr-mobil.com",
+        'title'   => "{$data['headingH1']}{$indexImage}"
       ];
     }
+
+
 
     $tax_class_id = $product_info['tax_class_id'];
     $config_tax = $this->config->get('config_tax');
@@ -239,7 +243,6 @@ class ControllerProductProduct extends BaseController {
 
     $productLink = $this->url->link('product/product', ['product_id' => $product_id]);
 
-
     $date = new DateTime();
     $date->add(new DateInterval('P1D'));
     $priceValidUntil = $date->format('Y-m-d');
@@ -248,7 +251,7 @@ class ControllerProductProduct extends BaseController {
       "@context" => "https://schema.org/",
       "@type" => "Product",
       "name" => $data['headingH1'],
-      "image" => [ $data['images'][0]['link'] ],
+      "image" => [ $microdataImage ],
       "description" => $data['description'],
       "sku" => $data['product_id'],
       "offers" => [
@@ -354,13 +357,6 @@ class ControllerProductProduct extends BaseController {
     $this->response->setOutput('');
   }
 
-
-
-  /**
-   * Add product to wishlist
-   *
-   * @return mixed|string
-   */
   public function addToWishlist() {
     $success = false;
     $msg = self::MSG_INTERNAL_ERROR;
@@ -368,32 +364,24 @@ class ControllerProductProduct extends BaseController {
     $data = [];
 
     try {
-      //region Input Data
       $transferData = $this->getInput('transferData');
-      //endregion
 
-      //  Check authorized user
       if (!$this->customer->isLogged()) {
         throw new \RuntimeException('Only authorized users.', 401);
       }
 
-      //  Product ID
       $productId = (int)Util::getArrItem($transferData, 'productId');
 
       if ($productId <= 0) {
         throw new \RuntimeException('Invalid product ID');
       }
 
-      //region Define Models
       $customerWishlistModel = new \Ego\Models\CustomerWishlist();
-      //endregion
 
-      //  Check existing in wishlist
       if ($customerWishlistModel->exist((int)$this->customer->getId(), $productId)) {
         throw new \RuntimeException('Already in wishlist');
       }
 
-      //  Add to wishlist
       $row = (new \Ego\Struct\CustomerWishlistRowStruct())
         ->setCustomerId((int)$this->customer->getId())
         ->setProductId($productId);
@@ -419,27 +407,10 @@ class ControllerProductProduct extends BaseController {
     ]);
   }
 
-  /**
-   * Return stock list for product
-   *
-   * @param $productId - Product ID
-   * @return array
-   */
   private function getStockList($productId) {
-    //region Define Models
-    $productModel = new \Ego\Models\Product();
-    $egoProductToStockModel = new \Ego\Models\ProductToStock();
-    $stocksModel = new Stocks();
-    //endregion
+    $product = (new \Ego\Models\Product())->get($productId, true);
+    if (empty($product)) return [];
 
-    $product = $productModel->get($productId, true);
-
-    //  Check empty product
-    if (empty($product)) {
-      return [];
-    }
-
-    //region Stock List
     $stockList = [
       [
         'name' => 'г. Черновцы',
@@ -447,102 +418,23 @@ class ControllerProductProduct extends BaseController {
       ]
     ];
 
-    $productToStockList = $egoProductToStockModel->getListByProduct($product->getProductId(), true);
-    $productToStockList = empty($productToStockList) ? [] : $productToStockList;
+    $productToStockList = (new \Ego\Models\ProductToStock())->getListByProduct($product->getProductId(), true) ?? [];
 
     foreach ($productToStockList as $productToStock) {
-      $stockRow = $stocksModel->get($productToStock->getStockId(), true);
+      $stockRow = (new Stocks())->get($productToStock->getStockId(), true);
 
-      if (empty($stockRow)) {
-        continue;
-      }
+      if (empty($stockRow)) continue;
 
       $stockList[] = [
         'name' => $stockRow->getName(),
         'quantity' => $productToStock->getQuantity()
       ];
     }
-    //endregion
 
     return $stockList;
   }
 
-  /**
-   * Return product count
-   *
-   * @param $productId - Product ID
-   * @return int
-   */
   private function getProductCount($productId) {
-    $productId = (int)$productId;
-
-    //region Define Models
-    $productModel = new \Ego\Models\Product();
-    $egoProductToStockModel = new \Ego\Models\ProductToStock();
-    $stocksModel = new Stocks();
-    //endregion
-
-    return $egoProductToStockModel->getCount($productId);
+    return (new \Ego\Models\ProductToStock())->getCount($productId);
   }
-
-    // public function getRecurringDescription() {
-  //   $this->load->language('product/product');
-  //   $this->load->model('catalog/product');
-
-  //   if (isset($this->request->post['product_id'])) {
-  //     $product_id = $this->request->post['product_id'];
-  //   } else {
-  //     $product_id = 0;
-  //   }
-
-  //   if (isset($this->request->post['recurring_id'])) {
-  //     $recurring_id = $this->request->post['recurring_id'];
-  //   } else {
-  //     $recurring_id = 0;
-  //   }
-
-  //   if (isset($this->request->post['quantity'])) {
-  //     $quantity = $this->request->post['quantity'];
-  //   } else {
-  //     $quantity = 1;
-  //   }
-
-  //   $product_info = $this->model_catalog_product->getProduct($product_id);
-
-  //   $recurring_info = $this->model_catalog_product->getProfile($product_id, $recurring_id);
-
-  //   $json = array();
-
-  //   if ($product_info && $recurring_info) {
-  //     if (!$json) {
-  //       $frequencies = array(
-  //         'day' => $this->language->get('text_day'),
-  //         'week' => $this->language->get('text_week'),
-  //         'semi_month' => $this->language->get('text_semi_month'),
-  //         'month' => $this->language->get('text_month'),
-  //         'year' => $this->language->get('text_year'),
-  //       );
-
-  //       if ($recurring_info['trial_status'] == 1) {
-  //         $price = $this->currency->format($this->tax->calculate($recurring_info['trial_price'] * $quantity, $product_info['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
-  //         $trial_text = sprintf($this->language->get('text_trial_description'), $price, $recurring_info['trial_cycle'], $frequencies[$recurring_info['trial_frequency']], $recurring_info['trial_duration']) . ' ';
-  //       } else {
-  //         $trial_text = '';
-  //       }
-
-  //       $price = $this->currency->format($this->tax->calculate($recurring_info['price'] * $quantity, $product_info['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
-
-  //       if ($recurring_info['duration']) {
-  //         $text = $trial_text . sprintf($this->language->get('text_payment_description'), $price, $recurring_info['cycle'], $frequencies[$recurring_info['frequency']], $recurring_info['duration']);
-  //       } else {
-  //         $text = $trial_text . sprintf($this->language->get('text_payment_cancel'), $price, $recurring_info['cycle'], $frequencies[$recurring_info['frequency']], $recurring_info['duration']);
-  //       }
-
-  //       $json['success'] = $text;
-  //     }
-  //   }
-
-  //   $this->response->addHeader('Content-Type: application/json');
-  //   $this->response->setOutput(json_encode($json));
-  // }
 }

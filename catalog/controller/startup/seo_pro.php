@@ -162,6 +162,7 @@ class ControllerStartupSeoPro extends Controller {
     if (!isset($this->request->get['route'])) {
       if (isset($this->request->get['product_id'])) $this->request->get['route'] = 'product/product';
       elseif (isset($this->request->get['news_id'])) $this->request->get['route'] = 'information/news/read';
+      elseif (isset($this->request->get['sitemap_id'])) $this->request->get['route'] = 'information/sitemap';
       elseif (isset($this->cacheData['queries'][$route])) $this->response->redirect($this->cacheData['queries'][$route]);
       elseif (!empty($controller)) $this->request->get['route'] = $controller;
     }
@@ -191,6 +192,7 @@ class ControllerStartupSeoPro extends Controller {
         case 'product_id':
         case 'category_id':
         case 'news_id':
+        case 'sitemap_id':
           $queries[] = "{$key}={$value}";
           unset($data[$key]);
           break;

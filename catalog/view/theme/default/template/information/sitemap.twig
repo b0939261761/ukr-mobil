@@ -21,9 +21,155 @@
     {{ headingH1 }}
   </h1>
 
-  {% for category in categories %}
-    <a href="{{ category.link }}">{{ category.name }}</a><br>
-  {% endfor %}
+  <style>
+    .menu {
+      border-bottom: 1px solid #eee;
+      margin-bottom: 10px;
+    }
+
+    .menu__wrapper-items {
+      display: flex;
+      flex-wrap: wrap;
+      margin-left: -20px;
+      margin-bottom: 0;
+      padding-left: 0;
+      list-style: none;
+    }
+
+    .menu__item {
+      margin-left: 20px;
+      margin-bottom: 10px;
+    }
+
+    .menu__link {
+      font-size: 16px;
+      color: #333;
+      padding-bottom: 10px;
+    }
+
+    .menu__link:hover {
+      color: #333;
+      opacity: .8;
+    }
+
+    .menu__link--active {
+      display: block;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #333;
+    }
+  </style>
+
+  <nav class="menu">
+    <ul class="menu__wrapper-items">
+      {% for item in menu %}
+        <li class="menu__item">
+          <a
+            class="menu__link {{ item.isActive ? 'menu__link--active' : '' }}"
+            href="{{ item.link }}"
+          >{{ item.name }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  </nav>
+
+  <style>
+    .main-link {
+      display: block;
+      font-size: 18px;
+      color: #333;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .main-link:hover {
+      color: #333;
+      opacity: .8;
+    }
+
+    .wrapper-columns {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .wrapper-columns {
+      margin-left: -100px;
+    }
+
+    .wrapper-column-links {
+      margin-left: 100px;
+      margin-bottom: 20px;
+    }
+
+    .column-header {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .wrapper-list-links {
+      padding-left: 0;
+      list-style: none;
+    }
+
+    .children-link {
+      display: block;
+      font-size: 16px;
+      color: #333;
+      margin-bottom: 5px;
+    }
+
+    .children-link:hover {
+      color: #333;
+      opacity: .8;
+    }
+  </style>
+
+  {% if links.link %}
+    <a class="main-link" href="{{ links.link.link }}">{{ links.link.name }}</a>
+  {% endif %}
+
+
+
+  <div class="wrapper-columns">
+    {% if links.children %}
+      <div class="wrapper-column-links">
+        <ul class="wrapper-list-links">
+          {% for item in links.children %}
+            <li>
+              <a class="children-link" href="{{ item.link }}">{{ item.name }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
+    {% if links.categories %}
+      <div class="wrapper-column-links">
+        <div class="column-header">Категории:</div>
+        <ul class="wrapper-list-links">
+          {% for item in links.categories %}
+            <li>
+              <a class="children-link" href="{{ item.link }}">{{ item.name }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
+    {% if links.filters %}
+      <div class="wrapper-column-links">
+        <div class="column-header">Фильтры:</div>
+        <ul class="wrapper-list-links">
+          {% for item in links.filters %}
+            <li>
+              <a class="children-link" href="{{ item.link }}">{{ item.name }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+  </div>
+
 
   <div class="pagination-container">
     {{ pagination }}

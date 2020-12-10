@@ -1,7 +1,6 @@
 <?
 require_once(__DIR__ . '/../config.php');
 require_once(DIR_SYSTEM . 'startup.php');
-require_once(DIR_APPLICATION . 'controller/startup/seo_pro.php');
 
 $registry = new Registry();
 
@@ -145,3 +144,16 @@ foreach ($db->query($sql)->rows as $news) {
   }
 }
 
+// SITEMAP CATEGORY ---------------------------------
+
+$sql = "
+  INSERT INTO oc_seo_url (query, keyword)
+    SELECT
+      CONCAT('sitemap_id=', c.category_id),
+      CONCAT('sitemap-', c.category_id)
+    FROM oc_category c
+    LEFT JOIN oc_seo_url su ON su.query = CONCAT('sitemap_id=', c.category_id)
+    WHERE su.query IS NULL
+";
+
+$db->query($sql);

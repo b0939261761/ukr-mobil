@@ -1,15 +1,20 @@
 <?
-class ModelToolImage extends Model {
+class ModelToolImage {
   public function resizeFormat($filename, $width, $height, $isWatermark = false) {
     if ($filename == 'placeholder.png') $isWatermark = false;
+    $isResize = $width && $height;
     $fullpathOld = DIR_IMAGE . $filename;
+
     if (!is_file($fullpathOld)) return;
 
-    $uri = "{$this->config->get('config_' . ($this->request->server['HTTPS'] ? 'ssl' : 'url'))}image/";
+    $isCron = strpos($_SERVER['REQUEST_URI'], '/crons/');
+    $domain = $_SERVER['HTTPS'] || $isCron ? HTTPS_SERVER : HTTP_SERVER;
+    $uri = "{$domain}image/";
 
     $file = pathinfo($filename);
-    $sufixFileName = $width && $height ? "-{$width}x{$height}" : '';
-    $pathCache = "cache/{$file['dirname']}/{$file['filename']}{$sufixFileName}";
+    $sizeFilename = $isResize ? "-{$width}x{$height}" : '';
+    $wtFilename = $isWatermark ? '-w' : '';
+    $pathCache = "cache/{$file['dirname']}/{$file['filename']}{$sizeFilename}{$wtFilename}";
     // $pathWEBP = "{$pathCache}.webp";
     $pathJPEG = "{$pathCache}.jpeg";
     // $fullpathWEBP = DIR_IMAGE . $pathWEBP;
@@ -27,29 +32,31 @@ class ModelToolImage extends Model {
       elseif ($mime == 'image/png') $image = imagecreatefrompng($fullpathOld);
       elseif ($mime == 'image/jpeg') $image = imagecreatefromjpeg($fullpathOld);
 
-      $widthOrigin = $info[0];
-      $heightOrigin = $info[1];
+      if ($isResize) {
+        $widthOrigin = $info[0];
+        $heightOrigin = $info[1];
 
-      if (!$width) $width = $widthOrigin;
-      if (!$height) $height = $heightOrigin;
+        $scaleW = $width / $widthOrigin;
+        $scaleH = $height / $heightOrigin;
+        $scale = min($scaleW, $scaleH);
 
-      $scaleW = $width / $widthOrigin;
-      $scaleH = $height / $heightOrigin;
-      $scale = min($scaleW, $scaleH);
+        $newWidth = $widthOrigin * $scale;
+        $newHeight = $heightOrigin * $scale;
+        $xpos = ($width - $newWidth) / 2;
+        $ypos = ($height - $newHeight) / 2;
 
-      $newWidth = $widthOrigin * $scale;
-      $newHeight = $heightOrigin * $scale;
-      $xpos = ($width - $newWidth) / 2;
-      $ypos = ($height - $newHeight) / 2;
+        $imageNew = imagecreatetruecolor($width, $height);
 
-      $imageNew = imagecreatetruecolor($width, $height);
+        $background = imagecolorallocate($imageNew, 255, 255, 255);
+        imagefilledrectangle($imageNew, 0, 0, $width, $height, $background);
 
-      $background = imagecolorallocate($imageNew, 255, 255, 255);
-      imagefilledrectangle($imageNew, 0, 0, $width, $height, $background);
+        imagecopyresampled($imageNew, $image, $xpos, $ypos, 0, 0,
+          $newWidth, $newHeight, $widthOrigin, $heightOrigin);
 
-      imagecopyresampled($imageNew, $image, $xpos, $ypos, 0, 0,
-        $newWidth, $newHeight, $widthOrigin, $heightOrigin);
-      imagedestroy($image);
+        imagedestroy($image);
+      } else {
+        $imageNew = $image;
+      }
 
       if ($isWatermark) {
         $imageStamp = imagecreatefrompng(DIR_IMAGE . 'stamp.png');

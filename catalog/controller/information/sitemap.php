@@ -1,13 +1,34 @@
 <?
 class ControllerInformationSitemap extends Controller {
   public function index() {
+    $sitemapId = $this->request->get['sitemap_id'] ?? '';
     $page = (int)($this->request->get['page'] ?? 1);
+
     $limit = 150;
     $start = ($page - 1) * $limit;
     $end = $start + $limit - 1;
-    $links = $this->getLinks($this->getCategoryList(), 0, $start, $end);
-    $data['categories'] = $links['list'];
-    $data['pagination'] = $this->getPagination($page, $links['index'], $limit);
+
+    $activeMenu = $sitemapId;
+    if ($sitemapId == 'about') {
+      $data['links'] = $this->getAbout();
+    } elseif ($sitemapId == 'tracking') {
+      $data['links'] = ['link' => [
+        'link' => $this->url->link('information/tracking'), 'name' => 'Сервис']
+      ];
+    } elseif ($sitemapId == 'news') {
+      $data['links'] = $this->getNews();
+    } elseif ((int)$sitemapId) {
+      $data['links'] = $this->getCategories($sitemapId, $start, $end);
+      $activeMenu = $data['links']['categoryId0'];
+    };
+
+    $data['menu'] = $this->getMenu($activeMenu);
+
+    $totals = $data['links']['totals'] ?? 0;
+    if ($totals) {
+      $data['pagination'] = $this->getPagination($page, $totals, $limit, $sitemapId);
+    }
+
     $data['headingH1'] = 'Карта сайта';
     $this->document->setTitle("{$data['headingH1']} - интернет-магазин UKRMobil");
     $this->document->setDescription("{$data['headingH1']} ✅ UKRMobil ✅ Фиксированные цены ✅ Гарантия ✅ Доставка по всей Украине");
@@ -16,169 +37,212 @@ class ControllerInformationSitemap extends Controller {
     $this->response->setOutput($this->load->view('information/sitemap', $data));
   }
 
-  private function getPagination($page, $total, $limit) {
+  private function getCategories($id, $start, $end) {
+    $sql = "
+      WITH
+      tmpCategory AS (
+        SELECT
+          cd.name,
+          GROUP_CONCAT(cp.path_id ORDER BY level SEPARATOR '_') AS path
+        FROM oc_category_path cp
+        LEFT JOIN oc_category_description cd ON cd.category_id = cp.category_id
+        WHERE cp.category_id = {$id}
+      ),
+      tmpModels AS (
+        SELECT
+          m.brand_id AS brandId,
+          b.name AS brandName,
+          b.ord AS brandOrd,
+          pm.model_id AS modelId,
+          m.name AS modelName,
+          m.ord AS modelOrd
+        FROM products_models pm
+        LEFT JOIN oc_product_to_category ptc ON ptc.product_id = pm.product_id
+        LEFT JOIN oc_category_path cp ON cp.category_id = ptc.category_id
+        LEFT JOIN models m ON m.id = pm.model_id
+        LEFT JOIN brands b ON b.id = m.brand_id
+        where cp.path_id = {$id}
+        GROUP BY cp.path_id, m.brand_id, pm.model_id
+      ),
+      tmpBrandsModels AS (
+        SELECT DISTINCT
+          brandId, brandName, brandOrd, 0 AS modelId, '' AS modelName,
+          0 AS modelOrd, brandName AS name
+        FROM tmpModels
+        UNION ALL
+        SELECT
+          brandId, brandName, brandOrd, modelId, modelName, modelOrd,
+          CONCAT(brandName, ' ', modelName) AS name
+        FROM tmpModels
+        ORDER BY brandOrd, brandName, modelOrd, modelName
+      ),
+      tmpBrandsModelsAgg AS (
+        SELECT
+          IF(COUNT(tmpBrandsModels.brandId),
+            JSON_ARRAYAGG(JSON_OBJECT(
+              'path', tmpCategory.path,
+              'name', tmpBrandsModels.name,
+              'brandId', tmpBrandsModels.brandId,
+              'modelId', tmpBrandsModels.modelId
+            )),
+            JSON_ARRAY()) AS filters
+        FROM tmpBrandsModels
+        LEFT JOIN tmpCategory ON true
+      ),
+      tmpCategories AS (
+        SELECT cd.name, c.category_id AS categoryId
+        FROM oc_category c
+        LEFT JOIN oc_category_description cd ON cd.category_id = c.category_id
+        WHERE c.parent_id = {$id}
+        ORDER BY c.sort_order, cd.name
+      ),
+      tmpCategoriesAgg AS (
+        SELECT
+          IF(COUNT(categoryId),
+            JSON_ARRAYAGG(JSON_OBJECT('categoryId', categoryId, 'name', name)),
+            JSON_ARRAY()) AS categories
+        FROM tmpCategories
+      )
+      SELECT
+        tmpCategory0.categoryId0,
+        tmpCategory.path,
+        tmpCategory.name,
+        tmpCategoriesAgg.categories,
+        tmpBrandsModelsAgg.filters
+      FROM tmpCategory
+      LEFT JOIN tmpCategoriesAgg ON true
+      LEFT JOIN tmpBrandsModelsAgg ON true
+      LEFT JOIN (
+        SELECT path_id AS categoryId0
+        FROM oc_category_path
+        WHERE category_id = {$id} AND level = 0
+      ) AS tmpCategory0 ON true
+    ";
+
+    $category = $this->db->query($sql)->row;
+    foreach (json_decode($category['categories'], true) as $item) {
+      $categories[] = [
+        'link' => $this->url->link('information/sitemap', ['sitemap_id' => $item['categoryId']]),
+        'name' => $item['name']
+      ];
+    }
+
+    $totals = -1;
+    foreach (json_decode($category['filters'], true) as $item) {
+      ++$totals;
+      if ($totals >= $start && $totals <= $end) {
+        $query = ['path' => $item['path'], 'brand' => $item['brandId']];
+        if ($item['modelId']) $query['model'] = $item['modelId'];
+        $filters[] = [
+          'link' => $this->url->link('product/category', $query),
+          'name' => $item['name']
+        ];
+      }
+    }
+
+    $link = [
+      'link' => $this->url->link('product/category', ['path' => $category['path']]),
+      'name' => $category['name']
+    ];
+
+    return [
+      'categoryId0' => $category['categoryId0'],
+      'link'        => $link,
+      'totals'      => $totals,
+      'categories'  => $categories ?? [],
+      'filters'     => $filters ?? []
+    ];
+  }
+
+  private function getNews() {
+    $sql = "
+      SELECT ep.ep_id AS id, epc.epc_title AS name
+      FROM ego_post ep
+      LEFT JOIN ego_post_content epc ON epc.epc_post = ep.ep_id
+      WHERE LOWER(ep.ep_category) = 'news'
+      ORDER by ep.ep_id DESC
+    ";
+
+    foreach ($this->db->query($sql)->rows as $item) {
+      $news[] = [
+        'link' => $this->url->link('information/news/read', ['news_id' => $item['id']]),
+        'name' => $item['name']
+      ];
+    }
+
+    return [
+      'link'     => [
+        'link' => $this->url->link('information/news'),
+        'name' => 'Новости'
+      ],
+      'children' => $news ?? []
+    ];
+  }
+
+  private function getAbout() {
+    return [
+      'children' => [
+        [
+          'link' => $this->url->link('information/about_us'),
+          'name' => 'О компании'
+        ], [
+        'link' => "{$this->url->link('information/about_us')}#delivery",
+        'name' => 'Доставка'
+        ], [
+          'link' => "{$this->url->link('information/about_us')}#warrantly",
+          'name' => 'Гарантии'
+        ], [
+          'link' => "{$this->url->link('information/about_us')}#delivery",
+          'name' => 'Контакты'
+        ]
+      ]
+    ];
+  }
+
+  private function getMenu($sitemapId) {
+    $sql = "
+      SELECT cd.name, c.category_id as id
+      FROM oc_category c
+      LEFT JOIN oc_category_description cd ON cd.category_id = c.category_id
+      WHERE parent_id = 0
+    ";
+
+    $categories = [];
+    foreach($this->db->query($sql)->rows as $item) {
+      $categories[] = [
+        'link'     => $this->url->link('information/sitemap', ['sitemap_id' => $item['id']]),
+        'name'     => $item['name'],
+        'isActive' => $sitemapId == $item['id']
+      ];
+    }
+
+    return array_merge($categories, [
+      [
+        'link'     => $this->url->link('information/sitemap', ['sitemap_id' => 'about']),
+        'name'     => 'О нас',
+        'isActive' => $sitemapId == 'about'
+      ], [
+        'link'     => $this->url->link('information/sitemap', ['sitemap_id' => 'tracking']),
+        'name'     => 'Сервис',
+        'isActive' => $sitemapId == 'tracking'
+      ], [
+        'link'     => $this->url->link('information/sitemap', ['sitemap_id' => 'news']),
+        'name'     => 'Новости',
+        'isActive' => $sitemapId == 'news'
+      ]
+    ]);
+  }
+
+  private function getPagination($page, $total, $limit, $sitemapId) {
+    $query = ['page' => '{page}'];
+    if ($sitemapId) $query['sitemap_id'] = $sitemapId;
+    $url = $this->url->link('information/sitemap', $query);
+
     $pagination = new Pagination();
     $pagination->page = $page;
     $pagination->total = $total;
     $pagination->limit = $limit;
-    $pagination->url = $this->url->link('information/sitemap', ['page' => '{page}']);
+    $pagination->url = $url;
     return $pagination->render();
-  }
-
-  private function getLinks($categories, $index, $start, $end) {
-    $result = [];
-    foreach ($categories as $category) {
-      $queriesCategory = ['path' => $category['path']];
-      $nameCategory = $category['name'];
-
-      if ($index >= $start && $index <= $end) {
-        $result[] = [
-          'name' => $nameCategory,
-          'link' => $this->url->link('product/category', $queriesCategory)
-        ];
-      }
-
-      ++$index;
-
-      foreach ($category['brands'] as $brand) {
-        $queriesBrand = array_merge($queriesCategory, ['brand' => $brand['id']]);
-        $nameBrand = "{$nameCategory} : {$brand['name']}";
-
-        if ($index >= $start && $index <= $end) {
-          $result[] = [
-            'name' => $nameBrand,
-            'link' => $this->url->link('product/category', $queriesBrand)
-          ];
-        }
-
-        ++$index;
-
-        foreach ($brand['models'] as $model) {
-          $queriesModel = array_merge($queriesBrand, ['model' => $model['id']]);
-          $nameModel = "{$nameBrand}, {$model['name']}";
-
-          if ($index >= $start && $index <= $end) {
-            $result[] = [
-              'name' => $nameModel,
-              'link' => $this->url->link('product/category', $queriesModel)
-            ];
-          }
-
-          ++$index;
-        }
-      }
-
-      if (isset($category['children'])) {
-        $chidrenResult = $this->getLinks($category['children'], $index, $start, $end);
-        $index = $chidrenResult['index'];
-        if (!empty($chidrenResult['list'])) $result = array_merge($result, $chidrenResult['list']);
-      }
-    }
-
-    return ['index' => $index, 'list' => $result];
-  }
-
-  private function getCategoryList() {
-    $sql = "
-      WITH
-        tmpCatagoriesBrandsModels AS (
-          SELECT
-            cp.path_id AS category_id,
-            m.brand_id,
-            b.name AS brand_name,
-            b.ord AS brand_ord,
-            pm.model_id,
-            m.name AS model_name,
-            m.ord AS model_ord
-          FROM products_models pm
-          LEFT JOIN oc_product_to_category ptc ON ptc.product_id = pm.product_id
-          LEFT JOIN oc_category_path cp ON cp.category_id = ptc.category_id
-          LEFT JOIN models m ON m.id = pm.model_id
-          LEFT JOIN brands b ON b.id = m.brand_id
-          GROUP BY cp.path_id, m.brand_id, pm.model_id
-        ),
-        tmpGroupCategoriesBrands AS (
-          SELECT DISTINCT category_id, brand_id, brand_name, brand_ord FROM tmpCatagoriesBrandsModels
-        ),
-        tmpModels AS (
-          SELECT
-            category_id,
-            brand_id,
-            brand_name,
-            brand_ord,
-            JSON_ARRAYAGG(JSON_OBJECT('id', t.id, 'name', t.name)) as models
-          FROM tmpGroupCategoriesBrands tgcb,
-          LATERAL (
-            SELECT
-              model_id AS id,
-              model_name AS name
-            FROM tmpCatagoriesBrandsModels
-            WHERE category_id = tgcb.category_id AND brand_id = tgcb.brand_id
-            ORDER BY model_ord, model_name
-          ) AS t
-          GROUP BY category_id, brand_id
-        ),
-        tmpGroupCategories AS (
-          SELECT DISTINCT category_id FROM tmpCatagoriesBrandsModels
-        ),
-        tmpBrands AS (
-          SELECT
-            category_id,
-            JSON_ARRAYAGG(JSON_OBJECT('id', t.id, 'name', t.name, 'models', t.models)) AS brands
-          FROM tmpGroupCategories tgc,
-          LATERAL (
-            SELECT
-              brand_id AS id,
-              brand_name AS name,
-              (SELECT models FROM tmpModels WHERE category_id = tm.category_id
-                AND brand_id = tm.brand_id) AS models
-            FROM tmpModels tm
-            WHERE category_id = tgc.category_id
-            ORDER BY brand_ord, brand_name
-            ) AS t
-          GROUP BY category_id
-        )
-      SELECT
-        IF(count(path), JSON_ARRAYAGG(JSON_OBJECT('path', path, 'name', name, 'brands', brands, 'children', children)), JSON_ARRAY()) AS value
-      FROM (
-        SELECT
-          c1.category_id AS path,
-          cd1.name,
-          COALESCE(tb1.brands, JSON_ARRAY()) AS brands,
-          IF(count(t2.path), JSON_ARRAYAGG(JSON_OBJECT('path', t2.path, 'name', t2.name, 'brands', t2.`brands`, 'children', t2.children)), JSON_ARRAY()) AS children
-          FROM oc_category c1
-        LEFT JOIN oc_category_description cd1 ON cd1.category_id = c1.category_id
-        LEFT JOIN tmpBrands tb1 ON tb1.category_id = c1.category_id
-        LEFT JOIN LATERAL (
-          SELECT
-            CONCAT(c1.category_id, '_', c2.category_id) AS path,
-            cd2.name,
-            COALESCE(tb2.brands, JSON_ARRAY()) AS brands,
-            IF(count(t3.path), JSON_ARRAYAGG(JSON_OBJECT('path', t3.path, 'name', t3.name, 'brands', t3.brands)), JSON_ARRAY()) AS children
-          FROM oc_category c2
-          LEFT JOIN oc_category_description cd2 ON cd2.category_id = c2.category_id
-          LEFT JOIN tmpBrands tb2 ON tb2.category_id = c2.category_id
-          LEFT JOIN LATERAL (
-            SELECT
-              CONCAT(c1.category_id, '_', c2.category_id, '_', c3.category_id) AS path,
-              cd3.name,
-              COALESCE(tb3.brands, JSON_ARRAY()) AS brands
-            FROM oc_category c3
-            LEFT JOIN oc_category_description cd3 ON cd3.category_id = c3.category_id
-            LEFT JOIN tmpBrands tb3 ON tb3.category_id = c3.category_id
-            WHERE c3.parent_id = c2.category_id AND cd3.language_id = 2 AND c3.status = 1
-            ORDER BY c3.sort_order, cd3.name
-          ) AS t3 ON true
-          WHERE c2.parent_id = c1.category_id AND cd2.language_id = 2 AND c2.status = 1
-          GROUP BY c2.category_id
-          ORDER BY c2.sort_order, cd2.name
-        ) AS t2 ON true
-        WHERE c1.parent_id = 0 AND cd1.language_id = 2 AND c1.status = 1
-        GROUP BY c1.category_id
-        ORDER BY c1.sort_order, cd1.name
-      ) AS t1
-    ";
-
-    return json_decode($this->db->query($sql)->row['value'], true);
   }
 }

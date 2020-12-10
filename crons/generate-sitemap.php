@@ -2,6 +2,7 @@
 require_once(__DIR__ . '/../config.php');
 require_once(DIR_SYSTEM . 'startup.php');
 require_once(DIR_APPLICATION . 'controller/startup/seo_pro.php');
+require_once(DIR_APPLICATION . 'model/tool/image.php');
 
 $registry = new Registry();
 
@@ -14,6 +15,7 @@ $url = new Url(HTTPS_SERVER, HTTPS_SERVER);
 $registry->set('db', $db);
 $registry->set('cache', new Cache($config->get('cache_engine'), $config->get('cache_expire')));
 $url->addRewrite(new ControllerStartupSeoPro($registry));
+$modelImage = new ModelToolImage();
 
 $sitemap = $sitemapImage = '<?xml version="1.0" encoding="UTF-8"?>';
 $sitemap .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
@@ -58,7 +60,7 @@ foreach ($db->query($sql)->rows as $product) {
       continue;
     }
 
-    $urlImage = HTTPS_SERVER . "image/{$image}";
+    $urlImage = $modelImage->resize($image, 0, 0, true);
     $sitemapImage .= "<image:image><image:loc>{$urlImage}</image:loc></image:image>";
   }
 

@@ -39,7 +39,7 @@ class ControllerDesignSeoFilters extends Controller {
       LEFT JOIN seo_filter_url f1 ON f1.id = sfd.filter1_id
       LEFT JOIN seo_filter_url f2 ON f2.id = sfd.filter2_id
       LEFT JOIN LATERAL (
-        SELECT GROUP_CONCAT(cd.name SEPARATOR ' > ') AS name FROM oc_category_path cp
+        SELECT GROUP_CONCAT(cd.name ORDER BY cp.level SEPARATOR ' > ') AS name FROM oc_category_path cp
         LEFT JOIN oc_category_description cd ON cd.category_id = cp.path_id
         WHERE cp.category_id = sfd.category_id
         ORDER BY cp.level
@@ -110,7 +110,7 @@ class ControllerDesignSeoFilters extends Controller {
       ";
       $this->db->query($sql);
 
-      if ($id && $this->db->getLastId() != $id) {
+      if ($id && $this->db->getLastId()) {
         $this->db->query("DELETE FROM seo_filter_description WHERE id = {$id}");
       }
 
@@ -118,7 +118,7 @@ class ControllerDesignSeoFilters extends Controller {
       $this->response->redirect($this->url->link('design/seo_filters', $url));
     }
 
-    $data['breadcrumbs'][] = [
+        $data['breadcrumbs'][] = [
       'text' => $this->language->get('text_home'),
       'href' => $this->url->link('common/dashboard', ['user_token' => $userToken])
     ];

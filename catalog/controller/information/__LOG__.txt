@@ -1,0 +1,80 @@
+
+      WITH
+      tmpCategory AS (
+        SELECT
+          cd.name,
+          GROUP_CONCAT(cp.path_id ORDER BY level SEPARATOR '_') AS path
+        FROM oc_category_path cp
+        LEFT JOIN oc_category_description cd ON cd.category_id = cp.category_id
+        WHERE cp.category_id = 10000871
+      ),
+      tmpModels AS (
+        SELECT
+          m.brand_id AS brandId,
+          b.name AS brandName,
+          b.ord AS brandOrd,
+          pm.model_id AS modelId,
+          m.name AS modelName,
+          m.ord AS modelOrd
+        FROM products_models pm
+        LEFT JOIN oc_product_to_category ptc ON ptc.product_id = pm.product_id
+        LEFT JOIN oc_category_path cp ON cp.category_id = ptc.category_id
+        LEFT JOIN models m ON m.id = pm.model_id
+        LEFT JOIN brands b ON b.id = m.brand_id
+        where cp.path_id = 10000871
+        GROUP BY cp.path_id, m.brand_id, pm.model_id
+      ),
+      tmpBrandsModels AS (
+        SELECT DISTINCT
+          brandId, brandName, brandOrd, 0 AS modelId, '' AS modelName,
+          0 AS modelOrd, brandName AS name
+        FROM tmpModels
+        UNION ALL
+        SELECT
+          brandId, brandName, brandOrd, modelId, modelName, modelOrd,
+          CONCAT(brandName, ' ', modelName) AS name
+        FROM tmpModels
+        ORDER BY brandOrd, brandName, modelOrd, modelName
+      ),
+      tmpBrandsModelsAgg AS (
+        SELECT
+          IF(COUNT(tmpBrandsModels.brandId),
+            JSON_ARRAYAGG(JSON_OBJECT(
+              'path', tmpCategory.path,
+              'name', tmpBrandsModels.name,
+              'brandId', tmpBrandsModels.brandId,
+              'modelId', tmpBrandsModels.modelId
+            )),
+            JSON_ARRAY()) AS filters
+        FROM tmpBrandsModels
+        LEFT JOIN tmpCategory ON true
+      ),
+      tmpCategories AS (
+        SELECT cd.name, c.category_id AS categoryId
+        FROM oc_category c
+        LEFT JOIN oc_category_description cd ON cd.category_id = c.category_id
+        WHERE c.parent_id = 10000871
+        ORDER BY c.sort_order, cd.name
+      ),
+      tmpCategoriesAgg AS (
+        SELECT
+          IF(COUNT(categoryId),
+            JSON_ARRAYAGG(JSON_OBJECT('categoryId', categoryId, 'name', name)),
+            JSON_ARRAY()) AS categories
+        FROM tmpCategories
+      )
+      SELECT
+        tmpCategory0.categoryId0,
+        tmpCategory.path,
+        tmpCategory.name,
+        tmpCategoriesAgg.categories,
+        tmpBrandsModelsAgg.filters
+      FROM tmpCategory
+      LEFT JOIN tmpCategoriesAgg ON true
+      LEFT JOIN tmpBrandsModelsAgg ON true
+      LEFT JOIN (
+        SELECT path_id AS categoryId0
+        FROM oc_category_path
+        WHERE category_id = 10000871 AND level = 0
+      ) AS tmpCategory0 ON true
+    

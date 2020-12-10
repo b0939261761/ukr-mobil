@@ -162,24 +162,41 @@
 <script src="view/javascript/summernote/opencart.js"></script>
 
 <script>
-const userToken = (new URLSearchParams(window.location.search)).get('user_token');
+window.addEventListener('load', () => {
+  const debounce = (func, interval = 200) => {
+    let timeout;
 
-$('#categoryName, #filter1Name, #filter2Name').autocomplete({
-  source: function (request, response) {
-    const uri = this.id === 'categoryName' ? 'category' : 'filter';
+    return (...args) => {
+      clearTimeout(timeout);
+      timeout = setTimeout(func.bind(null, ...args), interval);
+    };
+  }
+
+  const search = (url, response) => {
     $.ajax({
-      url: `index.php?route=design/seo_filters/${uri}Autocomplete&user_token=${userToken}&name=${request}`,
+      url,
       dataType: 'json',
       success: json => {
         json.unshift({ id: 0, name: '--- Не выбрано ---' });
         response(json.map(item => ({ value: item['id'], label: item['name']})));
       }
     });
-  },
-  select: function (item) {
-    document.getElementById(this.id.replace('Name', 'Id')).value = item['value'];
-    this.value = item['label'];
   }
+
+  const debounceSearch = debounce(search, 200);
+  const userToken = (new URLSearchParams(window.location.search)).get('user_token');
+
+  $('#categoryName, #filter1Name, #filter2Name').autocomplete({
+    source: function (request, response) {
+      const uri = this.id === 'categoryName' ? 'category' : 'filter';
+      const url = `index.php?route=design/seo_filters/${uri}Autocomplete&user_token=${userToken}&name=${request}`;
+      debounceSearch(url, response);
+    },
+    select: function (item) {
+      document.getElementById(this.id.replace('Name', 'Id')).value = item['value'];
+      this.value = item['label'];
+    }
+  });
 });
 </script>
 
