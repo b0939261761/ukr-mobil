@@ -90,42 +90,43 @@ class ControllerProductCategory extends Ego\Controllers\BaseController {
       $seoFilter = $this->db->query($sql)->row;
     }
 
+    $filterText = '';
+    if (!empty($this->request->request['filters'])){
+      $filterNameList = array_map(function($item) { return $item['name']; }, $this->request->request['filters']);
+      $filterText = implode(' , ', $filterNameList);
+    }
+
     if (empty($seoFilter)) {
       $categoryNameList = array_map(function($item) { return $item['name']; }, $this->request->request['categories']);
       $headingH1Def = implode(' : ', $categoryNameList);
 
-      $filterText = '';
-      if (!empty($this->request->request['filters'])){
-        $filterNameList = array_map(function($item) { return $item['name']; }, $this->request->request['filters']);
-        $filterText = implode(' , ', $filterNameList);
-        $headingH1Def .= " : {$filterText}";
-      }
+      if ($filterText) $headingH1Def .= " : {$filterText}";
 
-      $headingH1 = empty($category['header_h1'])
-      ? $headingH1Def
-      : str_replace('%filter%', $filterText, $category['header_h1']);
+      $headingH1 = $category['header_h1']
+        ? str_replace('%filter%', $filterText, $category['header_h1'])
+        : $headingH1Def;
 
-      $title = empty($category['meta_title'])
-        ? "{$headingH1Def} - купить в Черновцах, Ровно, Украине в интернет-магазине UKRMobil"
-        : str_replace('%filter%', $filterText, $category['meta_title']);
+      $title = $category['meta_title']
+        ? str_replace('%filter%', $filterText, $category['meta_title'])
+        : "{$headingH1Def} - купить в Черновцах, Ровно, Украине в интернет-магазине UKRMobil";
 
-      $metaDescription = empty($category['meta_description'])
-        ? "{$headingH1Def} ✅ UKRMobil ✅ Фиксированные цены ✅ Гарантия ✅ Доставка по всей Украине"
-        : str_replace('%filter%', $filterText, $category['meta_description']);
+      $metaDescription = $category['meta_description']
+        ? str_replace('%filter%', $filterText, $category['meta_description'])
+        : "{$headingH1Def} ✅ UKRMobil ✅ Фиксированные цены ✅ Гарантия ✅ Доставка по всей Украине";
 
       $description = '';
     } else {
-      $headingH1 = $seoFilter['headingH1'];
-      $title = $seoFilter['title'];
-      $metaDescription = $seoFilter['metaDescription'];
+      $headingH1 = str_replace('%filter%', $filterText, $seoFilter['headingH1']);
+      $title = str_replace('%filter%', $filterText, $seoFilter['title']);
+      $metaDescription = str_replace('%filter%', $filterText, $seoFilter['metaDescription']);
       $description = $seoFilter['description'];
     }
 
     return [
-      'headingH1' => $headingH1,
-      'title' => $title,
+      'headingH1'       => $headingH1,
+      'title'           => $title,
       'metaDescription' => $metaDescription,
-      'description' => $description
+      'description'     => $description
     ];
   }
 
@@ -153,6 +154,55 @@ class ControllerProductCategory extends Ego\Controllers\BaseController {
     $data['headingH1'] = $seo['headingH1'];
     $this->document->setTitle($seo['title']);
     $this->document->setDescription($seo['metaDescription']);
+
+
+    $microdata = [
+      "@context" => "https://schema.org/",
+      "@type"    => "BreadcrumbList",
+      "name"     => $data['headingH1'],
+      "image" => [ $microdataImage ],
+      "description" => $data['description'],
+      "sku" => $data['product_id'],
+      "offers" => [
+        "@type" => "Offer",
+        "url" => $productLink,
+        "priceCurrency" => "UAH",
+        "price" => $data['price_uah'],
+        "priceValidUntil" => $priceValidUntil,
+        "itemCondition" => "https://schema.org/NewCondition",
+        "availability" => empty($data['productCount']) ? "https://schema.org/OutOfStock" : "https://schema.org/InStock"
+      ]
+    ];
+
+
+{
+"@context": "http://schema.org",
+"@type": "BreadcrumbList",
+"itemListElement":
+[
+{
+"@type": "ListItem",
+"position": 1,
+"item":
+{
+"@id": "https://ukr-mobil.com/",
+"name": "Главная"
+}
+},
+{
+"@type": "ListItem",
+"position": 2,
+"item":
+{
+"@id": "https://ukr-mobil.com/zapchasti_dlya_fotoaparatov_10000272",
+"name": "Запчасти для фотоаппаратов"
+}
+}
+]
+}
+8</script>
+
+
     if (count($filters) > 2) $this->document->addMeta(['name' => 'robots', 'content' => 'noindex, nofollow']);
 
     $products = $this->getProducts($data['queryUrl']);
@@ -170,6 +220,7 @@ class ControllerProductCategory extends Ego\Controllers\BaseController {
     $data['productCategories'] = $this->load->controller('product/categories');
     $data['pagination'] = $this->getPagination($products['pagination']);
     $data['isNotLastPage'] = $products['pagination']['isNotLastPage'];
+    $this->document->setMicrodata(json_encode($microdata));
     $data['header'] = $this->load->controller('common/header');
     $data['footer'] = $this->load->controller('common/footer');
     $this->response->setOutput($this->load->view('product/category', $data));

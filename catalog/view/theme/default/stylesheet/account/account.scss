@@ -217,11 +217,13 @@ body {
   display: none
 }
 
-
-
 /* Убираем стандартный маркер Firefox */
 .order-history-table__mobile-toggle {
   list-style: none;
+}
+
+.order-history-table__cell-desktop-ttn-status {
+  word-break: break-all;
 }
 
 /* ------------ */

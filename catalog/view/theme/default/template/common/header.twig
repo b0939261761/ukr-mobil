@@ -21,9 +21,7 @@
     {% if description %}
       <meta name="description" content="{{ description }}"/>
     {% endif %}
-    {% if keywords %}
-      <meta name="keywords" content="{{ keywords }}"/>
-    {% endif %}
+
     {% for meta in metaList %}
       <meta
       {% for attr, value in meta %}
@@ -32,7 +30,7 @@
       />
     {% endfor %}
 
-     {% if microdata %}
+    {% for microdata in microdataList %}
       <script type="application/ld+json">{{ microdata }}</script>
     {% endif %}
 

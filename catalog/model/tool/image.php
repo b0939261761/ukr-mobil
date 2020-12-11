@@ -4,7 +4,6 @@ class ModelToolImage {
     if ($filename == 'placeholder.png') $isWatermark = false;
     $isResize = $width && $height;
     $fullpathOld = DIR_IMAGE . $filename;
-
     if (!is_file($fullpathOld)) return;
 
     $isCron = strpos($_SERVER['REQUEST_URI'], '/crons/');
@@ -20,7 +19,8 @@ class ModelToolImage {
     // $fullpathWEBP = DIR_IMAGE . $pathWEBP;
     $fullpathJPEG = DIR_IMAGE . $pathJPEG;
 
-    if (!is_file($fullpathJPEG) || filemtime($fullpathOld) > filemtime($fullpathJPEG)) {
+    if (true) {
+    // if (!is_file($fullpathJPEG) || filemtime($fullpathOld) > filemtime($fullpathJPEG)) {
     //   || !is_file($fullpathWEBP) || filemtime($fullpathOld) > filemtime($fullpathWEBP)) {
       $info = getimagesize($fullpathOld);
       $mime = $info['mime'] ?? '';
@@ -32,10 +32,11 @@ class ModelToolImage {
       elseif ($mime == 'image/png') $image = imagecreatefrompng($fullpathOld);
       elseif ($mime == 'image/jpeg') $image = imagecreatefromjpeg($fullpathOld);
 
-      if ($isResize) {
-        $widthOrigin = $info[0];
-        $heightOrigin = $info[1];
+      $imageNew = $image;
+      $widthOrigin = $info[0];
+      $heightOrigin = $info[1];
 
+      if ($isResize) {
         $scaleW = $width / $widthOrigin;
         $scaleH = $height / $heightOrigin;
         $scale = min($scaleW, $scaleH);
@@ -46,7 +47,6 @@ class ModelToolImage {
         $ypos = ($height - $newHeight) / 2;
 
         $imageNew = imagecreatetruecolor($width, $height);
-
         $background = imagecolorallocate($imageNew, 255, 255, 255);
         imagefilledrectangle($imageNew, 0, 0, $width, $height, $background);
 
@@ -55,7 +55,8 @@ class ModelToolImage {
 
         imagedestroy($image);
       } else {
-        $imageNew = $image;
+        $width = $widthOrigin;
+        $height = $heightOrigin;
       }
 
       if ($isWatermark) {

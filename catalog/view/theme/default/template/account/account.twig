@@ -2,7 +2,7 @@
 
 <link rel="stylesheet" href="/catalog/view/theme/default/stylesheet/megnor/datatables.min.css?1.10.22"/>
 <link rel="stylesheet" href="/catalog/view/theme/default/js/libs/pikaday/pikaday.min.css?1.8.2"/>
-<link rel="stylesheet" href="/catalog/view/theme/default/stylesheet/egofoxlab/account-account.min.css?20141114">
+<link rel="stylesheet" href="/catalog/view/theme/default/stylesheet/account/account.min.css?20201211">
 
 <div id="account-account" class="container">
   <div class="wrapper-breadcrumbs">
@@ -368,7 +368,9 @@
                 <td>{{ item.shippingFullName }}</td>
                 <td>{{ item.ttn }}</td>
                 <td>{{ item.storeName }}</td>
-                <td>{{ item.ttnStatus }}</td>
+                <td class="order-history-table__cell-desktop-ttn-status">
+                  {{ item.ttnStatus }}
+                </td>
                 <td>{{ item.totalUAH }}&nbsp;грн.<br>${{ item.totalUSD }}</td>
                 <td>
                   <a href="#" class="order-receipt-download" id="orderReceiptDownload"

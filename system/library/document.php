@@ -3,7 +3,7 @@ class Document {
   private $title;
   private $description;
   private $keywords;
-  private $microdata;
+  private $microdata = [];
   private $dataLayer;
   private $links = [];
   private $styles = [];
@@ -39,7 +39,7 @@ class Document {
   }
 
   public function setMicrodata($microdata) {
-    $this->microdata = $microdata;
+    $this->microdata[] = $microdata;
   }
 
   public function getDataLayer() {

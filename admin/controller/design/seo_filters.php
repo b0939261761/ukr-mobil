@@ -1,5 +1,4 @@
 <?
-// file_put_contents('./controller/design/__LOG__.txt', $sql);
 class ControllerDesignSeoFilters extends Controller {
   public function index() {
     $page = (int)($this->request->get['page'] ?? 1);
@@ -110,7 +109,8 @@ class ControllerDesignSeoFilters extends Controller {
       ";
       $this->db->query($sql);
 
-      if ($id && $this->db->getLastId()) {
+
+      if ($id && $id != $this->db->getLastId() && $this->db->getLastId()) {
         $this->db->query("DELETE FROM seo_filter_description WHERE id = {$id}");
       }
 
@@ -118,7 +118,7 @@ class ControllerDesignSeoFilters extends Controller {
       $this->response->redirect($this->url->link('design/seo_filters', $url));
     }
 
-        $data['breadcrumbs'][] = [
+    $data['breadcrumbs'][] = [
       'text' => $this->language->get('text_home'),
       'href' => $this->url->link('common/dashboard', ['user_token' => $userToken])
     ];

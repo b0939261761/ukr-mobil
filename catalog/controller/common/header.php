@@ -11,7 +11,7 @@ class ControllerCommonHeader extends Controller {
     $data['description'] = $this->document->getDescription();
     $data['keywords'] = $this->document->getKeywords();
     $data['metaList'] = $this->document->getMetaList();
-    $data['microdata'] = $this->document->getMicrodata();
+    $data['microdataList'] = $this->document->getMicrodata();
     $data['dataLayer'] = $this->document->getDataLayer();
     $data['links'] = $this->document->getLinks();
     $data['styles'] = $this->document->getStyles();

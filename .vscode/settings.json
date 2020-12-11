@@ -1,6 +1,6 @@
 {
   "files.exclude": {
-    // "**/admin": true,
+    "**/admin": true,
     "**/vendor": true
   }
 }

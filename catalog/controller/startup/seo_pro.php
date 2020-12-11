@@ -168,6 +168,7 @@ class ControllerStartupSeoPro extends Controller {
     }
 
     if (isset($this->request->get['route'])) return new Action($this->request->get['route']);
+    return new Action('error/not_found');
   }
 
   // ------------------------------------------

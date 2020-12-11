@@ -114,7 +114,7 @@ class ControllerProductProduct extends BaseController {
     $images[] = $product_info['image'] ? $product_info['image'] : 'placeholder.png';
     foreach ($this->model_catalog_product->getProductImages($product_id) as $image) $images[] = $image['image'];
 
-    $microdataImage = $this->model_tool_image->resize($images[0], 0, 0);
+    $microdataImage = $this->model_tool_image->resize($images[0], 0, 0, true);
     $data['headingH1'] = $product_info['name'];
 
     foreach ($images as $key=>$image) {
@@ -128,8 +128,6 @@ class ControllerProductProduct extends BaseController {
         'title'   => "{$data['headingH1']}{$indexImage}"
       ];
     }
-
-
 
     $tax_class_id = $product_info['tax_class_id'];
     $config_tax = $this->config->get('config_tax');
@@ -248,27 +246,26 @@ class ControllerProductProduct extends BaseController {
     $priceValidUntil = $date->format('Y-m-d');
 
     $microdata = [
-      "@context" => "https://schema.org/",
-      "@type" => "Product",
-      "name" => $data['headingH1'],
-      "image" => [ $microdataImage ],
+      "@context"    => "https://schema.org/",
+      "@type"       => "Product",
+      "name"        => $data['headingH1'],
+      "image"       => [ $microdataImage ],
       "description" => $data['description'],
-      "sku" => $data['product_id'],
-      "offers" => [
-        "@type" => "Offer",
-        "url" => $productLink,
-        "priceCurrency" => "UAH",
-        "price" => $data['price_uah'],
+      "sku"         => $data['product_id'],
+      "offers"      => [
+        "@type"           => "Offer",
+        "url"             => $productLink,
+        "priceCurrency"   => "UAH",
+        "price"           => $data['price_uah'],
         "priceValidUntil" => $priceValidUntil,
-        "itemCondition" => "https://schema.org/NewCondition",
-        "availability" => empty($data['productCount']) ? "https://schema.org/OutOfStock" : "https://schema.org/InStock"
+        "itemCondition"   => "https://schema.org/NewCondition",
+        "availability"    => empty($data['productCount']) ? "https://schema.org/OutOfStock" : "https://schema.org/InStock"
       ]
     ];
 
     $this->document->addLink($productLink, 'canonical');
     $this->document->setTitle($product_info['meta_title']);
     $this->document->setDescription($product_info['meta_description']);
-    $this->document->setKeywords($product_info['meta_keyword']);
     $this->document->setMicrodata(json_encode($microdata));
     $data['breadcrumbs'] = $this->getBreadcrumbs($product_id);
     $data['header'] = $this->load->controller('common/header');
