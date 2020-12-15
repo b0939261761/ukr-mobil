@@ -19,8 +19,8 @@ class ModelToolImage {
     // $fullpathWEBP = DIR_IMAGE . $pathWEBP;
     $fullpathJPEG = DIR_IMAGE . $pathJPEG;
 
-    if (true) {
-    // if (!is_file($fullpathJPEG) || filemtime($fullpathOld) > filemtime($fullpathJPEG)) {
+    // if (true) {
+    if (!is_file($fullpathJPEG) || filemtime($fullpathOld) > filemtime($fullpathJPEG)) {
     //   || !is_file($fullpathWEBP) || filemtime($fullpathOld) > filemtime($fullpathWEBP)) {
       $info = getimagesize($fullpathOld);
       $mime = $info['mime'] ?? '';
@@ -60,22 +60,27 @@ class ModelToolImage {
       }
 
       if ($isWatermark) {
+        $isSizeNormal = $width == 1024 && $height == 1024;
         $imageStamp = imagecreatefrompng(DIR_IMAGE . 'stamp.png');
 
-        $widthOriginStamp = imagesx($imageStamp);
-        $heightOriginStamp = imagesy($imageStamp);
+        if ($isSizeNormal) {
+          imagecopy($imageNew, $imageStamp, 0, 0, 0, 0, $width, $height);
+        } else {
+          $widthOriginStamp = imagesx($imageStamp);
+          $heightOriginStamp = imagesy($imageStamp);
 
-        $scaleWStamp = $width / $widthOriginStamp;
-        $scaleHStamp = $height / $heightOriginStamp;
-        $scaleStamp = min($scaleWStamp, $scaleHStamp);
+          $scaleWStamp = $width / $widthOriginStamp;
+          $scaleHStamp = $height / $heightOriginStamp;
+          $scaleStamp = min($scaleWStamp, $scaleHStamp);
 
-        $newWidthStamp = $widthOriginStamp * $scaleStamp;
-        $newHeightStamp = $heightOriginStamp * $scaleStamp;
-        $xposStamp = ($width - $newWidthStamp) / 2;
-        $yposStamp = ($height - $newHeightStamp) / 2;
+          $newWidthStamp = $widthOriginStamp * $scaleStamp;
+          $newHeightStamp = $heightOriginStamp * $scaleStamp;
+          $xposStamp = ($width - $newWidthStamp) / 2;
+          $yposStamp = ($height - $newHeightStamp) / 2;
 
-        imagecopyresampled($imageNew, $imageStamp, $xposStamp, $yposStamp, 0, 0,
-          $newWidthStamp, $newHeightStamp, $widthOriginStamp, $heightOriginStamp);
+          imagecopyresampled($imageNew, $imageStamp, $xposStamp, $yposStamp, 0, 0,
+            $newWidthStamp, $newHeightStamp, $widthOriginStamp, $heightOriginStamp);
+        }
 
         imagedestroy($imageStamp);
       }

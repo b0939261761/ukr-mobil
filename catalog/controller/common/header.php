@@ -16,8 +16,6 @@ class ControllerCommonHeader extends Controller {
     $data['links'] = $this->document->getLinks();
     $data['styles'] = $this->document->getStyles();
     $data['scripts'] = $this->document->getScripts('header');
-    $data['name'] = $this->config->get('config_name');
-    $data['logo'] = "/image/{$this->config->get('config_logo')}";
 
     $data['isLogged'] = $this->customer->isLogged();
 
@@ -27,7 +25,7 @@ class ControllerCommonHeader extends Controller {
       $data['balance'] = $this->db->query($sql)->row['balance'];
     }
 
-    $data['home'] = $this->url->link('common/home');
+    $data['linkHome'] = $this->url->link('common/home');
     $data['login'] = $this->url->link('account/login');
     $data['logout'] = $this->url->link('account/logout');
     $data['accountDocuments'] = "{$this->url->link('account/account')}#documents";
@@ -44,8 +42,8 @@ class ControllerCommonHeader extends Controller {
     $data['headerMenu'] = $this->load->controller('common/header_menu');
     $data['headerCategory'] = $this->load->controller('common/header_category');
 
-    $usd = (new \Ego\Models\Currency())->get('UAH', true);
-    $data['rate'] = number_format($usd->getValue() ?? 0, 2);
+    $sql = "SELECT value FROM oc_currency WHERE currency_id = 980";
+    $data['rate'] = $this->db->query($sql)->row['value'] ?? 0;
     return $this->load->view('common/header', $data);
   }
 }

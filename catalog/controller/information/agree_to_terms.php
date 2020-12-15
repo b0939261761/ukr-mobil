@@ -15,6 +15,7 @@ class ControllerInformationAgreeToTerms extends Controller {
     $data['headingH1'] = $post['title'] ?? '';
     $this->document->setTitle("{$data['headingH1']} - интернет-магазин UKRMobil");
     $this->document->setDescription("{$data['headingH1']} ✅ UKRMobil ✅ Фиксированные цены ✅ Гарантия ✅ Доставка по всей Украине");
+    $this->document->setMicrodataBreadcrumbs();
     $data['content'] = $post['content'] ?? '';
     $data['footer'] = $this->load->controller('common/footer');
     $data['header'] = $this->load->controller('common/header');

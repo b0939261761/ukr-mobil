@@ -7,7 +7,7 @@ class ControllerInformationGuaranteeForWholesaleClients extends Controller {
         epc.epc_content AS content
       FROM ego_post ep
       LEFT JOIN ego_post_content epc ON epc.epc_post = ep.ep_id
-      WHERE LOWER(ep.ep_category) = 'guarantee_for_wholesale_clients' AND epc.epc_language = 2
+      WHERE LOWER(ep.ep_category) = 'guarantee_for_wholesale_clients'
       LIMIT 1
     ";
     $post = $this->db->query($sql)->row;
@@ -15,6 +15,7 @@ class ControllerInformationGuaranteeForWholesaleClients extends Controller {
     $data['headingH1'] = $post['title'] ?? '';
     $this->document->setTitle("{$data['headingH1']} - интернет-магазин UKRMobil");
     $this->document->setDescription("{$data['headingH1']} ✅ UKRMobil ✅ Фиксированные цены ✅ Гарантия ✅ Доставка по всей Украине");
+    $this->document->setMicrodataBreadcrumbs();
     $data['content'] = $post['content'] ?? '';
     $data['footer'] = $this->load->controller('common/footer');
     $data['header'] = $this->load->controller('common/header');

@@ -32,6 +32,7 @@ class ControllerInformationSitemap extends Controller {
     $data['headingH1'] = 'Карта сайта';
     $this->document->setTitle("{$data['headingH1']} - интернет-магазин UKRMobil");
     $this->document->setDescription("{$data['headingH1']} ✅ UKRMobil ✅ Фиксированные цены ✅ Гарантия ✅ Доставка по всей Украине");
+    $this->document->setMicrodataBreadcrumbs();
     $data['header'] = $this->load->controller('common/header');
     $data['footer'] = $this->load->controller('common/footer');
     $this->response->setOutput($this->load->view('information/sitemap', $data));

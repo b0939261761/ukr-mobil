@@ -9,8 +9,8 @@ class ControllerProductProduct extends BaseController {
     $this->load->model('tool/image');
     $this->load->model('catalog/product');
 
-    $product_id = $this->request->get['id'];
-    $product = $this->model_catalog_product->getProduct($product_id);
+    $productId = $this->request->get['id'];
+    $product = $this->model_catalog_product->getProduct($productId);
 
     $imageFileName = $product['image'] ? $product['image'] : 'placeholder.png';
     $image = $this->model_tool_image->resize($imageFileName, 50, 50);
@@ -75,10 +75,10 @@ class ControllerProductProduct extends BaseController {
   public function index() {
     $this->load->language('product/product');
     $this->load->model('catalog/product');
+    $this->load->model('tool/image');
 
-    $product_id = (int)($this->request->get['product_id'] ?? 0);
-    $product_info = $this->model_catalog_product->getProduct($product_id);
-
+    $productId = (int)($this->request->get['product_id'] ?? 0);
+    $product_info = $this->model_catalog_product->getProduct($productId);
     if (!$product_info) $this->response->redirect($this->url->link('error/not_found'));
 
     // Seo Tags Generator.Begin
@@ -86,84 +86,114 @@ class ControllerProductProduct extends BaseController {
     $product_info = $this->load->controller('extension/module/stg_helper/getProductTags', $stg_data);
     // Seo Tags Generator.End
 
-    $this->load->model('catalog/review');
-    $customerWishlistModel = new \Ego\Models\CustomerWishlist();
-    $categoryPathModel = new \Ego\Models\CategoryPath();
-    $productToCategoryModel = new \Ego\Models\ProductToCategory();
-
-    $data['product_properties'] = $this->getProductsProperties($product_id);
-
-    $data['text_login'] = "Пожалуйста <a href=\"{$this->url->link('account/login')}\">авторизируйтесь</a>
-      или <a href=\"{$this->url->link('account/register')}\">создайте учетную запись</a>
-      перед тем как написать отзыв";
-
-    $data['tab_review'] = "Отзывов ({$product_info['reviews']})";
-    $data['product_id'] = $product_id;
-    $data['description'] = html_entity_decode($product_info['description'], ENT_QUOTES, 'UTF-8');
-
-    if ($product_info['quantity'] <= 0) {
-      $data['stock'] = $product_info['stock_status'];
-    } elseif ($this->config->get('config_stock_display')) {
-      $data['stock'] = $product_info['quantity'];
-    } else {
-      $data['stock'] = 'Есть в наличии';
-    }
-
-    $this->load->model('tool/image');
-
-    $images[] = $product_info['image'] ? $product_info['image'] : 'placeholder.png';
-    foreach ($this->model_catalog_product->getProductImages($product_id) as $image) $images[] = $image['image'];
-
-    $microdataImage = $this->model_tool_image->resize($images[0], 0, 0, true);
     $data['headingH1'] = $product_info['name'];
+    $data['description'] = html_entity_decode($product_info['description']);
 
-    foreach ($images as $key=>$image) {
+    $data['product_properties'] = $this->getProductsProperties($productId);
+
+    $customerGroupId = (int)($this->customer->getGroupId() ?? 1);
+    $customerId = $this->customer->getId() ?? 0;
+
+    $sql = "
+      SELECT
+        p.product_id AS id,
+        b.name AS brandName,
+        p.quantity AS quantityStore1,
+        p.quantity_store_2 AS quantityStore2,
+        p.quantity + p.quantity_store_2 AS quantity,
+        COALESCE(pdc.price, p.price) AS priceUSD,
+        ROUND(COALESCE(pdc.price, p.price) * c.value) AS priceUAH,
+        (SELECT price
+          FROM oc_product_special
+          WHERE product_id = p.product_id
+            AND customer_group_id = {$customerGroupId}
+            AND (date_start = '0000-00-00' OR date_start < NOW())
+            AND (date_end = '0000-00-00' OR date_end > NOW())
+          ORDER BY priority ASC, price ASC LIMIT 1
+        ) AS specialUSD,
+        ROUND((SELECT price
+          FROM oc_product_special
+          WHERE product_id = p.product_id
+            AND customer_group_id = {$customerGroupId}
+            AND (date_start = '0000-00-00' OR date_start < NOW())
+            AND (date_end = '0000-00-00' OR date_end > NOW())
+          ORDER BY priority ASC, price ASC LIMIT 1
+        ) * c.value) AS specialUAH,
+        (SELECT COUNT(1) AS cnt FROM oc_customer_wishlist
+          WHERE customer_id = {$customerId} AND product_id = p.product_id) > 0 AS isWishlist,
+        CASE
+          WHEN NOT p.image AND NOT JSON_LENGTH(tmpImages.images) THEN JSON_ARRAY('placehodler.png')
+          WHEN p.image != '' THEN JSON_ARRAY_INSERT(tmpImages.images, '$[0]', p.image)
+          ELSE tmpImages.images
+        END AS images
+      FROM oc_product p
+      LEFT JOIN oc_product_discount pdc ON pdc.product_id = p.product_id
+        AND pdc.customer_group_id = {$customerGroupId}
+      LEFT JOIN oc_currency c ON c.currency_id = 980
+      LEFT JOIN products_models pm ON pm.product_id = p.product_id
+      LEFT JOIN models m ON m.id = pm.model_id
+      LEFT JOIN brands b ON b.id = m.brand_id
+      LEFT JOIN (
+        SELECT
+          IF(COUNT(image), JSON_ARRAYAGG(image), JSON_ARRAY()) AS images
+        FROM oc_product_image
+        WHERE product_id = {$productId}
+        ORDER BY sort_order
+      ) AS tmpImages ON true
+      WHERE p.product_id = {$productId}
+    ";
+    $data['product'] = $this->db->query($sql)->row;
+
+    $productImages = json_decode($data['product']['images'], true);
+    foreach ($productImages as $key=>$image) {
       $index = $key + 1;
-      $indexImage = count($images) > 1 ? ", фото № {$index}" : '';
+      $indexImage = count($productImages) > 1 ? ", фото № {$index}" : '';
       $data['images'][] = [
-        'link'    => $this->model_tool_image->resize($image, 0, 0, true),
-        'preview' => $this->model_tool_image->resize($image, 540, 256),
-        'thumb'   => $this->model_tool_image->resize($image, 80, 80),
-        'alt'     => "{$data['headingH1']}{$indexImage} - ukr-mobil.com",
-        'title'   => "{$data['headingH1']}{$indexImage}"
+        'link'      => $this->model_tool_image->resize($image, 1024, 1024, true),
+        'preview'   => $this->model_tool_image->resize($image, 540, 256),
+        'thumb'     => $this->model_tool_image->resize($image, 80, 80),
+        'alt'       => "{$data['headingH1']}{$indexImage} - ukr-mobil.com",
+        'title'     => "{$data['headingH1']}{$indexImage}"
       ];
     }
 
-    $tax_class_id = $product_info['tax_class_id'];
-    $config_tax = $this->config->get('config_tax');
+    // rating and review
 
-    $currencyModel = new \Ego\Models\Currency();
-    $currency_course = $currencyModel->get('UAH', true);
-    $currency_course = empty($currency_course) ? '' : $currency_course->getValue();
+    $sql = "
+      SELECT
+        COUNT(*) AS quantity,
+        avg(r.rating) AS avgRating,
+        max(r.rating) AS maxRating,
+        min(r.rating) AS minRating,
+        list.list
+      FROM oc_review r
+      LEFT JOIN (
+        SELECT
+          JSON_ARRAYAGG(JSON_OBJECT(
+            'author', t.author, 'rating', t.rating, 'text', t.text, 'date', t.date
+          )) AS list
+        FROM (
+          SELECT
+            author,
+            rating,
+            text,
+            DATE_FORMAT(date_added, '%Y-%m-%d') AS date
+          FROM oc_review
+          WHERE product_id = {$productId} AND status
+          ORDER BY date_added DESC
+          LIMIT 5
+        ) AS t
+      ) AS list ON true
+      WHERE product_id = {$productId}
+    ";
 
-    if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
-      $price_usd = $product_info['price'];
-      $data['price_usd'] = number_format(round($price_usd, 2), 2, '.', '');
-      $data['price_uah'] = number_format(round($price_usd * $currency_course, 0), 0, '.', '');
-    }
+    $reviews = $this->db->query($sql)->row;
+    $data['reviewsQuantity'] = $reviews['quantity'];
 
-    if ((float)$product_info['special']) {
-      $special_usd = $this->tax->calculate($product_info['special'], $tax_class_id, $config_tax);
-      $data['special_usd'] = number_format(round($special_usd, 2), 2, '.', '');
-      $data['special_uah'] = number_format(round($special_usd * $currency_course, 0), 0, '.', '');
-    }
-
-    // $data['review_status'] = $this->config->get('config_review_status');
-    $data['review_guest'] = $this->config->get('config_review_guest') || $this->customer->isLogged();
-
-    $data['customer_name'] = $this->customer->isLogged()
-      ? $this->customer->getFirstName() . '&nbsp;' . $this->customer->getLastName()
-      : '';
-
-    $data['reviews'] = "{$product_info['reviews']} отзывов";
-    $data['rating'] = (int)$product_info['rating'];
-
-
+    // ------------------- related
     $data['products'] = [];
-
-    //  Get related products from current or parent category of the product
-    $productCategoryId = $productToCategoryModel->getProductCategory($product_id);
-    $relatedCategoryId = $categoryPathModel->getRoot($productCategoryId);
+    $productCategoryId = (new \Ego\Models\ProductToCategory())->getProductCategory($productId);
+    $relatedCategoryId = (new \Ego\Models\CategoryPath())->getRoot($productCategoryId);
 
     $results = $this->model_catalog_product->getProducts([
       'filter_category_id' => $relatedCategoryId,
@@ -180,97 +210,118 @@ class ControllerProductProduct extends BaseController {
     }
 
     foreach ($results as $result) {
-      if ($result['image']) {
-        $image = $this->model_tool_image->resize($result['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_related_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_related_height'));
-      } else {
-        $image = $this->model_tool_image->resize('placeholder.png', $this->config->get('theme_' . $this->config->get('config_theme') . '_image_related_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_related_height'));
-      }
-      //added for image swap
-
+      $image = $this->model_tool_image->resize($result['image'] ? $result['image'] : 'placeholder.png', 350, 350);
       $images = $this->model_catalog_product->getProductImages($result['product_id']);
-
-      if (isset($images[0]['image']) && !empty($images)) {
-        $images = $images[0]['image'];
-      } else {
-        $images = $image;
-      }
+      $images = isset($images[0]['image']) && !empty($images) ? $images[0]['image'] : $image;
 
       $price = $this->customer->isLogged() ? $this->currency->format($result['price']) : false;
       $special = $result['special'] ? $this->currency->format($result['special']) : false;
-
 
       $data['products'][] = [
         'product_id' => $result['product_id'],
         'thumb' => $image,
         'name' => $result['name'],
-        'thumb_swap' => $this->model_tool_image->resize($images, $this->config->get('theme_' . $this->config->get('config_theme') . '_image_product_width'),
-          $this->config->get('theme_' . $this->config->get('config_theme') . '_image_product_height')),
+        'thumb_swap' => $this->model_tool_image->resize($images, 350, 350),
         'description' => utf8_substr(trim(strip_tags(html_entity_decode($result['description'], ENT_QUOTES, 'UTF-8'))), 0, $this->config->get('theme_' . $this->config->get('config_theme') . '_product_description_length')) . '..',
         'price' => $price,
         'special' => $special,
-        'href' => $this->url->link('product/product', 'product_id=' . $result['product_id']),
+        'href' => $this->url->link('product/product', ['product_id' => $result['product_id']]),
       ];
     }
+    // ------------------- end related
 
+    $sql = "
+      SELECT
+        REPLACE(LOWER(ep.ep_category), 'product_', '') AS category,
+        epc.epc_content AS content
+      FROM ego_post ep
+      LEFT JOIN ego_post_content epc ON epc.epc_post = ep.ep_id
+      WHERE LOWER(ep.ep_category) IN ('product_warranty', 'product_delivery')
+    ";
 
-    $data['stockList'] = $this->getStockList($product_id);
-    $data['productCount'] = $this->getProductCount($product_id);
-    $data['productInWishlist'] = $customerWishlistModel->exist((int)$this->customer->getId(), $product_id);
+    foreach ($this->db->query($sql)->rows as $post) $data[$post['category']] = $post['content'];
 
-    $postModel = new \Ego\Models\EgoPost();
-    $postContentModel = new \Ego\Models\EgoPostContent();
-    $currentLangId = $this->config->get('config_language_id');
-
-    $data['delivery'] = '';
-    $post = $postModel->getByCategory('product_delivery', true);
-
-    if (!empty($post)) {
-      $postContent = $postContentModel->getByPost($post[0]->getId(), $currentLangId, false, true);
-      $data['delivery'] = empty($postContent) ? '' : $postContent[0]->getContent();
-    }
-
-    // ----------------------------------
-
-    $data['warranty'] = '';
-    $post = $postModel->getByCategory('product_warranty', true);
-
-    if (!empty($post)) {
-      $postContent = $postContentModel->getByPost($post[0]->getId(), $currentLangId, false, true);
-      $data['warranty'] = empty($postContent) ? '' : $postContent[0]->getContent();
-    }
-
-    $productLink = $this->url->link('product/product', ['product_id' => $product_id]);
-
-    $date = new DateTime();
-    $date->add(new DateInterval('P1D'));
-    $priceValidUntil = $date->format('Y-m-d');
-
-    $microdata = [
-      "@context"    => "https://schema.org/",
-      "@type"       => "Product",
-      "name"        => $data['headingH1'],
-      "image"       => [ $microdataImage ],
-      "description" => $data['description'],
-      "sku"         => $data['product_id'],
-      "offers"      => [
-        "@type"           => "Offer",
-        "url"             => $productLink,
-        "priceCurrency"   => "UAH",
-        "price"           => $data['price_uah'],
-        "priceValidUntil" => $priceValidUntil,
-        "itemCondition"   => "https://schema.org/NewCondition",
-        "availability"    => empty($data['productCount']) ? "https://schema.org/OutOfStock" : "https://schema.org/InStock"
-      ]
-    ];
-
-    $this->document->addLink($productLink, 'canonical');
     $this->document->setTitle($product_info['meta_title']);
     $this->document->setDescription($product_info['meta_description']);
+
+    $data['breadcrumbs'] = $this->getBreadcrumbs($productId);
+    $this->document->setMicrodataBreadcrumbs($data['breadcrumbs']);
+
+    $microdata = $this->getMicrodata($data, $productImages, $reviews);
     $this->document->setMicrodata(json_encode($microdata));
-    $data['breadcrumbs'] = $this->getBreadcrumbs($product_id);
+
+    $this->document->addMeta(['property' => 'og:locale', 'content' => 'ru_UA']);
+    $this->document->addMeta(['property' => 'og:title', 'content' => $product_info['meta_title']]);
+    $this->document->addMeta([
+      'property' => 'og:description',
+      'content' => $product_info['meta_description']
+    ]);
+    $this->document->addMeta([
+      'property' => 'og:url',
+      'content'  => $this->url->link('product/product', ['product_id' => $productId])
+    ]);
+    $this->document->addMeta([
+      'property' => 'og:image',
+      'content' => $this->model_tool_image->resize($productImages[0], 1024, 1024)
+    ]);
+
+    $data['reviews'] = $this->getReviews($productId);
+    $data['customerFullname'] = $this->customer->isLogged()
+      ? "{$this->customer->getFirstName()}&nbsp;{$this->customer->getLastName()}"
+      : '';
+
     $data['header'] = $this->load->controller('common/header');
     $data['footer'] = $this->load->controller('common/footer');
     $this->response->setOutput($this->load->view('product/product', $data));
+  }
+
+  private function getMicrodata($data, $productImages, $reviews) {
+    $category = implode(array_map(function($item) { return $item['name']; }, $data['breadcrumbs']), ' ');
+    $availability = 'https://schema.org/' . ($data['product']['quantity'] ? 'In' : 'OutOf') . 'Stock';
+
+    $microdata = [
+      '@context'    => 'https://schema.org/',
+      '@type'       => 'Product',
+      'url'         => $this->url->link('product/product', ['product_id' => $data['product']['id']]),
+      'category'    => $category,
+      'image'       => $this->model_tool_image->resize($productImages[0], 1024, 1024),
+      'name'        => $data['headingH1'],
+      'description' => $data['headingH1'],
+      'offers'      => [
+        '@type'           => 'Offer',
+        'availability'    => $availability,
+        'price'           => $data['product']['priceUAH'],
+        'priceCurrency'   => 'UAH'
+      ]
+    ];
+
+    if ($data['product']['brandName']) $microdata['brand'] = $data['product']['brandName'];
+    if (!$reviews['quantity']) return $microdata;
+
+    $microdata['aggregateRating'] = [
+      '@type'       => 'AggregateRating',
+      'ratingValue' => $reviews['avgRating'],
+      'bestRating'  => $reviews['maxRating'],
+      'worstRating' => $reviews['minRating'],
+      'ratingCount' => $reviews['quantity']
+    ];
+
+    foreach(json_decode($reviews['list'], true) as $item) {
+      $microdata['review'][] = [
+        '@type'         => 'Review',
+        'author'        => $item['author'],
+        'datePublished' => $item['date'],
+        'description'   => $item['text'],
+        'name'          => $item['text'],
+        'reviewRating'  => [
+          '@type'       => 'Rating',
+          'bestRating'  => 5,
+          'ratingValue' => $item['rating'],
+          'worstRating' => 1
+        ]
+      ];
+    }
+    return $microdata;
   }
 
   private function getBreadcrumbs($productId) {
@@ -284,22 +335,17 @@ class ControllerProductProduct extends BaseController {
       ORDER BY cp.level
     ";
 
-    $breadcrumbs = [];
-    $path = [];
     foreach ($this->db->query($sql)->rows as $category) {
       $path[] = $category['category_id'];
       $breadcrumbs[] = [
-        'text' => $category['name'],
+        'name' => $category['name'],
         'link' => $this->url->link('product/category', ['path' => implode('_', $path)])
       ];
     }
-    return $breadcrumbs;
+    return $breadcrumbs ?? [];
   }
 
-  public function review() {
-    $productId = (int)($this->request->get['productId'] ?? 0);
-    $page = (int)($this->request->get['page'] ?? 1);
-
+  private function getReviews($productId, $page = 1) {
     $limit = 5;
     $start = ($page - 1) * $limit;
 
@@ -330,7 +376,13 @@ class ControllerProductProduct extends BaseController {
     $pagination->url = $this->url->link('product/product/review', $query);
     $data['pagination'] = $pagination->render();
 
-    $this->response->setOutput($this->load->view('product/review', $data));
+    return $this->load->view('product/review', $data);
+  }
+
+  public function review() {
+    $productId = (int)($this->request->get['productId'] ?? 0);
+    $page = (int)($this->request->get['page'] ?? 1);
+    $this->response->setOutput($this->getReviews($productId, $page));
   }
 
   public function reviewAdd() {
@@ -402,36 +454,5 @@ class ControllerProductProduct extends BaseController {
       'code' => $code,
       'data' => $data
     ]);
-  }
-
-  private function getStockList($productId) {
-    $product = (new \Ego\Models\Product())->get($productId, true);
-    if (empty($product)) return [];
-
-    $stockList = [
-      [
-        'name' => 'г. Черновцы',
-        'quantity' => $product->getQuantity()
-      ]
-    ];
-
-    $productToStockList = (new \Ego\Models\ProductToStock())->getListByProduct($product->getProductId(), true) ?? [];
-
-    foreach ($productToStockList as $productToStock) {
-      $stockRow = (new Stocks())->get($productToStock->getStockId(), true);
-
-      if (empty($stockRow)) continue;
-
-      $stockList[] = [
-        'name' => $stockRow->getName(),
-        'quantity' => $productToStock->getQuantity()
-      ];
-    }
-
-    return $stockList;
-  }
-
-  private function getProductCount($productId) {
-    return (new \Ego\Models\ProductToStock())->getCount($productId);
   }
 }

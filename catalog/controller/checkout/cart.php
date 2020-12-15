@@ -14,7 +14,7 @@ class ControllerCheckoutCart extends Controller {
     $data['headingH1'] = 'Оформление заказа';
     $this->document->setTitle($data['headingH1']);
     $this->document->addMeta(['name' => 'robots', 'content' => 'noindex, nofollow']);
-
+    $this->document->setMicrodataBreadcrumbs();
     $data['customer'] = $this->getCustomer();
     $data['firstName'] = $this->customer->getFirstName();
     $data['lastName'] = $this->customer->getLastName();

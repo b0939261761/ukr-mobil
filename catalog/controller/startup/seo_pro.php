@@ -54,13 +54,13 @@ class ControllerStartupSeoPro extends Controller {
       ORDER BY ord
     ";
 
-    $filters = [];
+    $keywordFilters = [];
     foreach ($this->db->query($sql)->rows as $row) {
       unset($data[$row['key']]);
-      $filters[] = $row['keyword'];
+      $keywordFilters[] = $row['keyword'];
     }
 
-    return ['filters' => $filters, 'queries' => $data];
+    return ['filters' => $keywordFilters, 'queries' => $data];
   }
 
   // ------------------------------------------
@@ -121,11 +121,11 @@ class ControllerStartupSeoPro extends Controller {
     foreach ($rows as $row) $queries[$row['keyword']] = $row['query'];
 
     $categories = [];
-    $filters = [];
+    $keywordFilters = [];
 
     foreach ($parts as $part) {
       if (!isset($queries[$part])) {
-        $filters[] = $part;
+        $keywordFilters[] = $part;
         continue;
       }
 
@@ -150,8 +150,22 @@ class ControllerStartupSeoPro extends Controller {
     } elseif ($controller == 'product/search') $this->request->get['route'] = $controller;
 
     if (in_array($controller, ['product/category', 'product/search'])) {
-      $this->request->request['filters'] = $this->getFiltersByKeyword($filters);
-      foreach ($this->request->request['filters'] as $filter) $this->request->get[$filter['key']] = $filter['value'];
+      $keywordList = [];
+      foreach ($keywordFilters as $keyword) $keywordList[] = "'{$this->db->escape($keyword)}'";
+      $sqlKeywords = implode(',', $keywordList);
+
+      $filters = [];
+      if ($sqlKeywords) {
+        $sql = "
+          SELECT id, queryKey AS `key`, queryValue AS value, keyword, name
+          FROM seo_filter_url WHERE keyword IN ({$sqlKeywords}) ORDER BY ord
+        ";
+        $filters = $this->db->query($sql)->rows;
+      }
+
+      if (count($filters) != count($keywordFilters)) return new Action('error/not_found');
+      $this->request->request['filters'] = $filters;
+      foreach ($filters as $filter) $this->request->get[$filter['key']] = $filter['value'];
     }
 
     if (isset($this->request->get['search'])) {

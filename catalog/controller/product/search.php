@@ -29,7 +29,7 @@ class ControllerProductSearch extends Controller {
 
     $products = (new \Ego\Providers\ProductFilterProvider($this->registry))->filter($data['queryUrl']);
     $data['products'] = $products['items'];
-    $data['breadcrumbs'] = [['text' => 'Поиск']];
+    $data['breadcrumbs'] = [['name' => 'Поиск']];
     $data['categoryDescription'] = '';
     $data['productFilter'] = $this->load->controller('product/filter');
     $data['productCategories'] = $this->load->controller('product/categories');

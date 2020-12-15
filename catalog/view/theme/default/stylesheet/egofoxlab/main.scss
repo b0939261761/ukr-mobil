@@ -209,14 +209,6 @@ body {
             display: flex;
         }
 
-        #logo {
-            width: 200px;
-
-            img {
-                width: 193px;
-            }
-        }
-
         .search-container {
             display: inline-flex;
             align-items: center;
@@ -522,12 +514,6 @@ body {
             display: flex;
             margin-top: 17px;
             align-items: center;
-
-            #logo {
-                h1 {
-                    margin-bottom: 0;
-                }
-            }
         }
 
         .search {
@@ -1263,10 +1249,6 @@ body {
         #header {
             width: 100%;
 
-            #logo {
-                display: none;
-            }
-
             .search-container {
                 padding-left: 0;
             }
@@ -1401,6 +1383,13 @@ body {
         }
         //endregion
     }
+}
+
+
+@media (max-width: 979px) {
+  .header-logo {
+    display: none;
+  }
 }
 
 .wrapper-breadcrumbs {

@@ -33,7 +33,7 @@ class ControllerProductCategory extends Ego\Controllers\BaseController {
     $path = [];
     foreach ($this->request->request['categories'] as $category) {
       $path[] = $category['category_id'];
-      $breadcrumb = ['text' => $category['name']];
+      $breadcrumb = ['name' => $category['name']];
 
       if ($category['category_id'] != $this->request->request['category']) {
         $breadcrumb['link'] = $this->url->link('product/category', ['path' => implode('_', $path)]);
@@ -45,8 +45,13 @@ class ControllerProductCategory extends Ego\Controllers\BaseController {
   }
 
   private function getSEO($category, $seoFiltersIds) {
-    if (count($seoFiltersIds)) {
-      $seoFiltersIdsImplode = implode($seoFiltersIds, ',');
+    $countFilters = count($seoFiltersIds);
+    if ($countFilters && $countFilters <= 2) {
+      $sqlWhere = $countFilters == 1
+        ? " sfd.filter1_id = $seoFiltersIds[0] AND sfd.filter2_id = 0"
+        : " ((sfd.filter1_id, sfd.filter2_id) = ($seoFiltersIds[0], $seoFiltersIds[1])
+            OR
+            (sfd.filter1_id, sfd.filter2_id) = ($seoFiltersIds[1], $seoFiltersIds[0]))";
 
       $sql = "
         SELECT
@@ -66,24 +71,9 @@ class ControllerProductCategory extends Ego\Controllers\BaseController {
         LEFT JOIN seo_filter_url f1 ON f1.id = sfd.filter1_id
         LEFT JOIN seo_filter_url f2 ON f2.id = sfd.filter2_id
         WHERE
-          (
-            sfd.category_id = 0
-            AND sfd.filter1_id IN ({$seoFiltersIdsImplode})
-            AND sfd.filter2_id = 0
-          ) OR (
-            sfd.category_id = {$category['id']}
-            AND sfd.filter1_id IN ({$seoFiltersIdsImplode})
-            AND sfd.filter2_id = 0
-          ) OR (
-            sfd.category_id = 0
-            AND sfd.filter1_id IN ({$seoFiltersIdsImplode})
-            AND sfd.filter2_id IN ({$seoFiltersIdsImplode})
-          ) OR (
-            sfd.category_id = {$category['id']}
-            AND sfd.filter1_id IN ({$seoFiltersIdsImplode})
-            AND sfd.filter2_id IN ({$seoFiltersIdsImplode})
-          )
-        ORDER BY cp.level DESC, category_id DESC, filter1Ord, filter2Ord
+          (sfd.category_id = 0 AND {$sqlWhere})
+          OR (sfd.category_id = {$category['id']} AND {$sqlWhere})
+        ORDER BY cp.level DESC, sfd.category_id DESC
         LIMIT 1;
       ";
 
@@ -142,9 +132,10 @@ class ControllerProductCategory extends Ego\Controllers\BaseController {
 
     $seoFiltersIds = [];
     $filters = $this->request->request['filters'];
+
     foreach ($filters as $filter) {
       $data['queryUrl'][$filter['key']] = $filter['value'];
-      $seoFiltersIds[] = $filter['id'];
+      if ($filter['key'] != 'stock') $seoFiltersIds[] = $filter['id'];
     }
 
     $category = $this->getCategory($data['queryUrl']['category']);
@@ -155,59 +146,14 @@ class ControllerProductCategory extends Ego\Controllers\BaseController {
     $this->document->setTitle($seo['title']);
     $this->document->setDescription($seo['metaDescription']);
 
-
-    $microdata = [
-      "@context" => "https://schema.org/",
-      "@type"    => "BreadcrumbList",
-      "name"     => $data['headingH1'],
-      "image" => [ $microdataImage ],
-      "description" => $data['description'],
-      "sku" => $data['product_id'],
-      "offers" => [
-        "@type" => "Offer",
-        "url" => $productLink,
-        "priceCurrency" => "UAH",
-        "price" => $data['price_uah'],
-        "priceValidUntil" => $priceValidUntil,
-        "itemCondition" => "https://schema.org/NewCondition",
-        "availability" => empty($data['productCount']) ? "https://schema.org/OutOfStock" : "https://schema.org/InStock"
-      ]
-    ];
-
-
-{
-"@context": "http://schema.org",
-"@type": "BreadcrumbList",
-"itemListElement":
-[
-{
-"@type": "ListItem",
-"position": 1,
-"item":
-{
-"@id": "https://ukr-mobil.com/",
-"name": "Главная"
-}
-},
-{
-"@type": "ListItem",
-"position": 2,
-"item":
-{
-"@id": "https://ukr-mobil.com/zapchasti_dlya_fotoaparatov_10000272",
-"name": "Запчасти для фотоаппаратов"
-}
-}
-]
-}
-8</script>
-
+    $breadcrumbs = $this->getBreadcrumbs();
+    $this->document->setMicrodataBreadcrumbs($breadcrumbs);
+    $data['breadcrumbs'] = $breadcrumbs;
 
     if (count($filters) > 2) $this->document->addMeta(['name' => 'robots', 'content' => 'noindex, nofollow']);
 
     $products = $this->getProducts($data['queryUrl']);
     $data['products'] = $products['items'];
-    $data['breadcrumbs'] = $this->getBreadcrumbs();
 
     $categoryDescription = '';
     if ($data['queryUrl']['page'] == 1) {
@@ -220,7 +166,6 @@ class ControllerProductCategory extends Ego\Controllers\BaseController {
     $data['productCategories'] = $this->load->controller('product/categories');
     $data['pagination'] = $this->getPagination($products['pagination']);
     $data['isNotLastPage'] = $products['pagination']['isNotLastPage'];
-    $this->document->setMicrodata(json_encode($microdata));
     $data['header'] = $this->load->controller('common/header');
     $data['footer'] = $this->load->controller('common/footer');
     $this->response->setOutput($this->load->view('product/category', $data));

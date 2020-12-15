@@ -13,10 +13,16 @@ class ControllerAccountOrder extends Controller {
 
     $data['order']['comment'] = nl2br($data['order']['comment']);
     $data['products'] = $this->getOrderProducts($data['orderId']);
-    $data['linkOrders'] = "{$this->url->link('account/account')}#orders";
     $data['headingH1'] = 'Детали заказа';
     $this->document->setTitle($data['headingH1']);
     $this->document->addMeta(['name' => 'robots', 'content' => 'noindex, nofollow']);
+
+    $data['breadcrumb'] = [
+      'name' => 'Заказы',
+      'link' => "{$this->url->link('account/account')}#orders"
+    ];
+    $this->document->setMicrodataBreadcrumbs([$data['breadcrumb']]);
+
     $data['header'] = $this->load->controller('common/header');
     $data['footer'] = $this->load->controller('common/footer');
     $this->response->setOutput($this->load->view('account/order', $data));

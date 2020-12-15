@@ -32,13 +32,13 @@ $sql = "
       FROM oc_product p
       LEFT JOIN LATERAL (
         SELECT image FROM oc_product_image pi
-        WHERE pi.product_id = p.product_id AND p.image != pi.image
+        WHERE pi.product_id = p.product_id
         ORDER BY pi.sort_order
       ) AS t ON true
       WHERE p.status = 1
       GROUP BY p.product_id
     )
-    SELECT id, IF(image, JSON_ARRAY_INSERT(images, '$[0]', image), images) AS images
+    SELECT id, IF(image != '', JSON_ARRAY_INSERT(images, '$[0]', image), images) AS images
     FROM tmpProduct
 ";
 

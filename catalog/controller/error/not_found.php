@@ -1,8 +1,7 @@
 <?
 class ControllerErrorNotFound extends Controller {
   public function index() {
-    $data['headingH1'] = 'Запрашиваемая страница не найдена!';
-    $this->document->setTitle($data['headingH1']);
+    $this->document->setTitle('Упс! Похоже, что страница не существует.');
     $this->document->addMeta(['name' => 'robots', 'content' => 'noindex, nofollow']);
     $data['linkHome'] = $this->url->link('common/home');
     $data['footer'] = $this->load->controller('common/footer');

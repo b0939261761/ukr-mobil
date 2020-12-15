@@ -19,9 +19,9 @@
       {% for breadcrumb in breadcrumbs %}
         <li class="breadcrumbs__item">
           {% if breadcrumb.link %}
-            <a href="{{ breadcrumb.link }}" class="breadcrumbs__link">{{ breadcrumb.text }}</a>
+            <a href="{{ breadcrumb.link }}" class="breadcrumbs__link">{{ breadcrumb.name }}</a>
           {% else %}
-            {{ breadcrumb.text }}
+            {{ breadcrumb.name }}
           {% endif %}
         </li>
       {% endfor %}
@@ -57,7 +57,7 @@
 
     <div class="product__content">
       <div class="product__code">
-        Код: <span id="productId">{{ product_id }}</span>
+        Код: <span id="productId">{{ product.id }}</span>
       </div>
 
       <h1 class="product__name">{{ headingH1 }}</h1>
@@ -118,7 +118,7 @@
       <fieldset class="product-stocks">
         <legend class="product-stocks__caption">Наличие на складах</legend>
 
-        {% if productCount > 0 and productCount <= 2 %}
+        {% if product.quantity and product.quantity <= 2 %}
           <div
               class="product-stocks__warning"
               data-toggle="tooltip"
@@ -130,25 +130,30 @@
         {% endif %}
 
         <div class="product-stocks__stores">
-          {% for stock in stockList %}
-            <div>
-              <div class="product-stock__store-name">
-                {{ stock.name }}
-              </div>
-              <div class="product-stock__store-quantity">
-                {{ stock.quantity }} шт.
-              </div>
+          <div>
+            <div class="product-stock__store-name">г. Черновцы</div>
+            <div class="product-stock__store-quantity">
+              {{ product.quantityStore1 }} шт.
             </div>
-          {% endfor %}
+          </div>
+
+          <div>
+            <div class="product-stock__store-name">г. Ровно</div>
+            <div class="product-stock__store-quantity">
+              {{ product.quantityStore2 }} шт.
+            </div>
+          </div>
       </fieldset>
 
-      {% if special_usd > 0 %}
+      {% if product.specialUSD %}
         <div class="product-price product-price--old">
           <div class="product-price__uah">
-            <span class="product-price__sum-uah">{{price_uah}}</span><span class="product-price__symbol-uah">грн.</span>
+            <span class="product-price__sum-uah">{{ product.priceUAH }}</span>
+            <span class="product-price__symbol-uah">грн.</span>
           </div>
           <div class="product-price__usd">
-            <span class="product-price__symbol-usd">$</span><span class="product-price__sum-usd">{{price_usd}}</span>
+            <span class="product-price__symbol-usd">$</span>
+            <span class="product-price__sum-usd">{{ product.priceUSD }}</span>
           </div>
         </div>
       {% endif %}
@@ -175,28 +180,27 @@
         </div>
 
         <div class="product-price__uah">
-          <span class="product-price__sum-uah">{{special_usd > 0 ? special_uah : price_uah}}</span><span class="product-price__symbol-uah">грн.</span>
+          <span class="product-price__sum-uah">
+            {{ product.specialUAH ? product.specialUAH :  product.priceUAH }}
+          </span>
+          <span class="product-price__symbol-uah">грн.</span>
         </div>
 
         <div class="product-price__usd">
-          <span class="product-price__symbol-usd">$</span><span class="product-price__sum-usd">{{special_usd > 0 ? special_usd : price_usd}}</span>
+          <span class="product-price__symbol-usd">$</span>
+          <span class="product-price__sum-usd">
+            {{ product.specialUSD ? product.specialUSD :  product.priceUSD }}
+          </span>
         </div>
       </div>
 
       <div class="wrapper-product-button">
-        {% if productCount > 0 %}
-          <button
-            id="button-cart"
-            data-loading-text="Загрузка..."
-            class="product-button"
-            >
+        {% if product.quantity %}
+          <button id="button-cart" class="product-button">
               В заказ
           </button>
-        {% elseif productInWishlist == false %}
-          <button
-            class="to-wishlist"
-            data-product-id="{{ product_id }}"
-          >
+        {% elseif product.isWishlist == false %}
+          <button class="to-wishlist" data-product-id="{{ product.id }}">
             Оповестить о наличии
           </button>
         {% endif %}
@@ -207,21 +211,25 @@
 
   <div id="tabs_info" class="product-tab">
     <ul class="nav nav-tabs">
-      <li class="active">
-        <a href="#tab-description" data-toggle="tab">Описание</a>
-      </li>
-      <li>
-        <a href="#tab-review" data-toggle="tab">{{ tab_review }}</a>
+      {% if description %}
+        <li class="active">
+          <a href="#tab-description" data-toggle="tab">Описание</a>
+        </li>
+      {% endif %}
+      <li class="{{ description ? '' : 'active' }}">
+        <a href="#tab-review" data-toggle="tab">Отзывов ({{ reviewsQuantity }})</a>
       </li>
     </ul>
     <div class="tab-content">
-      <div class="tab-pane active" id="tab-description">
-        {{ description }}
-      </div>
+      {% if description %}
+        <div class="tab-pane active" id="tab-description">
+          {{ description }}
+        </div>
+      {% endif %}
 
-      <div class="tab-pane" id="tab-review">
+      <div class="tab-pane {{ description ? '' : 'active' }}" id="tab-review">
         <form class="form-horizontal" id="formReview">
-          <div id="review"></div>
+          <div id="reviews"> {{ reviews }} </div>
           <div class="review-success hide" id="reviewSuccess">
             Спасибо за ваш отзыв. Он поступил администратору для проверки на спам и вскоре будет опубликован
           </div>
@@ -233,7 +241,7 @@
               <label class="control-label" for="reviewName">Ваше имя:</label>
               <input
                 name="name"
-                value="{{ customer_name }}"
+                value="{{ customerFullname }}"
                 id="reviewName"
                 class="form-control"
                 required
@@ -416,6 +424,6 @@
 <script src="/catalog/view/javascript/megnor/bootstrap-notify.min.js"></script>
 <script src="/catalog/view/javascript/jquery/owl-carousel/owl.carousel.min.js"></script>
 <script src="/catalog/view/theme/default/js/libs/lightgallery/js/lightgallery.min.js?1.4.1-beta.0"></script>
-<script src="/catalog/view/theme/default/js/product/product.min.js?20201210"></script>
+<script src="/catalog/view/theme/default/js/product/product.min.js?20201214"></script>
 
 {{ footer }}

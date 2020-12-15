@@ -35,11 +35,70 @@ class Document {
   }
 
   public function getMicrodata() {
-    return $this->microdata;
+    $domain = $_SERVER['HTTPS'] ? HTTPS_SERVER : HTTP_SERVER;
+
+    $microdata[] = json_encode([
+      '@context'  => 'http://schema.org',
+      '@type'     => 'Organization',
+      'url'       => $domain,
+      'name'      => 'UKRMOBIL',
+      'logo'      => "{$domain}image/catalog/logo.png",
+      'sameAs'    => [
+        'https://www.instagram.com/ukrmobil_cv/',
+        'https://t.me/ukrmobil',
+        'https://www.facebook.com/Ukrmobil1/'
+      ],
+      'address'   => [
+        '@type'           => 'PostalAddress',
+        'addressLocality' => 'г. Черновцы, Украина',
+        'streetAddress'   => 'ул. Калиновская, 13А'
+      ],
+      'telephone' => [
+        '+38 093 765 1080',
+        '+38 068 765 1080',
+        '+38 050 274 2790',
+        '+38 095 765 1080'
+      ],
+      'email'     => 'ukrmobil1@gmail.com'
+    ]);
+
+    return array_merge($microdata, $this->microdata);
   }
 
   public function setMicrodata($microdata) {
     $this->microdata[] = $microdata;
+  }
+
+  public function setMicrodataBreadcrumbs($breadcrumbs = []) {
+    $breadcrumbsMicrodata[] = [
+      '@type'    => 'ListItem',
+      'position' => 1,
+      'item'     => [
+        '@id'  => $_SERVER['HTTPS'] ? HTTPS_SERVER : HTTP_SERVER,
+        'name' => 'Главная'
+      ]
+    ];
+
+    foreach($breadcrumbs as $key=>$value) {
+      if (isset($value['link'])) {
+        $breadcrumbsMicrodata[] = [
+          '@type'    => 'ListItem',
+          'position' => $key + 2,
+          'item'     => [
+            '@id'  => $value['link'],
+            'name' => $value['name']
+          ]
+        ];
+      }
+    };
+
+    $microdata = [
+      '@context'        => 'https://schema.org/',
+      '@type'           => 'BreadcrumbList',
+      'itemListElement' => $breadcrumbsMicrodata
+    ];
+
+    $this->microdata[] = json_encode($microdata);
   }
 
   public function getDataLayer() {

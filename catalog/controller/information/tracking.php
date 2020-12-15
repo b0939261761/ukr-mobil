@@ -4,6 +4,7 @@ class ControllerInformationTracking extends Controller {
     $data['headingH1'] = 'Проверка статуса заказа';
     $this->document->setTitle("{$data['headingH1']} - интернет-магазин UKRMobil");
     $this->document->setDescription("{$data['headingH1']} ✅ UKRMobil ✅ Фиксированные цены ✅ Гарантия ✅ Доставка по всей Украине");
+    $this->document->setMicrodataBreadcrumbs();
     $data['footer'] = $this->load->controller('common/footer');
     $data['header'] = $this->load->controller('common/header');
     $this->response->setOutput($this->load->view('information/tracking', $data));
@@ -23,7 +24,6 @@ class ControllerInformationTracking extends Controller {
 
       $list = $this->db->query($sql)->rows;
     }
-
     $this->response->setOutput(json_encode($list ?? []));
   }
 }

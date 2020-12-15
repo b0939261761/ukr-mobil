@@ -1,42 +1,25 @@
 {{ header }}
 <style>
-  .wrapper-news-items {
+  .news {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
   }
 
-  .news-item {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    height: 200px;
-    max-width: 100%;
-    width: 270px;
-    padding: 10px 15px;
-    color: #000;
+  @media (max-width: 767px) {
+    .news {
+      flex-wrap: wrap;
+    }
   }
 
-  .news-item:hover {
-    background-color: #41424712;
-    color: #000;
-  }
-
-  .news-item__image {
-    height: 130px;
+  .news__image {
+    width: 250px;
     object-fit: contain;
-    margin-bottom: 5px;
+    align-self: flex-start;
   }
 
-  .news-item__description {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    line-height: 1.2;
-    text-align: center;
-    font-size: 18px;
+  @media (max-width: 767px) {
+    .news__image {
+      width: 100%;
+    }
   }
 </style>
 
@@ -52,6 +35,10 @@
       </li>
 
       <li class="breadcrumbs__item">
+        <a href="{{ breadcrumb.link }}" class="breadcrumbs__link">{{ breadcrumb.name }}</a>
+      </li>
+
+      <li class="breadcrumbs__item">
         {{ headingH1 }}
       </li>
     </ul>
@@ -59,19 +46,15 @@
 
   <h1 class="page-title">{{ headingH1 }}</h1>
 
-  <div class="wrapper-news-items">
-    {% for item in news %}
-      <a class="news-item" href="{{ item.url }}">
-        <img
-          class="news-item__image"
-          src="{{ item.image }}"
-        />
-        <div class="news-item__description">
-          {{ item.title }}
-        </div>
-      </a>
-    {% endfor %}
+  <div class="news">
+    <img
+      src="{{ image }}"
+      class="news__image"
+    >
+
+    <div class="news__content">
+      {{ content }}
+    </div>
   </div>
 </div>
-
 {{ footer }}

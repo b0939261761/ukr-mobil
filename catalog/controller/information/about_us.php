@@ -21,6 +21,7 @@ class ControllerInformationAboutUs extends Controller {
     $data['headingH1'] = 'О нас';
     $this->document->setTitle("{$data['headingH1']} - интернет-магазин UKRMobil");
     $this->document->setDescription("{$data['headingH1']} ✅ UKRMobil ✅ Фиксированные цены ✅ Гарантия ✅ Доставка по всей Украине");
+    $this->document->setMicrodataBreadcrumbs();
     $data['footer'] = $this->load->controller('common/footer');
     $data['header'] = $this->load->controller('common/header');
     $this->response->setOutput($this->load->view('information/about_us', $data));

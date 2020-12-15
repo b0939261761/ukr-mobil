@@ -46,6 +46,7 @@ class ControllerAccountRegister extends Controller {
     $data['headingH1'] = 'Регистрация';
     $this->document->setTitle($data['headingH1']);
     $this->document->addMeta(['name' => 'robots', 'content' => 'noindex, nofollow']);
+    $this->document->setMicrodataBreadcrumbs();
     $data['header'] = $this->load->controller('common/header');
     $data['footer'] = $this->load->controller('common/footer');
     $this->response->setOutput($this->load->view('account/register', $data));

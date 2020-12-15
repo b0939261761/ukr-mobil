@@ -19,6 +19,7 @@ class ControllerAccountSuccess extends Controller {
     $data['headingH1'] = 'Регистрация';
     $this->document->setTitle($data['headingH1']);
     $this->document->addMeta(['name' => 'robots', 'content' => 'noindex, nofollow']);
+    $this->document->setMicrodataBreadcrumbs();
     $data['footer'] = $this->load->controller('common/footer');
     $data['header'] = $this->load->controller('common/header');
     $this->response->setOutput($this->load->view('account/success', $data));

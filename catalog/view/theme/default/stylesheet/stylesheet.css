@@ -294,16 +294,9 @@ div.required .control-label:before {
   padding: 8px 12px;
 }
 
-.header-logo {
-  float: left;
-}
 
 .header-cart {
   float: right;
-}
-
-#logo {
-  display: inline-block;
 }
 
 img {
@@ -1812,10 +1805,6 @@ a:hover {
 }
 
 @media (max-width: 479px) {
-  #logo {
-    margin-bottom: 30px !important;
-  }
-
   #top .fa.fa-caret-down {
     margin-left: -3px;
   }
@@ -4701,13 +4690,6 @@ textarea.form-control {
   margin: 0px 0px 0px 0px;
 }
 
-/* .checkout-cart.layout-2.left-col .breadcrumb > li + li::before {
-  content: "/\00a0";
-  padding: 0 3px;
-  font-family: 'FontAwesome';
-  color: #7c7c7c;
-} */
-
 .checkout-cart.layout-2.left-col .buttons a {
   color: #000;
   font-size: 12px;
@@ -4724,22 +4706,6 @@ textarea.form-control {
   font-weight: bold;
   background-color: #252525;
   border: 1px solid #252525;
-}
-
-.checkout-cart .page-title, .account-success h1, .affiliate-success h1, .checkout-success h2, .container h2 {
-  color: #000;
-  font-size: 16px;
-  font-weight: normal;
-  position: relative;
-  border-bottom: medium none;
-  margin-top: 5px;
-  padding: 10px 0 0px;
-  clear: both;
-}
-
-.checkout-cart #content h1 {
-  padding-bottom: 0;
-  margin-bottom: 11px;
 }
 
 .checkout-cart #column-left .box .box-content {
@@ -8448,10 +8414,6 @@ a.list-group-item {
     width: 100%;
   }
 
-  #logo {
-    margin: 5px 0 40px;
-  }
-
   .header_right {
     margin-top: 5px !important;
     width: 100%;
@@ -8861,21 +8823,13 @@ a.list-group-item {
     padding: 1px;
   }
 
-  .header-logo, .header-search, .header-cart {
+  .header-search, .header-cart {
     display: inline-block;
-  }
-
-  .header-logo {
-    text-align: center;
   }
 
   .header-cart {
     width: auto;
     padding: 0;
-  }
-
-  .header-logo > div {
-    display: inline-block;
   }
 
   .btn-info {
@@ -8884,10 +8838,6 @@ a.list-group-item {
 
   #input-search {
     margin-bottom: 8px;
-  }
-
-  #logo .img-responsive {
-    margin: 0 auto;
   }
 
   .special-off {
@@ -9025,14 +8975,6 @@ a.list-group-item {
 
   .background-overlay, .product-thumb .rating, #content .action .button_group {
     display: none;
-  }
-
-  .account-success h1, .affiliate-success h1, .checkout-success h2, .container h2, #account-edit h1 {
-    margin-bottom: 45px !important;
-  }
-
-  #account-register h1 {
-    margin-bottom: 35px !important;
   }
 
   .form-horizontal .col-sm-2, .form-horizontal .col-sm-10 {
@@ -9354,10 +9296,6 @@ a.list-group-item {
   .product-info .additional-carousel {
     width: 196px;
     margin: 0 auto;
-  }
-
-  .header-logo .img-responsive {
-    width: 100%;
   }
 
   .btn-primary {

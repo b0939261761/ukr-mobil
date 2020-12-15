@@ -4,6 +4,7 @@ class ControllerInformationExpectedIncome extends Controller {
     $data['headingH1'] = 'Планируемые поступления';
     $this->document->setTitle("{$data['headingH1']} - интернет-магазин UKRMobil");
     $this->document->setDescription("{$data['headingH1']} ✅ UKRMobil ✅ Фиксированные цены ✅ Гарантия ✅ Доставка по всей Украине");
+    $this->document->setMicrodataBreadcrumbs();
     $data['isLogged'] = $this->customer->isLogged() ? true : false;
     $data['isNewsletter'] = empty($this->customer->getNewsLetter()) ? false : true;
     $data['documents'] = $this->documents();

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" prefix="og: http://ogp.me/ns#">
   <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -32,7 +32,7 @@
 
     {% for microdata in microdataList %}
       <script type="application/ld+json">{{ microdata }}</script>
-    {% endif %}
+    {% endfor %}
 
      {% if dataLayer %}
       <script>{{ dataLayer }}</script>
@@ -157,11 +157,9 @@
 
     <header id="header">
       <div class="container">
-        <div id="logo">
-          <a href="{{ home }}">
-            <img src="{{ logo }}" title="{{ name }}" alt="{{ name }}" class="img-responsive" />
-          </a>
-        </div>
+        <a href="{{ linkHome }}" class="header-logo">
+          <img src="/image/logo.png" title="UKRMobil" alt="UKRMobil" width="191" height="70" />
+        </a>
 
         <div class="search-container">
           {{ search }}
