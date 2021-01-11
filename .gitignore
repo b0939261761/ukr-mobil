@@ -1,6 +1,5 @@
-.idea
 /config.php
-/admin/config.php
+/op-admin/config.php
 /system/storage
 /image
 /vendor
