@@ -80,19 +80,23 @@ class ControllerStartupSeoPro extends Controller {
 
   public function index() {
     // file_put_contents('./catalog/controller/startup/__LOG__.json', "-----------\n" . json_encode($this->request)."\n\n", FILE_APPEND);
-    $domain = $_SERVER['HTTPS'] ? HTTPS_SERVER : HTTP_SERVER;
-    $uri = str_replace('&amp;', '&', trim($this->request->server['REQUEST_URI'], '/'));
+    $this->request->request['domain'] = $_SERVER['HTTPS'] ? HTTPS_SERVER : HTTP_SERVER;
+    $requestUri = $_SERVER['REQUEST_URI'];
+    $uri = str_replace('&amp;', '&', trim($requestUri, '/'));
+
+    $this->request->request['canonical'] = $this->request->request['domain'] . explode('?', $uri, 2)[0];
+    $this->request->request['linkLogo'] = "{$this->request->request['domain']}image/logo.png";
 
     $sql = "SELECT seo_url_actual AS url
       FROM oc_seo_url_generator_redirects WHERE seo_url_old = '{$uri}'";
     $redirect = $this->db->query($sql)->row['url'] ?? '';
-    if ($redirect) return $this->response->redirect("{$domain}{$redirect}");
+    if ($redirect) return $this->response->redirect("{$this->request->request['domain']}{$redirect}");
 
     $this->url->addRewrite($this);
     if (!isset($this->request->get['_route_'])) {
       if ($this->request->get['route'] == 'error/not_found') return;
 
-      $url = "{$domain}{$uri}";
+      $url = "{$this->request->request['domain']}{$uri}";
       $queries = array_filter($this->request->get, function($k) {return $k != 'route';}, ARRAY_FILTER_USE_KEY);
       $seo = $this->url->link($this->request->get['route'], $queries);
       if ($url != $seo) $this->response->redirect($seo);
@@ -169,7 +173,8 @@ class ControllerStartupSeoPro extends Controller {
     }
 
     if (isset($this->request->get['search'])) {
-      $this->request->get['search'] = preg_replace('/\s+/', ' ', str_replace('\\', '', trim($this->request->get['search'] ?? '')));
+      $this->request->get['search'] = preg_replace('/\s+/', ' ',
+        str_replace('\\', '', trim($this->request->get['search'] ?? '')));
       if (empty($this->request->get['search'])) unset($this->request->get['search']);
     }
 
@@ -177,6 +182,7 @@ class ControllerStartupSeoPro extends Controller {
       if (isset($this->request->get['product_id'])) $this->request->get['route'] = 'product/product';
       elseif (isset($this->request->get['news_id'])) $this->request->get['route'] = 'information/news/read';
       elseif (isset($this->request->get['sitemap_id'])) $this->request->get['route'] = 'information/sitemap';
+      elseif (isset($this->request->get['information_id'])) $this->request->get['route'] = 'information/information';
       elseif (isset($this->cacheData['queries'][$route])) $this->response->redirect($this->cacheData['queries'][$route]);
       elseif (!empty($controller)) $this->request->get['route'] = $controller;
     }
@@ -208,6 +214,7 @@ class ControllerStartupSeoPro extends Controller {
         case 'category_id':
         case 'news_id':
         case 'sitemap_id':
+        case 'information_id':
           $queries[] = "{$key}={$value}";
           unset($data[$key]);
           break;

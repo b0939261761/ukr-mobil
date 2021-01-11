@@ -122,7 +122,7 @@ class ControllerProductProduct extends BaseController {
         (SELECT COUNT(1) AS cnt FROM oc_customer_wishlist
           WHERE customer_id = {$customerId} AND product_id = p.product_id) > 0 AS isWishlist,
         CASE
-          WHEN NOT p.image AND NOT JSON_LENGTH(tmpImages.images) THEN JSON_ARRAY('placehodler.png')
+          WHEN p.image = '' AND NOT JSON_LENGTH(tmpImages.images) THEN JSON_ARRAY('placeholder.png')
           WHEN p.image != '' THEN JSON_ARRAY_INSERT(tmpImages.images, '$[0]', p.image)
           ELSE tmpImages.images
         END AS images
@@ -141,6 +141,7 @@ class ControllerProductProduct extends BaseController {
         ORDER BY sort_order
       ) AS tmpImages ON true
       WHERE p.product_id = {$productId}
+      LIMIT 1
     ";
     $data['product'] = $this->db->query($sql)->row;
 
@@ -184,7 +185,7 @@ class ControllerProductProduct extends BaseController {
           LIMIT 5
         ) AS t
       ) AS list ON true
-      WHERE product_id = {$productId}
+      WHERE product_id = {$productId} AND status
     ";
 
     $reviews = $this->db->query($sql)->row;

@@ -18,9 +18,20 @@ class ControllerInformationNews extends Controller {
     }
 
     $data['headingH1'] = 'Новости';
-    $this->document->setTitle("Новости от UKRMobil");
-    $this->document->setDescription("Новости от UKRMobil ✅ Актуально ✅ Полезно");
+    $title = 'Новости от UKRMobil';
+    $description = 'Новости от UKRMobil ✅ Актуально ✅ Полезно';
+    $this->document->setTitle($title);
+    $this->document->setDescription($description);
     $this->document->setMicrodataBreadcrumbs();
+
+    $linkNewsAll = $this->url->link('information/news');
+    $linkLogo = $this->request->request['linkLogo'];
+
+    $this->document->addMeta(['property' => 'og:title', 'content' => $title]);
+    $this->document->addMeta(['property' => 'og:description', 'content' => $description]);
+    $this->document->addMeta(['property' => 'og:url', 'content' => $linkNewsAll]);
+    $this->document->addMeta(['property' => 'og:image', 'content' => $linkLogo]);
+
     $data['footer'] = $this->load->controller('common/footer');
     $data['header'] = $this->load->controller('common/header');
     $this->response->setOutput($this->load->view('information/news_list', $data));
@@ -46,28 +57,31 @@ class ControllerInformationNews extends Controller {
     $post = $this->db->query($sql)->row;
 
     $data['headingH1'] = $post['title'] ?? '';
-    $this->document->setTitle("{$data['headingH1']} - новости от UKRMobil");
-    $this->document->setDescription("{$data['headingH1']} ✅ Новости от UKRMobil ✅ Актуально ✅ Полезно");
+    $title = "{$data['headingH1']} - новости от UKRMobil";
+    $description = "{$data['headingH1']} ✅ Новости от UKRMobil ✅ Актуально ✅ Полезно";
+    $this->document->setTitle($title);
+    $this->document->setDescription( $description);
     $data['image'] = $post['image'] ?? '';
     $data['content'] = $post['content'] ?? '';
 
-    $data['breadcrumb'] = [
-      'name' => 'Новости',
-      'link' => $this->url->link('information/news')
-    ];
+    $linkNewsAll = $this->url->link('information/news');
+
+    $data['breadcrumb'] = ['name' => 'Новости', 'link' => $linkNewsAll];
     $this->document->setMicrodataBreadcrumbs([$data['breadcrumb']]);
 
-    $domain = ($_SERVER['HTTPS'] ? HTTPS_SERVER : HTTP_SERVER);
+    $linkNews = $this->url->link('information/news/read', ['news_id' => $newsId]);
+    $domain = rtrim($this->request->request['canonical'], '/');
+    $linkNewsImage = "{$domain}{$data['image']}";
 
     $microdata = [
       '@context'      => 'http://schema.org',
       '@type'         => 'NewsArticle',
       'mainEntityOfPage' => [
         '@type' => 'WebPage',
-        '@id'   => $this->url->link('information/news/read', ['news_id' => $newsId])
+        '@id'   => $linkNews
       ],
       'headline'      => $data['headingH1'],
-      'image'         => ["{$domain}{$data['image']}"],
+      'image'         => [$linkNewsImage],
       'datePublished' => $post['dateCreate'],
       'dateModified'  => $post['dateUpdate'],
       'author' => [
@@ -79,12 +93,18 @@ class ControllerInformationNews extends Controller {
         'name'  => 'UKRMOBIL',
         'logo'  => [
           '@type' => 'ImageObject',
-          'url'   => "{$domain}image/logo.png"
+          'url'   => $this->request->request['linkLogo']
         ]
       ],
       'description'   => $data['headingH1']
     ];
     $this->document->setMicrodata(json_encode($microdata));
+
+
+    $this->document->addMeta(['property' => 'og:title', 'content' => $title]);
+    $this->document->addMeta(['property' => 'og:description', 'content' => $description]);
+    $this->document->addMeta(['property' => 'og:url', 'content' => $linkNews]);
+    $this->document->addMeta(['property' => 'og:image', 'content' => $linkNewsImage]);
 
     $data['footer'] = $this->load->controller('common/footer');
     $data['header'] = $this->load->controller('common/header');

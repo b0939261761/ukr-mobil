@@ -20,8 +20,8 @@ class ControllerCheckoutCart extends Controller {
     $data['lastName'] = $this->customer->getLastName();
     $data['phone'] = $this->customer->getTelephone();
     $data['email'] = $this->customer->getEmail();
-    $data['footer'] = $this->load->controller('common/footer');
     $data['header'] = $this->load->controller('common/header');
+    $data['footer'] = $this->load->controller('common/footer');
     $this->response->setOutput($this->load->view('checkout/cart', $data));
   }
 
@@ -249,6 +249,7 @@ class ControllerCheckoutCart extends Controller {
     ";
 
     $orderIds = [];
+    $totalsUAH = 0;
     $currency = $this->getCurrency();
 
     foreach ($this->db->query($sql)->rows as $order) {
@@ -257,6 +258,8 @@ class ControllerCheckoutCart extends Controller {
         $commissionUAH = round($order['total'] * 0.04 * $currency, 0);
         if ($commissionUAH < 10) $commissionUAH = 10;
       }
+
+      $totalsUAH += round($order['total'] * $currency);
 
       $sql = "
         INSERT INTO oc_order (
@@ -291,8 +294,10 @@ class ControllerCheckoutCart extends Controller {
       }
     }
 
-    $sql = "DELETE FROM oc_cart WHERE session_id = '{$sessionId}' AND customer_id = {$customerId}";
-    $this->db->query($sql);
+    if ($isValidPhone && $isValidEmail) {
+      $sql = "DELETE FROM oc_cart WHERE session_id = '{$sessionId}' AND customer_id = {$customerId}";
+      $this->db->query($sql);
+    }
 
     if ($customerId && $warehouse) {
       $sql = "
@@ -306,7 +311,34 @@ class ControllerCheckoutCart extends Controller {
       $this->db->query($sql);
     }
 
-    $this->response->setOutput($this->url->link('checkout/success', ['orders' => $orderIds]));
+
+    if (count($orderIds)) {
+      $linkSuccess = $this->url->link('checkout/success', ['orders' => $orderIds]);
+      if ($paymentMethod == 'Оплата картой онлайн (LiqPay)') {
+        $data = json_encode($this->getLiqpayData($totalsUAH, $orderIds, $linkSuccess));
+        $this->response->addHeader('Content-Type: application/json');
+      } else {
+        $data = $linkSuccess;
+      }
+    } else {
+      http_response_code(422);
+      $data = 'NOT_ENOUGH_QUANTITY';
+    }
+
+    $this->response->setOutput($data);
+  }
+
+  public function liqpayResponse() {
+    $request = $this->request->post;
+    $reqData = $request['data'] ?? '';
+    $reqSignature = $request['signature'] ?? '';
+
+    if ($reqSignature !== $this->getSignature($reqData)) return;
+    $data = json_decode(base64_decode($reqData), true);
+
+    if ($data['status'] !== 'success') return;
+    $sql = "UPDATE oc_order SET hasPayment = 1 WHERE order_id IN ({$data['order_id']})";
+    $this->db->query($sql)->row;
   }
 
   private function getCurrency() {
@@ -329,4 +361,29 @@ class ControllerCheckoutCart extends Controller {
     ";
     return $this->db->query($sql)->row;
   }
+
+  private function getLiqpayData($totalsUAH, $orderIds, $linkSuccess) {
+    $data = base64_encode(json_encode([
+      'public_key'  => LIQPAY_PUBLIC_KEY,
+      'action'      => 'pay',
+      'language'    => 'ru',
+      'amount'      => $totalsUAH,
+      'currency'    => 'UAH',
+      'description' => "Оплата за товар по замовленню № " . implode(', ', $orderIds),
+      'order_id'    => implode(',', $orderIds),
+      'version'     => 3,
+      'result_url'  => $linkSuccess,
+      'server_url'  => $this->url->link('checkout/cart/liqpayResponse')
+    ]));
+
+    return [
+      'data'      => $data,
+      'signature' => $this->getSignature($data)
+    ];
+  }
+
+  private function getSignature($data) {
+    return base64_encode(sha1(LIQPAY_PRIVATE_KEY . $data . LIQPAY_PRIVATE_KEY, 1));
+  }
 }
+

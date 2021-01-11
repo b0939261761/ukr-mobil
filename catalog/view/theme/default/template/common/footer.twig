@@ -90,10 +90,73 @@
     background-image: url('/ego/assets/img/icon-instagram.png');
   }
 
-  .footer__address {
+  .footer__bottom {
+    display: flex;
+    flex-wrap: wrap;
+    color: #9b9b9b;
+    align-items: center;
+    justify-content: center;
     text-align: center;
-    color: #777;
+  }
+
+  @media (min-width: 768px) {
+    .footer__bottom {
+      flex-wrap: nowrap;
+      text-align: left;
+    }
+  }
+
+  .footer__bottom-item {
+    margin-bottom: 15px;
+  }
+
+  .footer__bottom-item--copyright,
+  .footer__bottom-item--links {
+    width: 100%;
+  }
+
+  .footer__bottom-item--copyright {
+    order: 2;
+  }
+
+  @media (min-width: 768px) {
+    .footer__bottom-item--copyright {
+      order: 0;
+    }
+  }
+
+  .footer__wrapper-type-payments {
+    display: flex;
+    justify-content: center;
+    width: 200px;
+  }
+
+  .footer__wrapper-type-payments > :first-child {
+    margin-right: 10px;
+  }
+
+  .footer__type-payment {
+    height: 32px;
+  }
+
+  @media (min-width: 768px) {
+    .footer__bottom-item--links {
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+
+  .footer__wrapper-information-links {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .footer__wrapper-information-links > :first-child {
     margin-bottom: 5px;
+  }
+
+  .footer__information-link {
+    color: inherit;
   }
 </style>
 
@@ -173,7 +236,7 @@
       height="70"
     />
 
-    {{ footer_newsletter }}
+    {{ footerNewsletter }}
 
     <div class="footer__wrapper-socials">
       <a class="footer__social footer__social--telegram" href="https://t.me/ukrmobil" target="_blank"></a>
@@ -182,18 +245,43 @@
       <a href="{{ linkSitemap }}">Карта сайта</a>
     </div>
 
-    <address class="footer__address">
-      ©UKR-MOBIL 1991-2020 All rights reserved
-    </address>
+    <div class="footer__bottom">
+      <div class="footer__bottom-item footer__bottom-item--copyright">
+        ©UKR-MOBIL 1991-2020 All rights reserved
+      </div>
+
+      <div class="footer__bottom-item footer__wrapper-type-payments">
+        <picture>
+          <source srcset="/image/mastercard.webp" type="image/webp">
+          <img src="/image/mastercard.jpg" alt="mastecard" class="footer__type-payment" />
+        </picture>
+
+        <picture>
+          <source srcset="/image/visa.webp" type="image/webp">
+          <img src="/image/visa.jpg" alt="visa" class="footer__type-payment" />
+        </picture>
+      </div>
+
+      <div class="footer__bottom-item footer__bottom-item--links">
+        <div class="footer__wrapper-information-links">
+          <a href="{{ linkUserDataUsage }}" class="footer__information-link">
+            Обработка персональных данных
+          </a>
+          <a href="{{ linkOffer }}" class="footer__information-link">
+            Договор публичной оферты
+          </a>
+        </div>
+      </div>
+    </div>
   </div>
 </footer>
 
 <link rel="stylesheet" href="/catalog/view/javascript/font-awesome/css/font-awesome.min.css" />
 <link rel="stylesheet" href="/catalog/view/javascript/bootstrap/css/bootstrap.min.css" />
 <link rel="stylesheet" href="/catalog/view/theme/default/js/libs/proxima/proxima.popup.min.css" />
-<link rel="stylesheet" href="/catalog/view/theme/default/stylesheet/egofoxlab/main.min.css?20201215" />
+<link rel="stylesheet" href="/catalog/view/theme/default/stylesheet/egofoxlab/main.min.css?20201218" />
 <link rel="stylesheet" href="/catalog/view/theme/default/stylesheet/megnor/animate.min.css" />
-<link rel="stylesheet" href="/catalog/view/theme/default/stylesheet/stylesheet.min.css?20201202"/>
+<link rel="stylesheet" href="/catalog/view/theme/default/stylesheet/stylesheet.min.css?20201216"/>
 
 <script src="/ego/assets/js/egofoxlab/utils.js?20201113"></script>
 <script src="/ego/assets/js/egofoxlab/base.component.js"></script>

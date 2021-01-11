@@ -1200,6 +1200,7 @@ body {
     //region Carousel
     .carousel-wrap {
         position: relative;
+        z-index: 0;
 
         .nav {
             position: absolute;

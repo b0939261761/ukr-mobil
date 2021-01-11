@@ -150,6 +150,13 @@ class ControllerProductCategory extends Ego\Controllers\BaseController {
     $this->document->setMicrodataBreadcrumbs($breadcrumbs);
     $data['breadcrumbs'] = $breadcrumbs;
 
+    $linkLogo = $this->request->request['linkLogo'];
+    $linkCanonical = $this->request->request['canonical'];
+    $this->document->addMeta(['property' => 'og:title', 'content' => $seo['title']]);
+    $this->document->addMeta(['property' => 'og:description', 'content' => $seo['metaDescription']]);
+    $this->document->addMeta(['property' => 'og:url', 'content' => $linkCanonical]);
+    $this->document->addMeta(['property' => 'og:image', 'content' => $linkLogo]);
+
     if (count($filters) > 2) $this->document->addMeta(['name' => 'robots', 'content' => 'noindex, nofollow']);
 
     $products = $this->getProducts($data['queryUrl']);

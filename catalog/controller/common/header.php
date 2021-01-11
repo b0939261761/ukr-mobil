@@ -2,10 +2,8 @@
 class ControllerCommonHeader extends Controller {
   public function index() {
     header('Cache-Control: no-store');
-    $data['base'] = $this->config->get('config_' . ($this->request->server['HTTPS'] ? 'ssl' : 'url'));
-
-    $uri = substr(explode('?', $this->request->server['REQUEST_URI'], 2)[0], 1);
-    $this->document->addLink("{$data['base']}{$uri}", 'canonical');
+    $data['base'] = $this->request->request['domain'];
+    $this->document->addLink($this->request->request['canonical'], 'canonical');
 
     $data['title'] = $this->document->getTitle();
     $data['description'] = $this->document->getDescription();
