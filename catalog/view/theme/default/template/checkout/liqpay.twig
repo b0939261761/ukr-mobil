@@ -1,8 +1,9 @@
+{{ header }}
+
 <style>
   body {
     margin: 0;
   }
-
 </style>
 
 <form
@@ -24,53 +25,44 @@
   />
 </form>
 
- <iframe name="frameLiqpay" frameBorder="0" width="100%" height="100%"></iframe>
-
-
+<iframe name="frameLiqpay" allowfullscreen frameBorder="0" width="100%" height="600"></iframe>
 
 <script>
-  const url = new URL(`${window.location.protocol}//${window.location.hostname}/index.php`);
-  url.searchParams.set('route', 'checkout/liqpay/checkSuccess');
+  (() => {
+    const domain = `${window.location.protocol}//${window.location.hostname}`;
+    const urlCheckSuccess = new URL(`${domain}/index.php`);
+    urlCheckSuccess.searchParams.set('route', 'checkout/liqpay/checkSuccess');
+    const urlCheckoutSuccess = new URL(`${domain}/index.php`);
+    urlCheckoutSuccess.searchParams.set('route', 'checkout/success');
 
-  const search = new URLSearchParams(window.location.search)
-  for (let i = 0; i < 2; ++i) {
-    const name = `orders[${i}]`;
-    const order = search.get(name);
-    if (order) url.searchParams.set(name, order);
-  }
-
-
-{#
-  const formLiqpay = document.getElementById('formLiqpay')
-  formLiqpay.submit(); #}
-
-
-  let timeoutId = 0;
-
-  const checkSuccess = async () => {
-    try {
-       const response = await fetch(url.toString());
-      if (response.ok) {
-        const result = await response.text()
-        console.log(result);
-        if (result) return;
-
+    const search = new URLSearchParams(window.location.search)
+    for (let i = 0; i < 2; ++i) {
+      const name = `orders[${i}]`;
+      const order = search.get(name);
+      if (order) {
+        urlCheckSuccess.searchParams.set(name, order);
+        urlCheckoutSuccess.searchParams.set(name, order);
       }
-    } catch (err) {
-      console.error(err);
     }
 
-    setTimeout(checkSuccess, 1000);
-  };
+    const checkSuccess = async () => {
+      try {
+        const response = await fetch(urlCheckSuccess.toString());
+        if (response.ok) {
+          const result = await response.text()
+          console.log(result);
+          if (result) return window.location = urlCheckoutSuccess.toString();
+        }
+      } catch (err) {
+        console.error(err);
+      }
+      setTimeout(checkSuccess, 1000);
+    };
 
-  checkSuccess()
-
-  {# console.log(checkSuccess()); #}
-
-  {# const goToLiqpay = ({ data, signature }) => { #}
-  {# }
-
-const button = document.querySelector('button');
-button.addEventListener('click', () => goToLiqpay({})); #}
-
+    const formLiqpay = document.getElementById('formLiqpay');
+    formLiqpay.submit();
+    setTimeout(checkSuccess, 5000);
+  })();
 </script>
+
+{{ footer }}
