@@ -13,7 +13,8 @@ class ModelToolImage {
     $file = pathinfo($filename);
     $sizeFilename = $isResize ? "-{$width}x{$height}" : '';
     $wtFilename = $isWatermark ? '-w' : '';
-    $pathCache = "cache/{$file['dirname']}/{$file['filename']}{$sizeFilename}{$wtFilename}";
+    $fileDirname = $file['dirname'] === '.' ? '' : "{$file['dirname']}/";
+    $pathCache = "cache/{$fileDirname}{$file['filename']}{$sizeFilename}{$wtFilename}";
     // $pathWEBP = "{$pathCache}.webp";
     $pathJPEG = "{$pathCache}.jpeg";
     // $fullpathWEBP = DIR_IMAGE . $pathWEBP;
@@ -97,7 +98,7 @@ class ModelToolImage {
     return "{$uri}{$pathJPEG}";
   }
 
-  public function resize($filename, $width, $height, $isWatermark = false) {
+  public function resize($filename, $width = 0, $height = 0, $isWatermark = false) {
     // return $this->resizeFormat($filename, $width, $height, $isWatermark)[1];
     return $this->resizeFormat($filename, $width, $height, $isWatermark);
   }

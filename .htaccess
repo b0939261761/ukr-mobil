@@ -8,8 +8,6 @@ Options -Indexes
 RewriteEngine On
 Redirect 301 /.env /
 
-RewriteRule ^price-list$ /index.php?route=ajax/ego/downloadLinkExcelPriceList [L]
-
 RewriteBase /
 RewriteRule ^/?$ index.php?route=common/home [L]
 RewriteRule ^system/storage/(.*) index.php?route=error/not_found [L]

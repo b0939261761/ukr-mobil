@@ -2,7 +2,7 @@
 class ControllerCommonHeaderMenu extends Controller {
   public function index() {
     $data['home'] = $this->url->link('common/home');
-    $data['download_price_list'] = '/price-list';
+    $data['download_price_list'] = $this->url->link('information/price_list');
     $data['service'] = $this->url->link('information/tracking');
     $data['news'] = $this->url->link('information/news');
     $data['about_us'] = $this->url->link('information/about_us');

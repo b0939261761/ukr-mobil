@@ -1,5 +1,4 @@
-/config.php
-/op-admin/config.php
+/**/config.php
 /system/storage
 /image
 /vendor
@@ -8,5 +7,4 @@
 /.env
 /robots.txt
 /composer.phar
-/sitemap.xml
-/sitemapimages.xml
+/*.xml

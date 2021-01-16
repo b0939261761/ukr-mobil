@@ -7,11 +7,8 @@ class ControllerCatalogProduct extends Controller {
 
 	public function index() {
 		$this->load->language('catalog/product');
-
 		$this->document->setTitle($this->language->get('heading_title'));
-
 		$this->load->model('catalog/product');
-
 		$this->getList();
 	}
 
@@ -91,11 +88,8 @@ class ControllerCatalogProduct extends Controller {
 
 	public function edit() {
 		$this->load->language('catalog/product');
-
 		$this->document->setTitle($this->language->get('heading_title'));
-
 		$this->load->model('catalog/product');
-
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateForm()) {
 			$this->model_catalog_product->editProduct($this->request->get['product_id'], $this->request->post);
 
@@ -646,7 +640,31 @@ class ControllerCatalogProduct extends Controller {
 			$data['product_description'] = array();
 		}
 
-		if (isset($this->request->post['model'])) {
+    if (isset($this->request->post['gmDisabled'])) {
+			$data['gmDisabled'] = $this->request->post['gmDisabled'];
+		} elseif (!empty($product_info)) {
+			$data['gmDisabled'] = $product_info['gmDisabled'];
+		} else {
+			$data['gmDisabled'] = 1;
+		}
+
+		if (isset($this->request->post['gmDescription'])) {
+			$data['gmDescription'] = $this->request->post['gmDescription'];
+		} elseif (!empty($product_info)) {
+			$data['gmDescription'] = $product_info['gmDescription'];
+		} else {
+			$data['gmDescription'] = '';
+		}
+
+    if (isset($this->request->post['gmCategory'])) {
+			$data['gmCategory'] = $this->request->post['gmCategory'];
+		} elseif (!empty($product_info)) {
+			$data['gmCategory'] = $product_info['gmCategory'];
+		} else {
+			$data['gmCategory'] = 1;
+		}
+
+    if (isset($this->request->post['model'])) {
 			$data['model'] = $this->request->post['model'];
 		} elseif (!empty($product_info)) {
 			$data['model'] = $product_info['model'];
