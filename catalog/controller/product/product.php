@@ -456,4 +456,122 @@ class ControllerProductProduct extends BaseController {
       'data' => $data
     ]);
   }
+
+
+  private function getRelative($product_id) {
+    $sql = "
+      WITH
+        tmpProductType1 AS (
+          SELECT
+              1 AS type, 0 AS level, pr.ord, p.product_id
+            FROM product_relative pr
+            LEFT JOIN oc_product p ON p.product_id = pr.relative_product_id
+            WHERE pr.product_id = 9600
+              AND p.quantity + p.quantity_store_2
+        ),
+        tmpProductType2 AS (
+          SELECT
+            2 AS type, cp.level, cpr.ord, p.product_id
+          FROM oc_product_to_category ptc
+          LEFT JOIN oc_category_path cp on cp.category_id = ptc.category_id
+          LEFT JOIN category_product_relative cpr on cpr.category_id = cp.path_id
+          INNER JOIN oc_product p on p.product_id = cpr.relative_product_id
+          WHERE ptc.product_id = 9600
+            AND ptc.product_id NOT IN (SELECT product_id FROM tmpProductType1)
+            AND p.quantity + p.quantity_store_2
+        ),
+        tmpModelCategory AS (
+          SELECT model_id, cp.path_id
+          FROM products_models pm
+          LEFT JOIN oc_product_to_category ptc ON ptc.product_id = pm.product_id
+          LEFT JOIN oc_category_path cp ON cp.category_id = ptc.category_id
+          WHERE pm.product_id = 9600
+        ),
+        tmpProductMC AS (
+          SELECT pm.product_id
+          FROM products_models pm
+          LEFT JOIN oc_product_to_category ptc ON ptc.product_id = pm.product_id
+          LEFT JOIN oc_category_path cp on cp.category_id = ptc.category_id
+          WHERE pm.model_id IN (SELECT model_id FROM tmpModelCategory)
+            AND cp.path_id not IN (SELECT path_id FROM tmpModelCategory)
+          GROUP BY pm.product_id
+        ),
+        tmpProductType3 AS (
+          SELECT
+            3 AS type, 0 AS level, pr.ord, p.product_id
+          FROM product_relative pr
+          LEFT JOIN oc_product p ON p.product_id = pr.relative_product_id
+          WHERE pr.product_id IN (SELECT product_id FROM tmpProductMC)
+            AND p.product_id NOT IN (
+              SELECT product_id FROM tmpProductType1
+              UNION
+              SELECT product_id FROM tmpProductType2
+            )
+            AND p.quantity + p.quantity_store_2
+        ),
+        tmpProductType4 AS (
+          SELECT
+            4 AS type, cp.level, cpr.ord, p.product_id
+          FROM oc_product_to_category ptc
+          LEFT JOIN oc_category_path cp on cp.category_id = ptc.category_id
+          LEFT JOIN category_product_relative cpr on cpr.category_id = cp.path_id
+          INNER JOIN oc_product p on p.product_id = cpr.relative_product_id
+          WHERE ptc.product_id IN (SELECT product_id FROM tmpProductMC)
+            AND p.product_id NOT IN (
+              SELECT product_id FROM tmpProductType1
+              UNION
+              SELECT product_id FROM tmpProductType2
+              UNION
+              SELECT product_id FROM tmpProductType3
+            )
+            AND p.quantity + p.quantity_store_2
+          GROUP BY p.product_id
+        ),
+        tmpProductsUnion AS (
+          SELECT * FROM tmpProductType1
+          UNION ALL
+          SELECT * FROM tmpProductType2
+          UNION ALL
+          SELECT * FROM tmpProductType3
+          UNION ALL
+          SELECT * FROM tmpProductType4
+          ORDER BY type, level, ord
+          LIMIT 30
+        ),
+        tmpProducts AS (
+          SELECT
+            p.product_id,
+            pd.name,
+            COALESCE(
+              (SELECT price
+                FROM oc_product_special
+                WHERE product_id = p.product_id
+                  AND customer_group_id = 0
+                  AND (date_start = '0000-00-00' OR date_start < NOW())
+                  AND (date_end = '0000-00-00' OR date_end > NOW())
+                ORDER BY priority ASC, price ASC LIMIT 1),
+              pdc.price,
+              p.price) AS price,
+            IF(p.image = '',
+              COALESCE(
+                (SELECT image FROM oc_product_image
+                  WHERE product_id = p.product_id ORDER BY sort_order LIMIT 1),
+                'placeholder.png'
+              ), p.image) AS image
+          FROM tmpProductsUnion tp
+          LEFT JOIN oc_product p on p.product_id = tp.product_id
+          LEFT JOIN oc_product_description pd ON pd.product_id = p.product_id
+          LEFT JOIN oc_product_discount pdc ON pdc.product_id = p.product_id
+                AND pdc.customer_group_id = 0
+        )
+      SELECT
+        p.product_id,
+        p.name,
+        p.image,
+        p.price AS priceUSD,
+        ROUND(p.price * c.value) AS priceUAH
+      FROM tmpProducts p
+      LEFT JOIN oc_currency c ON c.currency_id = 980
+    ";
+  }
 }

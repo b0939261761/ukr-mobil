@@ -1,8 +1,6 @@
 <?
 class ControllerInformationPriceList extends Controller {
   public function index() {
-    $customerGroupId = (int)($this->customer->getGroupId() ?? 1);
-
     $iRow = 1;
     $spreadsheet = new PhpOffice\PhpSpreadsheet\Spreadsheet();
 
@@ -14,12 +12,13 @@ class ControllerInformationPriceList extends Controller {
     $spreadsheet->setActiveSheetIndex(0);
     $sheet = $spreadsheet->getActiveSheet();
 
-    $sheet->getColumnDimensionByColumn(1)->setWidth(10); // Code
-    $sheet->getColumnDimensionByColumn(2)->setWidth(95); // Name
-    $sheet->getColumnDimensionByColumn(3)->setWidth(15); // Count Chernivtsi
-    $sheet->getColumnDimensionByColumn(4)->setWidth(15); // Count Rivne
-    $sheet->getColumnDimensionByColumn(5)->setWidth(8); // Price
-    $sheet->getColumnDimensionByColumn(6)->setWidth(8); // Order
+    $sheet->getColumnDimensionByColumn(1)->setWidth(10); // hyperlink
+    $sheet->getColumnDimensionByColumn(2)->setWidth(10); // Code
+    $sheet->getColumnDimensionByColumn(3)->setWidth(95); // Name
+    $sheet->getColumnDimensionByColumn(4)->setWidth(15); // Count Chernivtsi
+    $sheet->getColumnDimensionByColumn(5)->setWidth(15); // Count Rivne
+    $sheet->getColumnDimensionByColumn(6)->setWidth(8); // Price
+    $sheet->getColumnDimensionByColumn(7)->setWidth(8); // Order
 
     $this->loopCategory($sheet, $this->getCategories(), 1);
 
@@ -32,6 +31,8 @@ class ControllerInformationPriceList extends Controller {
   }
 
   private function getCategories() {
+    $customerGroupId = (int)($this->customer->getGroupId() ?? 1);
+
     $sql = "
       WITH
         tmpProducts AS (
@@ -43,7 +44,7 @@ class ControllerInformationPriceList extends Controller {
               (SELECT price
                 FROM oc_product_special
                 WHERE product_id = p.product_id
-                  AND customer_group_id = 1
+                  AND customer_group_id = {$customerGroupId}
                   AND (date_start = '0000-00-00' OR date_start < NOW())
                   AND (date_end = '0000-00-00' OR date_end > NOW())
                 ORDER BY priority ASC, price ASC LIMIT 1),
@@ -55,7 +56,7 @@ class ControllerInformationPriceList extends Controller {
           LEFT JOIN oc_product_to_category ptc ON ptc.product_id = p.product_id
           LEFT JOIN oc_product_description pd ON pd.product_id = p.product_id
           LEFT JOIN oc_product_discount pdc ON pdc.product_id = p.product_id
-            AND pdc.customer_group_id = 1
+            AND pdc.customer_group_id = {$customerGroupId}
           ORDER BY pd.name
         ),
         tmpGroupProducts AS (
@@ -116,7 +117,7 @@ class ControllerInformationPriceList extends Controller {
     $fillSolid = \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID;
 
     foreach ($categories as $category) {
-      $sheet->mergeCellsByColumnAndRow(1, $iRow, 6, $iRow);
+      $sheet->mergeCellsByColumnAndRow(1, $iRow, 7, $iRow);
       $cellCategory = $sheet->getCellByColumnAndRow(1, $iRow);
       $cellCategory->setValue($category['name']);
       $cellCategoryStyle = $cellCategory->getStyle();
@@ -127,40 +128,42 @@ class ControllerInformationPriceList extends Controller {
 
       $products = $category['products'];
       if (count($products)) {
-        $sheet->getCellByColumnAndRow(1, $iRow)->setValue('КОД ТОВАРА');
-        $sheet->getCellByColumnAndRow(2, $iRow)->setValue('НАЗВАНИЕ');
-        $sheet->getCellByColumnAndRow(3, $iRow)->setValue('ОСТАТКИ Черновцы');
-        $sheet->getCellByColumnAndRow(4, $iRow)->setValue('ОСТАТКИ Ровно');
-        $sheet->getCellByColumnAndRow(5, $iRow)->setValue('Цена, USD');
-        $sheet->getCellByColumnAndRow(6, $iRow)->setValue('ЗАКАЗ');
-        $headerStyle = $sheet->getStyleByColumnAndRow(1, $iRow, 6, $iRow);
+        $sheet->getCellByColumnAndRow(1, $iRow)->setValue('CСЫЛКА');
+        $sheet->getCellByColumnAndRow(2, $iRow)->setValue('КОД ТОВАРА');
+        $sheet->getCellByColumnAndRow(3, $iRow)->setValue('НАЗВАНИЕ');
+        $sheet->getCellByColumnAndRow(4, $iRow)->setValue('ОСТАТКИ Черновцы');
+        $sheet->getCellByColumnAndRow(5, $iRow)->setValue('ОСТАТКИ Ровно');
+        $sheet->getCellByColumnAndRow(6, $iRow)->setValue('Цена, USD');
+        $sheet->getCellByColumnAndRow(7, $iRow)->setValue('ЗАКАЗ');
+        $headerStyle = $sheet->getStyleByColumnAndRow(1, $iRow, 7, $iRow);
         $headerStyle->getFont()->setBold(true)->setSize(8);
         $headerStyle->getAlignment()->setHorizontal($horizontalCenter);
         ++$iRow;
 
         foreach ($products as $product) {
-          $cellStyle = $sheet->getStyleByColumnAndRow(1, $iRow, 6, $iRow);
+          $cellStyle = $sheet->getStyleByColumnAndRow(1, $iRow, 7, $iRow);
           $cellStyle->getFont()->setSize(8);
           $cellStyle->getAlignment()->setHorizontal($horizontalCenter);
 
           $productLink = $this->url->link('product/product', ['product_id' => $product['id']]);
-          $codeValue = "=HYPERLINK(\"{$productLink}\", \"{$product['id']}\")";
+          $codeValue = "=HYPERLINK(\"{$productLink}\", \"Перейти\")";
           $sheet->getCellByColumnAndRow(1, $iRow)->setValue($codeValue);
 
-          $cellName = $sheet->getCellByColumnAndRow(2, $iRow);
-          $nameValue = "=HYPERLINK(\"{$productLink}\", \"{$product['name']}\")";
-          $cellName->setValue($nameValue);
+          $sheet->getCellByColumnAndRow(2, $iRow)->setValue($product['id']);
+
+          $cellName = $sheet->getCellByColumnAndRow(3, $iRow);
+          $cellName->setValue($product['name']);
           $cellName->getStyle()->getAlignment()->setHorizontal($horizontalLeft);
 
-          $cellStore1 = $sheet->getCellByColumnAndRow(3, $iRow);
+          $cellStore1 = $sheet->getCellByColumnAndRow(4, $iRow);
           $cellStore1->setValue($product['quantityStore1']);
           $cellStore1->getStyle()->getFont()->setBold(true);
 
-          $cellStore2 = $sheet->getCellByColumnAndRow(4, $iRow);
+          $cellStore2 = $sheet->getCellByColumnAndRow(5, $iRow);
           $cellStore2->setValue($product['quantityStore2']);
           $cellStore2->getStyle()->getFont()->setBold(true);
 
-          $sheet->getCellByColumnAndRow(5, $iRow)->setValue($product['price']);
+          $sheet->getCellByColumnAndRow(6, $iRow)->setValue($product['price']);
           ++$iRow;
         }
       }

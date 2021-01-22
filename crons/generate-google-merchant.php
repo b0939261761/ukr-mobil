@@ -29,7 +29,7 @@ $sql = "
     p.product_id AS id,
     pd.name,
     b.name AS brand,
-    IF(p.quantity AND p.quantity_store_2, 'in_stock', 'out_stock') AS availability,
+    IF(p.quantity OR p.quantity_store_2, 'in_stock', 'out_of_stock') AS availability,
     ROUND(p.price * c.value) AS price,
     p.gmDescription,
     p.gmCategory,
@@ -86,7 +86,7 @@ foreach ($db->query($sql)->rows as $product) {
     ? str_replace('%name%', $name, $product['gmDescription'])
     : $name;
 
-  $content .= "\n" . '<item>';
+  $content .= '<item>';
   $content .= "<g:id>{$product['id']}</g:id>";
   $content .= '<g:title>' . mb_substr($name, 0, 149) . '</g:title>';
   $content .= "<g:description>{$googleProductCategory}</g:description>";
