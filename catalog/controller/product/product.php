@@ -271,6 +271,7 @@ class ControllerProductProduct extends BaseController {
       ? "{$this->customer->getFirstName()}&nbsp;{$this->customer->getLastName()}"
       : '';
 
+    $data['relativeProducts'] = $this->getRelativeProducts($productId);
     $data['header'] = $this->load->controller('common/header');
     $data['footer'] = $this->load->controller('common/footer');
     $this->response->setOutput($this->load->view('product/product', $data));
@@ -457,8 +458,9 @@ class ControllerProductProduct extends BaseController {
     ]);
   }
 
+  private function getRelativeProducts($productId) {
+    $customerGroupId = (int)($this->customer->getGroupId() ?? 1);
 
-  private function getRelative($product_id) {
     $sql = "
       WITH
         tmpProductType1 AS (
@@ -466,66 +468,44 @@ class ControllerProductProduct extends BaseController {
               1 AS type, 0 AS level, pr.ord, p.product_id
             FROM product_relative pr
             LEFT JOIN oc_product p ON p.product_id = pr.relative_product_id
-            WHERE pr.product_id = 9600
+            WHERE pr.product_id = {$productId}
               AND p.quantity + p.quantity_store_2
+            GROUP BY p.product_id
         ),
         tmpProductType2 AS (
           SELECT
             2 AS type, cp.level, cpr.ord, p.product_id
           FROM oc_product_to_category ptc
-          LEFT JOIN oc_category_path cp on cp.category_id = ptc.category_id
-          LEFT JOIN category_product_relative cpr on cpr.category_id = cp.path_id
-          INNER JOIN oc_product p on p.product_id = cpr.relative_product_id
-          WHERE ptc.product_id = 9600
+          LEFT JOIN oc_category_path cp ON cp.category_id = ptc.category_id
+          LEFT JOIN category_product_relative cpr ON cpr.category_id = cp.path_id
+          INNER JOIN oc_product p ON p.product_id = cpr.relative_product_id
+          WHERE ptc.product_id = {$productId}
             AND ptc.product_id NOT IN (SELECT product_id FROM tmpProductType1)
             AND p.quantity + p.quantity_store_2
         ),
-        tmpModelCategory AS (
-          SELECT model_id, cp.path_id
-          FROM products_models pm
-          LEFT JOIN oc_product_to_category ptc ON ptc.product_id = pm.product_id
-          LEFT JOIN oc_category_path cp ON cp.category_id = ptc.category_id
-          WHERE pm.product_id = 9600
-        ),
-        tmpProductMC AS (
-          SELECT pm.product_id
-          FROM products_models pm
-          LEFT JOIN oc_product_to_category ptc ON ptc.product_id = pm.product_id
-          LEFT JOIN oc_category_path cp on cp.category_id = ptc.category_id
-          WHERE pm.model_id IN (SELECT model_id FROM tmpModelCategory)
-            AND cp.path_id not IN (SELECT path_id FROM tmpModelCategory)
-          GROUP BY pm.product_id
+        tmpCategory AS (
+          SELECT category_id FROM oc_product_to_category
+          WHERE product_id = {$productId} LIMIT 1
         ),
         tmpProductType3 AS (
-          SELECT
-            3 AS type, 0 AS level, pr.ord, p.product_id
-          FROM product_relative pr
-          LEFT JOIN oc_product p ON p.product_id = pr.relative_product_id
-          WHERE pr.product_id IN (SELECT product_id FROM tmpProductMC)
-            AND p.product_id NOT IN (
+          SELECT 3 AS type, 0 AS level, COALESCE(cr.ord, 9999999) AS ord, p.product_id
+          FROM products_models pm
+          LEFT JOIN oc_product p ON p.product_id = pm.product_id
+          LEFT JOIN oc_product_to_category ptc ON ptc.product_id = p.product_id
+          LEFT JOIN (
+            SELECT relative_category_id, ord FROM category_relative
+            WHERE category_id = (SELECT * FROM tmpCategory)
+          ) cr ON cr.relative_category_id = ptc.category_id
+          WHERE
+            pm.model_id IN (SELECT model_id FROM products_models WHERE product_id = {$productId})
+            AND ptc.category_id != (SELECT * FROM tmpCategory)
+            AND ptc.product_id NOT IN (
               SELECT product_id FROM tmpProductType1
               UNION
               SELECT product_id FROM tmpProductType2
             )
             AND p.quantity + p.quantity_store_2
-        ),
-        tmpProductType4 AS (
-          SELECT
-            4 AS type, cp.level, cpr.ord, p.product_id
-          FROM oc_product_to_category ptc
-          LEFT JOIN oc_category_path cp on cp.category_id = ptc.category_id
-          LEFT JOIN category_product_relative cpr on cpr.category_id = cp.path_id
-          INNER JOIN oc_product p on p.product_id = cpr.relative_product_id
-          WHERE ptc.product_id IN (SELECT product_id FROM tmpProductMC)
-            AND p.product_id NOT IN (
-              SELECT product_id FROM tmpProductType1
-              UNION
-              SELECT product_id FROM tmpProductType2
-              UNION
-              SELECT product_id FROM tmpProductType3
-            )
-            AND p.quantity + p.quantity_store_2
-          GROUP BY p.product_id
+          GROUP BY pm.product_id
         ),
         tmpProductsUnion AS (
           SELECT * FROM tmpProductType1
@@ -533,9 +513,7 @@ class ControllerProductProduct extends BaseController {
           SELECT * FROM tmpProductType2
           UNION ALL
           SELECT * FROM tmpProductType3
-          UNION ALL
-          SELECT * FROM tmpProductType4
-          ORDER BY type, level, ord
+          ORDER BY type, level DESC, ord
           LIMIT 30
         ),
         tmpProducts AS (
@@ -546,7 +524,7 @@ class ControllerProductProduct extends BaseController {
               (SELECT price
                 FROM oc_product_special
                 WHERE product_id = p.product_id
-                  AND customer_group_id = 0
+                  AND customer_group_id = {$customerGroupId}
                   AND (date_start = '0000-00-00' OR date_start < NOW())
                   AND (date_end = '0000-00-00' OR date_end > NOW())
                 ORDER BY priority ASC, price ASC LIMIT 1),
@@ -562,10 +540,10 @@ class ControllerProductProduct extends BaseController {
           LEFT JOIN oc_product p on p.product_id = tp.product_id
           LEFT JOIN oc_product_description pd ON pd.product_id = p.product_id
           LEFT JOIN oc_product_discount pdc ON pdc.product_id = p.product_id
-                AND pdc.customer_group_id = 0
+                AND pdc.customer_group_id = {$customerGroupId}
         )
       SELECT
-        p.product_id,
+        p.product_id AS productId,
         p.name,
         p.image,
         p.price AS priceUSD,
@@ -573,5 +551,14 @@ class ControllerProductProduct extends BaseController {
       FROM tmpProducts p
       LEFT JOIN oc_currency c ON c.currency_id = 980
     ";
+
+    $relativeProducts = $this->db->query($sql)->rows;
+
+    foreach ($relativeProducts as &$item) {
+      $item['image'] = $this->model_tool_image->resize($item['image'], 170, 170);
+      $item['link'] = $this->url->link('product/product', ['product_id' => $item['productId']]);
+    }
+
+    return $relativeProducts;
   }
 }

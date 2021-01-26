@@ -61,7 +61,7 @@ class ControllerDesignSeoFilters extends Controller {
     $pagination->total = $total;
     $pagination->page = $page;
     $pagination->limit = $limit;
-    $pagination->url = $this->url->link('design/seo_url', array_merge($url, ['page' => '{page}']));
+    $pagination->url = $this->url->link('design/seo_filters', array_merge($url, ['page' => '{page}']));
     $data['pagination'] = $pagination->render();
 
     $start += 1;

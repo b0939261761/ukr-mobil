@@ -83,7 +83,7 @@ class ControllerProductCategory extends Ego\Controllers\BaseController {
     $filterText = '';
     if (!empty($this->request->request['filters'])){
       $filterNameList = array_map(function($item) { return $item['name']; }, $this->request->request['filters']);
-      $filterText = implode(' , ', $filterNameList);
+      $filterText = implode(' ', $filterNameList);
     }
 
     if (empty($seoFilter)) {
