@@ -482,6 +482,7 @@ class ControllerProductProduct extends BaseController {
           WHERE ptc.product_id = {$productId}
             AND ptc.product_id NOT IN (SELECT product_id FROM tmpProductType1)
             AND p.quantity + p.quantity_store_2
+          GROUP BY p.product_id
         ),
         tmpCategory AS (
           SELECT category_id FROM oc_product_to_category

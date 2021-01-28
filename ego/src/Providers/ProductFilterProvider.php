@@ -233,7 +233,7 @@ class ProductFilterProvider {
           ), image) AS image,
         (SELECT COUNT(1) AS cnt FROM oc_customer_wishlist
           WHERE customer_id = {$this->customerId} AND product_id = a.product_id) > 0 AS is_wishlist,
-        quantity_store_1 + quantity_store_2 AS quantity
+        quantityStore1 + quantityStore2 AS quantity
       FROM (
         SELECT
             p.product_id,
@@ -241,8 +241,8 @@ class ProductFilterProvider {
             p.image,
             p.price,
             p.minimum,
-            po.quantity AS quantity_store_1,
-            0 AS quantity_store_2,
+            po.quantity AS quantityStore1,
+            0 AS quantityStore2,
             1 as is_owner,
             pop.price_min,
             pop.price_max,
@@ -260,7 +260,7 @@ class ProductFilterProvider {
                 ORDER BY priority ASC, price ASC LIMIT 1),
               p.price) AS price,
             p.minimum,
-            p.quantity AS quantity_store_1,
+            p.quantity AS quantityStore1,
             p.quantity_store_2,
             0 AS is_owner,
             price AS price_min,

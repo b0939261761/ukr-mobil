@@ -339,6 +339,7 @@ body {
 .product-stocks__caption {
     color: inherit !important;
     width: auto !important;
+    border: none !important;
     text-transform: none !important;
     float: none !important;
     font-size: 14px !important;
@@ -730,4 +731,32 @@ body.modal-open {
 
 .relative-product__wrapper-btn-buy {
   width: 60px;
+}
+
+.splide__arrow--modify {
+  display: none;
+}
+
+// -------------------
+
+@media (min-width: 768px) {
+  .wrapper-splide {
+    padding: 0 25px;
+  }
+
+  .splide__arrow--modify {
+    background-color: transparent;
+    transform: scale(2) translateY(-50%);
+    fill: #ce4148;
+    opacity: 1;
+    display: block;
+  }
+
+  .splide__arrow--prev-modify {
+    left: -25px;
+  }
+
+  .splide__arrow--next-modify {
+    right: -25px;
+  }
 }

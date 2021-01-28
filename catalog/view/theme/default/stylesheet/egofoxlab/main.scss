@@ -694,8 +694,9 @@ body {
 
             .preview {
                 width: 183px;
-                height: 183px;
+                min-height: 183px;
                 flex-shrink: 0;
+                align-self: stretch;
 
                 a {
                     display: block;
@@ -729,7 +730,6 @@ body {
                     > .name {
                         display: block;
                         width: 100%;
-                        height: 30px;
                         margin-bottom: 20px;
                         padding-right: 155px;
                         text-align: left;
@@ -1514,9 +1514,3 @@ body {
   box-shadow: inset 0 0 0 3px #f4f4f4;
 }
 
-/* ------------------------------------ */
-
-html {
-  --swiper-navigation-color: #ce4148;
-  --swiper-pagination-color: #ce4148;
-}
