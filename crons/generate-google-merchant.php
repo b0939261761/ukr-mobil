@@ -17,7 +17,7 @@ $registry->set('cache', new Cache($config->get('cache_engine'), $config->get('ca
 $url->addRewrite(new ControllerStartupSeoPro($registry));
 $modelImage = new ModelToolImage();
 
-$content = $sitemapImage = '<?xml version="1.0" encoding="UTF-8"?>';
+$content = '<?xml version="1.0" encoding="UTF-8"?>';
 $content .= '<rss xmlns:g="http://base.google.com/ns/1.0" version="2.0">';
 $content .= '<channel>';
 $content .= '<title>Запчасти и оборудование для ремонта мобильных телефонов, планшетов, смарт-часов в Черновцах, Ровно, Украине в интернет-магазине UkrMobil</title>';

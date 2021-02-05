@@ -1,8 +1,8 @@
 <?php
 // Locale
-$_['code']                  = 'ru';
-$_['direction']             = 'ltr';
-$_['text_home']             = '<i class="fa fa-home"></i>';
+// $_['code']                  = 'ru';
+// $_['direction']             = 'ltr';
+// $_['text_home']             = '<i class="fa fa-home"></i>';
 
 // $_['date_format_short']     = 'd.m.Y';
 // $_['date_format_long']      = 'l, d F Y';
@@ -18,7 +18,7 @@ $_['text_home']             = '<i class="fa fa-home"></i>';
 // $_['text_none']             = ' --- Не выбрано --- ';
 // $_['text_select']           = ' --- Выберите --- ';
 // $_['text_all_zones']        = 'Все зоны';
-$_['text_pagination']       = 'Показано с %d по %d из %d (всего %d страниц)';
+// $_['text_pagination']       = 'Показано с %d по %d из %d (всего %d страниц)';
 // $_['text_loading']          = 'Загрузка...';
 // $_['text_no_results']       = 'Нет данных!';
 

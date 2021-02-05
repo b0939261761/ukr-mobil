@@ -15,15 +15,12 @@ class ModelToolImage {
     $wtFilename = $isWatermark ? '-w' : '';
     $fileDirname = $file['dirname'] === '.' ? '' : "{$file['dirname']}/";
     $pathCache = "cache/{$fileDirname}{$file['filename']}{$sizeFilename}{$wtFilename}";
-    // $pathWEBP = "{$pathCache}.webp";
     $pathJPEG = "{$pathCache}.jpeg";
-    // $fullpathWEBP = DIR_IMAGE . $pathWEBP;
     $fullpathJPEG = DIR_IMAGE . $pathJPEG;
 
-    // if (true) {
     if (!is_file($fullpathJPEG) || filemtime($fullpathOld) > filemtime($fullpathJPEG)) {
-    //   || !is_file($fullpathWEBP) || filemtime($fullpathOld) > filemtime($fullpathWEBP)) {
       $info = getimagesize($fullpathOld);
+
       $mime = $info['mime'] ?? '';
 
       $dirNew = dirname($fullpathJPEG);
@@ -87,19 +84,14 @@ class ModelToolImage {
       }
 
       imagejpeg($imageNew, $fullpathJPEG, 90);
-      // imagewebp($imageNew, $fullpathWEBP, 90);
       imagedestroy($imageNew);
     }
 
-    // $pathWEBP = str_replace(' ', '%20', $pathWEBP);
     $pathJPEG = str_replace(' ', '%20', $pathJPEG);
-
-    // return ["{$uri}{$pathWEBP}", "{$uri}{$pathJPEG}"];
     return "{$uri}{$pathJPEG}";
   }
 
   public function resize($filename, $width = 0, $height = 0, $isWatermark = false) {
-    // return $this->resizeFormat($filename, $width, $height, $isWatermark)[1];
     return $this->resizeFormat($filename, $width, $height, $isWatermark);
   }
 }
