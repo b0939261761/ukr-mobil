@@ -114,6 +114,7 @@ $sql = "
         'color', color, 'colorValueId', colorValueId
       )) AS products
     FROM tmpProducts
+  )
   SELECT
     COALESCE(tmpProductAgg.products, JSON_ARRAY()) AS products ,
     COALESCE(tmpCategoriesAgg.categories, JSON_ARRAY()) AS categories
