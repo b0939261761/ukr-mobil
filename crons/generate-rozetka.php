@@ -114,16 +114,10 @@ $sql = "
         'color', color, 'colorValueId', colorValueId
       )) AS products
     FROM tmpProducts
-  )
-<<<<<<< HEAD
   SELECT
     COALESCE(tmpProductAgg.products, JSON_ARRAY()) AS products ,
     COALESCE(tmpCategoriesAgg.categories, JSON_ARRAY()) AS categories
   FROM tmpProductAgg, tmpCategoriesAgg
-=======
-  SELECT tmpProductAgg.products, tmpCategoriesAgg.categories FROM tmpProductAgg
-  LEFT JOIN tmpCategoriesAgg ON true
->>>>>>> e7440c1a704131994ebeea1a62387cf1c2eba0d3
 ";
 
 $products = $db->query($sql)->row;
@@ -153,11 +147,7 @@ foreach (json_decode($products['products'], true) as $product) {
   $content .= "<categoryId>{$product['categoryId']}</categoryId>";
 
   foreach ($product['images'] as $image) $content .= "<picture>"
-<<<<<<< HEAD
     . "{$modelImage->resize($image)}</picture>";
-=======
-   . "{$modelImage->resize($image)}</picture>";
->>>>>>> e7440c1a704131994ebeea1a62387cf1c2eba0d3
 
   $content .= "<name>{$product['name']}</name>";
   $content .= "<vendor>{$product['brand']}</vendor>";
