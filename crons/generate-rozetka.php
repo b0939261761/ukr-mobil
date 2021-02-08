@@ -1,7 +1,6 @@
 <?
 require_once(__DIR__ . '/../config.php');
 require_once(DIR_SYSTEM . 'startup.php');
-require_once(DIR_APPLICATION . 'controller/startup/seo_pro.php');
 require_once(DIR_APPLICATION . 'model/tool/image.php');
 
 $registry = new Registry();
@@ -13,8 +12,6 @@ $db = new DB(DB_DRIVER, DB_HOSTNAME, DB_USERNAME, DB_PASSWORD, DB_DATABASE, DB_P
 $url = new Url(HTTPS_SERVER, HTTPS_SERVER);
 
 $registry->set('db', $db);
-$registry->set('cache', new Cache($config->get('cache_engine'), $config->get('cache_expire')));
-$url->addRewrite(new ControllerStartupSeoPro($registry));
 $modelImage = new ModelToolImage();
 
 $sql = "
@@ -29,9 +26,10 @@ $sql = "
       b.country,
       p.quantity + p.quantity_store_2 AS quantity,
       IF(p.quantity || p.quantity_store_2, 'true', 'false') AS available,
-      ROUND(ROUND(p.price * c.value) * (100 + tmpRzMarkup.markup) / 100) AS price,
-      ROUND(ROUND(
-        ROUND(p.price * c.value) * (100 + tmpRzMarkup.markup) / 100) * 1.15) AS priceOld,
+      ROUND(ROUND(p.price * c.value) *
+        (1 + tmpRzMarkup.markup / (100 + tmpRzMarkup.markup))) AS price,
+      ROUND(ROUND(ROUND(p.price * c.value) *
+        (1 + tmpRzMarkup.markup / (100 + tmpRzMarkup.markup))) * 1.15) AS priceOld,
       tmpQuality.quality,
       tmpQuality.qualityValueId,
       tmpColor.color,
@@ -92,22 +90,19 @@ $sql = "
     GROUP BY p.product_id
     ORDER BY p.product_id
   ),
-  tmpCategories AS (
-    SELECT categoryId, rzId FROM tmpProducts GROUP BY categoryId
-  ),
   tmpCategoriesAgg AS (
     SELECT
-      JSON_ARRAYAGG(
-        JSON_OBJECT('id', tc.categoryId, 'rzId', tc.rzId, 'name', cd.name)
-      ) AS categories
-    FROM tmpCategories tc
-    LEFT JOIN oc_category_description cd ON cd.category_id = tc.categoryId
+      JSON_ARRAYAGG(JSON_OBJECT('rzId', t.rzId, 'name', cd.name)) AS categories
+    FROM (
+      SELECT categoryId, rzId FROM tmpProducts GROUP BY rzId
+    ) AS t
+    LEFT JOIN oc_category_description cd ON cd.category_id = t.categoryId
   ),
   tmpProductAgg AS (
     SELECT
       JSON_ARRAYAGG(JSON_OBJECT(
         'id', id, 'quantity', quantity, 'available', available,
-        'price', price, 'priceOld', priceOld, 'categoryId', categoryId,
+        'price', price, 'priceOld', priceOld, 'rzId', rzId,
         'images', images, 'name', name, 'brand', brand,
         'brandValueId', brandValueId, 'country', country,
         'quality', quality, 'qualityValueId', qualityValueId,
@@ -131,8 +126,7 @@ $content .= '<name>uMobile</name>';
 $content .= '<currencies><currency id="UAH" rate="1"/></currencies>';
 $content .= '<categories>';
 foreach (json_decode($products['categories'], true) as $category) {
-  $content .= "<category id=\"{$category['id']}\""
-    . " rz_id=\"{$category['rzId']}\">{$category['name']}</category>";
+  $content .= "<category id=\"{$category['rzId']}\">{$category['name']}</category>";
 }
 $content .= '</categories>';
 $content .= '<offers>';
@@ -145,7 +139,7 @@ foreach (json_decode($products['products'], true) as $product) {
   $content .= "<price_old>{$product['priceOld']}</price_old>";
   $content .= "<stock_quantity>{$product['quantity']}</stock_quantity>";
   $content .= "<currencyId>UAH</currencyId>";
-  $content .= "<categoryId>{$product['categoryId']}</categoryId>";
+  $content .= "<categoryId>{$product['rzId']}</categoryId>";
 
   foreach ($product['images'] as $image) $content .= "<picture>"
     . "{$modelImage->resize($image)}</picture>";
