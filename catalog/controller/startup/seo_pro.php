@@ -87,10 +87,25 @@ class ControllerStartupSeoPro extends Controller {
     $this->request->request['canonical'] = $this->request->request['domain'] . explode('?', $uri, 2)[0];
     $this->request->request['linkLogo'] = "{$this->request->request['domain']}image/logo.png";
 
-    $sql = "SELECT seo_url_actual AS url
-      FROM oc_seo_url_generator_redirects WHERE seo_url_old = '{$uri}'";
+    $sql = "
+      SELECT
+        GROUP_CONCAT(
+          COALESCE(sugr.seo_url_actual, u.slug) ORDER BY rowId SEPARATOR '/'
+        ) as url
+      FROM JSON_TABLE(
+        CONCAT('[\"', REPLACE('{$uri}', '/', '\", \"'), '\"]'),
+        \"$[*]\"
+        COLUMNS(
+          rowId FOR ORDINALITY,
+          slug VARCHAR(255) PATH \"$\"
+        )
+      ) AS u
+      LEFT JOIN oc_seo_url_generator_redirects sugr on sugr.seo_url_old = u.slug
+    ";
+
     $redirect = $this->db->query($sql)->row['url'] ?? '';
-    if ($redirect) return $this->response->redirect("{$this->request->request['domain']}{$redirect}");
+
+    if ($redirect != $uri) return $this->response->redirect("{$this->request->request['domain']}{$redirect}");
 
     $this->url->addRewrite($this);
     if (!isset($this->request->get['_route_'])) {

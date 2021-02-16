@@ -343,7 +343,7 @@ window.addEventListener('load', () => {
   const phoneElem = document.getElementById('input-telephone');
   const phoneValue = phoneElem.value;
   phoneElem.value = phoneValue.replace(/^38/, '');
-  const mask = ['+', '3', '8','(', /\d/, /\d/, /\d/, ')', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/];
+  const mask = ['3', '8','(', /\d/, /\d/, /\d/, ')', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/];
   vanillaTextMask.maskInput({ inputElement: phoneElem, mask, showMask: true });
 
   const onFormSubmit = () => phoneElem.value = phoneElem.value.replace(/\(|\)|-|\+|_/g, '');

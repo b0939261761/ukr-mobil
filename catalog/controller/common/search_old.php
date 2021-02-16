@@ -15,11 +15,6 @@ class ControllerCommonSearch extends Controller {
     $search = $requestData['search'] ?? '';
     $customerGroupId = $this->customer->getGroupId() ?? 1;
 
-    if (strpos($this->db->escape($search), 'co') !== false) {
-      $this->response->addHeader('Content-Type: application/json');
-      return $this->response->setOutput(json_encode([ 'data' => [] ]));
-    }
-
     foreach (explode(' ', $this->db->escape($search)) as $word) {
       $implode[] = strlen($word) < 3
         ? "(pd.name LIKE '{$word}%' OR pd.name LIKE '% {$word}%')"
@@ -101,20 +96,7 @@ class ControllerCommonSearch extends Controller {
       LIMIT 10
     ";
 
-    $data = $this->db->query($sql)->rows;
-
-    foreach ($data as &$item) {
-      $categoryPath = ['path' => $item['path'], 'search' => $search];
-      $item['categoryUrl'] = $this->url->link('product/search', $categoryPath);
-      $item['productUrl'] = $this->url->link('product/product', ['product_id' => $item['product_id']]);
-      $item['productImage'] = $this->model_tool_image->resize($item['image'], $imageWidth, $imageHeight);
-      if ($item['isOwner']) {
-        $item['priceMin'] = $item['priceMin'] ? $this->currency->format($item['priceMin']): 0;
-        $item['priceMax'] = $item['priceMax'] ? $this->currency->format($item['priceMax']): 0;
-      } else {
-        $item['productPrice'] = $item['price'] ? $this->currency->format($item['price']) : 0;
-      }
-    }
+    
 
     $this->response->addHeader('Content-Type: application/json');
     $this->response->setOutput(json_encode([ 'data' => $data ]));

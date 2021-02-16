@@ -27,14 +27,15 @@ $sql = "
       p.quantity + p.quantity_store_2 AS quantity,
       IF(p.quantity || p.quantity_store_2, 'true', 'false') AS available,
       ROUND(ROUND(p.price * c.value) *
-        (1 + tmpRzMarkup.markup / (100 + tmpRzMarkup.markup))) AS price,
+        (1 + tmpRzMarkup.markup / (100 - tmpRzMarkup.markup))) AS price,
       ROUND(ROUND(ROUND(p.price * c.value) *
-        (1 + tmpRzMarkup.markup / (100 + tmpRzMarkup.markup))) * 1.15) AS priceOld,
+        (1 + tmpRzMarkup.markup / (100 - tmpRzMarkup.markup))) * 1.15) AS priceOld,
       tmpQuality.quality,
       tmpQuality.qualityValueId,
       tmpColor.color,
       tmpColor.colorValueId,
       tmpRzId.rzId,
+      IF(tmpRzId.rzName = '', cd.name, tmpRzId.rzName) AS categoryName,
       CASE
         WHEN p.image = '' AND NOT JSON_LENGTH(tmpImages.images) THEN JSON_ARRAY('placeholder.png')
         WHEN p.image != '' THEN JSON_ARRAY_INSERT(tmpImages.images, '$[0]', p.image)
@@ -47,6 +48,7 @@ $sql = "
     LEFT JOIN products_models pm ON pm.product_id = p.product_id
     LEFT JOIN models m ON m.id = pm.model_id
     LEFT JOIN brands b ON b.id = m.brand_id
+    LEFT JOIN oc_category_description cd ON cd.category_id = ptc.category_id
     LEFT JOIN LATERAL (
       SELECT
         IF(COUNT(image), JSON_ARRAYAGG(image), JSON_ARRAY()) AS images
@@ -71,7 +73,7 @@ $sql = "
         AND pp.active = 1
     ) AS tmpColor ON true
     LEFT JOIN LATERAL (
-      SELECT c.rzId
+      SELECT c.rzId, c.rzName
       FROM oc_category_path cp
       LEFT JOIN oc_category c ON c.category_id = cp.path_id
       WHERE cp.category_id = ptc.category_id AND (c.rzId OR cp.level = 0)
@@ -92,11 +94,8 @@ $sql = "
   ),
   tmpCategoriesAgg AS (
     SELECT
-      JSON_ARRAYAGG(JSON_OBJECT('rzId', t.rzId, 'name', cd.name)) AS categories
-    FROM (
-      SELECT categoryId, rzId FROM tmpProducts GROUP BY rzId
-    ) AS t
-    LEFT JOIN oc_category_description cd ON cd.category_id = t.categoryId
+      JSON_ARRAYAGG(JSON_OBJECT('rzId', rzId, 'name', categoryName)) AS categories
+    FROM (SELECT rzId, categoryName FROM tmpProducts GROUP BY rzId) AS t
   ),
   tmpProductAgg AS (
     SELECT

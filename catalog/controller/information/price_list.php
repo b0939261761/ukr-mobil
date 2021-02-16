@@ -49,14 +49,16 @@ class ControllerInformationPriceList extends Controller {
                   AND (date_end = '0000-00-00' OR date_end > NOW())
                 ORDER BY priority ASC, price ASC LIMIT 1),
               pdc.price,
-              p.price) AS price,
-              p.quantity AS quantityStore1,
-              p.quantity_store_2 AS quantityStore2
+              p.price
+            ) AS price,
+            p.quantity AS quantityStore1,
+            p.quantity_store_2 AS quantityStore2
           FROM oc_product p
           LEFT JOIN oc_product_to_category ptc ON ptc.product_id = p.product_id
           LEFT JOIN oc_product_description pd ON pd.product_id = p.product_id
           LEFT JOIN oc_product_discount pdc ON pdc.product_id = p.product_id
             AND pdc.customer_group_id = {$customerGroupId}
+          WHERE p.status
           ORDER BY pd.name
         ),
         tmpGroupProducts AS (

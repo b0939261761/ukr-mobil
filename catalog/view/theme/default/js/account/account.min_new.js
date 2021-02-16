@@ -395,6 +395,6 @@ window.addEventListener('load', function() {
   phone.addEventListener('click', onFocusPhone);
 
   phone.value = phone.value.replace(/^38/, '');
-  const mask = ['+', '3', '8','(', /\d/, /\d/, /\d/, ')', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/];
+  const mask = ['3', '8','(', /\d/, /\d/, /\d/, ')', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/];
   vanillaTextMask.maskInput({ inputElement: phone, mask, showMask: true });
 });

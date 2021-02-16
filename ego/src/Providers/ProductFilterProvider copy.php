@@ -358,7 +358,7 @@ class ProductFilterProvider {
     if (!empty($this->search)) $this->searchWords = explode(' ', $this->db->escape($this->search));
 
     return [
-      'items' => strpos($this->search, 'co') !== false ? [] : $this->filterItems(),
+      'items' => $this->filterItems(),
       'pagination' => $this->getPagination()
     ];
   }
