@@ -30,7 +30,18 @@ $sql = "
     pd.name,
     b.name AS brand,
     IF(p.quantity OR p.quantity_store_2, 'in_stock', 'out_of_stock') AS availability,
-    ROUND(p.price * c.value) AS price,
+    ROUND(
+      COALESCE(
+        (SELECT price
+          FROM oc_product_special
+          WHERE product_id = p.product_id
+            AND customer_group_id = 1
+            AND (date_start = '0000-00-00' OR date_start < NOW())
+            AND (date_end = '0000-00-00' OR date_end > NOW())
+          ORDER BY priority ASC, price ASC LIMIT 1),
+        p.price
+      ) * c.value
+    ) AS price,
     p.gmDescription,
     p.gmCategory,
     tmpColor.color,

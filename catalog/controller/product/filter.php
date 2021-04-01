@@ -7,7 +7,7 @@ class ControllerProductFilter extends Controller {
   }
 
   private function getFilters() {
-    $category = $this->request->request['category'] ?? 0;
+    $category = $this->request->request['category'];
     $search = $this->request->get['search'] ?? '';
 
     $sql = "

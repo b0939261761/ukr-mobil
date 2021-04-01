@@ -380,6 +380,30 @@ body {
     font-weight: bold;
 }
 
+// ------------------
+
+.special-offer {
+  display: flex;
+  align-items: center;
+  max-width: 400px;
+  color: #ce4e56;
+  fill: currentColor;
+  border: 2px solid currentColor;
+  border-radius: 5px;
+  padding: 5px 10px;
+}
+
+.special-offer__img {
+  height: 50px;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+
+.special-offer__text {
+  font-size: 16px;
+  font-weight: bold;
+}
+
 // price
 
 .product-price {

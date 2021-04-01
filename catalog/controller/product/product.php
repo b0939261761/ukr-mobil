@@ -80,6 +80,7 @@ class ControllerProductProduct extends BaseController {
     $productId = (int)($this->request->get['product_id'] ?? 0);
     $product_info = $this->model_catalog_product->getProduct($productId);
     if (!$product_info) $this->response->redirect($this->url->link('error/not_found'));
+    $description = $product_info['description'];
 
     // Seo Tags Generator.Begin
     $stg_data = [ 'attribute_groups' => [], 'product_info' => $product_info ];
@@ -87,12 +88,13 @@ class ControllerProductProduct extends BaseController {
     // Seo Tags Generator.End
 
     $data['headingH1'] = $product_info['name'];
-    $data['description'] = html_entity_decode($product_info['description']);
+    $data['description'] = html_entity_decode($description ? $description : $product_info['description']);
 
     $data['product_properties'] = $this->getProductsProperties($productId);
 
     $customerGroupId = (int)($this->customer->getGroupId() ?? 1);
     $customerId = $this->customer->getId() ?? 0;
+    // $data['hasSecialOffer'] = $customerGroupId == 1;
 
     $sql = "
       SELECT

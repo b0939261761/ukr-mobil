@@ -125,11 +125,12 @@ $sql = "
     epc.epc_title AS name
   FROM ego_post ep
   LEFT JOIN ego_post_content epc ON epc.epc_post = ep.ep_id
-  WHERE LOWER(ep.ep_category) = 'news' AND epc.epc_language = 2
+  WHERE LOWER(ep.ep_category) = 'news'
+    AND epc.epc_title != ''
     AND ep.ep_id NOT IN (
       SELECT CAST(REGEXP_SUBSTR(query, '\\\\d{1,}$') AS UNSIGNED) AS id
       FROM oc_seo_url
-      WHERE query LIKE 'news_id=%' and language_id = 2
+      WHERE query LIKE 'news_id=%'
     )
   ORDER by ep.ep_id DESC
 ";

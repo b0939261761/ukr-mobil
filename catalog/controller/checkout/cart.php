@@ -274,13 +274,15 @@ class ControllerCheckoutCart extends Controller {
           email, telephone, payment_method, shipping_firstname,
           shipping_lastname, shipping_telephone, shipping_address_1,
           shipping_method, comment, total, commission_uah,
-          stock_id, date_added, date_modified
+          stock_id, date_added, date_modified,
+          region, city, warehouse
         ) VALUES (
           {$customerId}, {$customerGroupId}, '{$firstName}', '{$lastName}',
           '{$shippingEmail}', '{$phone}', '{$paymentMethod}', '{$shippingFirstName}',
           '{$shippingLastName}', '{$shippingPhone}', '{$shippingAddress}',
           '{$shippingMethod}', '{$comment}', {$order['total']}, {$commissionUAH},
-          {$order['stock_id']}, NOW(), NOW()
+          {$order['stock_id']}, NOW(), NOW(),
+          '{$region}', '{$city}', '{$warehouse}'
         )
       ";
 

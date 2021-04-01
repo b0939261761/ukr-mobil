@@ -14,7 +14,7 @@ class ControllerProductSearch extends Controller {
       'route' => $this->request->get['route'],
       'search' => $this->request->get['search'] ?? '',
       'path' => $this->request->get['path'] ?? '',
-      'category' => (int)($this->request->request['category'] ?? 0),
+      'category' => $this->request->request['category'],
       'available' => (int)($this->request->get['available'] ?? 0),
       'page' => (int)($this->request->get['page'] ?? 1)
     ];

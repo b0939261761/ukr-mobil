@@ -15,7 +15,7 @@ class ControllerCommonSearch extends Controller {
     $search = $requestData['search'] ?? '';
     $customerGroupId = $this->customer->getGroupId() ?? 1;
 
-    if (strpos($this->db->escape($search), 'co') !== false) {
+    if (strpos($this->db->escape($search), 'copy') !== false) {
       $this->response->addHeader('Content-Type: application/json');
       return $this->response->setOutput(json_encode([ 'data' => [] ]));
     }

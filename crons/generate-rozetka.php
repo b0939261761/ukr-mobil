@@ -26,16 +26,26 @@ $sql = "
       b.country,
       p.quantity + p.quantity_store_2 AS quantity,
       IF(p.quantity || p.quantity_store_2, 'true', 'false') AS available,
-      ROUND(ROUND(p.price * c.value) *
-        (1 + tmpRzMarkup.markup / (100 - tmpRzMarkup.markup))) AS price,
-      ROUND(ROUND(ROUND(p.price * c.value) *
-        (1 + tmpRzMarkup.markup / (100 - tmpRzMarkup.markup))) * 1.15) AS priceOld,
+      ROUND(
+        ROUND(
+          COALESCE(
+            (SELECT price
+              FROM oc_product_special
+              WHERE product_id = p.product_id
+                AND customer_group_id = 1
+                AND (date_start = '0000-00-00' OR date_start < NOW())
+                AND (date_end = '0000-00-00' OR date_end > NOW())
+              ORDER BY priority ASC, price ASC LIMIT 1),
+            p.price
+          ) * c.value
+        ) * (1 + tmpRzMarkup.markup / (100 - tmpRzMarkup.markup))
+      ) AS price,
       tmpQuality.quality,
       tmpQuality.qualityValueId,
       tmpColor.color,
       tmpColor.colorValueId,
       tmpRzId.rzId,
-      IF(tmpRzId.rzName = '', cd.name, tmpRzId.rzName) AS categoryName,
+      tmpRzId.rzName AS categoryName,
       CASE
         WHEN p.image = '' AND NOT JSON_LENGTH(tmpImages.images) THEN JSON_ARRAY('placeholder.png')
         WHEN p.image != '' THEN JSON_ARRAY_INSERT(tmpImages.images, '$[0]', p.image)
@@ -48,7 +58,6 @@ $sql = "
     LEFT JOIN products_models pm ON pm.product_id = p.product_id
     LEFT JOIN models m ON m.id = pm.model_id
     LEFT JOIN brands b ON b.id = m.brand_id
-    LEFT JOIN oc_category_description cd ON cd.category_id = ptc.category_id
     LEFT JOIN LATERAL (
       SELECT
         IF(COUNT(image), JSON_ARRAYAGG(image), JSON_ARRAY()) AS images
@@ -101,7 +110,7 @@ $sql = "
     SELECT
       JSON_ARRAYAGG(JSON_OBJECT(
         'id', id, 'quantity', quantity, 'available', available,
-        'price', price, 'priceOld', priceOld, 'rzId', rzId,
+        'price', price, 'priceOld', ROUND(price * 1.15), 'rzId', rzId,
         'images', images, 'name', name, 'brand', brand,
         'brandValueId', brandValueId, 'country', country,
         'quality', quality, 'qualityValueId', qualityValueId,

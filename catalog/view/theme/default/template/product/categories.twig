@@ -5,30 +5,21 @@
       <ul class="box-category">
         {% for child1 in categories %}
           <li>
-            <a
-              href="{{ child1.href }}"
-              {{ child1.active ? 'class="active"' : '' }}
-            >
+            <a href="{{ child1.link }}" {{ child1.active ? 'class="active"' : '' }}>
               {{ child1.name }}
             </a>
 
             <ul>
               {% for child2 in child1.children %}
                 <li>
-                  <a
-                    href="{{ child2.href }}"
-                    {{ child2.active ? 'class="active"' : '' }}
-                  >
+                  <a href="{{ child2.link }}" {{ child2.active ? 'class="active"' : '' }}>
                     {{ child2.name }}
                   </a>
 
                   <ul>
                     {% for child3 in child2.children %}
                       <li>
-                        <a
-                          href="{{ child3.href }}"
-                          {{ child3.active ? 'class="active"' : '' }}
-                        >
+                        <a href="{{ child3.link }}" {{ child3.active ? 'class="active"' : '' }}>
                           {{ child3.name }}
                         </a>
                       </li>
