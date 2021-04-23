@@ -9,6 +9,11 @@ class Document {
   private $styles = [];
   private $scripts = [];
   private $metaList = [];
+  private $libStyles = [];
+  private $customStyles = [];
+  private $libScripts = [];
+  private $customScripts = [];
+  private $preloads = [];
 
   public function setTitle($title) {
     $this->title = $title;
@@ -117,11 +122,10 @@ class Document {
     return $this->links;
   }
 
-  public function addStyle($href, $rel = 'stylesheet', $media = 'screen') {
+  public function addStyle($href, $rel = 'stylesheet') {
     $this->styles[$href] = [
       'href'  => $href,
-      'rel'   => $rel,
-      'media' => $media
+      'rel'   => $rel
     ];
   }
 
@@ -143,5 +147,49 @@ class Document {
 
   public function getMetaList() {
     return $this->metaList;
+  }
+
+  public function addLibStyle($href) {
+    $this->libStyles[] = $href;
+  }
+
+  public function getLibStyles() {
+    return $this->libStyles;
+  }
+
+  public function addCustomStyle($href) {
+    $this->customStyles[] = $href;
+  }
+
+  public function getCustomStyles() {
+    return $this->customStyles;
+  }
+
+  public function addLibScript($href) {
+    $this->libScripts[] = $href;
+  }
+
+  public function getLibScripts() {
+    return $this->libScripts;
+  }
+
+  public function addCustomScript($href) {
+    $this->customScripts[] = $href;
+  }
+
+  public function getCustomScripts() {
+    return $this->customScripts;
+  }
+
+  public function addPreload($href, $as, $type = null) {
+    $this->preloads[] = [
+      'href' => $href,
+      'as'   => $as,
+      'type' => $type
+    ];
+  }
+
+  public function getPreloads() {
+    return $this->preloads;
   }
 }

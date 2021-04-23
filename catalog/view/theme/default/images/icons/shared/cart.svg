@@ -1,0 +1,5 @@
+<svg id="icon-cart" viewBox="0 0 22 20">
+  <path d="M21 5l-1.36 8.164a1 1 0 01-.987.836H6.601a1 1 0 01-.988-.848L3.87 1.848A1 1 0 002.88 1H1" stroke-width="1.5" stroke-linecap="round" fill="transparent"/>
+  <path clip-rule="evenodd" d="M8 19a1 1 0 100-2 1 1 0 000 2zM18 19a1 1 0 100-2 1 1 0 000 2z" stroke-width="1.5" />
+  <path d="M21 5H5" stroke-width="1.5" stroke-linecap="round"/>
+</svg>

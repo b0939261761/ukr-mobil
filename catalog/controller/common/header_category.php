@@ -33,6 +33,7 @@ class ControllerCommonHeaderCategory extends Controller {
     return $this->load->view('common/header_category', $data);
   }
 
+
   private function getCategoryList() {
     $sql = "
       SELECT

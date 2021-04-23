@@ -40,8 +40,10 @@ $sql = "
           ) * c.value
         ) * (1 + tmpRzMarkup.markup / (100 - tmpRzMarkup.markup))
       ) AS price,
-      tmpQuality.quality,
-      tmpQuality.qualityValueId,
+      COALESCE(tmpQuality.quality, ppv.name) AS quality,
+      COALESCE(tmpQuality.qualityValueId, ppv.rzValueId) AS qualityValueId,
+      COALESCE(tmpQuality.qualityDescription, ppv.rzDescription) AS qualityDescription,
+      p.rzEnabledQuality AS enabledQuality,
       tmpColor.color,
       tmpColor.colorValueId,
       tmpRzId.rzId,
@@ -58,6 +60,7 @@ $sql = "
     LEFT JOIN products_models pm ON pm.product_id = p.product_id
     LEFT JOIN models m ON m.id = pm.model_id
     LEFT JOIN brands b ON b.id = m.brand_id
+    LEFT JOIN product_property_values ppv ON ppv.rzValueId = 1797382
     LEFT JOIN LATERAL (
       SELECT
         IF(COUNT(image), JSON_ARRAYAGG(image), JSON_ARRAY()) AS images
@@ -66,7 +69,10 @@ $sql = "
       ORDER BY sort_order
     ) AS tmpImages ON true
     LEFT JOIN LATERAL (
-      SELECT ppv.name AS quality, ppv.rzValueId AS qualityValueId
+      SELECT
+        ppv.name AS quality,
+        ppv.rzValueId AS qualityValueId,
+        ppv.rzDescription AS qualityDescription
       FROM products_properties pp
       LEFT JOIN product_property_values ppv ON ppv.id = pp.product_property_value_id
       WHERE pp.product_id = p.product_id
@@ -114,6 +120,7 @@ $sql = "
         'images', images, 'name', name, 'brand', brand,
         'brandValueId', brandValueId, 'country', country,
         'quality', quality, 'qualityValueId', qualityValueId,
+        'qualityDescription', qualityDescription, 'enabledQuality', enabledQuality,
         'color', color, 'colorValueId', colorValueId
       )) AS products
     FROM tmpProducts
@@ -154,16 +161,13 @@ foreach (json_decode($products['products'], true) as $product) {
 
   $content .= "<name>{$product['name']}</name>";
   $content .= "<vendor>{$product['brand']}</vendor>";
-  $content .= "<description>{$product['name']}</description>";
 
-  $qualityValueId = 1797382;
-  $quality = 'Original (PRC)';
-  if ($product['qualityValueId']) {
-    $qualityValueId = $product['qualityValueId'];
-    $quality = $product['quality'];
-  }
-  $content .= "<param name=\"Класс качества\" paramid=\"180700\" "
-   . " valueid=\"{$qualityValueId}\">{$quality}</param>";
+  $qualityDescription = $product['enabledQuality'] ? "<p><b>Качество:</b> {$product['qualityDescription']}</p>" : '';
+
+  $content .= "<description><![CDATA[<p><b>{$product['name']}</b></p>{$qualityDescription}]]></description>";
+
+  if ($product['enabledQuality']) $content .= "<param name=\"Класс качества\" paramid=\"180700\" "
+    . " valueid=\"{$product['qualityValueId']}\">{$product['quality']}</param>";
 
   if ($product['brandValueId']) $content .= "<param name=\"Цвет\""
     . " paramid=\"170582\" valueid=\"{$product['colorValueId']}\">{$product['color']}</param>";

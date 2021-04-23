@@ -1,0 +1,220 @@
+<footer class="footer">
+  <div class="footer-top container">
+    <div class="footer-informations">
+      <img class="footer-logo" src="/image/logo-dark.svg" alt="">
+
+      <div class="footer-schedule">
+        <div class="footer-schedule__title">
+          <svg class="footer-schedule__title-img">
+            <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-schedule"></use>
+          </svg>
+          Графік роботи
+        </div>
+        <ul class="footer-schedule__list">
+          <li>
+            <b>Пн</b>: 10:00 - 16:00
+          </li>
+          <li>
+            <b>Cб</b>: 09:30 - 17:00
+          </li>
+          <li>
+            <b>Вт - Пт</b>: 09:30 - 17:00
+          </li>
+          <li>
+            <b>Нд</b>: Вихідний
+          </li>
+        </ul>
+      </div>
+
+      <ul class="footer-actions">
+        <li>
+          <a class="footer__actions__link" href="mailto:director.ukrmobil@gmail.com?subject=Лист директору">
+            <svg class="footer-actions__img">
+              <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-docs"></use>
+            </svg>
+            Написати директору
+          </a>
+        </li>
+
+        <li>
+          <a class="footer__actions__link" href="mailto:ukrmobil1@gmail.com?subject=Помилка на сайті">
+            <svg class="footer-actions__img">
+              <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-warning"></use>
+            </svg>
+            Повідомити про помилку на сайті
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <ul class="footer-payments">
+      <li class="footer-payments__item">
+        <svg class="footer-payments__img footer-payments__img--apple">
+          <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-apple-pay"></use>
+        </svg>
+      </li>
+
+      <li class="footer-payments__item">
+        <svg class="footer-payments__img footer-payments__img--google">
+          <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-google-pay"></use>
+        </svg>
+      </li>
+
+      <li class="footer-payments__item">
+        <svg class="footer-payments__img footer-payments__img--mastercard">
+          <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-mastercard"></use>
+        </svg>
+      </li>
+
+      <li class="footer-payments__item">
+        <svg class="footer-payments__img footer-payments__img--visa">
+          <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-visa"></use>
+        </svg>
+      </li>
+    </ul>
+
+    <div class="footer-menu">
+      <ul class="footer-menu__list">
+        <li class="footer-menu__title">Каталог товарів</li>
+
+        {% for category in categories %}
+          <li class="footer-menu__item">
+            <a class="footer-menu__link" href="{{ category.link }}">{{ category.name }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+
+      <ul class="footer-menu__list">
+        <li class="footer-menu__title">Компанія</li>
+        <li class="footer-menu__item"><a class="footer-menu__link" href="{{ linkAboutUs }}">Про нас</a></li>
+        <li class="footer-menu__item"><a class="footer-menu__link" href="{{ linkWarrantly }}">Гарантія</a></li>
+        <li class="footer-menu__item"><a class="footer-menu__link" href="{{ linkUserDataUsage }}">Договір оферти</a></li>
+        <li class="footer-menu__item"><a class="footer-menu__link" href="{{ linkContacts }}">Контакти</a></li>
+      </ul>
+
+      <ul class="footer-menu__list">
+        <li class="footer-menu__title">Покупцям</li>
+        <li class="footer-menu__item"><a class="footer-menu__link" href="{{ linkDelivery }}">Доставка і оплата</a></li>
+        <li class="footer-menu__item"><a class="footer-menu__link" href="{{ linkNews }}">Новини</a></li>
+        <li class="footer-menu__item"><a class="footer-menu__link" href="{{ linkTracking }}">Сервіс</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-contacts">
+      <div>
+        <div class="footer-contacts__item-title">
+          <svg class="footer-contacts__item-title-img">
+            <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-phone"></use>
+          </svg>
+          Чернівці
+        </div>
+
+        <ul class="footer-contacts__list">
+          <li><a class="footer-contacts__link" href="tel:+380502742790">+38 050 274 2790</a></li>
+          <li><a class="footer-contacts__link" href="tel:+380937651080">+38 093 765 1080</a></li>
+          <li><a class="footer-contacts__link" href="tel:+380957651080">+38 095 765 1080</a></li>
+          <li><a class="footer-contacts__link" href="tel:+380687651080">+38 068 765 1080</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="footer-contacts__item-title">
+          <svg class="footer-contacts__item-title-img">
+            <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-phone"></use>
+          </svg>
+          Рівне
+        </div>
+
+        <ul class="footer-contacts__list">
+          <li><a class="footer-contacts__link" href="tel:+380969075550">+38 096 907 5550</a></li>
+          <li><a class="footer-contacts__link" href="tel:+380937651080">+38 093 765 1080</a></li>
+          <li><a class="footer-contacts__link" href="tel:+380959075550">+38 095 907 5550</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="footer-contacts__item-title">
+          <svg class="footer-contacts__item-title-img">
+            <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-phone"></use>
+          </svg>
+          Сервіс Рівне
+        </div>
+
+        <ul class="footer-contacts__list">
+          <li><a class="footer-contacts__link" href="tel:+380969075550">+38 096 907 5550</a></li>
+          <li><a class="footer-contacts__link" href="tel:+380937651080">+38 093 765 1080</a></li>
+          <li><a class="footer-contacts__link" href="tel:+380959075550">+38 095 907 5550</a></li>
+        </ul>
+      </div>
+
+      <ul class="footer-contacts__social-list">
+        <li class="footer-contacts__social-item">
+          <a href="https://www.facebook.com/Ukrmobil1/" target="_blank">
+            <svg class="footer-contacts__social-img footer-contacts__social-img--facebook">
+              <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-facebook"></use>
+            </svg>
+          </a>
+        </li>
+
+        <li class="footer-contacts__social-item">
+          <a href="https://t.me/ukrmobil" target="_blank">
+            <svg class="footer-contacts__social-img footer-contacts__social-img--telegram">
+              <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-telegram"></use>
+            </svg>
+          </a>
+        </li>
+
+        <li class="footer-contacts__social-item">
+          <a href="https://www.instagram.com/ukrmobil_cv/" target="_blank">
+            <svg class="footer-contacts__social-img footer-contacts__social-img--instagram">
+              <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-instagram"></use>
+            </svg>
+          </a>
+        </li>
+
+        <li class="footer-contacts__social-item">
+          <a href="viber://chat?number=%2B380502742790">
+            <svg class="footer-contacts__social-img footer-contacts__social-img--viber">
+              <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-viber"></use>
+            </svg>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom container">
+    <span class="footer-copyright">© 2021 «UkrMobil».Все права защищені.</span>
+    <div class="footer-development">
+      <a class="footer-development__link" href="http://www.32x32.com.ua/">
+        <svg class="footer-development__link-img">
+          <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-32x32"></use>
+        </svg>
+      </a>
+      <span class="footer-development__text">
+        Розроблений і підтримується<br>
+        в&nbsp;<a class="footer-development__text-link" href="http://www.32x32.com.ua/">компанії 32x32</a>
+      </span>
+    </div>
+  </div>
+
+  <div class="interseptor-dock-btn-scroll-to-top" id="interseptorDockBtnScrollToTop"></div>
+
+  <button class="btn-scroll-to-top btn-scroll-to-top--hide btn-scroll-to-top--float" id="btnScrollToTop">
+    <svg class="btn-scroll-to-top__img">
+      <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-arrow-up"></use>
+    </svg>
+  </button>
+</footer>
+
+<div class="interseptor-hide-btn-scroll-to-top" id="interseptorHideBtnScrollToTop"></div>
+
+{{ mobileMenu }}
+
+<script src="/resourse/libs/jquery.min.js"></script>
+<script src="/resourse/libs/jquery.menu-aim.js"></script>
+{% for libScript in libScripts %}<script src="{{ libScript }}"></script>{% endfor %}
+<script src="/resourse/scripts/shared.min.js"></script>
+{% for customScript in customScripts %}<script src="{{ customScript }}"></script>{% endfor %}
+</body>
+</html>

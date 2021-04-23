@@ -21,7 +21,7 @@ $content = '<?xml version="1.0" encoding="UTF-8"?>';
 $content .= '<rss xmlns:g="http://base.google.com/ns/1.0" version="2.0">';
 $content .= '<channel>';
 $content .= '<title>Запчасти и оборудование для ремонта мобильных телефонов, планшетов, смарт-часов в Черновцах, Ровно, Украине в интернет-магазине UkrMobil</title>';
-$content .= "<link>{$url->link('common/home')}</link>";
+$content .= "<link>{$url->link('home/home')}</link>";
 $content .= '<description>Запчасти и оборудование для ремонта мобильных телефонов, планшетов, смарт-часов в Черновцах, Ровно, Украине в интернет-магазине UkrMobil</description>';
 
 $sql = "

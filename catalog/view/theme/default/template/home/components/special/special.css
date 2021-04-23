@@ -1,0 +1,48 @@
+.swipper-special {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+@media (min-width: 1080px) {
+  .swipper-special {
+    width: calc(100% - 307px - 16px);
+  }
+}
+
+.swipper-special__swiper-pagination {
+  position: absolute;
+  left: 8px !important;
+  bottom: 16px !important;
+}
+
+@media (min-width: 768px) {
+  .swipper-special__swiper-pagination {
+    left: 24px !important;
+    bottom: 24px !important;
+  }
+}
+
+.swipper-special__swiper-pagination-bullet {
+  border: 2px solid #fff;
+  background-color: transparent;
+  margin: 4px;
+  border-radius: 50%;
+  width: 8px;
+  height: 8px;
+  cursor: pointer;
+  transition: background-color .3s ease;
+  outline: none;
+  padding: 0;
+}
+
+.swipper-special__swiper-pagination-bullet--active {
+  background-color: #fff;
+}
+
+.swipper-special__link {
+  display: flex;
+}
+
+.swipper-special__img {
+  width: 100%;
+}

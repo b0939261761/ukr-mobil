@@ -5,7 +5,7 @@ class ControllerCheckoutSuccess extends Controller {
     $data['orderIds'] = $this->db->escape(implode(', ', $orders));
     $data['order'] = $this->getOrder($data['orderIds']);
 
-    if (!empty($data['order']['sent'])) $this->response->redirect($this->url->link('common/home'));
+    if (!empty($data['order']['sent'])) $this->response->redirect($this->url->link('home/home'));
 
     $data['products'] = $this->getOrderProducts($data['orderIds']);
     $this->db->query("UPDATE oc_order SET sent = 1 WHERE order_id IN ({$data['orderIds']})");
@@ -14,7 +14,7 @@ class ControllerCheckoutSuccess extends Controller {
     $dataLayer = $this->getDataLayer($orders, $data['order']['totalUSD'], $data['products']);
     $this->document->setDataLayer($dataLayer);
     $this->sendEmail($data['orderIds'], $data['order'], $data['products']);
-    $data['linkHome'] = $this->url->link('common/home');
+    $data['linkHome'] = $this->url->link('home/home');
     $data['headingH1'] = 'Спасибо за ваш заказ!';
     $this->document->setTitle($data['headingH1']);
     $this->document->addMeta(['name' => 'robots', 'content' => 'noindex, nofollow']);

@@ -1,0 +1,48 @@
+<nav class="nav-categories">
+  {% if categories %}
+    <ul class="nav-categories__list nav-categories__list--main">
+      {% for child1 in categories %}
+        <li class="nav-categories__item nav-categories__item--main {{ child1.children ? 'nav-categories__item--has-children' : '' }}">
+          <a class="nav-categories__link nav-categories__link--main" href="{{ child1.link }}">
+            <svg class="nav-categories__link-img">
+              <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-{{ child1.icon }}"></use>
+            </svg>
+            {{ child1.name }}
+          </a>
+
+          {% if child1.children %}
+            <button class="nav-categories__btn-nav">
+              <svg class="nav-categories__btn-nav-img">
+                <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-arrow-right"></use>
+              </svg>
+            </button>
+
+            <ul class="nav-categories__list nav-categories__list--child">
+            {% for child2 in child1.children %}
+                <li class="nav-categories__item nav-categories__item--child {{ child2.children ? 'nav-categories__item--has-children' : '' }}">
+                  <a class="nav-categories__link" href="{{ child2.link }}">{{ child2.name }}</a>
+
+                  {% if child2.children %}
+                    <button class="nav-categories__btn-nav">
+                      <svg class="nav-categories__btn-nav-img">
+                        <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-arrow-right"></use>
+                      </svg>
+                    </button>
+
+                    <ul class="nav-categories__list nav-categories__list--child nav-categories__list--child-2">
+                      {% for child3 in child2.children %}
+                        <li class="nav-categories__item nav-categories__item--child">
+                          <a class="nav-categories__link" href="{{ child3.link }}">{{ child3.name }}</a>
+                        </li>
+                      {% endfor %}
+                    </ul>
+                  {% endif %}
+                </li>
+            {% endfor %}
+            </ul>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+</nav>

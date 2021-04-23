@@ -1,0 +1,49 @@
+<div class="header-top">
+  <div class="container container--header-top">
+    <ul class="header-menu">
+      <li class="header-menu__item">
+        <a href="{{ linkAboutUs }}" class="header-menu__link">Про нас</a>
+      </li>
+
+      <li class="header-menu__item">
+        <a href="{{ linkNews }}" class="header-menu__link">Новини</a>
+      </li>
+
+      <li class="header-menu__item">
+        <a href="{{ linkTracking }}" class="header-menu__link">Сервіс</a>
+      </li>
+
+      <li class="header-menu__item">
+        <a href="{{ linkDelivery }}" class="header-menu__link">Доставка і оплата</a>
+      </li>
+
+      <li class="header-menu__item">
+        <a href="{{ linkIncome }}" class="header-menu__link">Надходження</a>
+      </li>
+
+      <li class="header-menu__item">
+        <a href="{{ linkContacts }}" class="header-menu__link">Контакти</a>
+      </li>
+    </ul>
+
+    <a class="header-download" href="{{ linkPriceList }}">
+      <svg class="header-download__img">
+        <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-download"></use>
+      </svg>
+      Завантажити прайс
+    </a>
+
+    <span class="header-exchange">
+      <svg class="header-exchange__img">
+        <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-usd"></use>
+      </svg>
+      Курс USD:&nbsp;<b>{{ rate }} грн</b>
+    </span>
+
+    <div class="header-languages">
+      <a class="header-languages__item header-languages__item--active" href="javascript:void(0);">укр</a>
+      <a class="header-languages__item" href="javascript:void(0);">рус</a>
+    </div>
+  </div>
+</div>
+

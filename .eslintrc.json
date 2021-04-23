@@ -1,0 +1,32 @@
+{
+  "env": {
+    "browser": true,
+    "jquery": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "airbnb-base"
+  ],
+  "globals": {
+    "Swiper": "readonly"
+  },
+  "rules": {
+    "no-new": "off",
+    "comma-dangle": [
+      "error",
+      "never"
+    ],
+    "arrow-parens": [
+      "error",
+      "as-needed"
+    ],
+    "no-unused-expressions": [
+      "error",
+      {
+        "allowTernary": true
+      }
+    ],
+    "import/no-extraneous-dependencies": "off",
+    "import/extensions": "off"
+  }
+}

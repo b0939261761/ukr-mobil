@@ -21,13 +21,6 @@ body {
   box-sizing: inherit;
 }
 
-header {
-  padding: 20px 0 0;
-  position: relative;
-  color: #fff;
-  box-sizing: inherit;
-}
-
 .fa-stack {
   width: 15px;
 }

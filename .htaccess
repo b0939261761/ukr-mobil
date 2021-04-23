@@ -13,7 +13,7 @@ RewriteCond %{REQUEST_URI} index.php$
 RewriteCond %{QUERY_STRING} ^route=information\/sc_tracking$
 RewriteRule ^.*$ index.php?route=information/tracking [L,R=301]
 
-RewriteRule ^/?$ index.php?route=common/home [L]
+RewriteRule ^/?$ index.php?route=home/home [L]
 RewriteRule ^system/storage/(.*) index.php?route=error/not_found [L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ru" prefix="og: http://ogp.me/ns#">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{{ title }}</title>
+    <base href="{{ base }}"/>
+
+    <link type="image/png" sizes="16x16" rel="icon" href="/favicon-16x16.png" />
+    <link type="image/png" sizes="32x32" rel="icon" href="/favicon-32x32.png" />
+    <link type="image/png" sizes="96x96" rel="icon" href="/favicon-96x96.png" />
+    <link type="image/png" sizes="120x120" rel="icon" href="/favicon-120x120.png" />
+    <link sizes="180x180" rel="apple-touch-icon" href="/apple-touch-icon-180x180.png" />
+    <link color="#303131" rel="mask-icon" href="/safari-pinned-tab.svg" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#ffffff" />
+
+    <meta name="google-site-verification" content="oYoQ1KjZ6bhmogs9jVYh83MOx0lcKFOhHR8YByGUMW0" />
+
+    {% if description %}
+      <meta name="description" content="{{ description }}"/>
+    {% endif %}
+
+    {% for meta in metaList %}
+      <meta
+      {% for attr, value in meta %}
+        {{ attr }}="{{ value }}"
+      {% endfor %}
+      />
+    {% endfor %}
+
+    {% for microdata in microdataList %}
+      <script type="application/ld+json">{{ microdata }}</script>
+    {% endfor %}
+
+    {% if dataLayer %}
+      <script>{{ dataLayer }}</script>
+    {% endif %}
+
+    <!-- Google Tag Manager -->
+    <script>
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-TJRVXND');
+    </script>
+    <!-- End Google Tag Manager -->
+
+    {% for link in links %}
+      <link href="{{ link.href }}" rel="{{ link.rel }}"/>
+    {% endfor %}
+
+    <link rel="preload" as="font" href="/resourse/fonts/gotham-pro-regular.woff2" type="font/woff2" crossorigin />
+    <link rel="preload" as="font" href="/resourse/fonts/gotham-pro-bold.woff2" type="font/woff2" crossorigin />
+    <link rel="preload" as="image" href="/resourse/images/shared-sprite-icons.svg" type="image/svg+xml">
+    <link rel="preload" as="script" href="/resourse/libs/jquery.min.js">
+    <link rel="preload" as="script" href="/resourse/libs/jquery.menu-aim.js">
+    <link rel="preload" as="script" href="/resourse/scripts/shared.min.js">
+    {% for preload in preloads %}
+      <link rel="preload" href="{{ preload.href }}" as="{{ preload.as }}" type="{{ preload.type }}"/>
+    {% endfor %}
+
+    {% for libStyle in libStyles %}<link href="{{ libStyle }}" rel="stylesheet"/>{% endfor %}
+    <link href="/resourse/styles/shared.min.css" rel="stylesheet"/>
+    {% for customStyle in customStyles %}<link href="{{ customStyle }}" rel="stylesheet"/>{% endfor %}
+  </head>
+  <body>
+
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+      <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TJRVXND"
+        height="0" width="0" style="display:none;visibility:hidden">
+      </iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <header class="header" id="header">
+      {{ headerTop }}
+      {{ headerBottom }}
+    </header>
+
+
+

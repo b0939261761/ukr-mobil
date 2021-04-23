@@ -94,7 +94,7 @@ class ControllerInformationSitemap extends Controller {
         SELECT cd.name, c.category_id AS categoryId
         FROM oc_category c
         LEFT JOIN oc_category_description cd ON cd.category_id = c.category_id
-        WHERE c.parent_id = {$id} AND c.brand_id IS NULL
+        WHERE c.parent_id = {$id}
         ORDER BY c.sort_order, cd.name
       ),
       tmpCategoriesAgg AS (

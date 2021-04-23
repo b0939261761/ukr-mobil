@@ -1,0 +1,43 @@
+.product-swiper__wrapper-title-income {
+  display: grid;
+  grid-row-gap: 16px;
+  margin-right: auto;
+}
+
+@media (min-width: 768px) {
+  .product-swiper__wrapper-title-income {
+    grid-template-columns: repeat(2, max-content);
+    grid-column-gap: 24px;
+  }
+}
+
+.product-swiper__title-text--income {
+  margin-right: 0;
+}
+
+.section__title__buttons {
+  display: flex;
+}
+
+.product-swiper__btn--income {
+  background-color: #fff;
+  color: #303031;
+  border-color: #edeff2;
+  transition-property: background-color, border-color, color;
+  transition-duration: .3s;
+}
+
+.product-swiper__btn--income-last {
+  border-radius: 10px 0 0 10px;
+}
+
+.product-swiper__btn--income-expected {
+  border-radius: 0 10px 10px 0;
+}
+
+.product-swiper__btn--income:disabled {
+  background-color: #bc191d;
+  border-color: #bc191d;
+  color: #fff;
+  cursor: default;
+}

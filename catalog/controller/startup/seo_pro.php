@@ -54,9 +54,6 @@ class ControllerStartupSeoPro extends Controller {
       ORDER BY ord
     ";
 
-
-    file_put_contents('./catalog/controller/startup/__LOG__.txt', "-----------\n" .$sql. "\n" . json_encode($this->db->query($sql)->rows) ."\n\n", FILE_APPEND);
-
     $keywordFilters = [];
     foreach ($this->db->query($sql)->rows as $row) {
       unset($data[$row['key']]);
@@ -128,6 +125,7 @@ class ControllerStartupSeoPro extends Controller {
     $route = $this->request->get['_route_'];
     unset($this->request->get['_route_']);
     $parts = explode('/', trim(utf8_strtolower($route), '/'));
+
     $rows = [];
 
     if (isset($this->cacheData['keywords'][$route])){
@@ -172,10 +170,7 @@ class ControllerStartupSeoPro extends Controller {
       $this->request->get['route'] = $controller;
       $this->request->request['category'] = $category;
       $this->request->request['categories'] = $this->getCatagories($category);
-    } elseif ($controller == 'product/search') {
-      $this->request->get['route'] = $controller;
-      $this->request->request['category'] = 0;
-    }
+    } elseif ($controller == 'product/search') $this->request->get['route'] = $controller;
 
     if (in_array($controller, ['product/category', 'product/search'])) {
       $keywordList = [];
@@ -197,6 +192,8 @@ class ControllerStartupSeoPro extends Controller {
     }
 
     if (isset($this->request->get['search'])) {
+    file_put_contents('./catalog/controller/startup/__LOG__.txt', $this->request->get['search']."\n\n", FILE_APPEND);
+
       $this->request->get['search'] = preg_replace('/\s+/', ' ',
         str_replace('\\', '', trim($this->request->get['search'] ?? '')));
       if (empty($this->request->get['search'])) unset($this->request->get['search']);
@@ -245,18 +242,6 @@ class ControllerStartupSeoPro extends Controller {
 
         case 'path':
           $categories = explode('_', $value);
-
-          if (count($categories) === 3) {
-            $lastCategory = (int)array_pop($categories);
-
-            if ($lastCategory) {
-              $sql = "SELECT brand_id AS brandId FROM oc_category WHERE category_id = {$lastCategory}";
-              $brandId = $this->db->query($sql)->row['brandId'] ?? 0;
-              if ($brandId) $data['brand'] = $brandId;
-              else $categories[] = $lastCategory;
-            }
-          }
-
           foreach($categories as $category) $queries[] = "category_id={$category}";
           unset($data[$key]);
           break;
@@ -272,7 +257,7 @@ class ControllerStartupSeoPro extends Controller {
     $rows = [];
     foreach($queries as $query) {
       if(isset($this->cacheData['queries'][$query])) {
-        $rows[] = ['query' => $query, 'keyword' => $this->cacheData['queries'][$query]];
+        $rows[] = array('query' => $query, 'keyword' => $this->cacheData['queries'][$query]);
       }
     }
 

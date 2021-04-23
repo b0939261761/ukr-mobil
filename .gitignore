@@ -8,3 +8,5 @@
 /robots.txt
 /composer.phar
 /*.xml
+node_modules
+/**/*.log

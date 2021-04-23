@@ -154,7 +154,7 @@ $sql = "
         FROM oc_category c3
         LEFT JOIN oc_category_description cd3 ON cd3.category_id = c3.category_id
         LEFT JOIN tmpBrands tb3 ON tb3.category_id = c3.category_id
-        WHERE c3.brand_id IS NULL AND c3.parent_id = c2.category_id AND cd3.language_id = 2 AND c3.status = 1
+        WHERE c3.parent_id = c2.category_id AND cd3.language_id = 2 AND c3.status = 1
         ORDER BY c3.sort_order, cd3.name
       ) AS t3 ON true
       WHERE c2.parent_id = c1.category_id AND cd2.language_id = 2 AND c2.status = 1

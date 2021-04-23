@@ -10,7 +10,7 @@ class ControllerAccountLogout extends Controller {
       <p>Ваша корзина покупок была сохранена.
       Она будет восстановлена при следующем входе в Ваш Личный Кабинет.</p>";
 
-    $data['linkContinue'] = $this->url->link('common/home');
+    $data['linkContinue'] = $this->url->link('home/home');
     $data['headingH1'] = 'Выход';
     $this->document->setTitle($data['headingH1']);
     $this->document->addMeta(['name' => 'robots', 'content' => 'noindex, nofollow']);

@@ -108,6 +108,8 @@ $sql = "
 ";
 foreach ($db->query($sql)->rows as $filter) {
   $keyword = translit($filter['name']);
+  if ($filter['queryKey'] == 'manuf') $keyword = "{$filter['queryKey']}={$keyword}";
+
   $sql = "INSERT INTO seo_filter_url (queryKey, ord, queryValue, keyword, name) VALUES
     ('{$filter['queryKey']}', {$filter['ord']}, {$filter['id']}, '{$keyword}', '{$filter['name']}');";
   try {

@@ -1,0 +1,22 @@
+.header {
+  position: sticky;
+  top: 0;
+  background-color: #f6f7f9;
+  z-index: 2;
+}
+
+@media (min-width: 1080px) {
+  .header {
+    top: -37px;
+  }
+}
+
+.body--mobile-menu-open .header {
+  background: #fff;
+}
+
+@media (min-width: 768px) {
+  .body--mobile-menu-open .header {
+    background-color: #f6f7f9;
+  }
+}

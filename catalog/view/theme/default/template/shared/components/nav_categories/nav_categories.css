@@ -1,0 +1,132 @@
+.nav-categories {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  font-size: 12px;
+  line-height: 21px;
+  transform: translateX(0);
+}
+
+@media (min-width: 1080px) {
+  .nav-categories {
+    position: static;
+    width: 307px;
+  }
+}
+
+.nav-categories__list {
+  background-color: #fff;
+  overflow-y: auto;
+}
+
+.nav-categories__list--main {
+  border-radius: 10px 0 0 10px;
+}
+
+.nav-categories__list--child {
+  position: fixed;
+  display: none;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  font-size: 14px;
+}
+
+@media (min-width: 1080px) {
+  .nav-categories__list--child {
+    left: 100%;
+    width: 307px;
+    border-left: 1px solid #edeff2;
+    overflow-y: scroll;
+    scrollbar-width: 0;
+  }
+
+  .nav-categories__list--child::-webkit-scrollbar {
+    width: 0;
+  }
+
+  .nav-categories__list--child-2 {
+    left: 614px;
+    background-color: #fafafa;
+  }
+}
+
+.nav-categories__list--is-visible {
+  display: block;
+}
+
+.nav-categories__item {
+  display: flex;
+  min-height: 44px;
+  padding: 0 7px 0 15px;
+}
+
+.nav-categories__item--main:not(:last-child) {
+  border-bottom: 1px solid #edeff2;
+}
+
+@media (min-width: 1080px) {
+  .nav-categories__item--child:hover {
+    background-color: #edeff2;
+  }
+}
+
+.nav-categories__link {
+  color: #303031;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  padding: 4px 0;
+  flex-grow: 1;
+  transition: color .3s ease;
+}
+
+.nav-categories__item:hover > .nav-categories__link {
+  color: #bc191d;
+}
+
+.nav-categories__link--main {
+  font-weight: bold;
+}
+
+.nav-categories__link-img {
+  margin-right: 8px;
+  width: 24px;
+  height: 24px;
+  stroke: #b2bac7;
+  fill: #b2bac7;
+  transition-property: stroke, fill;
+  transition-duration: .3s;
+}
+
+.nav-categories__item:hover > .nav-categories__link > .nav-categories__link-img {
+  stroke: currentColor;
+  fill: currentColor;
+}
+
+.nav-categories__btn-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 26px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  color: #b2bac7;
+  transition: color .3s ease;
+}
+
+.nav-categories__item:hover > .nav-categories__btn-nav {
+  color: #bc191d;
+}
+
+.nav-categories__btn-nav-img {
+  pointer-events: none;
+  width: 6px;
+  height: 10px;
+  fill: currentColor;
+}
