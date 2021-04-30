@@ -1,0 +1,225 @@
+.modal-window {
+  --modal-window--ident: 16px;
+  --modal-window--max-width: 530px;
+
+  position: fixed;
+  visibility: hidden;
+  opacity: 0;
+  z-index: 2;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, .5);
+  cursor: pointer;
+  display: flex;
+  transition-property: visibility, opacity;
+  transition-duration: .3s;
+  padding: 15px;
+  overflow-y: auto;
+}
+
+@media (min-width: 768px) {
+  .modal-window {
+    --modal-window--ident: 20px;
+
+    padding: 40px 15px;
+  }
+}
+
+@media (min-width: 1080px) {
+  .modal-window {
+    --modal-window--ident: 24px;
+  }
+}
+
+.modal-window--open {
+  visibility: visible;
+  opacity: 1;
+}
+
+.modal-window__content {
+  margin: auto;
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid #edeff2;
+  width: 100%;
+  max-width: var(--modal-window--max-width);
+  cursor: auto;
+}
+
+.modal-window__header {
+  overflow: hidden;
+  margin-bottom: var(--modal-window--ident);
+}
+
+.modal-window__title {
+  padding: var(--modal-window--ident) var(--modal-window--ident) 0;
+  font-weight: bold;
+  color: #303031;
+  font-size: 18px;
+  line-height: 18px;
+}
+
+@media (min-width: 768px) {
+  .modal-window__title {
+    font-size: 26px;
+    line-height: 26px;
+    text-align: center;
+  }
+}
+
+@media (min-width: 1080px) {
+  .modal-window__title {
+    font-size: 30px;
+    line-height: 30px;
+  }
+}
+
+.modal-window__btn-close {
+  float: right;
+  color: #303031;
+  height: 50px;
+  width: 50px;
+  background-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0 10px 0 0;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+}
+
+.modal-window__btn-close-img {
+  stroke: currentColor;
+  pointer-events: none;
+  width: 33px;
+  height: 33px;
+}
+
+.modal-window__body {
+  padding: 0 var(--modal-window--ident) var(--modal-window--ident);
+}
+
+.modal-window__form {
+  display: grid;
+  grid-gap: var(--modal-window--ident);
+}
+
+.form-input {
+  display: block;
+  color: #303031;
+}
+
+.form-input__title {
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+@media (min-width: 1080px) {
+  .form-input__title {
+    margin-bottom: 16px;
+  }
+}
+
+.form-input__title-required {
+  color: #bc191d;
+}
+
+.form-input__input {
+  width: 100%;
+  font-family: inherit;
+  height: 40px;
+  line-height: 40px;
+  border: 1px solid #edeff2;
+  padding: 0 var(--modal-window--ident);
+  font-size: 14px;
+  border-radius: 10px;
+  color: inherit;
+}
+
+@media (min-width: 1080px) {
+  .form-input__input {
+    height: 48px;
+    line-height: 48px;
+  }
+}
+
+.form-input__input::placeholder,
+.form-input__textarea::placeholder {
+  line-height: inherit;
+  transition: opacity .3s ease;
+  color: #999;
+}
+
+.form-input__input:focus::placeholder,
+.form-input__textarea:focus::placeholder {
+  opacity: 0;
+}
+
+.form-input__textarea {
+  padding: 17px 12px;
+  padding: 12px var(--modal-window--ident);
+  font-size: 14px;
+  line-height: 21px;
+  font-family: inherit;
+  border-radius: 10px;
+  border: 1px solid #edeff2;
+  color: inherit;
+  resize: vertical;
+  height: 200px;
+  width: 100%;
+}
+
+.form-btn {
+  color: #fff;
+  background: #bc191d url(/resourse/images/lines-right.svg) right center no-repeat;
+  background-color: #bc191d;
+  font-size: 14px;
+  font-family: inherit;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border: 1px solid #bc191d;
+  padding: 0 2px;
+  height: 48px;
+  border-radius: 10px;
+}
+
+.form-btn:hover {
+  background-image: none;
+}
+
+.form-btn:disabled {
+  cursor: auto;
+  border-color: #edeff2;
+  background-color: #fff;
+  color: #b2bac7;
+  background-image: none;
+}
+
+.form-note {
+  font-size: 12px;
+  line-height: 21px;
+  text-align: center;
+}
+
+.modal-window__response {
+  font-size: 14px;
+  line-height: 21px;
+  text-align: center;
+  padding-right: calc(50px - var(--modal-window--ident));
+}
+
+.modal-window__response--success {
+  color: #303031;
+}
+
+.modal-window__response--error {
+  color: #bc191d;
+}

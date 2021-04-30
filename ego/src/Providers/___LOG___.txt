@@ -39,7 +39,7 @@
             AND pop.customer_group_id = 1
       WHERE pd.language_id = 2
         AND p.status = 1
-     AND cp.path_id = 10000086 GROUP BY p.product_id
+     AND cp.path_id = 10000010 GROUP BY p.product_id
 
         UNION ALL
 
@@ -64,7 +64,7 @@
       LEFT JOIN oc_product_description pd ON p.product_id = pd.product_id
       WHERE pd.language_id = 2
         AND p.status = 1
-     AND cp.path_id = 10000086 GROUP BY p.product_id
+     AND cp.path_id = 10000010 GROUP BY p.product_id
 
         ORDER BY is_owner DESC, sort_order ASC, name
       ) a

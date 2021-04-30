@@ -1,3 +1,9 @@
+const footerWindowModalFeedbackError = document.getElementById('footerWindowModalFeedbackError');
+footerWindowModalFeedbackError.addEventListener('click', () => window.modalWindowFeedbackError());
+
+const footerWindowModalFeedbackManager = document.getElementById('footerWindowModalFeedbackManager');
+footerWindowModalFeedbackManager.addEventListener('click', () => window.modalWindowFeedbackManager());
+
 const initBtnScrollOnTop = () => {
   const btnScrollToTopEl = document.getElementById('btnScrollToTop');
   const onClickbtnScrollToTop = () => window.scrollTo({ left: 0, top: 0, behavior: 'smooth' });

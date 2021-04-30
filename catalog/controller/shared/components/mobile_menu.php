@@ -3,7 +3,7 @@ class ControllerSharedComponentsMobileMenu extends Controller {
   public function index() {
     $categories = $this->getCategories();
     $data['categories'] = $this->loopCategory($categories);
-    $data['navCategories'] = $this->load->controller('shared/components/nav_categories');
+    $data['navCategories'] = $this->load->controller('shared/components/nav_catalog');
 
     return $this->load->view('shared/components/mobile_menu/mobile_menu', $data);
   }

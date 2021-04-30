@@ -26,6 +26,16 @@
         "allowTernary": true
       }
     ],
+    "eslint no-param-reassign": [
+      "error",
+      {
+        "props": true,
+        "ignorePropertyModificationsFor": [
+          "window",
+          "evt"
+        ]
+      }
+    ],
     "import/no-extraneous-dependencies": "off",
     "import/extensions": "off"
   }

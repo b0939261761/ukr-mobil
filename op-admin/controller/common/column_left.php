@@ -222,6 +222,14 @@ class ControllerCommonColumnLeft extends Controller {
         ];
       }
 
+      if ($this->user->hasPermission('access', 'design/seo_filters')) {
+        $design[] = [
+          'name'     => 'Баннера',
+          'href'     => $this->url->link('design/banners', ['user_token' => $userToken]),
+          'children' => []
+        ];
+      }
+
       $data['menus'][] = [
         'id'       => 'menu-design',
         'icon'	   => 'fa-television',

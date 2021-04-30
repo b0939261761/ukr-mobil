@@ -113,6 +113,11 @@ class ControllerStartupStartup extends Controller {
     $this->registry->set('customer', $customer);
 
 
+
+		// Customer
+		$category = new Cart\Category($this->registry);
+    $this->registry->set('category', $category);
+
     // CART -------------------------
     $this->db->query("DELETE FROM oc_cart WHERE customer_id = 0 AND date_added < DATE_SUB(NOW(), INTERVAL 1 HOUR)");
 
@@ -226,9 +231,9 @@ class ControllerStartupStartup extends Controller {
 		// $this->registry->set('cart', new Cart\Cart($this->registry));
 
 		// Encryption
-		$this->registry->set('encryption', new Encryption($this->config->get('config_encryption')));
+		// $this->registry->set('encryption', new Encryption($this->config->get('config_encryption')));
 
 		// OpenBay Pro
-		$this->registry->set('openbay', new Openbay($this->registry));
+		// $this->registry->set('openbay', new Openbay($this->registry));
 	}
 }

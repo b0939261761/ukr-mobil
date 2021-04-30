@@ -16,51 +16,46 @@ class ControllerHomeComponentsPromotions extends Controller {
         SELECT
           p.product_id AS id,
           pd.name,
-          IF(image = '',
+          p.isLatest,
+          p.isSalesLeader,
+          IF(p.dateExpected = '0000-00-00', '', DATE_FORMAT(p.dateExpected, '%d.%m.%Y')) AS dateExpected,
+          IF(p.image = '',
             COALESCE(
               (SELECT image FROM oc_product_image
                 WHERE product_id = p.product_id ORDER BY sort_order LIMIT 1),
               'placeholder.png'
             ),
-            image) AS image,
+            p.image) AS image,
           COALESCE(
             (SELECT price FROM oc_product_discount
-              WHERE product_id = p.product_id AND customer_group_id = {$customerGroupId}
-              ORDER BY priority ASC, price ASC LIMIT 1),
+              WHERE product_id = p.product_id AND customer_group_id = {$customerGroupId}),
             p.price) AS priceOld,
+          ps.price,
           p.quantity AS quantityStore1,
           p.quantity_store_2 AS quantityStore2
-        FROM oc_product p
-        LEFT JOIN oc_product_description pd ON pd.product_id = p.product_id
-        WHERE p.status = 1
-        ORDER BY p.date_added DESC, pd.name
-        LIMIT 10
-      ),
-      tmpProductsFull AS (
-        SELECT
-        *,
-        COALESCE(
-          (SELECT price
-            FROM oc_product_special
-            WHERE product_id = p.id
-              AND customer_group_id = 1
-              AND (date_start = '0000-00-00' OR date_start < NOW())
-              AND (date_end = '0000-00-00' OR date_end > NOW())
-            ORDER BY priority ASC, price ASC LIMIT 1),
-          priceOld) AS price
-        FROM tmpProducts p
+          FROM oc_product_special ps
+          INNER JOIN oc_product p ON p.product_id = ps.product_id
+          LEFT JOIN oc_product_description pd ON pd.product_id = p.product_id
+            AND ps.customer_group_id = {$customerGroupId}
+            AND (ps.date_start = '0000-00-00' OR ps.date_start < NOW())
+            AND (ps.date_end = '0000-00-00' OR ps.date_end > NOW())
       )
       SELECT
         p.id,
         p.name,
         p.image,
+        p.isLatest,
+        p.isSalesLeader,
+        p.dateExpected,
+        p.price != p.priceOld AS isPromotions,
         p.quantityStore1,
         p.quantityStore2,
         p.price AS priceUSD,
         ROUND(p.price * c.value) AS priceUAH,
-        IF(p.price = p.priceOld, 0, ROUND(p.priceOld * c.value)) AS priceOldUAH
-      FROM tmpProductsFull p
+        ROUND(p.priceOld * c.value) AS priceOldUAH
+      FROM tmpProducts p
       LEFT JOIN oc_currency c ON c.currency_id = 980
+      WHERE p.price != p.priceOld
     ";
 
     $products = $this->db->query($sql)->rows;

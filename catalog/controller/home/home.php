@@ -28,7 +28,7 @@ class ControllerHomeHome extends Controller {
     $data['header'] = $this->load->controller('shared/components/header');
     $data['footer'] = $this->load->controller('shared/components/footer');
 
-    $data['navCategories'] = $this->load->controller('shared/components/nav_categories');
+    $data['navCategories'] = $this->load->controller('shared/components/nav_catalog');
     $data['special'] = $this->load->controller('home/components/special');
     $data['benefits'] = $this->load->controller('home/components/benefits');
     $data['new'] = $this->load->controller('home/components/new');

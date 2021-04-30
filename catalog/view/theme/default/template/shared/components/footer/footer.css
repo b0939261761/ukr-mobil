@@ -2,6 +2,14 @@
   background: #303031;
   color: #fff;
   position: relative;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+@media (min-width: 1080px) {
+  .footer {
+    font-size: 14px;
+  }
 }
 
 .footer-top {
@@ -105,7 +113,6 @@
 @media (min-width: 768px) {
   .footer-schedule__title {
     margin-bottom: 16px;
-    font-size: 18px;
   }
 }
 
@@ -145,16 +152,20 @@
   }
 }
 
-.footer__actions__link {
+.footer__actions__btn {
   font-size: 14px;
-  text-decoration: none;
   color: #fff;
   display: flex;
   align-items: center;
   font-weight: bold;
+  border: none;
+  background-color: transparent;
+  font-family: inherit;
+  padding: 0;
+  cursor: pointer;
 }
 
-.footer-actions__img {
+.footer__actions__btn-img {
   fill: transparent;
   stroke: #fff;
   margin-right: 12px;
@@ -391,13 +402,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 16px 0;
+  padding-top: 16px;
+  padding-bottom: 16px;
 }
 
 @media (min-width: 768px) {
   .footer-bottom {
     justify-content: space-between;
-    padding: 26px 0;
+    padding-top: 26px;
+    padding-bottom: 26px;
   }
 }
 

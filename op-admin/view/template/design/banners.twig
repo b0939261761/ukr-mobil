@@ -1,0 +1,192 @@
+{{ header }}
+{{ column_left }}
+
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-banners" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary">
+          <i class="fa fa-save"></i>
+        </button>
+      </div>
+      <h1>Баннера</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+          <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if success %}
+      <div class="alert alert-success alert-dismissible">
+        <i class="fa fa-check-circle"></i> {{ success }}
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+      </div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-banners" class="form-horizontal">
+          <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab-top-banner" data-toggle="tab">Верхний баннер</a></li>
+            <li><a href="#tabHomeBanners" data-toggle="tab">Домашняя страница</a></li>
+          </ul>
+          <div class="tab-content">
+
+            <div class="tab-pane active" id="tab-top-banner">
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-enabled-top">Включено</label>
+                <div class="col-sm-10">
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox" name="topBannerEnabled" value="1" {{ topBanner.enabled ? "checked" : "" }} id="input-enabled-top" />
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label">Изображение 600х30</label>
+                <div class="col-sm-10">
+                <a id="thumb-image-top" data-toggle="image" class="img-thumbnail">
+                  <img src="{{ topBanner.thumb ? topBanner.thumb : thumbDefault}}" data-placeholder="{{ thumbDefault }}" />
+                </a>
+                <input type="hidden" name="topBannerImage" value="{{ topBanner.image }}" id="input-image-top" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="topBannerLink">Ссылка</label>
+                <div class="col-sm-10">
+                  <input type="text" name="topBannerLink" value="{{ topBanner.link }}" placeholder="Ссылка" id="topBannerLink" class="form-control" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="topBannerLink">Цвет заливки заднего фона</label>
+                <div class="col-sm-10">
+                  <input type="color" name="topBannerBackgroundColor" value="{{ topBanner.backgroundColor }}"
+                    style="max-width: 200px;" id="topBannerLink" class="form-control" />
+                </div>
+              </div>
+            </div>
+
+            <div class="tab-pane" id="tabHomeBanners" data-thumb-default="{{ thumbDefault }}" data-length="{{ homeBanners | length }}">
+              {% for banner in homeBanners %}
+                <div class="banner-home">
+                  <div>
+                    <button type="button" title="Удалить баннер" class="btn btn-danger pull-right btn-remove-home-banner">
+                      <i class="fa fa-trash-o"></i>&nbsp;&nbsp;Удалить
+                    </button>
+                    <h4>Баннер № {{ banner.ord }}</h4>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-enabled-{{ banner.ord }}">Включено</label>
+                    <div class="col-sm-10">
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox" name="homeBanners[{{ banner.ord }}][enabled]" value="1" {{ banner.enabled ? "checked" : "" }} id="input-enabled-{{ banner.ord }}" />
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">Изображение 1277x395</label>
+                    <div class="col-sm-10">
+                    <a href="" id="thumb-image-{{ banner.ord }}" data-toggle="image" class="img-thumbnail">
+                      <img src="{{ banner.thumb }}" data-placeholder="{{ thumbDefault }}" />
+                    </a>
+                    <input type="hidden" name="homeBanners[{{ banner.ord }}][image]" value="{{ banner.image }}" id="input-image-{{ banner.ord }}" />
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="topBannerLink{{ banner.ord }}">Ссылка</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="homeBanners[{{ banner.ord }}][link]" value="{{ banner.link }}" placeholder="Ссылка" id="topBannerLink{{ banner.ord }}" class="form-control" />
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+
+              <button type="button" title="Добавить баннер" class="btn btn-primary" id="bannerHomeAdd">
+                <i class="fa fa-plus"></i>&nbsp;&nbsp;Добавить баннер
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .banner-home {
+      border: 2px dashed #ccc;
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+  </style>
+
+  <script>
+    const tabHomeBanners = document.getElementById('tabHomeBanners');
+    const bannerHomeAdd = document.getElementById('bannerHomeAdd');
+
+    let maxLength = +tabHomeBanners.dataset.length || 0;
+
+    const removeBanner = evt => evt.target.closest('.banner-home').remove();
+
+    const addBanner = evt => {
+      maxLength += 1;
+
+      const banner = document.createElement('div');
+      banner.classList.add('banner-home');
+      banner.innerHTML = `
+        <div>
+          <button type="button" title="Удалить баннер" class="btn btn-danger pull-right btn-remove-home-banner">
+            <i class="fa fa-trash-o"></i>&nbsp;&nbsp;Удалить
+          </button>
+          <h4>Баннер № ${maxLength}</h4>
+        </div>
+
+        <div class="form-group">
+          <label class="col-sm-2 control-label" for="input-enabled-${maxLength}">Включено</label>
+          <div class="col-sm-10">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" name="homeBanners[${maxLength}][enabled]" value="1" id="input-enabled-${maxLength}" />
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-sm-2 control-label">Изображение</label>
+          <div class="col-sm-10">
+          <a href="" id="thumb-image-${maxLength}" data-toggle="image" class="img-thumbnail">
+            <img src="${tabHomeBanners.dataset.thumbDefault}" style="width:100px;height:100px;"/>
+          </a>
+          <input type="hidden" name="homeBanners[${maxLength}][image]" value="" id="input-image-${maxLength}" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-sm-2 control-label" for="topBannerLink${maxLength}">Ссылка</label>
+          <div class="col-sm-10">
+            <input type="text" name="homeBanners[${maxLength}][link]" value="" placeholder="Ссылка" id="topBannerLink${maxLength}" class="form-control" />
+          </div>
+        </div>
+      `;
+
+      banner.querySelector('.btn-remove-home-banner').addEventListener('click', removeBanner);
+      tabHomeBanners.insertBefore(banner, bannerHomeAdd);
+    };
+
+    bannerHomeAdd.addEventListener('click', addBanner);
+
+    const btnRemoveHomeBannerList = document.querySelectorAll('.btn-remove-home-banner');
+    if (btnRemoveHomeBannerList) btnRemoveHomeBannerList.forEach(el => el.addEventListener('click', removeBanner));
+  </script>
+</div>
+{{ footer }}

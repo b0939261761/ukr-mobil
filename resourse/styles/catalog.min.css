@@ -1,0 +1,108 @@
+
+.breadcrumbs {
+  display: flex;
+  margin-bottom: 8px;
+  font-size: 12px;
+  line-height: 23px;
+  height: 23px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.breadcrumbs::-webkit-scrollbar {
+  height: 0;
+}
+
+.breadcrumbs__item {
+  color: #aaa;
+  white-space: nowrap;
+}
+
+.breadcrumbs__item:not(:last-child) {
+  background-image: url(/resourse/images/breadcrumbs-arrow.svg);
+  /* background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg viewBox='0 0 6 10' fill='none' xmlns='http://www.w3.org/2000/svg' stroke='%23bc191d'%3E%3Cpath d='M1.354 1.06a.5.5 0 0 0-.854.354v7.172a.5.5 0 0 0 .854.353l3.585-3.585a.5.5 0 0 0 0-.708L1.354 1.061z'/%3E%3C/svg%3E"); */
+  background-repeat: no-repeat;
+  background-position: right center;
+  padding-right: 16px;
+  margin-right: 8px;
+  background-size: 6px 10px;
+}
+
+.breadcrumbs__btn-mobile {
+  border: none;
+  background-color: transparent;
+  letter-spacing: 3px;
+  text-align: center;
+  padding: 0 0 0 3px;
+  color: inherit;
+}
+
+@media (min-width: 1080px) {
+  .breadcrumbs__item--mobile {
+    display: none;
+  }
+}
+
+.breadcrumbs__item--desktop {
+  display: none;
+}
+
+@media (min-width: 1080px) {
+  .breadcrumbs__item--desktop {
+    display: block;
+  }
+}
+
+.breadcrumbs__link {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  text-decoration: none;
+  color: #aaa;
+}
+
+.breadcrumbs__img-home {
+  height: 16px;
+  width: 17px;
+  fill: currentColor;
+}
+
+/* --------------- */
+
+.modal-window-breadcrumbs {
+  line-height: 21px;
+  text-align: center;
+  margin-top: calc(var(--modal-window--ident) - 70px);
+}
+
+.modal-window-breadcrumbs__item--link {
+  padding-bottom: 16px;
+  position: relative;
+}
+
+.modal-window-breadcrumbs__item--link:not(:first-child) {
+  padding-top: 16px;
+}
+
+.modal-window-breadcrumbs__item--link::before {
+  content: '';
+  transform: rotate(90deg) translateY(50%);
+  bottom: -5px;
+  left: 50%;
+  height: 10px;
+  width: 6px;
+  background-image: url(/resourse/images/breadcrumbs-arrow.svg);
+  position: absolute;
+}
+
+.modal-window-breadcrumbs__item--active {
+  padding-top: 16px;
+  color: #999;
+}
+
+.modal-window-breadcrumbs__link {
+  text-decoration: none;
+  color: #303031;
+}
+
+/*# sourceMappingURL=catalog.min.css.map */

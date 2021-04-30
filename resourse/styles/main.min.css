@@ -661,7 +661,7 @@ button, input {
   }
 }
 
-.footer__actions__link {
+.footer__actions__btn {
   font-size: 14px;
   text-decoration: none;
   color: #fff;
@@ -670,7 +670,7 @@ button, input {
   font-weight: bold;
 }
 
-.footer-actions__img {
+.footer__actions__btn-img {
   fill: transparent;
   stroke: #fff;
   margin-right: 12px;

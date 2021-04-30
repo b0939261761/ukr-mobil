@@ -1,14 +1,14 @@
 <?
-class ControllerSharedComponentsNavCategories extends Controller {
+class ControllerSharedComponentsNavCatalog extends Controller {
   public function index() {
     $categories = $this->getCategories();
     $data['categories'] = $this->loopCategory($categories);
-    return $this->load->view('shared/components/nav_categories/nav_categories', $data);
+    return $this->load->view('shared/components/nav_catalog/nav_catalog', $data);
   }
 
   private function loopCategory ($categories) {
     foreach ($categories as &$category) {
-      $category['link'] = $this->url->link('product/category', ['path' => $category['path']]);
+      $category['link'] = $this->url->link('catalog/catalog', ['path' => $category['path']]);
       $children = $category['children'];
       if (count($children)) {
         $category['children'] = $this->loopCategory($children);

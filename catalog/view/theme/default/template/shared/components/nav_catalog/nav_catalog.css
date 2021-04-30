@@ -1,4 +1,4 @@
-.nav-categories {
+.nav-catalog {
   position: absolute;
   top: 0;
   left: 0;
@@ -10,22 +10,22 @@
 }
 
 @media (min-width: 1080px) {
-  .nav-categories {
+  .nav-catalog {
     position: static;
     width: 307px;
   }
 }
 
-.nav-categories__list {
+.nav-catalog__list {
   background-color: #fff;
   overflow-y: auto;
 }
 
-.nav-categories__list--main {
+.nav-catalog__list--main {
   border-radius: 10px 0 0 10px;
 }
 
-.nav-categories__list--child {
+.nav-catalog__list--child {
   position: fixed;
   display: none;
   top: 0;
@@ -36,45 +36,46 @@
 }
 
 @media (min-width: 1080px) {
-  .nav-categories__list--child {
+  .nav-catalog__list--child {
     left: 100%;
     width: 307px;
     border-left: 1px solid #edeff2;
     overflow-y: scroll;
-    scrollbar-width: 0;
+    scrollbar-width: none;
   }
 
-  .nav-categories__list--child::-webkit-scrollbar {
+  .nav-catalog__list--child::-webkit-scrollbar {
     width: 0;
   }
 
-  .nav-categories__list--child-2 {
+  .nav-catalog__list--child-2 {
     left: 614px;
     background-color: #fafafa;
+    border-radius: 0 10px 10px 0;
   }
 }
 
-.nav-categories__list--is-visible {
+.nav-catalog__list--is-visible {
   display: block;
 }
 
-.nav-categories__item {
+.nav-catalog__item {
   display: flex;
   min-height: 44px;
   padding: 0 7px 0 15px;
 }
 
-.nav-categories__item--main:not(:last-child) {
+.nav-catalog__item--main:not(:last-child) {
   border-bottom: 1px solid #edeff2;
 }
 
 @media (min-width: 1080px) {
-  .nav-categories__item--child:hover {
+  .nav-catalog__item--child:hover {
     background-color: #edeff2;
   }
 }
 
-.nav-categories__link {
+.nav-catalog__link {
   color: #303031;
   text-decoration: none;
   display: flex;
@@ -84,15 +85,15 @@
   transition: color .3s ease;
 }
 
-.nav-categories__item:hover > .nav-categories__link {
+.nav-catalog__item:hover > .nav-catalog__link {
   color: #bc191d;
 }
 
-.nav-categories__link--main {
+.nav-catalog__link--main {
   font-weight: bold;
 }
 
-.nav-categories__link-img {
+.nav-catalog__link-img {
   margin-right: 8px;
   width: 24px;
   height: 24px;
@@ -102,12 +103,12 @@
   transition-duration: .3s;
 }
 
-.nav-categories__item:hover > .nav-categories__link > .nav-categories__link-img {
+.nav-catalog__item:hover > .nav-catalog__link > .nav-catalog__link-img {
   stroke: currentColor;
   fill: currentColor;
 }
 
-.nav-categories__btn-nav {
+.nav-catalog__btn-nav {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -120,11 +121,11 @@
   transition: color .3s ease;
 }
 
-.nav-categories__item:hover > .nav-categories__btn-nav {
+.nav-catalog__item:hover > .nav-catalog__btn-nav {
   color: #bc191d;
 }
 
-.nav-categories__btn-nav-img {
+.nav-catalog__btn-nav-img {
   pointer-events: none;
   width: 6px;
   height: 10px;

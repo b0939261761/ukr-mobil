@@ -1,0 +1,10 @@
+{% if banner.enabled %}
+  <a
+    id="headerBanner"
+    style="background-color: {{ banner.backgroundColor }}"
+    {{ banner.link ? 'href="' ~ banner.link ~ '"' : '' }}
+    class="header-banner"
+  >
+    <img class="header-banner__img" src="{{ banner.image }}" />
+  </a>
+{% endif %}

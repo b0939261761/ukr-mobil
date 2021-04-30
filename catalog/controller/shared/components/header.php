@@ -33,6 +33,7 @@ class ControllerSharedComponentsHeader extends Controller {
 
     // ----------------------------------------------
 
+    $data['headerBanner'] = $this->load->controller('shared/components/header_banner');
     $data['headerTop'] = $this->load->controller('shared/components/header_top');
     $data['headerBottom'] = $this->load->controller('shared/components/header_bottom');
 

@@ -1,13 +1,13 @@
 .header {
   position: sticky;
-  top: 0;
   background-color: #f6f7f9;
+  top: calc(-1 * var(--header-banner-top));
   z-index: 2;
 }
 
 @media (min-width: 1080px) {
   .header {
-    top: -37px;
+    top: calc(-1 * var(--header-banner-top) - 37px);
   }
 }
 

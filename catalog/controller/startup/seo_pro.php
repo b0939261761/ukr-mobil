@@ -65,16 +65,16 @@ class ControllerStartupSeoPro extends Controller {
 
   // ------------------------------------------
 
-  private function getCatagories($categoryId) {
-    $sql = "
-      SELECT c.category_id, cd.name FROM oc_category_path cp
-      LEFT JOIN oc_category c ON c.category_id = cp.path_id
-      LEFT JOIN oc_category_description cd ON cd.category_id = c.category_id
-      WHERE cp.category_id = {$this->db->escape($categoryId)} AND cd.language_id = 2 AND c.status = 1
-      ORDER BY level
-    ";
-    return $this->db->query($sql)->rows;
-  }
+  // private function getCatagories($categoryId) {
+  //   $sql = "
+  //     SELECT c.category_id, cd.name FROM oc_category_path cp
+  //     LEFT JOIN oc_category c ON c.category_id = cp.path_id
+  //     LEFT JOIN oc_category_description cd ON cd.category_id = c.category_id
+  //     WHERE cp.category_id = {$this->db->escape($categoryId)} AND cd.language_id = 2 AND c.status = 1
+  //     ORDER BY level
+  //   ";
+  //   return $this->db->query($sql)->rows;
+  // }
 
   // ------------------------------------------
 
@@ -166,10 +166,12 @@ class ControllerStartupSeoPro extends Controller {
     if (!empty($categories)) {
       $category = (int)end($categories);
       $this->request->get['path'] = implode('_', $categories);
-      $controller = 'product/category';
+      $controller = 'catalog/catalog';
       $this->request->get['route'] = $controller;
-      $this->request->request['category'] = $category;
-      $this->request->request['categories'] = $this->getCatagories($category);
+      $this->request->request['category'] = $category; // TODO REMOVE
+
+      $this->category->setCategoryId($this->request->request['category']);
+      $this->request->request['categories'] = $this->category->getCurrentCatagories();
     } elseif ($controller == 'product/search') $this->request->get['route'] = $controller;
 
     if (in_array($controller, ['product/category', 'product/search'])) {

@@ -50,19 +50,13 @@
     opacity: 0;
     transition-property: visibility, opacity;
     transition-duration: .3s;
+    border-radius: 10px 0 0 10px;
   }
 }
 
 .body--mobile-menu-open .mobile-menu__drop {
-  top: 56px;
-  height: calc(100% - 56px);
-}
-
-@media (min-width: 768px) {
-  .body--mobile-menu-open .mobile-menu__drop {
-    top: 79px;
-    height: calc(100% - 79px);
-  }
+  top: var(--mobile-menu-top);
+  height: calc(100% - var(--mobile-menu-top));
 }
 
 @media (min-width: 1080px) {
@@ -74,7 +68,7 @@
   }
 }
 
-.mobile-menu__wrapper-btn-categories {
+.mobile-menu__wrapper-btn-catalog {
   border-top: 1px solid #edeff2;
   border-bottom: 1px solid #edeff2;
   color: #bc191d;
@@ -82,12 +76,12 @@
 }
 
 @media (min-width: 1080px) {
-  .mobile-menu__wrapper-btn-categories {
+  .mobile-menu__wrapper-btn-catalog {
     display: none;
   }
 }
 
-.mobile-menu__btn-categories {
+.mobile-menu__btn-catalog {
   width: 100%;
   display: flex;
   align-items: center;
@@ -102,24 +96,24 @@
   padding: 0;
 }
 
-.mobile-menu__btn-categories-img {
+.mobile-menu__btn-catalog-img {
   width: 24px;
   height: 24px;
   stroke: currentColor;
 }
 
 @media (min-width: 768px) {
-  .mobile-menu__btn-categories-img {
+  .mobile-menu__btn-catalog-img {
     display: block;
   }
 }
 
-.mobile-menu__btn-categories-img--menu {
+.mobile-menu__btn-catalog-img--menu {
   display: none;
   margin-right: 14px;
 }
 
-.mobile-menu__btn-categories-img--arrow {
+.mobile-menu__btn-catalog-img--arrow {
   margin-left: auto;
   transform: rotate(90deg);
 }
@@ -141,7 +135,7 @@
   visibility: hidden;
 }
 
-.body--mobile-menu-categories-open .mobile-menu__btn-back {
+.body--mobile-menu-catalog-open .mobile-menu__btn-back {
   visibility: visible;
 }
 
@@ -152,18 +146,18 @@
   stroke: currentColor;
 }
 
-.mobile-menu__nav-categories {
+.mobile-menu__nav-catalog {
   transform: translate(0);
   display: none;
 }
 
 @media (min-width: 1080px) {
-  .mobile-menu__nav-categories {
+  .mobile-menu__nav-catalog {
     display: block;
   }
 }
 
-.body--mobile-menu-categories-open .mobile-menu__nav-categories {
+.body--mobile-menu-catalog-open .mobile-menu__nav-catalog {
   display: block;
 }
 
@@ -171,7 +165,7 @@
   overflow-y: auto;
 }
 
-.body--mobile-menu-categories-open .mobile-menu__content {
+.body--mobile-menu-catalog-open .mobile-menu__content {
   display: none;
 }
 
@@ -205,10 +199,15 @@
 
 .mobile-menu__action-bar-btn {
   font-size: 14px;
-  text-decoration: none;
   color: #303031;
   display: flex;
   align-items: center;
+  background: transparent;
+  padding: 0;
+  border: none;
+  font-family: inherit;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .mobile-menu__action-bar-btn-img {

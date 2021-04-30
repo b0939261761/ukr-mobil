@@ -559,7 +559,7 @@
 
 .product-slide__btn-cart {
   color: #fff;
-  background: #bc191d url(/resourse/images/lines.svg) right center no-repeat;
+  background: #bc191d url(/resourse/images/lines-right.svg) right center no-repeat;
   background-color: #bc191d;
   font-size: 12px;
   font-family: inherit;
@@ -623,12 +623,12 @@ main {
   }
 }
 
-.wrapper-home-nav-categories {
+.wrapper-home-nav-catalog {
   display: none;
 }
 
 @media (min-width: 1080px) {
-  .wrapper-home-nav-categories {
+  .wrapper-home-nav-catalog {
     display: block;
     z-index: 1;
     flex-shrink: 0;
@@ -638,11 +638,6 @@ main {
 
 .section--news {
   margin-bottom: 0;
-}
-
-.swipper-special {
-  border-radius: 10px;
-  overflow: hidden;
 }
 
 @media (min-width: 1080px) {
@@ -683,6 +678,8 @@ main {
 
 .swipper-special__link {
   display: flex;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 .swipper-special__img {

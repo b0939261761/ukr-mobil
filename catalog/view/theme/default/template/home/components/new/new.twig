@@ -16,6 +16,7 @@
     </button>
   </div>
 
+
   <div class="swiper-wrapper reset-swiper-wrapper">
     {% for product in products %}
       <div class="swiper-slide">
@@ -23,9 +24,21 @@
           <a class="product-slide__wrapper-img" href="{{ product.link }}">
             <img class="product-slide__img" src="{{ product.image }}" alt="">
             <div class="product-slide__labels">
-              <span class="product-slide__label product-slide__label--yellow">Лідер продажу</span>
-              <span class="product-slide__label product-slide__label--red">Акція</span>
-              <span class="product-slide__label product-slide__label--green">Новинка</span>
+              {% if product.isSalesLeader %}
+                <span class="product-slide__label product-slide__label--yellow">Лідер продажу</span>
+              {% endif %}
+
+              {% if product.isPromotions %}
+                 <span class="product-slide__label product-slide__label--red">Акція</span>
+              {% endif %}
+
+              {% if product.isLatest %}
+                <span class="product-slide__label product-slide__label--green">Новинка</span>
+              {% endif %}
+
+              {% if product.dateExpected %}
+                <span class="product-slide__label product-slide__label--special">{{ product.dateExpected }}</span>
+              {% endif %}
             </div>
 
             <button class="product-slide__btn-like" type="button" title="Додати до вибранного">
@@ -39,7 +52,7 @@
           <a class="product-slide__name" href="{{ product.link }}">{{ product.name }}</a>
           <div class="product-slide__price">
             <div class="product-slide__price-uah">
-              {% if product.priceOldUAH %}
+              {% if product.isPromotions %}
                 <div class="product-slide__price-uah-old">{{ product.priceOldUAH }}</div>
               {% endif %}
               <div class="product-slide__price-uah-default {{ product.priceOldUAH ? 'product-slide__price-uah-default--red' : '' }}">

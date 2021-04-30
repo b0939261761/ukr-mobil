@@ -1,8 +1,3 @@
-.swipper-special {
-  border-radius: 10px;
-  overflow: hidden;
-}
-
 @media (min-width: 1080px) {
   .swipper-special {
     width: calc(100% - 307px - 16px);
@@ -41,6 +36,8 @@
 
 .swipper-special__link {
   display: flex;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 .swipper-special__img {

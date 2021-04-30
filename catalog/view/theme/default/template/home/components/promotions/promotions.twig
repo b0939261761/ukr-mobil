@@ -1,79 +1,93 @@
-<div class="swiper-container reset-swiper-container" id="swiperNew">
-  <div class="product-swiper__title">
-    <div class="product-swiper__title-text">Акції</div>
-    <a class="product-swiper__btn product-swiper__btn--all" href="javascript:void(0);">Всі акції</a>
+{% if products %}
+  <div class="swiper-container reset-swiper-container" id="swiperNew">
+    <div class="product-swiper__title">
+      <div class="product-swiper__title-text">Акції</div>
+      <a class="product-swiper__btn product-swiper__btn--all" href="javascript:void(0);">Всі акції</a>
 
-    <button class="product-swiper__button-nav product-swiper__button-nav--prev">
-      <svg class="product-swiper__button-nav-img product-swiper__button-nav-img--prev">
-        <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-arrow-right"></use>
-      </svg>
-    </button>
+      <button class="product-swiper__button-nav product-swiper__button-nav--prev">
+        <svg class="product-swiper__button-nav-img product-swiper__button-nav-img--prev">
+          <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-arrow-right"></use>
+        </svg>
+      </button>
 
-    <button class="product-swiper__button-nav product-swiper__button-nav--next">
-      <svg class="product-swiper__button-nav-img">
-        <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-arrow-right"></use>
-      </svg>
-    </button>
-  </div>
+      <button class="product-swiper__button-nav product-swiper__button-nav--next">
+        <svg class="product-swiper__button-nav-img">
+          <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-arrow-right"></use>
+        </svg>
+      </button>
+    </div>
 
-  <div class="swiper-wrapper reset-swiper-wrapper">
-    {% for product in products %}
-      <div class="swiper-slide">
-        <div class="product-slide">
-          <a class="product-slide__wrapper-img" href="{{ product.link }}">
-            <img class="product-slide__img" src="{{ product.image }}" alt="">
-            <div class="product-slide__labels">
-              <span class="product-slide__label product-slide__label--yellow">Лідер продажу</span>
-              <span class="product-slide__label product-slide__label--red">Акція</span>
-              <span class="product-slide__label product-slide__label--green">Новинка</span>
+    <div class="swiper-wrapper reset-swiper-wrapper">
+      {% for product in products %}
+        <div class="swiper-slide">
+          <div class="product-slide">
+            <a class="product-slide__wrapper-img" href="{{ product.link }}">
+              <img class="product-slide__img" src="{{ product.image }}" alt="">
+              <div class="product-slide__labels">
+                {% if product.isSalesLeader %}
+                  <span class="product-slide__label product-slide__label--yellow">Лідер продажу</span>
+                {% endif %}
+
+                {% if product.isPromotions %}
+                  <span class="product-slide__label product-slide__label--red">Акція</span>
+                {% endif %}
+
+                {% if product.isLatest %}
+                  <span class="product-slide__label product-slide__label--green">Новинка</span>
+                {% endif %}
+
+                {% if product.dateExpected %}
+                  <span class="product-slide__label product-slide__label--special">{{ product.dateExpected }}</span>
+                {% endif %}
+              </div>
+
+              <button class="product-slide__btn-like" type="button" title="Додати до вибранного">
+                <svg class="product-slide__btn-like-img">
+                  <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-heart"></use>
+                </svg>
+              </button>
+            </a>
+
+            <div class="product-slide__code">Код товару: {{ product.id }}</div>
+            <a class="product-slide__name" href="{{ product.link }}">{{ product.name }}</a>
+            <div class="product-slide__price">
+              <div class="product-slide__price-uah">
+                {% if product.priceOldUAH %}
+                  <div class="product-slide__price-uah-old">{{ product.priceOldUAH }}</div>
+                {% endif %}
+                <div class="product-slide__price-uah-default {{ product.priceOldUAH ? 'product-slide__price-uah-default--red' : '' }}">
+                  {{ product.priceUAH }}
+                </div>
+              </div>
+              <div class="product-slide__price-usd">$ {{ product.priceUSD }}</div>
             </div>
 
-            <button class="product-slide__btn-like" type="button" title="Додати до вибранного">
-              <svg class="product-slide__btn-like-img">
-                <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-heart"></use>
-              </svg>
-            </button>
-          </a>
+            <div class="product-slide__availability-title">Наявність на складах:</div>
+            <div class="product-slide__availability-list">
+              <div class="product-slide__availability-item product-slide__availability-item--first">
+                Рівне&nbsp;<b>{{ product.quantityStore2 }}шт.</b>
+              </div>
 
-          <div class="product-slide__code">Код товару: {{ product.id }}</div>
-          <a class="product-slide__name" href="{{ product.link }}">{{ product.name }}</a>
-          <div class="product-slide__price">
-            <div class="product-slide__price-uah">
-              {% if product.priceOldUAH %}
-                <div class="product-slide__price-uah-old">{{ product.priceOldUAH }}</div>
-              {% endif %}
-              <div class="product-slide__price-uah-default {{ product.priceOldUAH ? 'product-slide__price-uah-default--red' : '' }}">
-                {{ product.priceUAH }}
+              <div class="product-slide__availability-item product-slide__availability-item--last">
+                Чернівці&nbsp;<b>{{ product.quantityStore1 }}шт.</b>
               </div>
             </div>
-            <div class="product-slide__price-usd">$ {{ product.priceUSD }}</div>
-          </div>
 
-          <div class="product-slide__availability-title">Наявність на складах:</div>
-          <div class="product-slide__availability-list">
-            <div class="product-slide__availability-item product-slide__availability-item--first">
-              Рівне&nbsp;<b>{{ product.quantityStore2 }}шт.</b>
+            <div class="product-slide__actions">
+              <button class="product-slide__btn-buy">Купити в 1 клік</button>
+              <button class="product-slide__btn-cart">
+                <svg class="product-slide__btn-cart-img">
+                  <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-cart"></use>
+                </svg>
+                В кошик
+              </button>
             </div>
-
-            <div class="product-slide__availability-item product-slide__availability-item--last">
-              Чернівці&nbsp;<b>{{ product.quantityStore1 }}шт.</b>
-            </div>
-          </div>
-
-          <div class="product-slide__actions">
-            <button class="product-slide__btn-buy">Купити в 1 клік</button>
-            <button class="product-slide__btn-cart">
-              <svg class="product-slide__btn-cart-img">
-                <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-cart"></use>
-              </svg>
-              В кошик
-            </button>
           </div>
         </div>
-      </div>
-    {% endfor %}
-  </div>
+      {% endfor %}
+    </div>
 
-  <div class="product-swiper__scrollbar"></div>
-</div>
+    <div class="product-swiper__scrollbar"></div>
+  </div>
+{% endif %}
 

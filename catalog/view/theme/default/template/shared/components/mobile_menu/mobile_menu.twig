@@ -1,13 +1,13 @@
 <div class="mobile-menu" id="mobileMenu">
   <div class="mobile-menu__container">
     <div class="mobile-menu__drop">
-      <div class="mobile-menu__wrapper-btn-categories container">
-        <button class="mobile-menu__btn-categories" id="btnMobileMenuCategories">
-          <svg class="mobile-menu__btn-categories-img mobile-menu__btn-categories-img--menu">
+      <div class="mobile-menu__wrapper-btn-catalog container">
+        <button class="mobile-menu__btn-catalog" id="btnMobileMenuCategories">
+          <svg class="mobile-menu__btn-catalog-img mobile-menu__btn-catalog-img--menu">
             <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-menu"></use>
           </svg>
           Каталог продукції
-          <svg class="mobile-menu__btn-categories-img mobile-menu__btn-categories-img--arrow">
+          <svg class="mobile-menu__btn-catalog-img mobile-menu__btn-catalog-img--arrow">
             <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-arrow-up"></use>
           </svg>
         </button>
@@ -19,7 +19,7 @@
         </button>
       </div>
 
-      <div class="mobile-menu__nav-categories container">
+      <div class="mobile-menu__nav-catalog container">
         {{ navCategories }}
       </div>
 
@@ -72,21 +72,21 @@
 
 
             <li>
-              <a class="mobile-menu__action-bar-btn" href="mailto:director.ukrmobil@gmail.com?subject=Лист директору">
+              <button class="mobile-menu__action-bar-btn" id="mmWindowModalFeedbackManager">
                 <svg class="mobile-menu__action-bar-btn-img">
                   <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-docs"></use>
                 </svg>
                 Написати директору
-              </a>
+              </button>
             </li>
 
             <li>
-              <a class="mobile-menu__action-bar-btn" href="mailto:ukrmobil1@gmail.com?subject=Помилка на сайті">
+              <button class="mobile-menu__action-bar-btn" id="mmWindowModalFeedbackError">
                 <svg class="mobile-menu__action-bar-btn-img">
                   <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-warning"></use>
                 </svg>
                 Повідомити про помилку на сайті
-              </a>
+              </button>
             </li>
           </ul>
 

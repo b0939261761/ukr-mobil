@@ -14,6 +14,18 @@ $url = new Url(HTTPS_SERVER, HTTPS_SERVER);
 $registry->set('db', $db);
 $modelImage = new ModelToolImage();
 
+$qualityDescriptionList = [
+  '1797370' => "High Copy — це високоякісна копія оригінальної запчастини. "
+                . "Виготовлена при використанні подібних оригіналу матеріалів, "
+                . "за якістю незначно поступається оригінальній запчастині.",
+  '1797376' => "Original — це оригінальна версія запчастини. Яка виготовлена при дотриманні "
+                . "всіх стандартів і протестована первинними тестами, а також має "
+                . "сертифікацію. Такі запчастини встановлені на оригінальних пристроях.",
+  '1797382' => "Original PRC — це запчастина, виготовлена з використанням оригінальних "
+                . "компонентів, проте деякі з них можуть бути замінені на аналоги з "
+                . "мінімальним відхиленням від оригіналу. (Стосується екранних модулів)"
+];
+
 $sql = "
   WITH
   tmpProducts AS (
@@ -42,7 +54,6 @@ $sql = "
       ) AS price,
       COALESCE(tmpQuality.quality, ppv.name) AS quality,
       COALESCE(tmpQuality.qualityValueId, ppv.rzValueId) AS qualityValueId,
-      COALESCE(tmpQuality.qualityDescription, ppv.rzDescription) AS qualityDescription,
       p.rzEnabledQuality AS enabledQuality,
       tmpColor.color,
       tmpColor.colorValueId,
@@ -71,8 +82,7 @@ $sql = "
     LEFT JOIN LATERAL (
       SELECT
         ppv.name AS quality,
-        ppv.rzValueId AS qualityValueId,
-        ppv.rzDescription AS qualityDescription
+        ppv.rzValueId AS qualityValueId
       FROM products_properties pp
       LEFT JOIN product_property_values ppv ON ppv.id = pp.product_property_value_id
       WHERE pp.product_id = p.product_id
@@ -120,7 +130,7 @@ $sql = "
         'images', images, 'name', name, 'brand', brand,
         'brandValueId', brandValueId, 'country', country,
         'quality', quality, 'qualityValueId', qualityValueId,
-        'qualityDescription', qualityDescription, 'enabledQuality', enabledQuality,
+        'enabledQuality', enabledQuality,
         'color', color, 'colorValueId', colorValueId
       )) AS products
     FROM tmpProducts
@@ -162,7 +172,7 @@ foreach (json_decode($products['products'], true) as $product) {
   $content .= "<name>{$product['name']}</name>";
   $content .= "<vendor>{$product['brand']}</vendor>";
 
-  $qualityDescription = $product['enabledQuality'] ? "<p><b>Качество:</b> {$product['qualityDescription']}</p>" : '';
+  $qualityDescription = $product['enabledQuality'] ? "<p><b>Качество:</b> {$qualityDescriptionList[$product['qualityValueId']]}</p>" : '';
 
   $content .= "<description><![CDATA[<p><b>{$product['name']}</b></p>{$qualityDescription}]]></description>";
 

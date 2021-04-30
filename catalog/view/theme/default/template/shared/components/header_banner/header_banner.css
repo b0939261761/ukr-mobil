@@ -1,0 +1,23 @@
+.header-banner {
+  display: flex;
+  justify-content: center;
+  height: 25px;
+  background-color: #bc191d;
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .header-banner {
+    height: 30px;
+    background-image:
+      url(/resourse/images/lines-left.svg),
+      url(/resourse/images/lines-right.svg);
+    background-repeat: no-repeat;
+    background-position: left, right;
+  }
+}
+
+.header-banner__img {
+  max-height: 100%;
+  max-width: 100%;
+}
