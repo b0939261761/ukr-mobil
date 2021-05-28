@@ -1,0 +1,45 @@
+<ul class="pagination">
+  <li class="pagination__item">
+    {% if prev %}
+      <a class="pagination__arrow" href="{{ prev }}">
+        <svg class="pagination__arrow__img pagination__arrow__img--prev">
+          <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-arrow-right"></use>
+        </svg>
+      </a>
+    {% else %}
+      <div class="pagination__arrow pagination__arrow--disabled">
+        <svg class="pagination__arrow__img pagination__arrow__img--prev">
+          <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-arrow-right"></use>
+        </svg>
+      </div>
+    {% endif %}
+  </li>
+
+  {% for title, link in items %}
+    {% if link %}
+      <li class="pagination__item">
+        <a class="pagination__link" href="{{ link }}">{{ title }}</a>
+      </li>
+    {% else %}
+      <li class="pagination__item">
+        <div class="pagination__active">{{ title }}</div>
+      </li>
+    {% endif %}
+  {% endfor %}
+
+  <li class="pagination__item">
+    {% if next %}
+      <a class="pagination__arrow" href="{{ next }}">
+        <svg class="pagination__arrow__img">
+          <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-arrow-right"></use>
+        </svg>
+      </a>
+    {% else %}
+      <div class="pagination__arrow pagination__arrow--disabled">
+        <svg class="pagination__arrow__img">
+          <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-arrow-right"></use>
+        </svg>
+      </div>
+    {% endif %}
+  </li>
+</ul>

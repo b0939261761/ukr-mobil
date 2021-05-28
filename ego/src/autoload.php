@@ -1,7 +1,7 @@
 <?php
 
-require_once __DIR__ . '/bootstrap/utils.php';
-require_once __DIR__ . '/bootstrap/main.php';
+// require_once __DIR__ . '/bootstrap/utils.php';
+// require_once __DIR__ . '/bootstrap/main.php';
 
 spl_autoload_register(function ($class) {
 	$class = ltrim($class, '\\');

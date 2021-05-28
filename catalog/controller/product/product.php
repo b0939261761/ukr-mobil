@@ -5,23 +5,23 @@ use Ego\Providers\Util;
 
 class ControllerProductProduct extends BaseController {
   // Костыль что бы вернуть закешированное изображение
-  public function picture() {
-    $this->load->model('tool/image');
-    $this->load->model('catalog/product');
+  // public function picture() {
+  //   $this->load->model('tool/image');
+  //   $this->load->model('catalog/product');
 
-    $productId = $this->request->get['id'];
-    $product = $this->model_catalog_product->getProduct($productId);
+  //   $productId = $this->request->get['id'];
+  //   $product = $this->model_catalog_product->getProduct($productId);
 
-    $imageFileName = $product['image'] ? $product['image'] : 'placeholder.jpg';
-    $image = $this->model_tool_image->resize($imageFileName, 50, 50);
-    $path_url = parse_url($image, PHP_URL_PATH);
-    $path_image = __DIR__ . "/../../..{$path_url}";
-    $imagedata = file_get_contents($path_image);
-    $ext = pathinfo($path_image, PATHINFO_EXTENSION);
+  //   $imageFileName = $product['image'] ? $product['image'] : 'placeholder.jpg';
+  //   $image = $this->model_tool_image->resize($imageFileName, 50, 50);
+  //   $path_url = parse_url($image, PHP_URL_PATH);
+  //   $path_image = __DIR__ . "/../../..{$path_url}";
+  //   $imagedata = file_get_contents($path_image);
+  //   $ext = pathinfo($path_image, PATHINFO_EXTENSION);
 
-    $this->response->addHeader("Content-Type: image/{$ext}");
-    $this->response->setOutput($imagedata);
-  }
+  //   $this->response->addHeader("Content-Type: image/{$ext}");
+  //   $this->response->setOutput($imagedata);
+  // }
 
   private function getProductProperties(int $productId) {
     $sql = "

@@ -118,6 +118,7 @@ class ControllerStartupSeoPro extends Controller {
       $url = "{$this->request->request['domain']}{$uri}";
       $queries = array_filter($this->request->get, function($k) {return $k != 'route';}, ARRAY_FILTER_USE_KEY);
       $seo = $this->url->link($this->request->get['route'], $queries);
+
       if ($url != $seo) $this->response->redirect($seo);
       return;
     }
@@ -192,12 +193,13 @@ class ControllerStartupSeoPro extends Controller {
       if (empty($this->request->get['search'])) unset($this->request->get['search']); // TODO REMOVE
     }
 
+
     if (!isset($this->request->get['route'])) {
       if (isset($this->request->get['product_id'])) $this->request->get['route'] = 'product/product';
       elseif (isset($this->request->get['news_id'])) $this->request->get['route'] = 'information/news/read';
-      elseif (isset($this->request->get['sitemap_id'])) $this->request->get['route'] = 'information/sitemap';
+      elseif (isset($this->request->get['sitemap_id'])) $this->request->get['route'] = 'sitemap';
       elseif (isset($this->request->get['information_id'])) $this->request->get['route'] = 'information/information';
-      elseif (isset($this->cacheData['queries'][$route])) $this->response->redirect($this->cacheData['queries'][$route]);
+      // elseif (isset($this->cacheData['queries'][$route])) $this->response->redirect($this->cacheData['queries'][$route]);
       elseif (!empty($controller)) $this->request->get['route'] = $controller;
     }
 

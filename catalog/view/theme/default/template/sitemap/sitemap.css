@@ -1,0 +1,151 @@
+.page-title--sitemap {
+  margin-top: 0;
+}
+
+.sitemap-menu {
+  padding-bottom: 16px;
+  border-bottom: 1px solid #edeff2;
+  font-size: 12px;
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+@media (min-width: 768px) {
+  .sitemap-menu {
+    padding-bottom: 30px;
+  }
+}
+
+@media (min-width: 1080px) {
+  .sitemap-menu {
+    margin-bottom: 18px;
+    font-size: 14px;
+  }
+}
+
+.sitemap-menu__items {
+  margin: -8px -12px;
+}
+
+@media (min-width: 768px) {
+  .sitemap-menu__items {
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
+
+.sitemap-menu__item {
+  margin: 8px 12px;
+}
+
+.sitemap-menu__link {
+  color: #303031;
+  font-weight: bold;
+  text-decoration: none;
+  transition: color .3s ease;
+}
+
+.sitemap-menu__link:hover,
+.sitemap-menu__link--active {
+  color: #bc191d;
+  text-decoration: underline;
+}
+
+.sitemap-link {
+  font-size: 16px;
+  line-height: 21px;
+  margin-bottom: 1em;
+  font-weight: bold;
+  text-decoration: none;
+  color: #303031;
+  display: inline-block;
+  transition: color .3s ease;
+}
+
+.sitemap-link:hover {
+  text-decoration: underline;
+  color: #bc191d;
+}
+
+@media (min-width: 1080px) {
+  .sitemap-link {
+    font-size: 18px;
+    line-height: 24px;
+  }
+}
+
+.sitemap-content {
+  column-count: 2;
+  column-gap: 14px;
+  font-size: 14px;
+  margin: 0 0 41px;
+}
+
+@media (min-width: 640px) {
+  .sitemap-content {
+    column-count: 3;
+  }
+}
+
+@media (min-width: 1080px) {
+  .sitemap-content {
+    column-count: auto;
+    display: flex;
+  }
+}
+
+.sitemap-content-column-categories {
+  margin-bottom: 16px;
+}
+
+@media (min-width: 1080px) {
+  .sitemap-content-column-categories {
+    margin-bottom: 0;
+    width: 25%;
+    flex-grow: 0;
+  }
+}
+
+@media (min-width: 1320px) {
+  .sitemap-content-column-categories {
+    width: 20%;
+  }
+}
+
+@media (min-width: 1080px) {
+  .sitemap-content-column-filters {
+    column-count: 3;
+    flex-grow: 1;
+  }
+}
+
+@media (min-width: 1320px) {
+  .sitemap-content-column-filters {
+    column-count: 4;
+  }
+}
+
+.sitemap-content-column__header {
+  font-weight: bold;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+@media (min-width: 1080px) {
+  .sitemap-content-column__header {
+    column-span: all;
+  }
+}
+
+.sitemap-content__link {
+  text-decoration: none;
+  color: #303031;
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+.sitemap-content__link:hover {
+  color: #bc191d;
+  text-decoration: underline;
+  transition: color .3s ease;
+}

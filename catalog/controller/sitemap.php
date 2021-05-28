@@ -1,5 +1,5 @@
 <?
-class ControllerSitemapSitemap extends Controller {
+class ControllerSitemap extends Controller {
   public function index() {
     $sitemapId = $this->request->get['sitemap_id'] ?? '';
     $page = (int)($this->request->get['page'] ?? 1);
