@@ -1,0 +1,8 @@
+SELECT DISTINCT b.id, b.name FROM oc_category_path cp
+        LEFT JOIN oc_product_to_category ptc ON ptc.category_id = cp.category_id
+        LEFT JOIN oc_product p ON p.product_id = ptc.product_id
+    LEFT JOIN products_models pm ON pm.product_id = p.product_id
+    LEFT JOIN models m ON m.id = pm.model_id
+    LEFT JOIN brands b ON b.id = m.brand_id
+      WHERE b.id IS NOT NULL
+     AND cp.path_id = 10000143 ORDER BY b.ord, b.name

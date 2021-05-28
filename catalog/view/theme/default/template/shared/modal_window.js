@@ -2,10 +2,10 @@ window.ModalWindow = class {
   constructor(titleText, bodyInner) {
     this.createModal(titleText, bodyInner);
     document.body.classList.add('body--window-modal-open');
+    this.modalWindow.classList.add('modal-window--open');
+    this.modalWindow.focus();
 
     setTimeout(() => {
-      this.modalWindow.classList.add('modal-window--open');
-      this.modalWindow.focus();
     },
     50);
   }
@@ -65,9 +65,9 @@ window.ModalWindow = class {
   createModal(titleText, bodyInner) {
     const main = document.createElement('div');
     main.classList.add('modal-window');
-    main.tabIndex = 2;
+    main.tabIndex = -1;
     main.addEventListener('click', this.onClickClose.bind(this));
-    main.addEventListener('presskey', ({ key }) => console.log(key) || key === 'Escape' && this.onClickClose());
+    main.addEventListener('keydown', ({ key }) => key === 'Escape' && this.close());
 
     const content = document.createElement('div');
     content.classList.add('modal-window__content');
@@ -110,7 +110,10 @@ window.ModalWindow = class {
   }
 
   onClickClose(evt) {
-    if (evt.target !== evt.currentTarget) return;
+    if (evt.target === evt.currentTarget) this.close();
+  }
+
+  close() {
     document.body.classList.remove('body--window-modal-open');
     this.modalWindow.classList.remove('modal-window--open');
     setTimeout(() => this.modalWindow.remove(), 500);

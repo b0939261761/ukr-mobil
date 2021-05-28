@@ -1,0 +1,31 @@
+{# <div class="catalog-filters catalog-filters--mobile-open"> #}
+<div class="catalog-filters">
+  {% for item in filters %}
+		<div class="wrapper-filter-option">
+			<label class="label" for="filter-{{ item.param }}">{{ item.name }}</label>
+
+      <div class="catalog-filter-item__wrapper-select">
+        <select id="filter-{{ item.queryKey }}" class="catalog-filter-item__select">
+          <option value>--Выберите значение--</option>
+          {% for value in item.values %}
+            <option
+              href="{{ value.link }}"
+              value="{{ value.id }}"
+              {{ value.selected }}
+            >
+              {{ value.name }}
+            </option>
+          {% endfor %}
+        </select>
+
+        <svg class="catalog-filter-item__img">
+          <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-arrow-up"></use>
+        </svg>
+		  </div>
+
+		</div>
+	{% endfor %}
+
+  <div class="sort__section"><label class="sort__choice-item"><input type="checkbox"><span>Наявність на складі</span></label></div>
+  <div class="sort__section sort__section-button"><button class="button">Пошук</button></div>
+</div>

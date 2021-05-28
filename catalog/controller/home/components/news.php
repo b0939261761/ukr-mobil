@@ -6,8 +6,6 @@ class ControllerHomeComponentsNews extends Controller {
   }
 
   private function getNews() {
-    $this->load->model('tool/image');
-
     $sql = "
       SELECT
         ep.ep_id AS id,
@@ -25,7 +23,7 @@ class ControllerHomeComponentsNews extends Controller {
     $news = $this->db->query($sql)->rows;
     foreach ($news as &$item) {
       $item['link'] = $this->url->link('information/news/read', ['news_id' => $item['id']]);
-      $item['image'] = $this->model_tool_image->resize($item['image'], 386, 230);
+      $item['image'] = $this->image->resize($item['image'], 386, 230);
     }
     return $news;
   }

@@ -12,6 +12,10 @@ class ControllerCatalogCatalog extends Controller {
     $data['footer'] = $this->load->controller('shared/components/footer');
 
     $data['breadcrumbs'] = $this->load->controller('catalog/components/breadcrumbs');
+    $data['catalogHeadSort'] = $this->load->controller('catalog/components/catalog_head_sort');
+    $data['catalogFilters'] = $this->load->controller('catalog/components/catalog_filters');
+    $data['catalogItems'] = $this->load->controller('catalog/components/catalog_items');
+    $data['catalogPagination'] = $this->load->controller('catalog/components/catalog_pagination');
     $this->response->setOutput($this->load->view('catalog/catalog', $data));
   }
 

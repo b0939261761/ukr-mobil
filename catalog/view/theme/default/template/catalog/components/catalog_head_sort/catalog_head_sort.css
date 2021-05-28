@@ -1,0 +1,106 @@
+.catalog-head-sort {
+  position: relative;
+  margin-bottom: 16px;
+  display: grid;
+  grid-column-gap: 8px;
+  align-items: center;
+  grid-template-columns: minmax(max-content, 140px) minmax(max-content, 140px) 1fr;
+  grid-template-rows: auto auto;
+  grid-template-areas:
+    "title  title title"
+    "filter sort  view";
+}
+
+@media (min-width: 768px) {
+  .catalog-head-sort {
+    grid-template-columns: 211px 1fr;
+    grid-template-areas:
+      "title title"
+      "sort  view";
+  }
+}
+
+@media (min-width: 1080px) {
+  .catalog-head-sort {
+    grid-column-gap: 16px;
+    grid-template-columns: 1fr auto 211px;
+    grid-template-rows: auto;
+    grid-template-areas: "title view sort";
+  }
+}
+
+.page-title--catalog {
+  grid-area: title;
+}
+
+.catalog-mobile-btn-filter {
+  grid-area: filter;
+  background-color: #bc191d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #bc191d;
+  color: #fff;
+  height: 38px;
+  width: 100%;
+  cursor: pointer;
+  border-radius: 10px;
+  font-size: 12px;
+  font-family: inherit;
+  font-weight: bold;
+  padding: 0 12px 0 16px;
+}
+
+@media (min-width: 768px) {
+  .catalog-mobile-btn-filter {
+    display: none;
+  }
+}
+
+.catalog-mobile-btn-filter__img {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  transform: rotate(180deg);
+  transition-property: transform;
+  transition-duration: .3s;
+  pointer-events: none;
+  margin-right: 8px;
+}
+
+.catalog-mobile-btn-filter--open .catalog-mobile-btn-filter__img {
+  transform: rotate(0);
+}
+
+.catalog-view {
+  grid-area: view;
+  margin-left: auto;
+  display: flex;
+}
+
+.catalog-view__btn {
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  color: #b2bac7;
+}
+
+.catalog-view__btn:enabled {
+  cursor: pointer;
+}
+
+.catalog-view__btn:disabled,
+.catalog-view__btn:hover {
+  color: #bc191d;
+}
+
+.catalog-view__btn:first-child {
+  margin-right: 16px;
+}
+
+.catalog-view__btn__img {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+  pointer-events: none;
+}

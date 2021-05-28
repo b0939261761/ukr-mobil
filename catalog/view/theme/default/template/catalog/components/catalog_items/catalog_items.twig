@@ -1,0 +1,210 @@
+<div class="catalog-items">
+  {% for product in products %}
+    <div class="catalog-item">
+      <a class="catalog-item__wrapper-img" href="{{ product.link }}">
+        <img class="catalog-item__img" src="{{ product.image }}" alt="">
+        <div class="catalog-item__labels">
+          {% if product.isSalesLeader %}
+            <span class="catalog-item__label catalog-item__label--yellow">Лідер продажу</span>
+          {% endif %}
+
+          {% if product.isPromotions %}
+              <span class="catalog-item__label catalog-item__label--red">Акція</span>
+          {% endif %}
+
+          {% if product.isLatest %}
+            <span class="catalog-item__label catalog-item__label--green">Новинка</span>
+          {% endif %}
+
+          {% if product.dateExpected %}
+            <span class="catalog-item__label catalog-item__label--special">{{ product.dateExpected }}</span>
+          {% endif %}
+        </div>
+
+        <button class="catalog-item__btn-like" title="Додати до вибранного">
+          <svg class="catalog-item__btn-like-img">
+            <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-heart"></use>
+          </svg>
+        </button>
+      </a>
+
+      <div class="catalog-item__code">Код товару: {{ product.id }}</div>
+      <a class="catalog-item__name" href="{{ product.link }}">{{ product.name }}</a>
+
+      <div class="catalog-item__price">
+        <div class="catalog-item__price-uah">
+          {% if product.isPromotions %}
+            <div class="catalog-item__price-uah-old"><b>{{ product.priceOldUAH }}</b> грн</div>
+          {% endif %}
+          <div class="catalog-item__price-uah-default {{ product.isPromotions ? 'catalog-item__price-uah-default--red' : '' }}">
+            {{ product.priceUAH }} грн
+          </div>
+        </div>
+        <div class="catalog-item__price-usd">$ {{ product.priceUSD }}</div>
+      </div>
+
+      {% if product.priceMinUSD or product.priceMaxUSD %}
+        <div class="catalog-item__price-range">
+          <div class="catalog-item__price-range-uah">{{ product.priceMinUAH }} - {{ product.priceMaxUAH }} грн</div>
+          <div class="catalog-item__price-range-usd">$ {{ product.priceMinUSD }} - {{ product.priceMaxUSD }}</div>
+        </div>
+      {% endif %}
+
+
+      <div class="catalog-item__availability">
+        <div class="catalog-item__availability-title">Наявність на складах:</div>
+        <div class="catalog-item__availability-list">
+          <div class="catalog-item__availability-item catalog-item__availability-item--first">
+            Рівне&nbsp;<b>{{ product.quantityStore2 }}шт.</b>
+          </div>
+
+          <div class="catalog-item__availability-item catalog-item__availability-item--last">
+            Чернівці&nbsp;<b>{{ product.quantityStore1 }}шт.</b>
+          </div>
+        </div>
+      </div>
+
+      <div class="catalog-item__info">
+        <button class="catalog-item__btn-info">
+          <svg class="catalog-item__btn-info-img">
+            <use xlink:href="/resourse/images/catalog-sprite-icons.svg#icon-info"></use>
+          </svg>
+          Умови оплати та доставкиa
+        </button>
+
+        <button class="catalog-item__btn-info">
+          <svg class="catalog-item__btn-info-img">
+            <use xlink:href="/resourse/images/catalog-sprite-icons.svg#icon-info"></use>
+          </svg>
+          Гарантія
+        </button>
+      </div>
+
+      <div class="catalog-item__availability">
+        <div class="catalog-item__availability-title">Наявність на складах:</div>
+        <div class="catalog-item__availability-list">
+          <div class="catalog-item__availability-item catalog-item__availability-item--first">
+            Рівне&nbsp;<b>{{ product.quantityStore2 }}шт.</b>
+          </div>
+
+          <div class="catalog-item__availability-item catalog-item__availability-item--last">
+            Чернівці&nbsp;<b>{{ product.quantityStore1 }}шт.</b>
+          </div>
+        </div>
+      </div>
+
+      <div class="catalog-item__actions">
+        {% if product.quantity %}
+          <button class="catalog-item__btn-buy">Купити в 1 клік</button>
+          <button class="catalog-item__btn-cart">
+            <svg class="catalog-item__btn-cart-img">
+              <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-cart"></use>
+            </svg>
+            В кошик
+          </button>
+
+        {% else %}
+          <button class="catalog-item__btn-notify">
+            <svg class="catalog-item__btn-notify-img">
+              <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-notify"></use>
+            </svg>
+            Повідомити про наявність
+          </button>
+        {% endif %}
+      </div>
+
+      <div class="catalog-item__wrapper-btn-open-options">
+        <button class="catalog-item__btn-open-options">
+          Варіанти товару
+          <svg class="catalog-item__btn-open-options-img">
+            <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-arrow-up"></use>
+          </svg>
+        </button>
+      </div>
+
+      <div class="catalog-item__options">
+        <div class="catalog-item__characteristic-list">
+          {% for property in product.properties %}
+            {% if property.isColor %}
+              <div>
+                <div class="catalog-item__characteristic-item-title">{{ property.name }}</div>
+                <div class="catalog-item__characteristic-item-color-list">
+                  {% for value in property.values %}
+                    {% if value.isActive %}
+                      <span
+                        class="catalog-item__characteristic-item-color catalog-item__characteristic-item-color--active"
+                        style="background-color: {{ value.color }}"
+                        title="{{ value.name }}"
+                      ></span>
+                    {% else %}
+                      <a
+                        class="catalog-item__characteristic-item-color"
+                        style="background-color: {{ value.color }}"
+                        href="{{ value.link }}"
+                         title="{{ value.name }}"
+                      ></a>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              </div>
+            {% else %}
+              <div class="catalog-item__characteristic-item">
+                <div class="catalog-item__characteristic-item-title">{{ property.name }}</div>
+                <div class="catalog-item__characteristic-item-value-list">
+                  {% for value in property.values %}
+                    {% if value.isActive %}
+                      <span class="catalog-item__characteristic-item-value catalog-item__characteristic-item-value--active">{{ value.name }}</span>
+                    {% else %}
+                      <a href="{{ value.link }}" class="catalog-item__characteristic-item-value">{{ value.name }}</a>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+
+  {# <div class="product">
+    <a class="product__image" href="details.html">
+      <img src="data/catalog/catalog-1.jpg" alt="">
+
+      </a>
+      <div class="product__info">
+
+        <span class="product__code">Код товару: 785D18 ­</span>
+        <a class="product__name" href="details.html">Задня кришка Xiaomi Redmi Note 8, Redmi Note 8T, Original PRC, White</a></div>
+      <div class="product__price">
+          <div class="price">
+              <div class="price__wrapper">
+                  <div class="price__default"><span><b>3182</b></span>&nbsp;грн</div>
+              </div>
+              <div class="price__exchange">$ 21.50</div>
+          </div>
+          <div class="price-options">
+              <div class="price-options__default"><span>750 - 1 200</span>&nbsp;грн</div>
+              <div class="price-options__exchange">$ 21.50 - 100.00</div>
+          </div>
+      </div>
+      <div class="product__availability">
+          <div class="product__availability-item">Рівне&nbsp;<b>100шт.</b></div><span>Наявність на складах:</span>
+          <div class="product__availability-item">Чернівці&nbsp;<b>180шт.</b></div>
+      </div>
+      <div class="product__container product__container-action">
+          <div class="product__info-link"><a><svg class="icon-info">
+                      <use xlink:href="#icon-info"></use>
+                  </svg> Умови оплати та доставкиa</a><a><svg class="icon-info">
+                      <use xlink:href="#icon-info"></use>
+                  </svg> Гарантія</a></div>
+          <div class="product__availability product__availability__line-catalog">
+              <div class="product__availability-item">Рівне&nbsp;<b>100шт.</b></div><span>Наявність на складах:</span>
+              <div class="product__availability-item">Чернівці&nbsp;<b>180шт.</b></div>
+          </div>
+          <div class="product__actions--not-availability"><button class="button button--gray"><svg class="icon-message-btn">
+                      <use xlink:href="#icon-message-btn"></use>
+                  </svg>Повідомити про наявність</button></div>
+      </div>
+  </div> #}
+</div

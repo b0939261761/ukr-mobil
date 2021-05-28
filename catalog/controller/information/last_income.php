@@ -41,7 +41,7 @@ class ControllerInformationLastIncome extends Controller {
             COALESCE(
               (SELECT image FROM oc_product_image
                 WHERE product_id = p.product_id ORDER BY sort_order LIMIT 1),
-              'placeholder.png'
+              'placeholder.jpg'
             ), p.image) AS image
         FROM oc_product_last_income pli
         INNER JOIN oc_product_description pd ON pd.product_id = pli.product_id

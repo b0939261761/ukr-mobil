@@ -4,7 +4,7 @@ class ControllerSharedComponentsHeaderBanner extends Controller {
     $this->load->model('tool/image');
 
     $sql = "
-      SELECT link, enabled, backgroundColor, IF(image = '', 'placeholder.png', image) AS image
+      SELECT link, enabled, backgroundColor, IF(image = '', 'placeholder.jpg', image) AS image
       FROM banner
       WHERE banner_type = 'header'";
 

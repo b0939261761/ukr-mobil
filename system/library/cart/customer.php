@@ -103,7 +103,7 @@ class Customer {
 	}
 
 	public function getGroupId() {
-		return $this->customer_group_id;
+		return $this->customer_group_id || 1;
 	}
 
 	public function getEmail() {

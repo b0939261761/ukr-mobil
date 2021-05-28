@@ -62,7 +62,7 @@ class ControllerCheckoutSuccess extends Controller {
           COALESCE(
             (SELECT image FROM oc_product_image
               WHERE product_id = p.product_id ORDER BY sort_order LIMIT 1),
-            'placeholder.png'
+            'placeholder.jpg'
           ), p.image) AS image
       FROM oc_order_product op
       LEFT JOIN oc_product p ON p.product_id = op.product_id

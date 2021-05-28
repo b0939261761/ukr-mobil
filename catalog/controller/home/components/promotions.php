@@ -6,9 +6,7 @@ class ControllerHomeComponentsPromotions extends Controller {
   }
 
   private function getProducts() {
-    $this->load->model('tool/image');
-
-    $customerGroupId = (int)($this->customer->getGroupId() ?? 1);
+    $customerGroupId = $this->customer->getGroupId();
 
     $sql = "
       WITH
@@ -23,7 +21,7 @@ class ControllerHomeComponentsPromotions extends Controller {
             COALESCE(
               (SELECT image FROM oc_product_image
                 WHERE product_id = p.product_id ORDER BY sort_order LIMIT 1),
-              'placeholder.png'
+              'placeholder.jpg'
             ),
             p.image) AS image,
           COALESCE(
@@ -61,7 +59,7 @@ class ControllerHomeComponentsPromotions extends Controller {
     $products = $this->db->query($sql)->rows;
     foreach ($products as &$product) {
       $product['link'] = $this->url->link('product/product', ['product_id' => $product['id']]);
-      $product['image'] = $this->model_tool_image->resize($product['image'], 306, 306);
+      $product['image'] = $this->image->resize($product['image'], 306, 306);
     }
     return $products;
   }

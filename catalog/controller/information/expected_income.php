@@ -41,7 +41,7 @@ class ControllerInformationExpectedIncome extends Controller {
             COALESCE(
               (SELECT image FROM oc_product_image
                 WHERE product_id = p.product_id ORDER BY sort_order LIMIT 1),
-              'placeholder.png'
+              'placeholder.jpg'
             ), p.image) AS image
         FROM oc_product_expected_income pei
         INNER JOIN oc_product_description pd ON pd.product_id = pei.product_id

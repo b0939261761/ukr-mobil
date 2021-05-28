@@ -171,7 +171,7 @@ class ControllerProductCategory extends Ego\Controllers\BaseController {
     $data['categoryDescription'] = html_entity_decode($categoryDescription);
     $data['productFilter'] = $this->load->controller('product/filter');
     $data['productCategories'] = $this->load->controller('product/categories');
-    $data['pagination'] = $this->getPagination($products['pagination']);
+    $data['pagination'] = $this->get$this->filtersPagination($products['pagination']);
     $data['isNotLastPage'] = $products['pagination']['isNotLastPage'];
     $data['header'] = $this->load->controller('common/header');
     $data['footer'] = $this->load->controller('common/footer');

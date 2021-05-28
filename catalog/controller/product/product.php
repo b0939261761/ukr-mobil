@@ -12,7 +12,7 @@ class ControllerProductProduct extends BaseController {
     $productId = $this->request->get['id'];
     $product = $this->model_catalog_product->getProduct($productId);
 
-    $imageFileName = $product['image'] ? $product['image'] : 'placeholder.png';
+    $imageFileName = $product['image'] ? $product['image'] : 'placeholder.jpg';
     $image = $this->model_tool_image->resize($imageFileName, 50, 50);
     $path_url = parse_url($image, PHP_URL_PATH);
     $path_image = __DIR__ . "/../../..{$path_url}";
@@ -124,7 +124,7 @@ class ControllerProductProduct extends BaseController {
         (SELECT COUNT(1) AS cnt FROM oc_customer_wishlist
           WHERE customer_id = {$customerId} AND product_id = p.product_id) > 0 AS isWishlist,
         CASE
-          WHEN p.image = '' AND NOT JSON_LENGTH(tmpImages.images) THEN JSON_ARRAY('placeholder.png')
+          WHEN p.image = '' AND NOT JSON_LENGTH(tmpImages.images) THEN JSON_ARRAY('placeholder.jpg')
           WHEN p.image != '' THEN JSON_ARRAY_INSERT(tmpImages.images, '$[0]', p.image)
           ELSE tmpImages.images
         END AS images
@@ -213,7 +213,7 @@ class ControllerProductProduct extends BaseController {
     }
 
     foreach ($results as $result) {
-      $image = $this->model_tool_image->resize($result['image'] ? $result['image'] : 'placeholder.png', 350, 350);
+      $image = $this->model_tool_image->resize($result['image'] ? $result['image'] : 'placeholder.jpg', 350, 350);
       $images = $this->model_catalog_product->getProductImages($result['product_id']);
       $images = isset($images[0]['image']) && !empty($images) ? $images[0]['image'] : $image;
 
@@ -537,7 +537,7 @@ class ControllerProductProduct extends BaseController {
               COALESCE(
                 (SELECT image FROM oc_product_image
                   WHERE product_id = p.product_id ORDER BY sort_order LIMIT 1),
-                'placeholder.png'
+                'placeholder.jpg'
               ), p.image) AS image
           FROM tmpProductsUnion tp
           LEFT JOIN oc_product p on p.product_id = tp.product_id

@@ -2,8 +2,8 @@
 class ControllerSharedComponentsHeader extends Controller {
   public function index() {
     header('Cache-Control: no-store');
-    $data['base'] = $this->request->request['domain'];
-    $this->document->addLink($this->request->request['canonical'], 'canonical');
+    $data['base'] = $this->main->getDomain();
+    $this->document->addLink($this->main->getCanonical(), 'canonical');
 
     $data['title'] = $this->document->getTitle();
     $data['description'] = $this->document->getDescription();

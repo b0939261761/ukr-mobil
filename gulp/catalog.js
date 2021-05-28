@@ -5,26 +5,32 @@ import rename from 'gulp-rename';
 import svgmin from 'gulp-svgmin';
 import svgstore from 'gulp-svgstore';
 
-// const buildSvg = () => {
-//   const pathIcons = './catalog/view/theme/default/images/icons/home/';
-//   const iconsName = [
-//     'benefit-0', 'benefit-1', 'benefit-2', 'benefit-3',
-//     'lines-lighter-left', 'lines-lighter-right',
-//     'calendar'
-//   ];
+const buildSvg = () => {
+  const pathIcons = './catalog/view/theme/default/images/icons/catalog/';
+  const iconsName = [
+    'view-row', 'view-grid',
+    'sort-popular', 'sort-new', 'sort-increase-price', 'sort-decrease-price', 'sort-promotions',
+    'update',
+    'info'
+  ];
 
-//   gulp.src(iconsName.map(el => `${pathIcons}${el}.svg`))
-//     .pipe(svgmin({ plugins: [{ removeUselessStrokeAndFill: false }] }))
-//     .pipe(rename({ prefix: 'icon-' }))
-//     .pipe(svgstore({ inlineSvg: true }))
-//     .pipe(rename({ suffix: '-sprite-icons' }))
-//     .pipe(gulp.dest('./resourse/images'));
-// };
+  gulp.src(iconsName.map(el => `${pathIcons}${el}.svg`))
+    .pipe(svgmin({ plugins: [{ removeUselessStrokeAndFill: false }] }))
+    .pipe(rename({ prefix: 'icon-' }))
+    .pipe(svgstore({ inlineSvg: true }))
+    .pipe(rename({ suffix: '-sprite-icons' }))
+    .pipe(gulp.dest('./resourse/images'));
+};
 
 const buildCss = () => {
   gulp.src([
     './catalog/view/theme/default/template/catalog/catalog.css',
-    './catalog/view/theme/default/template/catalog/components/breadcrumbs/breadcrumbs.css'
+    './catalog/view/theme/default/template/catalog/components/breadcrumbs/breadcrumbs.css',
+    './catalog/view/theme/default/template/catalog/components/catalog_head_sort/catalog_head_sort.css',
+    './catalog/view/theme/default/template/catalog/components/catalog_sort/catalog_sort.css',
+    './catalog/view/theme/default/template/catalog/components/catalog_filters/catalog_filters.css',
+    './catalog/view/theme/default/template/catalog/components/catalog_items/catalog_items.css',
+    './catalog/view/theme/default/template/catalog/components/catalog_pagination/catalog_pagination.css'
   ])
     .pipe(sourcemaps.init())
     .pipe(concat('catalog.min.css'))
@@ -35,7 +41,12 @@ const buildCss = () => {
 const buildJs = () => {
   gulp.src([
     './catalog/view/theme/default/template/catalog/catalog.js',
-    './catalog/view/theme/default/template/catalog/components/breadcrumbs/breadcrumbs.js'
+    './catalog/view/theme/default/template/catalog/components/breadcrumbs/breadcrumbs.js',
+    './catalog/view/theme/default/template/catalog/components/catalog_head_sort/catalog_head_sort.js',
+    './catalog/view/theme/default/template/catalog/components/catalog_sort/catalog_sort.js',
+    './catalog/view/theme/default/template/catalog/components/catalog_filters/catalog_filters.js',
+    './catalog/view/theme/default/template/catalog/components/catalog_items/catalog_items.js',
+    './catalog/view/theme/default/template/catalog/components/catalog_pagination/catalog_pagination.js'
   ])
     .pipe(sourcemaps.init())
     .pipe(concat('catalog.min.js'))
@@ -44,7 +55,7 @@ const buildJs = () => {
 };
 
 export default () => {
-  // buildSvg();
+  buildSvg();
   buildCss();
   buildJs();
 };

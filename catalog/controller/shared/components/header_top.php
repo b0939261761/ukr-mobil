@@ -9,9 +9,7 @@ class ControllerSharedComponentsHeaderTop extends Controller {
     $data['linkContacts'] = "{$this->url->link('information/about_us')}#contact";
     $data['linkPriceList'] = $this->url->link('information/price_list');
 
-    $sql = "SELECT value FROM oc_currency WHERE currency_id = 980";
-    $data['rate'] = $this->db->query($sql)->row['value'] ?? 0;
-
+    $data['currency'] = $this->main->getCurrency();
     return $this->load->view('shared/components/header_top/header_top', $data);
   }
 }

@@ -271,6 +271,7 @@
   }
 }
 
+.btn-header-action--user,
 .btn-header-action--cart {
   position: relative;
 }
@@ -321,4 +322,15 @@
     line-height: 22px;
     font-size: 11px;
   }
+}
+
+.btn-header-action__counter--user {
+  padding: 4px 3px 4px 5px;
+  fill: #fff;
+  stroke: transparent;
+  transition: stroke .3s ease;
+}
+
+.btn-header-action--user:hover .btn-header-action__counter--user {
+  stroke: #bc191d;
 }

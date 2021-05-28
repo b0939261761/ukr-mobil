@@ -1,0 +1,126 @@
+
+.catalog-sort {
+  grid-area: sort;
+  z-index: 1;
+}
+
+@media (min-width: 768px) {
+  .catalog-sort {
+    position: relative;
+  }
+}
+
+.catalog-sort__btn-value {
+  color: #303031;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #edeff2;
+  background-color: #fff;
+  height: 38px;
+  width: 100%;
+  cursor: pointer;
+  border-radius: 10px;
+  font-size: 12px;
+  font-family: inherit;
+  font-weight: bold;
+  padding: 0 12px 0 16px;
+}
+
+.catalog-sort__btn-value-img {
+  width: 16px;
+  height: 16px;
+  stroke: #b2bac7;
+  transform: rotate(180deg);
+  transition-property: stroke, transform;
+  transition-duration: .3s;
+  pointer-events: none;
+}
+
+.catalog-sort--open .catalog-sort__btn-value-img {
+  stroke: #bc191d;
+  transform: rotate(0);
+}
+
+.catalog-sort__list {
+  background-color: #fff;
+  padding: 8px 16px;
+  border-radius: 10px;
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+  left: 0;
+  min-width: 100%;
+  top: calc(100% + 8px);
+  border: 1px solid #edeff2;
+  border-top: none;
+  transition-property: opacity, visibility;
+  transition-duration: .3s;
+}
+
+@media (min-width: 768px) {
+  .catalog-sort__list {
+    top: 100%;
+  }
+}
+
+.catalog-sort--open .catalog-sort__list {
+  opacity: 1;
+  visibility: visible;
+}
+
+.catalog-sort__list-item:not(:last-child) {
+  border-bottom: 1px solid #edeff2;
+}
+
+.catalog-sort__list-link {
+  text-decoration: none;
+  padding: 8px 0;
+  color: #303031;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  text-align: center;
+  transition: color .3s ease;
+}
+
+.catalog-sort__list-link--active,
+.catalog-sort__list-link:hover {
+  color: #bc191d;
+}
+
+.catalog-sort__list-link-img {
+  color: #b2bac7;
+  fill: currentColor;
+  stroke: currentColor;
+  transition: color .3s ease;
+}
+
+.catalog-sort__list-link--active > .catalog-sort__list-link-img,
+.catalog-sort__list-link:hover > .catalog-sort__list-link-img {
+  color: inherit;
+}
+
+.catalog-sort__list-link-img--popular {
+  height: 12px;
+  width: 16px;
+}
+
+.catalog-sort__list-link-img--new {
+  height: 12px;
+  width: 28px;
+}
+
+.catalog-sort__list-link-img--price {
+  height: 18px;
+  width: 20px;
+}
+
+.catalog-sort__list-link-img--promotions {
+  height: 18px;
+  width: 18px;
+}
+
+.catalog-sort__list-link-title {
+  flex-grow: 1;
+}

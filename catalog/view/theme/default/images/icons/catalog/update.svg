@@ -1,0 +1,5 @@
+<svg viewBox="0 0 26 22">
+  <path d="M1 2v7h6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M1 9l5-4.985a9.597 9.597 0 0 1 4.164-2.61 9.16 9.16 0 0 1 4.834-.151A9.512 9.512 0 0 1 19.3 3.599 10.344 10.344 0 0 1 22 7.857M25 20v-7h-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+  <path d="M25 13l-5 4.985a9.596 9.596 0 0 1-4.164 2.61 9.158 9.158 0 0 1-4.834.151A9.511 9.511 0 0 1 6.7 18.401 10.343 10.343 0 0 1 4 14.143" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+</svg>

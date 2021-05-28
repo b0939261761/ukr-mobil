@@ -19,7 +19,6 @@
 
 .breadcrumbs__item:not(:last-child) {
   background-image: url(/resourse/images/breadcrumbs-arrow.svg);
-  /* background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg viewBox='0 0 6 10' fill='none' xmlns='http://www.w3.org/2000/svg' stroke='%23bc191d'%3E%3Cpath d='M1.354 1.06a.5.5 0 0 0-.854.354v7.172a.5.5 0 0 0 .854.353l3.585-3.585a.5.5 0 0 0 0-.708L1.354 1.061z'/%3E%3C/svg%3E"); */
   background-repeat: no-repeat;
   background-position: right center;
   padding-right: 16px;
@@ -71,7 +70,7 @@
 .modal-window-breadcrumbs {
   line-height: 21px;
   text-align: center;
-  margin-top: calc(var(--modal-window--ident) - 70px);
+  margin-top: -50px;
 }
 
 .modal-window-breadcrumbs__item--link {

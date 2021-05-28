@@ -170,35 +170,26 @@ class ControllerStartupSeoPro extends Controller {
       $this->request->get['route'] = $controller;
       $this->request->request['category'] = $category; // TODO REMOVE
 
-      $this->category->setCategoryId($this->request->request['category']);
-      $this->request->request['categories'] = $this->category->getCurrentCatagories();
+      $this->catalog->setPath($this->request->get['path']);
+      if (isset($this->request->get['sort'])) $this->catalog->setSort($this->request->get['sort']);
+      if (isset($this->request->get['page'])) $this->catalog->setPage($this->request->get['page']);
+      $this->catalog->setCategoryId($category);
+      $this->request->request['categories'] = $this->catalog->getCurrentCatagories();
     } elseif ($controller == 'product/search') $this->request->get['route'] = $controller;
 
-    if (in_array($controller, ['product/category', 'product/search'])) {
-      $keywordList = [];
-      foreach ($keywordFilters as $keyword) $keywordList[] = "'{$this->db->escape($keyword)}'";
-      $sqlKeywords = implode(',', $keywordList);
-
-      $filters = [];
-      if ($sqlKeywords) {
-        $sql = "
-          SELECT id, queryKey AS `key`, queryValue AS value, keyword, name
-          FROM seo_filter_url WHERE keyword IN ({$sqlKeywords}) ORDER BY ord
-        ";
-        $filters = $this->db->query($sql)->rows;
-      }
-
+    // if (in_array($controller, ['product/category', 'product/search', 'catalog/catalog'])) {
+    if ($controller == 'catalog/catalog') {
+      $filters = $this->catalog->getFilters($keywordFilters);
+      $this->catalog->setPage($this->request->get['page'] ?? 1);
       if (count($filters) != count($keywordFilters)) return new Action('error/not_found');
-      $this->request->request['filters'] = $filters;
-      foreach ($filters as $filter) $this->request->get[$filter['key']] = $filter['value'];
+      $this->request->request['filters'] = $filters; // TODO REMOVE
+      foreach ($filters as $filter) $this->request->get[$filter['key']] = $filter['value']; // TODO REMOVE
     }
 
     if (isset($this->request->get['search'])) {
-    file_put_contents('./catalog/controller/startup/__LOG__.txt', $this->request->get['search']."\n\n", FILE_APPEND);
-
-      $this->request->get['search'] = preg_replace('/\s+/', ' ',
-        str_replace('\\', '', trim($this->request->get['search'] ?? '')));
-      if (empty($this->request->get['search'])) unset($this->request->get['search']);
+      $this->catalog->setSearch($this->request->get['search']);
+      $this->request->get['search'] = $this->catalog->getSearch(); // TODO REMOVE
+      if (empty($this->request->get['search'])) unset($this->request->get['search']); // TODO REMOVE
     }
 
     if (!isset($this->request->get['route'])) {
@@ -259,7 +250,7 @@ class ControllerStartupSeoPro extends Controller {
     $rows = [];
     foreach($queries as $query) {
       if(isset($this->cacheData['queries'][$query])) {
-        $rows[] = array('query' => $query, 'keyword' => $this->cacheData['queries'][$query]);
+        $rows[] = ['query' => $query, 'keyword' => $this->cacheData['queries'][$query]];
       }
     }
 

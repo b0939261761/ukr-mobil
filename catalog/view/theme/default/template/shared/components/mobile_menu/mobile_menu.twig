@@ -11,12 +11,6 @@
             <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-arrow-up"></use>
           </svg>
         </button>
-
-        <button class="mobile-menu__btn-back mobile-menu__btn-back--hidden" id="btnMobileMenuBack">
-          <svg class="mobile-menu__btn-back-img">
-            <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-arrow-up"></use>
-          </svg>
-        </button>
       </div>
 
       <div class="mobile-menu__nav-catalog container">
@@ -25,12 +19,12 @@
 
       <div class="mobile-menu__content container">
           <ul class="mobile-menu__menu">
-            <li><a class="mobile-menu__menu-link" href="javascript:void(0);">Про нас</a></li>
-            <li><a class="mobile-menu__menu-link" href="javascript:void(0);">Новини</a></li>
-            <li><a class="mobile-menu__menu-link" href="javascript:void(0);">Сервіс</a></li>
-            <li><a class="mobile-menu__menu-link" href="javascript:void(0);">Доставка і оплата</a></li>
-            <li><a class="mobile-menu__menu-link" href="javascript:void(0);">Надходження</a></li>
-            <li><a class="mobile-menu__menu-link" href="javascript:void(0);">Контакти</a></li>
+            <li><a class="mobile-menu__menu-link" href="{{ linkAboutUs }}">Про нас</a></li>
+            <li><a class="mobile-menu__menu-link" href="{{ linkNews }}">Новини</a></li>
+            <li><a class="mobile-menu__menu-link" href="{{ linkTracking }}">Сервіс</a></li>
+            <li><a class="mobile-menu__menu-link" href="{{ linkDelivery }}">Доставка і оплата</a></li>
+            <li><a class="mobile-menu__menu-link" href="{{ linkIncome }}">Надходження</a></li>
+            <li><a class="mobile-menu__menu-link" href="{{ linkContacts }}">Контакти</a></li>
           </ul>
 
           <ul class="mobile-menu__action-bar">
@@ -45,15 +39,22 @@
 
             <li>
               <a class="mobile-menu__action-bar-btn" href="javascript:void(0);">
-                <svg class="mobile-menu__action-bar-btn-img">
-                  <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-user"></use>
-                </svg>
+
+                <span class="mobile-menu__action-bar-btn-wrapper-img">
+                  <svg class="mobile-menu__action-bar-btn-img">
+                    <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-user"></use>
+                  </svg>
+                  <svg class="mobile-menu__action-bar-btn-counter">
+                    <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-check"></use>
+                  </svg>
+                </span>
+
                 Особистий кабнет
               </a>
             </li>
 
             <li class="mobile-menu__action-bar-item">
-              <a class="mobile-menu__action-bar-btn" href="javascript:void(0);">
+              <a class="mobile-menu__action-bar-btn" href="{{ linkPriceList }}">
                 <svg class="mobile-menu__action-bar-btn-img">
                   <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-download"></use>
                 </svg>
@@ -66,7 +67,7 @@
                 <svg class="mobile-menu__action-bar-btn-img">
                   <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-usd"></use>
                 </svg>
-                Курс USD: 28.00 грн
+                Курс USD: {{ currency }} грн
               </a>
             </li>
 
@@ -89,6 +90,64 @@
               </button>
             </li>
           </ul>
+
+
+          <button class="mobile-menu__btn-contact" id="mobileMenuBtnContact">
+            <svg class="mobile-menu__btn-contact-img">
+              <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-phone"></use>
+            </svg>
+            Телефони
+          </button>
+
+          <div class="wrapper-mobile-menu-contacts" id="wrapperMobileMenuContacts">
+            <ul class="mobile-menu-contacts">
+              <li class="mobile-menu-contacts__item">
+                <div class="mobile-menu-contacts__item-title">
+                  <svg class="mobile-menu-contacts__item-title-img">
+                    <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-phone"></use>
+                  </svg>
+                  Чернівці
+                </div>
+
+                <ul class="mobile-menu-contacts__list">
+                  <li><a class="mobile-menu-contacts__link" href="tel:+380502742790">+38 050 274 2790</a></li>
+                  <li><a class="mobile-menu-contacts__link" href="tel:+380937651080">+38 093 765 1080</a></li>
+                  <li><a class="mobile-menu-contacts__link" href="tel:+380957651080">+38 095 765 1080</a></li>
+                  <li><a class="mobile-menu-contacts__link" href="tel:+380687651080">+38 068 765 1080</a></li>
+                </ul>
+              </li>
+
+              <li class="mobile-menu-contacts__item">
+                <div class="mobile-menu-contacts__item-title">
+                  <svg class="mobile-menu-contacts__item-title-img">
+                    <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-phone"></use>
+                  </svg>
+                  Рівне
+                </div>
+
+                <ul class="mobile-menu-contacts__list">
+                  <li><a class="mobile-menu-contacts__link" href="tel:+380969075550">+38 096 907 5550</a></li>
+                  <li><a class="mobile-menu-contacts__link" href="tel:+380937651080">+38 093 765 1080</a></li>
+                  <li><a class="mobile-menu-contacts__link" href="tel:+380959075550">+38 095 907 5550</a></li>
+                </ul>
+              </li>
+
+              <li class="mobile-menu-contacts__item">
+                <div class="mobile-menu-contacts__item-title">
+                  <svg class="mobile-menu-contacts__item-title-img">
+                    <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-phone"></use>
+                  </svg>
+                  Сервіс Рівне
+                </div>
+
+                <ul class="mobile-menu-contacts__list">
+                  <li><a class="mobile-menu-contacts__link" href="tel:+380969075550">+38 096 907 5550</a></li>
+                  <li><a class="mobile-menu-contacts__link" href="tel:+380937651080">+38 093 765 1080</a></li>
+                  <li><a class="mobile-menu-contacts__link" href="tel:+380959075550">+38 095 907 5550</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
 
           <ul class="mobile-menu-languages">
             <li class="mobile-menu-languages__item mobile-menu-languages__item--active">

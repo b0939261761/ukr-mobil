@@ -29,8 +29,11 @@ new Swiper('#swiperNew', {
 const btnOpenOptionsSwiperNewList = document.querySelectorAll('#swiperNew .product-slide__options-btn-open');
 
 const onClickBtnOpenOptionsSwiperNewList = ({ target }) => {
-  const characteristicList = target.parentElement.querySelector('.product-slide__characteristic-list');
-  characteristicList.classList.toggle('product-slide__characteristic-list--open');
+  const options = target.parentElement;
+  const wrapperCharacteristicList = options.querySelector('.product-slide__wrapper-characteristic-list');
+  const maxHeight = wrapperCharacteristicList.style.getPropertyValue('--max-height') ? null : `${options.offsetTop}px`;
+  wrapperCharacteristicList.style.setProperty('--max-height', maxHeight);
+  target.firstElementChild.classList.toggle('product-slide__options-btn-open-img--open');
 };
 
 if (btnOpenOptionsSwiperNewList) {

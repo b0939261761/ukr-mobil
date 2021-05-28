@@ -229,7 +229,7 @@ class ProductFilterProvider {
           COALESCE(
             (SELECT image FROM oc_product_image
               WHERE product_id = a.product_id ORDER BY sort_order LIMIT 1),
-            'placeholder.png'
+            'placeholder.jpg'
           ), image) AS image,
         (SELECT COUNT(1) AS cnt FROM oc_customer_wishlist
           WHERE customer_id = {$this->customerId} AND product_id = a.product_id) > 0 AS is_wishlist,

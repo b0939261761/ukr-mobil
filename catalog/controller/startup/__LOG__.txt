@@ -1,0 +1,103 @@
+<div style="background-color:#ffffff;padding-top:15px;font-size:14px;line-height:21px;font-family:arial,'helvetica neue',helvetica,sans-serif">
+  <table style="width:600px;margin: 0 auto 40px" cellspacing="0" cellpadding="0">
+    <tbody>
+      <tr>
+        <td align="left" width="180">
+          <a href="https://ukr-mobil.com/" alt="UkrMobil" title="UkrMobil">
+            <img src="https://ukr-mobil.com/image/mail/logo.png" alt="UkrMobil" title="UkrMobil" style="display:block" width="118" height="43">
+          </a>
+        </td>
+        <td>
+          <table width="100%" cellspacing="0" cellpadding="0">
+            <tbody>
+              <tr>
+                <td width="33.33%" align="center" style="color:#303031;font-size:16px;font-family:arial,'helvetica neue',helvetica,sans-serif">
+                  <a style="color:inherit;text-decoration:none" href="https://ukr-mobil.com/aksessuary_10000281">Аксесуари</a>
+                </td>
+                <td width="33.33%" align="center" style="color:#303031;font-size:16px;font-family:arial,'helvetica neue',helvetica,sans-serif">
+                  <a style="color:inherit;text-decoration:none" href="https://ukr-mobil.com/zapchasti_dlya_telefonov_10000086">Запчастини</a>
+                </td>
+                <td width="33.33%" align="center" style="color:#303031;font-size:16px;font-family:arial,'helvetica neue',helvetica,sans-serif">
+                  <a style="color:inherit;text-decoration:none" href="https://ukr-mobil.com/oborudovaniya_10000313">Обладнання</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+<div style="width:520px;margin:0 auto 40px;text-align:center;padding: 0 40px">
+  <h2 style="margin:0 0 20px;font-size:24px;font-weight:normal;line-height:29px;color:#333333">Вітаємо!</h2>
+  <div style="background-color:#c85449;height:3px;margin-bottom:20px"></div>
+  <img src="https://ukr-mobil.com/image/mail/pushcart.png" alt="Візок" style="display:block;margin: 0 auto 20px" width="64" height="64">
+  <p style="margin: 0 0 20px;line-height:23px;color:#333333;font-size:15px">
+    Ви успішно оформили 5 замовлень на сайті
+    <a href="http://ukr-mobil.com/" style="color:#ee6c6d">ukr-mobil.com</a>!
+    Дякуємо вам за довіру! Ціна автоматично зміниться на "Віп" в межах 30 хвилин,
+    переглянути це ви зможете у своєму профілі!
+    Якщо у вас лишились запитання - дайте нам знати будь-яким зручним для вас способом!
+  </p>
+  <div style="background-color:#cccccc;height:1px;margin-bottom:20px"></div>
+  <a
+    style="background-color:#bc191d;display:inline-block;border-radius:20px;padding:10px 25px;color:#ffffff;text-decoration:none;font-weight:bold;font-size:18px;line-height:22px"
+    href="https://ukr-mobil.com/account#terms"
+  >
+    Переглянути зміни
+  </a>
+</div>
+
+<div style="background-color:#f7f7f7;color:#333333">
+    <table style="width:600px;padding:20px;margin:0 auto" cellspacing="0" cellpadding="0">
+      <tbody>
+        <tr>
+          <td style="width:178px;padding-right:20px;font-family:arial,'helvetica neue',helvetica,sans-serif" >
+            <p style="margin:0 0 10px">
+              <a href="https://ukr-mobil.com/">
+                <img src="https://ukr-mobil.com/image/mail/logo.png" alt="UkrMobil" title="UkrMobil" style="display:block" width="108" height="40">
+              </a>
+            </p>
+            <p style="margin:0 0 10px">м.Чернівці, вул. Калинівська 13А</p>
+            <p style="margin:0"><a style="color:inherit" href="tel:+380502742790">380502742790</a></p>
+            <p style="margin:0"><a style="color:inherit" href="mailto:ukrmobil1@gmail.com">ukrmobil1@gmail.com</a></p>
+          </td>
+          <td align="center">
+            <table style="margin-bottom:10px">
+              <tbody>
+                <tr>
+                  <td style="padding-right:15px">
+                    <a href="https://www.facebook.com/Ukrmobil1/">
+                      <img src="https://ukr-mobil.com/image/mail/facebook.png" alt="Facebook" title="Facebook" style="display:block" width="32" height="32">
+                    </a>
+                  </td>
+                  <td style="padding-right:15px">
+                    <a href="https://www.instagram.com/ukrmobil_cv/">
+                      <img src="https://ukr-mobil.com/image/mail/instagram.png" alt="Instagram" title="Instagram" style="display:block" width="32" height="32">
+                    </a>
+                  </td>
+                  <td style="padding-right:15px">
+                    <a href="https://t.me/ukrmobil">
+                      <img src="https://ukr-mobil.com/image/mail/telegram.png" alt="Telegram" title="Telegram" style="display:block" width="32" height="32">
+                    </a>
+                  </td>
+                  <td>
+                    <a href="viber://chat?number=%2B380502742790">
+                      <img src="https://ukr-mobil.com/image/mail/viber.png" alt="Viber" title="Viber" style="display:block" width="32" height="32">
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <p style="margin:0;font-size:12px;line-height:14px">
+              <a href="{{unsubscribe}}" style="color:inherit;font-family:arial,'helvetica neue',helvetica,sans-serif">Відписатися</a>
+              <a href="{{unsubscribe}}" style="color:inherit;font-family:arial,'helvetica neue',helvetica,sans-serif">Відписатися2</a>
+              <a href= "{{unsubscribe}}" >Отписаться</a>
+              <a href= "{{unsubscribe}}" >Отписаться</a>
+            </p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -11,7 +11,6 @@ use Philo\Blade\Blade;
  */
 function _view(string $view, $data = []) {
 	$blade = new Blade(__DIR__ . '/../../views', __DIR__ . '/../../views/cache');
-
 	return $blade->view()->make($view, $data)->render();
 }
 
@@ -25,6 +24,8 @@ function _view(string $view, $data = []) {
 function _env($key, $default = null) {
 	$rootPath = $_SERVER['DOCUMENT_ROOT'];
 	$envPath = $rootPath . '/.env';
+
+  echo json_encode($_SERVER) . '.================='."\n";
 
 	if (!file_exists($envPath)) {
 		return null;

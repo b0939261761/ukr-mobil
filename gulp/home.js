@@ -40,6 +40,7 @@ const buildCss = () => {
 const buildJs = () => {
   gulp.src([
     './catalog/view/theme/default/template/home/components/special/special.js',
+    './catalog/view/theme/default/template/home/components/benefits/benefits.js',
     './catalog/view/theme/default/template/home/components/new/new.js',
     './catalog/view/theme/default/template/home/components/promotions/promotions.js',
     './catalog/view/theme/default/template/home/components/incomes/incomes.js',

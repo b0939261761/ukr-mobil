@@ -7,9 +7,9 @@
   opacity: 0;
   z-index: 2;
   top: 0;
-  right: 0;
-  bottom: 0;
   left: 0;
+  height: 100%;
+  width: 100%;
   background-color: rgba(0, 0, 0, .5);
   cursor: pointer;
   display: flex;
@@ -17,6 +17,10 @@
   transition-duration: .3s;
   padding: 15px;
   overflow-y: auto;
+}
+
+.modal-window:focus {
+  outline: 5px solid black;
 }
 
 @media (min-width: 768px) {

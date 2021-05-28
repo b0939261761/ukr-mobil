@@ -16,7 +16,6 @@
     </button>
   </div>
 
-
   <div class="swiper-wrapper reset-swiper-wrapper">
     {% for product in products %}
       <div class="swiper-slide">
@@ -53,10 +52,10 @@
           <div class="product-slide__price">
             <div class="product-slide__price-uah">
               {% if product.isPromotions %}
-                <div class="product-slide__price-uah-old">{{ product.priceOldUAH }}</div>
+                <div class="product-slide__price-uah-old">{{ product.priceOldUAH }} грн</div>
               {% endif %}
               <div class="product-slide__price-uah-default {{ product.priceOldUAH ? 'product-slide__price-uah-default--red' : '' }}">
-                {{ product.priceUAH }}
+                {{ product.priceUAH }} грн
               </div>
             </div>
             <div class="product-slide__price-usd">$ {{ product.priceUSD }}</div>
@@ -74,70 +73,72 @@
           </div>
 
           <div class="product-slide__options">
-            <div class="product-slide__characteristic-list">
-              <div class="product-slide__characteristic-item">
-                <div class="product-slide__characteristic-item-title">Якість</div>
-                <div class="product-slide__characteristic-item-value-list">
-                  <span class="product-slide__characteristic-item-value product-slide__characteristic-item-value--active">Original PRC</span>
-                  <a href="javascript:void(0);" class="product-slide__characteristic-item-value">Hight Copy</a>
+            <div class="product-slide__wrapper-characteristic-list">
+              <div class="product-slide__characteristic-list">
+                <div class="product-slide__characteristic-item">
+                  <div class="product-slide__characteristic-item-title">Якість</div>
+                  <div class="product-slide__characteristic-item-value-list">
+                    <span class="product-slide__characteristic-item-value product-slide__characteristic-item-value--active">Original PRC</span>
+                    <a href="javascript:void(0);" class="product-slide__characteristic-item-value">Hight Copy</a>
+                  </div>
                 </div>
-              </div>
-              <div class="product-slide__characteristic-item">
-                <div class="product-slide__characteristic-item-title">Тип матриці</div>
-                <div class="product-slide__characteristic-item-value-list">
-                  <span class="product-slide__characteristic-item-value product-slide__characteristic-item-value--active">Super Amoled</span>
-                  <a href="javascript:void(0);" class="product-slide__characteristic-item-value">OLED</a>
-                  <a href="javascript:void(0);" class="product-slide__characteristic-item-value">OLED</a>
-                  <a href="javascript:void(0);" class="product-slide__characteristic-item-value">OLED</a>
+                <div class="product-slide__characteristic-item">
+                  <div class="product-slide__characteristic-item-title">Тип матриці</div>
+                  <div class="product-slide__characteristic-item-value-list">
+                    <span class="product-slide__characteristic-item-value product-slide__characteristic-item-value--active">Super Amoled</span>
+                    <a href="javascript:void(0);" class="product-slide__characteristic-item-value">OLED</a>
+                    <a href="javascript:void(0);" class="product-slide__characteristic-item-value">OLED</a>
+                    <a href="javascript:void(0);" class="product-slide__characteristic-item-value">OLED</a>
+                  </div>
                 </div>
-              </div>
-              <div>
-                <div class="product-slide__characteristic-item-title">Колір</div>
-                <div class="product-slide__characteristic-item-color-list">
-                  <span
-                    class="product-slide__characteristic-item-color product-slide__characteristic-item-color--active"
-                    style="background-color: green;"
-                  ></span>
-                  <a
-                    class="product-slide__characteristic-item-color"
-                    style="background-color: green;"
-                    href="javascript:void(0);"
-                  ></a>
-                  <a
-                    class="product-slide__characteristic-item-color"
-                    style="background-color: green;"
-                    href="javascript:void(0);"
-                  ></a>
-                  <a
-                    class="product-slide__characteristic-item-color"
-                    style="background-color: green;"
-                    href="javascript:void(0);"
-                  ></a>
-                  <a
-                    class="product-slide__characteristic-item-color"
-                    style="background-color: green;"
-                    href="javascript:void(0);"
-                  ></a>
-                  <a
-                    class="product-slide__characteristic-item-color"
-                    style="background-color: green;"
-                    href="javascript:void(0);"
-                  ></a>
-                  <a
-                    class="product-slide__characteristic-item-color"
-                    style="background-color: green;"
-                    href="javascript:void(0);"
-                  ></a>
-                  <a
-                    class="product-slide__characteristic-item-color"
-                    style="background-color: green;"
-                    href="javascript:void(0);"
-                  ></a>
-                  <a
-                    class="product-slide__characteristic-item-color"
-                    style="background-color: green;"
-                    href="javascript:void(0);"
-                  ></a>
+                <div>
+                  <div class="product-slide__characteristic-item-title">Колір</div>
+                  <div class="product-slide__characteristic-item-color-list">
+                    <span
+                      class="product-slide__characteristic-item-color product-slide__characteristic-item-color--active"
+                      style="background-color: green;"
+                    ></span>
+                    <a
+                      class="product-slide__characteristic-item-color"
+                      style="background-color: green;"
+                      href="javascript:void(0);"
+                    ></a>
+                    <a
+                      class="product-slide__characteristic-item-color"
+                      style="background-color: green;"
+                      href="javascript:void(0);"
+                    ></a>
+                    <a
+                      class="product-slide__characteristic-item-color"
+                      style="background-color: green;"
+                      href="javascript:void(0);"
+                    ></a>
+                    <a
+                      class="product-slide__characteristic-item-color"
+                      style="background-color: green;"
+                      href="javascript:void(0);"
+                    ></a>
+                    <a
+                      class="product-slide__characteristic-item-color"
+                      style="background-color: green;"
+                      href="javascript:void(0);"
+                    ></a>
+                    <a
+                      class="product-slide__characteristic-item-color"
+                      style="background-color: green;"
+                      href="javascript:void(0);"
+                    ></a>
+                    <a
+                      class="product-slide__characteristic-item-color"
+                      style="background-color: green;"
+                      href="javascript:void(0);"
+                    ></a>
+                    <a
+                      class="product-slide__characteristic-item-color"
+                      style="background-color: green;"
+                      href="javascript:void(0);"
+                    ></a>
+                  </div>
                 </div>
               </div>
             </div>
@@ -148,10 +149,13 @@
                 <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-arrow-up"></use>
               </svg>
             </button>
-            <div class="product-slide__options-price">
-              <div class="product-slide__options-price-uah">750 - 1 200 грн</div>
-              <div class="product-slide__options-price-usd">$ 21.50 - 100.00</div>
-            </div>
+
+            {% if product.priceMinUSD or product.priceMaxUSD %}
+              <div class="product-slide__options-price">
+                <div class="product-slide__options-price-uah">{{ product.priceMinUAH }} - {{ product.priceMaxUAH }} грн</div>
+                <div class="product-slide__options-price-usd">$ {{ product.priceMinUSD }} - {{ product.priceMaxUSD }}</div>
+              </div>
+            {% endif %}
           </div>
 
           <div class="product-slide__actions">

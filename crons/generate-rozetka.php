@@ -60,7 +60,7 @@ $sql = "
       tmpRzId.rzId,
       tmpRzId.rzName AS categoryName,
       CASE
-        WHEN p.image = '' AND NOT JSON_LENGTH(tmpImages.images) THEN JSON_ARRAY('placeholder.png')
+        WHEN p.image = '' AND NOT JSON_LENGTH(tmpImages.images) THEN JSON_ARRAY('placeholder.jpg')
         WHEN p.image != '' THEN JSON_ARRAY_INSERT(tmpImages.images, '$[0]', p.image)
         ELSE tmpImages.images
       END AS images

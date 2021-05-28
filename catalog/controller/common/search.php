@@ -37,7 +37,7 @@ class ControllerCommonSearch extends Controller {
         COALESCE(
           (SELECT image FROM oc_product_image
             WHERE product_id = aa.product_id ORDER BY sort_order ASC LIMIT 1),
-          'placeholder.png'
+          'placeholder.jpg'
         ), aa.image0) AS image
       FROM (
         SELECT * FROM (

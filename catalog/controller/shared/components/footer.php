@@ -15,6 +15,7 @@ class ControllerSharedComponentsFooter extends Controller {
     $data['linkNews'] = $this->url->link('information/news');
     $data['linkTracking'] = $this->url->link('information/tracking');
 
+    $data['footerBtnScrollToTop'] = $this->load->controller('shared/components/footer_btn_scroll_to_top');
     $data['mobileMenu'] = $this->load->controller('shared/components/mobile_menu');
 
     return $this->load->view('shared/components/footer/footer', $data);

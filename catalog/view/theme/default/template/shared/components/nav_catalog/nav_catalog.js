@@ -16,9 +16,10 @@ $('.nav-catalog__list').menuAim({
   exitMenu: () => true
 });
 
-const navCategoriesBtnNavList = document.querySelectorAll('.nav-catalog__btn-nav');
+const navCategoriesBtnNavList = document.querySelectorAll('.nav-catalog__link--has-children');
 const onClickNavCategoriesBtnNav = evt => {
   if (window.matchMedia('(min-width: 1080px)').matches) return;
+  evt.preventDefault();
   const navCategoriesList = evt.target.parentElement.querySelector('.nav-catalog__list');
   if (navCategoriesList) navCategoriesList.classList.add('nav-catalog__list--is-visible');
 };

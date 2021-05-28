@@ -2,7 +2,7 @@ const header = document.getElementById('header');
 const mobileMenu = document.getElementById('mobileMenu');
 const btnMobileMenu = document.getElementById('btnMobileMenu');
 
-const setMobileMenuTop = () => {
+window.setMobileMenuTop = () => {
   const { top, height } = header.getBoundingClientRect();
   mobileMenu.style.setProperty('--mobile-menu-top', `${height + top}px`);
 };
@@ -13,7 +13,7 @@ const onClickBtnMobileMenu = () => {
     const navCategoriesList = document.querySelectorAll('.nav-catalog__list--is-visible');
     navCategoriesList.forEach(el => el.classList.remove('nav-catalog__list--is-visible'));
   } else {
-    setMobileMenuTop();
+    window.setMobileMenuTop();
   }
 
   document.body.classList.toggle('body--mobile-menu-open');
@@ -27,7 +27,7 @@ const btnHeaderMenuEl = document.getElementById('btnHeaderMenu');
 
 const onClickBtnHeaderMenu = evt => {
   if (evt.target !== evt.currentTarget) return;
-  if (!document.body.classList.contains('body--mobile-menu-open')) setMobileMenuTop();
+  if (!document.body.classList.contains('body--mobile-menu-open')) window.setMobileMenuTop();
   document.body.classList.toggle('body--mobile-menu-open');
 };
 
@@ -37,25 +37,22 @@ mobileMenu.addEventListener('click', onClickBtnHeaderMenu);
 // ------------------------------------------------------------------
 
 const btnMobileMenuCategories = document.getElementById('btnMobileMenuCategories');
-const btnMobileMenuBack = document.getElementById('btnMobileMenuBack');
 
 const onClickBtnMobileMenuCategories = () => {
-  document.body.classList.add('body--mobile-menu-catalog-open');
+  if (document.body.classList.contains('body--mobile-menu-catalog-open')) {
+    const navCategoriesList = document.querySelectorAll('.nav-catalog__list--is-visible');
+    if (!navCategoriesList.length) {
+      document.body.classList.remove('body--mobile-menu-catalog-open');
+      return;
+    }
+    const navCategoriesListLast = navCategoriesList[navCategoriesList.length - 1];
+    navCategoriesListLast.classList.remove('nav-catalog__list--is-visible');
+  } else {
+    document.body.classList.add('body--mobile-menu-catalog-open');
+  }
 };
 
 btnMobileMenuCategories.addEventListener('click', onClickBtnMobileMenuCategories);
-
-const onClickBtnMobileMenuBack = () => {
-  const navCategoriesList = document.querySelectorAll('.nav-catalog__list--is-visible');
-  if (!navCategoriesList.length) {
-    document.body.classList.remove('body--mobile-menu-catalog-open');
-    return;
-  }
-  const navCategoriesListLast = navCategoriesList[navCategoriesList.length - 1];
-  navCategoriesListLast.classList.remove('nav-catalog__list--is-visible');
-};
-
-btnMobileMenuBack.addEventListener('click', onClickBtnMobileMenuBack);
 
 // ------------------------------------------------------------------
 
@@ -64,3 +61,25 @@ mmWindowModalFeedbackError.addEventListener('click', () => window.modalWindowFee
 
 const mmWindowModalFeedbackManager = document.getElementById('mmWindowModalFeedbackManager');
 mmWindowModalFeedbackManager.addEventListener('click', () => window.modalWindowFeedbackManager());
+
+// ------------------------------------------------------------------
+
+const wrapperMobileMenuContacts = document.getElementById('wrapperMobileMenuContacts');
+
+const setMobileMenuContactsHeight = height => wrapperMobileMenuContacts.style.setProperty('--height', height);
+
+const onResizeMobileMenuContacts = () => console.log(wrapperMobileMenuContacts.firstElementChild.scrollHeight) || setMobileMenuContactsHeight(`${wrapperMobileMenuContacts.firstElementChild.scrollHeight}px`);
+const onResizeMobileMenuContactsThrottle = window.shared.throttle(onResizeMobileMenuContacts, 500);
+
+const onClickMobileMenuBtnContact = () => {
+  if (wrapperMobileMenuContacts.style.getPropertyValue('--height')) {
+    setMobileMenuContactsHeight(null);
+    window.removeEventListener('resize', onResizeMobileMenuContactsThrottle);
+  } else {
+    onResizeMobileMenuContacts();
+    window.addEventListener('resize', onResizeMobileMenuContactsThrottle);
+  }
+};
+
+const mobileMenuBtnContact = document.getElementById('mobileMenuBtnContact');
+mobileMenuBtnContact.addEventListener('click', onClickMobileMenuBtnContact);

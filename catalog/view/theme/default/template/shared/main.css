@@ -32,6 +32,7 @@ a {
 
 button,
 input,
+select,
 textarea,
 a {
   outline: none;
@@ -56,6 +57,17 @@ body.body--window-modal-open {
   overflow: hidden;
 }
 
+main {
+  flex-grow: 1;
+  padding: 8px 0 32px;
+}
+
+@media (min-width: 1080px) {
+  main {
+    padding: 16px 0 60px;
+  }
+}
+
 .container {
   width: 100%;
   max-width: 1630px;
@@ -73,4 +85,23 @@ body.body--window-modal-open {
 
 :root {
   --header-banner-top: 0;
+}
+
+.page-title {
+  font-size: 18px;
+  line-height: 18px;
+  margin: .75em 0;
+}
+
+@media (min-width: 768px) {
+  .page-title {
+    font-size: 30px;
+    line-height: 40px;
+  }
+}
+
+@media (min-width: 1080px) {
+  .page-title {
+    font-size: 34px;
+  }
 }

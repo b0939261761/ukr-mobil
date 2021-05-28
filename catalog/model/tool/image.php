@@ -1,7 +1,7 @@
 <?
 class ModelToolImage {
   public function resizeFormat($filename, $width, $height, $isWatermark = false) {
-    if ($filename == 'placeholder.png') $isWatermark = false;
+    if ($filename == 'placeholder.jpg') $isWatermark = false;
     $isResize = $width && $height;
     $fullpathOld = DIR_IMAGE . $filename;
     if (!is_file($fullpathOld)) return;

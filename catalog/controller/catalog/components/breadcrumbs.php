@@ -8,7 +8,7 @@ class ControllerCatalogComponentsBreadcrumbs extends Controller {
   private function getBreadcrumbs() {
     $breadcrumbs = [];
     $path = [];
-    $categories = $this->category->getCurrentCatagories();
+    $categories = $this->catalog->getCurrentCatagories();
     $count = count($categories) - 1;
 
     foreach ($categories as $index=>$category) {
@@ -24,6 +24,3 @@ class ControllerCatalogComponentsBreadcrumbs extends Controller {
     return $breadcrumbs;
   }
 }
-
-
-

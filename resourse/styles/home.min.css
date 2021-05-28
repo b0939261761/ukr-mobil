@@ -155,6 +155,7 @@
   left: -2px;
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   flex-wrap: wrap;
   padding-right: 20px;
 }
@@ -416,6 +417,11 @@
   margin-left: 2px;
   stroke: currentColor;
   pointer-events: none;
+  transition: transform .3s ease;
+}
+
+.product-slide__options-btn-open-img--open {
+  transform: rotate(180deg);
 }
 
 .product-slide__options-price {
@@ -440,26 +446,24 @@
   font-size: 12px;
 }
 
-.product-slide__characteristic-list {
-  display: none;
+.product-slide__wrapper-characteristic-list {
+  max-height: var(--max-height, 0);
+  transition: max-height .3s ease;
+  overflow: hidden;
   position: absolute;
   bottom: 100%;
-  left: -8px;
-  right: -8px;
+  width: 100%;
+}
+
+.product-slide__characteristic-list {
   background: #fff;
-  padding: 8px 7px;
+  padding: 8px 0;
 }
 
 @media (min-width: 768px) {
   .product-slide__characteristic-list {
-    left: -16px;
-    right: -16px;
-    padding: 16px;
+    padding: 16px 0;
   }
-}
-
-.product-slide__characteristic-list--open {
-  display: block;
 }
 
 .product-slide__characteristic-item {
@@ -555,12 +559,18 @@
   border-radius: 10px;
   background-color: transparent;
   color: #bc191d;
+  transition-property: background-color, color;
+  transition-duration: .3s;
+}
+
+.product-slide__btn-buy:hover {
+  background-color: #bc191d;
+  color: #fff;
 }
 
 .product-slide__btn-cart {
   color: #fff;
   background: #bc191d url(/resourse/images/lines-right.svg) right center no-repeat;
-  background-color: #bc191d;
   font-size: 12px;
   font-family: inherit;
   font-weight: bold;
@@ -575,7 +585,7 @@
 }
 
 .product-slide__btn-cart:hover {
-  background-image: none;
+  background-color: #af161a;
 }
 
 .product-slide__btn-cart-img {
@@ -583,17 +593,6 @@
   height: 20px;
   stroke: #fff;
   margin-right: 8px;
-}
-
-main {
-  flex-grow: 1;
-  padding: 8px 0 32px;
-}
-
-@media (min-width: 1080px) {
-  main {
-    padding: 16px 0 60px;
-  }
 }
 
 .section {
@@ -691,14 +690,16 @@ main {
   justify-content: center;
   align-items: center;
   min-height: 56px;
-  background: #bc191d;
-  border-color: #bc191d;
+  background-color: #bc191d;
+  border: 1px solid #bc191d;
   color: #fff;
   font-size: 16px;
   font-weight: bold;
-  text-decoration: none;
+  cursor: pointer;
   margin-bottom: 16px;
   border-radius: 10px;
+  width: 100%;
+  font-family: inherit;
 }
 
 @media (min-width: 1080px) {

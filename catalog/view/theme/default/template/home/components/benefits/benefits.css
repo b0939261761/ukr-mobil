@@ -3,14 +3,16 @@
   justify-content: center;
   align-items: center;
   min-height: 56px;
-  background: #bc191d;
-  border-color: #bc191d;
+  background-color: #bc191d;
+  border: 1px solid #bc191d;
   color: #fff;
   font-size: 16px;
   font-weight: bold;
-  text-decoration: none;
+  cursor: pointer;
   margin-bottom: 16px;
   border-radius: 10px;
+  width: 100%;
+  font-family: inherit;
 }
 
 @media (min-width: 1080px) {
