@@ -43,6 +43,8 @@
   font-size: 10px;
   padding: 0 12px;
   font-family: inherit;
+  transition-property: color, background-color;
+  transition-duration: .3s;
 }
 
 @media (min-width: 768px) {
@@ -52,6 +54,11 @@
     font-size: 12px;
     padding: 0 24px;
   }
+}
+
+.product-swiper__btn:hover {
+  background-color: #bc191d;
+  color: #fff;
 }
 
 @media (min-width: 1080px) {

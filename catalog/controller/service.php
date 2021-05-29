@@ -1,5 +1,5 @@
 <?
-class Controller404 extends Controller {
+class ControllerService extends Controller {
   public function index() {
     $data['headingH1'] = 'Упс, щось пішло не так!';
     $this->document->setTitle($data['headingH1']);
@@ -15,7 +15,6 @@ class Controller404 extends Controller {
 
     $data['header'] = $this->load->controller('shared/components/header');
     $data['footer'] = $this->load->controller('shared/components/footer');
-    $data['sliderIncome'] = $this->load->controller('shared/components/slider_income');
 
     http_response_code(404);
     echo $this->load->view('404/404', $data);

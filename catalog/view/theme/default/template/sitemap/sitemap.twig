@@ -1,59 +1,53 @@
 {{ header }}
 
-<main>
-  <div class="container">
-    {{ breadcrumbs }}
-    <h1 class="page-title page-title--sitemap">{{ headingH1 }}</h1>
+<main class="container">
+  {{ breadcrumbs }}
+  <h1 class="page-title page-title--sitemap">{{ headingH1 }}</h1>
 
-    <nav class="sitemap-menu">
-      <ul class="sitemap-menu__items">
-        {% for item in menu %}
-          <li class="sitemap-menu__item">
-            <a
-              class="sitemap-menu__link {{ item.isActive ? 'sitemap-menu__link--active' : '' }}"
-              href="{{ item.link }}"
-            >{{ item.name }}</a>
-          </li>
-        {% endfor %}
-      </ul>
-    </nav>
+  <nav class="sitemap-menu">
+    <ul class="sitemap-menu__items">
+      {% for item in menu %}
+        <li class="sitemap-menu__item">
+          <a
+            class="sitemap-menu__link {{ item.isActive ? 'sitemap-menu__link--active' : '' }}"
+            href="{{ item.link }}"
+          >{{ item.name }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  </nav>
 
-    <a class="sitemap-link" href="{{ mainLink.link }}">{{ mainLink.name }}</a>
+  <a class="sitemap-link" href="{{ mainLink.link }}">{{ mainLink.name }}</a>
 
-    <div class="sitemap-content">
-      {% if links.categories %}
-        <div class="sitemap-content-column-categories">
-          <div class="sitemap-content-column__header">Категории:</div>
-          <ul>
-            {% for item in links.categories %}
-              <li>
-                <a class="sitemap-content__link" href="{{ item.link }}">{{ item.name }}</a>
-              </li>
-            {% endfor %}
-          </ul>
-        </div>
-      {% endif %}
+  <div class="sitemap-content">
+    {% if links.categories %}
+      <div class="sitemap-content-column-categories">
+        <div class="sitemap-content-column__header">Категории:</div>
+        <ul>
+          {% for item in links.categories %}
+            <li>
+              <a class="sitemap-content__link" href="{{ item.link }}">{{ item.name }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
 
-      {% if links.filters %}
-        <div class="sitemap-content-column-filters">
-          <div class="sitemap-content-column__header">Фильтры:</div>
-          <ul>
-            {% for item in links.filters %}
-              <li>
-                <a class="sitemap-content__link" href="{{ item.link }}">{{ item.name }}</a>
-              </li>
-            {% endfor %}
-          </ul>
-        </div>
-      {% endif %}
-    </div>
-
-    {# <div class="pagination-container"> #}
-      {{ pagination }}
-    {# </div> #}
-
+    {% if links.filters %}
+      <div class="sitemap-content-column-filters">
+        <div class="sitemap-content-column__header">Фильтры:</div>
+        <ul>
+          {% for item in links.filters %}
+            <li>
+              <a class="sitemap-content__link" href="{{ item.link }}">{{ item.name }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
   </div>
+
+  {{ pagination }}
 </main>
 
 {{ footer }}
-

@@ -59,20 +59,24 @@ body.body--window-modal-open {
 
 main {
   flex-grow: 1;
-  padding: 8px 0 32px;
+  padding-top: 8px;
+  padding-bottom: 32px;
 }
 
 @media (min-width: 1080px) {
   main {
-    padding: 16px 0 60px;
+    padding-top: 16px;
+    padding-bottom: 60px;
   }
 }
 
 .container {
   width: 100%;
   max-width: 1630px;
-  margin: 0 auto;
-  padding: 0 15px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 15px;
+  padding-right: 15px;
 }
 
 .reset-swiper-container {

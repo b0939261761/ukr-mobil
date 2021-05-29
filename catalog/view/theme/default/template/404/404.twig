@@ -1,7 +1,19 @@
-<div class="page404">
-  <img class="page404__image" src="data/404.png" alt="404">
-  <div class="page404__text">
-      <div class="title-h1">Упс, щось пішло не так!</div>
-      <p class="page404">Але це не страшно! Ви можете знайти потрібні товари у нашому&nbsp;<a href="javascript:void(0)">каталозі</a></p><a class="button" href="javascript:void(0)">На головну</a>
+{{ header }}
+
+<main class="container">
+  <div class="page404">
+    <img class="page404__image" src="/image/404.png" alt="404" height="218" width="241">
+    <div class="page404__content">
+        <h1 class="page-title page-title--page404">{{ headingH1 }}</h1>
+        <p class="page404__text">
+          Але це не страшно! Ви можете знайти потрібні товари у
+          нашому&nbsp;<a href="#" class="page404__link-catalog">каталозі</a>
+        </p>
+        <a class="page404__link-home" href="/">На головну</a>
+    </div>
   </div>
-</div>
+
+  {{ sliderIncome }}
+</main>
+
+{{ footer }}

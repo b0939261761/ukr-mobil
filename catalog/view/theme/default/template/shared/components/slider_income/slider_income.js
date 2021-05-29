@@ -1,4 +1,4 @@
-new Swiper('#swiperIncomes', {
+new Swiper('#swiperIncome', {
   slidesPerView: 2,
   spaceBetween: 8,
   breakpoints: {

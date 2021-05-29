@@ -33,7 +33,7 @@ class ControllerHomeHome extends Controller {
     $data['benefits'] = $this->load->controller('home/components/benefits');
     $data['new'] = $this->load->controller('home/components/new');
     $data['promotions'] = $this->load->controller('home/components/promotions');
-    $data['incomes'] = $this->load->controller('home/components/incomes');
+    $data['sliderIncome'] = $this->load->controller('shared/components/slider_income');
     $data['news'] = $this->load->controller('home/components/news');
 
     $this->response->setOutput($this->load->view('home/home', $data));

@@ -1,11 +1,6 @@
 <?
-class ControllerHomeComponentsIncomes extends Controller {
+class ControllerSharedComponentsSliderIncome extends Controller {
   public function index() {
-    $data['products'] = $this->getProducts();
-    return $this->load->view('home/components/incomes/incomes', $data);
-  }
-
-  private function getProducts() {
     $customerGroupId = $this->customer->getGroupId();
 
     $sql = "
@@ -61,11 +56,13 @@ class ControllerHomeComponentsIncomes extends Controller {
       LEFT JOIN oc_currency c ON c.currency_id = 980
     ";
 
-    $products = $this->db->query($sql)->rows;
-    foreach ($products as &$product) {
+    $data['products'] = $this->db->query($sql)->rows;
+    foreach ($data['products'] as &$product) {
       $product['link'] = $this->url->link('product/product', ['product_id' => $product['id']]);
       $product['image'] = $this->image->resize($product['image'], 306, 306);
     }
-    return $products;
+
+    $data['linkIncome'] = $this->url->link('income/income');
+    return $this->load->view('shared/components/slider_income/slider_income', $data);
   }
 }
