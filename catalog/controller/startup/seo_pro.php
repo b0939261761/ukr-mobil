@@ -113,7 +113,7 @@ class ControllerStartupSeoPro extends Controller {
 
     $this->url->addRewrite($this);
     if (!isset($this->request->get['_route_'])) {
-      if ($this->request->get['route'] == 'error/not_found') return;
+      if ($this->request->get['route'] == '404') return;
 
       $url = "{$this->request->request['domain']}{$uri}";
       $queries = array_filter($this->request->get, function($k) {return $k != 'route';}, ARRAY_FILTER_USE_KEY);
@@ -182,7 +182,7 @@ class ControllerStartupSeoPro extends Controller {
     if ($controller == 'catalog/catalog') {
       $filters = $this->catalog->getFilters($keywordFilters);
       $this->catalog->setPage($this->request->get['page'] ?? 1);
-      if (count($filters) != count($keywordFilters)) return new Action('error/not_found');
+      if (count($filters) != count($keywordFilters)) return new Action('404');
       $this->request->request['filters'] = $filters; // TODO REMOVE
       foreach ($filters as $filter) $this->request->get[$filter['key']] = $filter['value']; // TODO REMOVE
     }

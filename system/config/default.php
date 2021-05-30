@@ -70,6 +70,6 @@ $_['model_autoload']       = array();
 // Actions
 $_['action_default']       = 'home/home';
 $_['action_router']        = 'startup/router';
-$_['action_error']         = 'error/not_found';
+// $_['action_error']         = '404';
 $_['action_pre_action']    = array();
 $_['action_event']         = array();

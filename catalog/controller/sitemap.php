@@ -20,7 +20,7 @@ class ControllerSitemap extends Controller {
 
     } elseif ($sitemapId == 'tracking') {
       $data['mainLink'] = [
-        'link' => $this->url->link('information/tracking'),
+        'link' => $this->url->link('tracking'),
         'name' => 'Сервіс'
       ];
     } elseif ($sitemapId == 'delivery') {

@@ -1,0 +1,99 @@
+{{ header }}
+
+<main class="container">
+  {{ breadcrumbs }}
+  <h1 class="page-title page-title--tracking">{{ headingH1 }}</h1>
+
+  <div class="tracking">
+    <h2 class="tracking__title">Превевірка статусу замовлення</h2>
+    <p class="tracking__subtitle">
+      Введіть номер квитанції і номер телефону,
+      який Ви вказали при оформленні замовлення і дізнайтеся поточний статус ремонту
+    </p>
+
+    <form class=" tracking__form" id="trackingForm">
+      <input
+        class="tracking__input"
+        title="Номер квитанції"
+        placeholder="Номер квитанції"
+        id="trackingOrderId"
+        required
+        pattern="\d{5} \d{4}"
+      />
+
+      <input
+        class="tracking__input"
+        title="Номер телефону"
+        id="trackingPhone"
+        required
+        pattern="\+38\(0\d{2}\)\d{3}-\d{2}-\d{2}"
+        >
+      <button class="tracking__button" type="submit">Перевірити статус</button>
+    </form>
+
+    <div class="tracking__success" id="trackingSuccess">
+      <table class="tracking__table-desktop">
+        <thead class="tracking__table-desktop-head">
+          <tr >
+            <th class="tracking__table-desktop-cell tracking__table-desktop-cell--head">Назва товару</th>
+            <th class="tracking__table-desktop-cell tracking__table-desktop-cell--head">Ціна</th>
+            <th class="tracking__table-desktop-cell tracking__table-desktop-cell--head">Статус</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="tracking__table-desktop-cell sevice-name"></td>
+            <td class="tracking__table-desktop-cell">
+              <span class="sevice-price"></span>&nbsp;грн
+            </td>
+            <td class="tracking__table-desktop-cell sevice-status">
+              <ul class="tracking__status"></ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table class="tracking__table-mobile">
+        <tbody>
+          <tr>
+            <td class="tracking__table-mobile-cell tracking__table-mobile-cell--title">Назва товару</td>
+            <td class="tracking__table-mobile-cell tracking__table-mobile-cell--value sevice-name"></td>
+          </tr>
+          <tr>
+            <td class="tracking__table-mobile-cell tracking__table-mobile-cell--title">Ціна</td>
+            <td class="tracking__table-mobile-cell tracking__table-mobile-cell--value">
+              <span class="sevice-price"></span>&nbsp;грн
+            </td>
+          </tr>
+          <tr>
+            <td class="tracking__table-mobile-cell tracking__table-mobile-cell--title">Статус</td>
+            <td class="tracking__table-mobile-cell tracking__table-mobile-cell--value">
+              <ul class="tracking__status">
+                <li class="tracking__status-item">
+                  Принятий
+                  <span class="tracking__status-date">10:17 19.03.2021</span>
+                </li>
+                <li class="tracking__status-item">
+                  Відправлений на погодження
+                  <span class="tracking__status-date">10:17 19.03.2021</span>
+                </li>
+                <li class="tracking__status-item">
+                  Відправлений на погодження
+                  <span class="tracking__status-date">10:17 19.03.2021</span>
+                </li>
+                <li class="tracking__status-item">
+                  Відправлений на погодження
+                  <span class="tracking__status-date">10:17 19.03.2021</span>
+                </li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tracking__error" id="trackingError"></div>
+  </div>
+</main>
+
+{{ footer }}

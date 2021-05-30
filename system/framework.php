@@ -165,7 +165,7 @@ if ($config->has('action_pre_action')) {
 }
 
 // Dispatch
-$route->dispatch(new Action($config->get('action_router')), new Action($config->get('action_error')));
+$route->dispatch(new Action($config->get('action_router')), new Action('404'));
 
 // Output
 $response->output();
