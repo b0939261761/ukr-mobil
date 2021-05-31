@@ -6,6 +6,7 @@ import page404 from './gulp/404.js';
 import tracking from './gulp/tracking.js';
 import about from './gulp/about.js';
 import information from './gulp/information.js';
+import news_list from './gulp/news_list.js';
 
 export default cb => {
   // shared();
@@ -14,7 +15,8 @@ export default cb => {
   // sitemap();
   // page404();
   // tracking();
-  about();
-  information();
+  // about();
+  // information();
+  news_list();
   cb();
 };

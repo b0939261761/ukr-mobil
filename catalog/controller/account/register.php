@@ -39,7 +39,7 @@ class ControllerAccountRegister extends Controller {
     }
 
     $data['action'] = $this->url->link('account/register');
-    $data['linkAgree'] = $this->url->link('information/information', ['information_id' => 'agree_to_terms']);
+    $data['linkAgree'] = $this->url->link('information', ['information_id' => 'agree_to_terms']);
     $data['linkLogin'] = $this->url->link('account/login');
     $data['error'] = $this->error;
 
