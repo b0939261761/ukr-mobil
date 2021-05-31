@@ -6,12 +6,12 @@ class ControllerSharedComponentsFooter extends Controller {
 
     $data['categories'] = $this->getCategories();
 
-    $data['linkAboutUs'] = $this->url->link('information/about_us');
-    $data['linkWarrantly'] = "{$this->url->link('information/about_us')}#warrantly";
-    $data['linkUserDataUsage'] = $this->url->link('information/information', ['information_id' => 'user_data_usage']);
-    $data['linkContacts'] = "{$this->url->link('information/about_us')}#contact";
+    $data['linkAbout'] = $this->url->link('about');
+    $data['linkWarranty'] = $this->url->link('information', ['information_id' => 'warranty']);
+    $data['linkUserDataUsage'] = $this->url->link('information', ['information_id' => 'user_data_usage']);
+    $data['linkContact'] = $this->url->link('information', ['information_id' => 'contact']);
 
-    $data['linkDelivery'] = "{$this->url->link('information/about_us')}#delivery";
+    $data['linkDelivery'] = $this->url->link('information', ['information_id' => 'delivery']);
     $data['linkNews'] = $this->url->link('information/news');
     $data['linkTracking'] = $this->url->link('tracking');
 

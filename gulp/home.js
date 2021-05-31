@@ -9,7 +9,6 @@ const buildSvg = () => {
   const pathIcons = './catalog/view/theme/default/images/icons/home/';
   const iconsName = [
     'benefit-0', 'benefit-1', 'benefit-2', 'benefit-3',
-    'lines-lighter-left', 'lines-lighter-right',
     'calendar'
   ];
 

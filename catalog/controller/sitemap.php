@@ -14,7 +14,7 @@ class ControllerSitemap extends Controller {
     $activeMenu = $sitemapId;
     if ($sitemapId == 'about') {
       $data['mainLink'] = [
-        'link' => $this->url->link('information/about_us'),
+        'link' => $this->url->link('information/about'),
         'name' => 'Про нас'
       ];
 
@@ -25,7 +25,7 @@ class ControllerSitemap extends Controller {
       ];
     } elseif ($sitemapId == 'delivery') {
       $data['mainLink'] = [
-        'link' => "{$this->url->link('information/about_us')}#delivery",
+        'link' => $this->url->link('information', ['information_id' => 'delivery']),
         'name' => 'Доставка і оплата'
       ];
     } elseif ($sitemapId == 'income') {
@@ -35,7 +35,7 @@ class ControllerSitemap extends Controller {
       ];
     } elseif ($sitemapId == 'contacts') {
       $data['mainLink'] = [
-        'link' => "{$this->url->link('information/about_us')}#contact",
+        'link' => $this->url->link('information', ['information_id' => 'contact']),
         'name' => 'Контакти'
       ];
     } elseif ((int)$sitemapId) {
