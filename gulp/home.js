@@ -6,17 +6,16 @@ import svgmin from 'gulp-svgmin';
 import svgstore from 'gulp-svgstore';
 
 const buildSvg = () => {
-  const pathIcons = './catalog/view/theme/default/images/icons/home/';
-  const iconsName = [
-    'benefit-0', 'benefit-1', 'benefit-2', 'benefit-3',
-    'calendar'
+  const pathCommonIcons = './catalog/view/theme/default/images/icons/common/';
+  const commonIconsName = [
+    'benefit-0', 'benefit-1', 'benefit-2', 'benefit-3'
   ];
 
-  gulp.src(iconsName.map(el => `${pathIcons}${el}.svg`))
+  gulp.src(commonIconsName.map(el => `${pathCommonIcons}${el}.svg`))
     .pipe(svgmin({ plugins: [{ removeUselessStrokeAndFill: false }] }))
     .pipe(rename({ prefix: 'icon-' }))
     .pipe(svgstore({ inlineSvg: true }))
-    .pipe(rename({ suffix: '-sprite-icons' }))
+    .pipe(rename({ basename: 'home-sprite-icons' }))
     .pipe(gulp.dest('./resourse/images'));
 };
 

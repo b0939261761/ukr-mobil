@@ -13,8 +13,7 @@ const buildSvg = () => {
 
   const pathCommonIcons = './catalog/view/theme/default/images/icons/common/';
   const commonIconsName = [
-    'benefit-0', 'benefit-1', 'benefit-2', 'benefit-3',
-    'info', 'news', 'service', 'delivery', 'warranty', 'docs-full'
+    'benefit-0', 'benefit-1', 'benefit-2', 'benefit-3'
   ];
 
   const iconsAll = [
@@ -26,7 +25,7 @@ const buildSvg = () => {
     .pipe(svgmin({ plugins: [{ removeUselessStrokeAndFill: false }] }))
     .pipe(rename({ prefix: 'icon-' }))
     .pipe(svgstore({ inlineSvg: true }))
-    .pipe(rename({ suffix: '-sprite-icons' }))
+    .pipe(rename({ basename: 'about-sprite-icons' }))
     .pipe(gulp.dest('./resourse/images'));
 };
 

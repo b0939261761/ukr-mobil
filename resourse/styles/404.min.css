@@ -137,6 +137,8 @@
   padding: 8px;
   border-radius: 10px;
   background-color: #fff;
+  display: flex;
+  flex-direction: column;
 }
 
 @media (min-width: 768px) {
@@ -223,6 +225,11 @@
   background-color: transparent;
   cursor: pointer;
   display: flex;
+  color: #999;
+  transition: color .3s ease;
+}
+
+.product-slide__btn-like:hover {
   color: #bc191d;
 }
 
@@ -236,6 +243,7 @@
   color: #999;
   margin-bottom: 6px;
   font-size: 12px;
+  white-space: nowrap;
 }
 
 .product-slide__name {
@@ -415,7 +423,6 @@
   align-items: center;
   cursor: pointer;
   padding: 0;
-  margin-right: auto;
 }
 
 .product-slide__options-btn-open-img {
@@ -439,6 +446,7 @@
   .product-slide__options-price {
     display: block;
     color: #999;
+    margin-left: auto;
   }
 }
 
@@ -541,6 +549,7 @@
   display: grid;
   grid-gap: 4px;
   grid-template-columns: repeat(1, 1fr);
+  margin-top: auto;
 }
 
 @media (min-width: 768px) {
@@ -601,6 +610,37 @@
   stroke: #fff;
   margin-right: 8px;
 }
+
+.product-slide__btn-notify {
+  background: #edeff2 url(/resourse/images/lines-right.svg) right center no-repeat;
+  border: 1px solid #edeff2;
+  color: #999;
+  font-size: 12px;
+  font-family: inherit;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  padding: 0 2px;
+  height: 38px;
+  border-radius: 10px;
+  width: 100%;
+}
+
+@media (min-width: 1080px) {
+  .product-slide__btn-notify {
+    grid-column: 1 / 3;
+  }
+}
+
+.product-slide__btn-notify-img {
+  width: 22px;
+  height: 20px;
+  stroke: currentColor;
+  margin-right: 8px;
+}
+
 
 .product-swiper__wrapper-title-income {
   display: grid;

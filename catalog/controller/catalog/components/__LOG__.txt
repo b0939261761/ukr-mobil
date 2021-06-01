@@ -5,4 +5,4 @@ SELECT DISTINCT b.id, b.name FROM oc_category_path cp
     LEFT JOIN models m ON m.id = pm.model_id
     LEFT JOIN brands b ON b.id = m.brand_id
       WHERE b.id IS NOT NULL
-     AND cp.path_id = 10000035 ORDER BY b.ord, b.name
+     AND cp.path_id = 10000006 ORDER BY b.ord, b.name

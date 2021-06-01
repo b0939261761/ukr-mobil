@@ -1,0 +1,36 @@
+.btn-load-more {
+  display: flex;
+  align-items: center;
+  color: #bc191d;
+  font-size: 12px;
+  font-weight: bold;
+  font-family: inherit;
+  cursor: pointer;
+  border: 1px solid currentColor;
+  background-color: transparent;
+  padding: 0 18px;
+  min-height: 48px;
+  border-radius: 10px;
+  height: 48px;
+  margin: 0 auto 24px;
+  transition-property: background-color, color, opacity, visibility;
+  transition-duration: .3s;
+}
+
+@media (min-width: 768px) {
+  .btn-load-more {
+    margin-bottom: 16px;
+  }
+}
+
+.btn-load-more:hover {
+  background-color: #bc191d;
+  color: #fff;
+}
+
+.btn-load-more__img {
+  width: 26px;
+  height: 22px;
+  stroke: currentColor;
+  margin-right: 8px;
+}

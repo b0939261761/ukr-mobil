@@ -9,7 +9,7 @@ class ControllerSharedComponentsRightMenu extends Controller {
       ],
       'news' => [
         'name' => 'Новини',
-        'link' => $this->url->link('information/news'),
+        'link' => $this->url->link('news_list'),
         'icon' => 'news'
       ],
       'tracking' => [
@@ -34,7 +34,7 @@ class ControllerSharedComponentsRightMenu extends Controller {
       ]
     ];
 
-    if (isset($data['menu'][$props['active']])) $data['menu'][$props['active']]['active'] = true;
+    if (isset($props['active']) && isset($data['menu'][$props['active']])) $data['menu'][$props['active']]['active'] = true;
     return $this->load->view('shared/components/right_menu/right_menu', $data);
   }
 }

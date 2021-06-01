@@ -2,7 +2,6 @@
 class ControllerSitemap extends Controller {
   public function index() {
     $sitemapId = $this->request->get['sitemap_id'] ?? '';
-    $page = (int)($this->request->get['page'] ?? 1);
 
     $this->document->addCustomStyle('/resourse/styles/sitemap.min.css');
 
@@ -17,7 +16,6 @@ class ControllerSitemap extends Controller {
         'link' => $this->url->link('information/about'),
         'name' => 'Про нас'
       ];
-
     } elseif ($sitemapId == 'tracking') {
       $data['mainLink'] = [
         'link' => $this->url->link('tracking'),
@@ -39,6 +37,7 @@ class ControllerSitemap extends Controller {
         'name' => 'Контакти'
       ];
     } elseif ((int)$sitemapId) {
+      $page = (int)($this->request->get['page'] ?? 1);
       $limit = 150;
       $start = ($page - 1) * $limit;
       $end = $start + $limit - 1;

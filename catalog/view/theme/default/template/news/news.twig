@@ -1,0 +1,170 @@
+{{ header }}
+
+<main class="container">
+  {{ breadcrumbs }}
+
+  <div class="news">
+    <div class="news__content {{ products | length > 1 ? 'news__content--products' : '' }}">
+      <div class="news__date">
+        <svg class="news__date-img">
+          <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-calendar"></use>
+        </svg>
+        <span>{{ date }}</span>
+      </div>
+
+      <h1 class="page-title">{{ headingH1 }}</h1>
+
+      {{ content }}
+    </div>
+
+    {% if products | length > 1 %}
+      <div class="news__right-menu">{{ rightMenu }}</div>
+    {% else %}
+      {{ rightMenu }}
+    {% endif %}
+
+    {% if products | length > 1 %}
+      <div class="news__products">
+        {% for product in products %}
+          <div class="product-slide">
+            <a class="product-slide__wrapper-img" href="{{ product.link }}">
+              <img class="product-slide__img" src="{{ product.image }}" alt="">
+              <div class="product-slide__labels">
+                {% if product.isSalesLeader %}
+                  <span class="product-slide__label product-slide__label--yellow">Лідер продажу</span>
+                {% endif %}
+
+                {% if product.isPromotions %}
+                  <span class="product-slide__label product-slide__label--red">Акція</span>
+                {% endif %}
+
+                {% if product.isLatest %}
+                  <span class="product-slide__label product-slide__label--green">Новинка</span>
+                {% endif %}
+
+                {% if product.dateExpected %}
+                  <span class="product-slide__label product-slide__label--special">{{ product.dateExpected }}</span>
+                {% endif %}
+              </div>
+
+              <button class="product-slide__btn-like" type="button" title="Додати до вибранного">
+                <svg class="product-slide__btn-like-img">
+                  <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-heart"></use>
+                </svg>
+              </button>
+            </a>
+
+            <div class="product-slide__code">Код товару: {{ product.id }}</div>
+            <a class="product-slide__name" href="{{ product.link }}">{{ product.name }}</a>
+            <div class="product-slide__price">
+              <div class="product-slide__price-uah">
+                {% if product.isPromotions %}
+                  <div class="product-slide__price-uah-old">{{ product.priceOldUAH }} грн</div>
+                {% endif %}
+                <div class="product-slide__price-uah-default {{ product.priceOldUAH ? 'product-slide__price-uah-default--red' : '' }}">
+                  {{ product.priceUAH }} грн
+                </div>
+              </div>
+              <div class="product-slide__price-usd">$ {{ product.priceUSD }}</div>
+            </div>
+
+            <div class="product-slide__availability-title">Наявність на складах:</div>
+            <div class="product-slide__availability-list">
+              <div class="product-slide__availability-item product-slide__availability-item--first">
+                Рівне&nbsp;<b>{{ product.quantityStore2 }}шт.</b>
+              </div>
+
+              <div class="product-slide__availability-item product-slide__availability-item--last">
+                Чернівці&nbsp;<b>{{ product.quantityStore1 }}шт.</b>
+              </div>
+            </div>
+
+
+            <div class="product-slide__options">
+              {% if product.properties | length > 1 %}
+                <div class="product-slide__wrapper-characteristic-list">
+                  <div class="product-slide__characteristic-list">
+                    {% for property in product.properties %}
+                      {% if property.isColor %}
+                        <div>
+                          <div class="product-slide__characteristic-item-title">{{ property.name }}</div>
+                          <div class="product-slide__characteristic-item-color-list">
+                            {% for value in property.values %}
+                              {% if value.isActive %}
+                                <span
+                                  class="product-slide__characteristic-item-color product-slide__characteristic-item-color--active"
+                                  style="background-color: {{ value.color }}"
+                                  title="{{ value.name }}"
+                                ></span>
+                              {% else %}
+                                <a
+                                  class="product-slide__characteristic-item-color"
+                                  style="background-color: {{ value.color }}"
+                                  href="{{ value.link }}"
+                                  title="{{ value.name }}"
+                                ></a>
+                              {% endif %}
+                            {% endfor %}
+                          </div>
+                        </div>
+                      {% else %}
+                        <div class="product-slide__characteristic-item">
+                          <div class="product-slide__characteristic-item-title">{{ property.name }}</div>
+                          <div class="product-slide__characteristic-item-value-list">
+                            {% for value in property.values %}
+                              {% if value.isActive %}
+                                <span class="product-slide__characteristic-item-value product-slide__characteristic-item-value--active">{{ value.name }}</span>
+                              {% else %}
+                                <a href="{{ value.link }}" class="product-slide__characteristic-item-value">{{ value.name }}</a>
+                              {% endif %}
+                            {% endfor %}
+                          </div>
+                        </div>
+                      {% endif %}
+                    {% endfor %}
+                  </div>
+                </div>
+
+                <button class="product-slide__options-btn-open">
+                  Варіанти товару
+                  <svg class="product-slide__options-btn-open-img">
+                    <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-arrow-up"></use>
+                  </svg>
+                </button>
+              {% endif %}
+
+
+              {% if product.priceMinUSD or product.priceMaxUSD %}
+                <div class="product-slide__options-price">
+                  <div class="product-slide__options-price-uah">{{ product.priceMinUAH }} - {{ product.priceMaxUAH }} грн</div>
+                  <div class="product-slide__options-price-usd">$ {{ product.priceMinUSD }} - {{ product.priceMaxUSD }}</div>
+                </div>
+              {% endif %}
+            </div>
+
+            <div class="product-slide__actions">
+              {% if product.quantity %}
+                <button class="product-slide__btn-buy">Купити в 1 клік</button>
+                <button class="product-slide__btn-cart">
+                  <svg class="product-slide__btn-cart-img">
+                    <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-cart"></use>
+                  </svg>
+                  В кошик
+                </button>
+              {% else %}
+                <button class="product-slide__btn-notify">
+                  <svg class="product-slide__btn-notify-img">
+                    <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-notify"></use>
+                  </svg>
+                  Повідомити про наявність
+                </button>
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</main>
+
+{{ footer }}

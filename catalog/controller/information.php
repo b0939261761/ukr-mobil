@@ -21,7 +21,6 @@ class ControllerInformation extends Controller {
     $this->document->setDescription("{$data['headingH1']} ✅ UKRMobil ✅ Фиксированные цены ✅ Гарантия ✅ Доставка по всей Украине");
     $this->document->setMicrodataBreadcrumbs();
 
-    $this->document->addPreload('/resourse/images/information-sprite-icons.svg', 'image', 'image/svg+xml');
     $this->document->addCustomStyle('/resourse/styles/information.min.css');
 
     $breacrumbsData = ['breadcrumbs' => [['name' => $data['headingH1']]]];

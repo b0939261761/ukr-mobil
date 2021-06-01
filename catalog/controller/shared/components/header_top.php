@@ -2,7 +2,7 @@
 class ControllerSharedComponentsHeaderTop extends Controller {
   public function index() {
     $data['linkAbout'] = $this->url->link('about');
-    $data['linkNews'] = $this->url->link('information/news');
+    $data['linkNews'] = $this->url->link('news_list');
     $data['linkTracking'] = $this->url->link('tracking');
     $data['linkDelivery'] = $this->url->link('information', ['information_id' => 'delivery']);
     $data['linkIncome'] = $this->url->link('income/income');

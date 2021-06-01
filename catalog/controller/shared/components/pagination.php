@@ -4,7 +4,7 @@ class ControllerSharedComponentsPagination extends Controller {
     $maxPages = 5;
     $page = $props['page'] ?? 1;
     $totalPages = ceil($props['total'] / $props['limit']);
-    if ($totalPages <= 1) return [];
+    if ($totalPages <= 1) return '';
 
     if ($totalPages <= $maxPages) {
       $start = 1;

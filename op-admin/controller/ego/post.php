@@ -1,4 +1,4 @@
-<?php
+<?
 
 use Ego\Controllers\BaseController;
 use Ego\Providers\Util;
@@ -211,6 +211,7 @@ class ControllerEgoPost extends BaseController {
 			$transferData = $this->getInput('transferData');
 			//endregion
 
+
 			$post = Util::getArrItem($transferData, 'post');
 			$content = Util::getArrItem($transferData, 'content');
 			$cardId = (int)Util::getArrItem($post, 'id');
@@ -223,7 +224,13 @@ class ControllerEgoPost extends BaseController {
 			$postRow = (new \Ego\Struct\EgoPostRowStruct())
 				->setId($cardId)
 				->setCategory(Util::getArrItem($post, 'category', ''))
-				->setPreviewImage(Util::getArrItem($post, 'preview_image', ''));
+				->setProductId1((int)Util::getArrItem($post, 'productId1', 0))
+				->setProductId2((int)Util::getArrItem($post, 'productId2', 0))
+				->setProductId3((int)Util::getArrItem($post, 'productId3', 0))
+				->setProductId4((int)Util::getArrItem($post, 'productId4', 0))
+				->setProductId5((int)Util::getArrItem($post, 'productId5', 0))
+				->setDescription(Util::getArrItem($post, 'description', ''));
+
 			/** @var \Ego\Struct\EgoPostContentRowStruct[] $postContentList */
 			$postContentList = [];
 

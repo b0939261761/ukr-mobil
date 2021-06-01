@@ -19,6 +19,13 @@ class EgoPostRowStruct extends BaseStruct {
 	/** @var string */
 	private $dateUpdate;
 
+	private $productId1;
+	private $productId2;
+	private $productId3;
+	private $productId4;
+	private $productId5;
+	private $description;
+
 	/**
 	 * @return int
 	 */
@@ -101,6 +108,60 @@ class EgoPostRowStruct extends BaseStruct {
 	public function setDateUpdate(string $dateUpdate): self {
 		$this->dateUpdate = $dateUpdate;
 
+		return $this;
+	}
+
+	public function getProductId1() {
+		return $this->productId1;
+	}
+
+	public function setProductId1($productId): self {
+		$this->productId1 = $productId;
+		return $this;
+	}
+
+  public function getProductId2() {
+		return $this->productId2;
+	}
+
+	public function setProductId2($productId): self {
+		$this->productId2 = $productId;
+		return $this;
+	}
+
+  public function getProductId3() {
+		return $this->productId3;
+	}
+
+	public function setProductId3($productId): self {
+		$this->productId3 = $productId;
+		return $this;
+	}
+
+  public function getProductId4() {
+		return $this->productId4;
+	}
+
+	public function setProductId4($productId): self {
+		$this->productId4 = $productId;
+		return $this;
+	}
+
+  public function getProductId5() {
+		return $this->productId5;
+	}
+
+	public function setProductId5($productId): self {
+		$this->productId5 = $productId;
+		return $this;
+	}
+
+  public function getDescription() {
+		return $this->description;
+	}
+
+	public function setDescription($description): self {
+		$this->description = $description;
 		return $this;
 	}
 

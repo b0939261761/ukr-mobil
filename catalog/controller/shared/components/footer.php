@@ -12,7 +12,7 @@ class ControllerSharedComponentsFooter extends Controller {
     $data['linkContact'] = $this->url->link('information', ['information_id' => 'contact']);
 
     $data['linkDelivery'] = $this->url->link('information', ['information_id' => 'delivery']);
-    $data['linkNews'] = $this->url->link('information/news');
+    $data['linkNews'] = $this->url->link('news_list');
     $data['linkTracking'] = $this->url->link('tracking');
 
     $data['footerBtnScrollToTop'] = $this->load->controller('shared/components/footer_btn_scroll_to_top');

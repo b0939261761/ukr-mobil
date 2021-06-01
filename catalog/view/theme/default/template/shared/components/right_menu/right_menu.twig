@@ -6,14 +6,14 @@
         {% if item.active %}
           <span class="right-menu__link right-menu__link--active">
             <svg class="right-menu__link-img">
-              <use xlink:href="/resourse/images/about-sprite-icons.svg#icon-{{ item.icon }}"></use>
+              <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-{{ item.icon }}"></use>
             </svg>
             {{ item.name }}
           </span>
         {% else %}
         <a href="{{ item.link }}" class="right-menu__link">
           <svg class="right-menu__link-img">
-            <use xlink:href="/resourse/images/about-sprite-icons.svg#icon-{{ item.icon }}"></use>
+            <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-{{ item.icon }}"></use>
           </svg>
           {{ item.name }}
         </a>

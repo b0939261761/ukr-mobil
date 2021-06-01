@@ -63,6 +63,7 @@
 								</div>
 							</div>
 
+
 							{#Image#}
 							<div class="form-group">
 								<label
@@ -90,6 +91,49 @@
 									>
 								</div>
 							</div>
+
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="product1">ID Продукта 1</label>
+								<div class="col-sm-10">
+									<input type="text" name="productId1" id="product1" class="form-control" value="{{ card.post.product_id1 }}" />
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="product2">ID Продукта 2</label>
+								<div class="col-sm-10">
+									<input type="text" name="productId2" id="product2" class="form-control" value="{{ card.post.product_id2 }}" />
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="product3">ID Продукта 3</label>
+								<div class="col-sm-10">
+									<input type="text" name="productId3" id="product3" class="form-control" value="{{ card.post.product_id3 }}" />
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="product4">ID Продукта 4</label>
+								<div class="col-sm-10">
+									<input type="text" name="productId4" id="product4" class="form-control" value="{{ card.post.product_id4 }}" />
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="product5">ID Продукта 4</label>
+								<div class="col-sm-10">
+									<input type="text" name="productId5" id="product5" class="form-control" value="{{ card.post.product_id5 }}" />
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="description">Описание</label>
+								<div class="col-sm-10">
+									<textarea name="description" id="description" class="form-control" rows="5">{{ card.post.description }}</textarea>
+								</div>
+							</div>
+
 
 							{#Language tabs#}
 							<ul
@@ -358,7 +402,14 @@
 				post: {
 					id: cardId,
 					category: baseComponent.elementRef.find('[name="ego-form-field-category"]').val(),
-					preview_image: baseComponent.elementRef.find('[name="ego-form-field-preview-image"]').val()
+					preview_image: baseComponent.elementRef.find('[name="ego-form-field-preview-image"]').val(),
+					productId1: baseComponent.elementRef.find('[name="productId1"]').val(),
+					productId2: baseComponent.elementRef.find('[name="productId2"]').val(),
+					productId3: baseComponent.elementRef.find('[name="productId3"]').val(),
+					productId4: baseComponent.elementRef.find('[name="productId4"]').val(),
+					productId5: baseComponent.elementRef.find('[name="productId5"]').val(),
+					description: baseComponent.elementRef.find('[name="description"]').val(),
+
 				},
 				content: {}
 			};

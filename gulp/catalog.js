@@ -10,7 +10,6 @@ const buildSvg = () => {
   const iconsName = [
     'view-row', 'view-grid',
     'sort-popular', 'sort-new', 'sort-increase-price', 'sort-decrease-price', 'sort-promotions',
-    'update',
     'info'
   ];
 
@@ -18,7 +17,7 @@ const buildSvg = () => {
     .pipe(svgmin({ plugins: [{ removeUselessStrokeAndFill: false }] }))
     .pipe(rename({ prefix: 'icon-' }))
     .pipe(svgstore({ inlineSvg: true }))
-    .pipe(rename({ suffix: '-sprite-icons' }))
+    .pipe(rename({ basename: 'catalog-sprite-icons' }))
     .pipe(gulp.dest('./resourse/images'));
 };
 

@@ -7,16 +7,18 @@ import tracking from './gulp/tracking.js';
 import about from './gulp/about.js';
 import information from './gulp/information.js';
 import news_list from './gulp/news_list.js';
+import news from './gulp/news.js';
 
 export default cb => {
   // shared();
-  // home();
+  home();
   // catalog();
   // sitemap();
   // page404();
   // tracking();
   // about();
   // information();
-  news_list();
+  // news_list();
+  news();
   cb();
 };

@@ -3,10 +3,43 @@
 <main class="container">
   {{ breadcrumbs }}
 
-  <div class="information">
-    <div class="information__content">
+  <div class="news-list">
+    <div class="news-list__content">
       <h1 class="page-title">{{ headingH1 }}</h1>
-      {{ content }}
+      <ul id="newsListList">
+        {% for item in news %}
+          <li class="news-list-item">
+            <a class="news-list-item__link" href="{{ item.url }}">
+              <img class="news-list-item__img" src="{{ item.image }}" alt="">
+            </a>
+            <div class="news-list-item__content">
+              <span class="news-list-item__date">
+                <svg class="news-list-item__date-img">
+                  <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-calendar"></use>
+                </svg>
+
+                {{ item.date }}
+              </span>
+              <a class="news-list-item__title" href="{{ item.url }}">{{ item.title }}</a>
+              <div class="news-list-item__text">{{ item.description }}</div>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+
+      {% if countLoadItems %}
+        <button class="btn-load-more" id="newsListBtnLoadMore">
+          <svg class="btn-load-more__img">
+            <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-update"></use>
+          </svg>
+          Показати ще&nbsp;
+          <span id="newsListBtnLoadMoreCount">{{ countLoadItems }}</span>
+        </button>
+      {% endif %}
+
+      <div id="newsListPaginationWrapper">
+        {{ pagination }}
+      </div>
     </div>
 
     {{ rightMenu }}

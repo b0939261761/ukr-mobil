@@ -6,22 +6,21 @@ const buildCss = () => {
   gulp.src([
     './catalog/view/theme/default/template/shared/components/breadcrumbs/breadcrumbs.css',
     './catalog/view/theme/default/template/shared/components/right_menu/right_menu.css',
-    './catalog/view/theme/default/template/news_list/news_list.css',
-    './catalog/view/theme/default/template/shared/btn-load-more.css',
-    './catalog/view/theme/default/template/shared/components/pagination/pagination.css'
+    './catalog/view/theme/default/template/news/news.css',
+    './catalog/view/theme/default/template/shared/product-slide.css'
   ])
     .pipe(sourcemaps.init())
-    .pipe(concat('news_list.min.css'))
+    .pipe(concat('news.min.css'))
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest('./resourse/styles'));
 };
 
 const buildJs = () => {
   gulp.src([
-    './catalog/view/theme/default/template/news_list/news_list.js'
+    './catalog/view/theme/default/template/shared/product-slide.js'
   ])
     .pipe(sourcemaps.init())
-    .pipe(concat('news_list.min.js'))
+    .pipe(concat('news.min.js'))
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest('./resourse/scripts'));
 };

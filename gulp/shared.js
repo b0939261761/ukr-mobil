@@ -18,14 +18,17 @@ const buildSvg = () => {
     'phone', 'facebook', 'telegram', 'instagram', 'viber', '32x32', // footer
     'arrow-up', // footer, catalog
     'home', // breadcrumbs
-    'notify' // product
+    'notify', // product
+    'info', 'news', 'service', 'delivery', 'warranty', 'docs-full', // right-menu
+    'calendar', // home, news_list
+    'update' // news_list, catalog
   ];
 
   gulp.src(iconsName.map(el => `${pathIcons}${el}.svg`))
     .pipe(svgmin({ plugins: [{ removeUselessStrokeAndFill: false }] }))
     .pipe(rename({ prefix: 'icon-' }))
     .pipe(svgstore({ inlineSvg: true }))
-    .pipe(rename({ suffix: '-sprite-icons' }))
+    .pipe(rename({ basename: 'shared-sprite-icons' }))
     .pipe(gulp.dest('./resourse/images'));
 };
 
