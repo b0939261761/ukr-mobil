@@ -255,11 +255,19 @@
   font-weight: bold;
   height: 56px;
   overflow: hidden;
+  font-size: 12px;
+  line-height: 1.5;
 }
 
 @media (min-width: 768px) {
   .product-slide__name {
     margin-bottom: 21px;
+  }
+}
+
+@media (min-width: 1080px) {
+  .product-slide__name {
+    font-size: 14px;
   }
 }
 
@@ -355,7 +363,7 @@
   align-items: center;
   height: 48px;
   border: 1px solid #edeff2;
-  padding: 8px;
+  padding: 8px 0;
   border-radius: 4px;
   background-repeat: no-repeat;
   width: 50%;
@@ -615,7 +623,6 @@
   background: #edeff2 url(/resourse/images/lines-right.svg) right center no-repeat;
   border: 1px solid #edeff2;
   color: #999;
-  font-size: 12px;
   font-family: inherit;
   font-weight: bold;
   display: flex;
@@ -626,6 +633,13 @@
   height: 38px;
   border-radius: 10px;
   width: 100%;
+  font-size: 9px;
+}
+
+@media (min-width: 768px) {
+  .product-slide__btn-notify {
+    font-size: 12px;
+  }
 }
 
 @media (min-width: 1080px) {
@@ -639,8 +653,14 @@
   height: 20px;
   stroke: currentColor;
   margin-right: 8px;
+  display: none;
 }
 
+@media (min-width: 1080px) {
+  .product-slide__btn-notify-img {
+    display: block;
+  }
+}
 
 .product-swiper__wrapper-title-income {
   display: grid;

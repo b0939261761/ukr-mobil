@@ -274,7 +274,7 @@ class ProductFilterProvider {
       LIMIT {$start},{$this->productLimit}
     ";
 
-    file_put_contents('./ego/src/Providers/___LOG___.txt', $sql);
+    // file_put_contents('./ego/src/Providers/___LOG___.txt', $sql);
 
     $items = $this->db->query($sql)->rows;
 

@@ -1,0 +1,218 @@
+{{ header }}
+
+<main class="container">
+  {{ breadcrumbs }}
+
+
+
+
+  <div class="checkout-success">
+    <div class="checkout-success__title">
+      <svg class="checkout-success__title-img" height="100" width="100">
+        <use xlink:href="/resourse/images/checkout-success-sprite-icons.svg#icon-circle-check"></use>
+      </svg>
+
+      <h1 class="page-title page-title--checkout-success">{{ headingH1 }}</h1>
+
+      На вашу електронну пошту відправлено лист з підтвердженням замовлення.<br>
+      Менеджер зв'яжеться з вами для уточнуння деталей найближчим часом. Ви також можете відстежувати статус замовлення в особистому кабінеті
+    </div>
+
+    <table class="checkout-success__table-order-mobile">
+      <tbody>
+        <tr>
+          <td class="checkout-success__table-order-mobile-cell checkout-success__table-order-mobile-cell--info" colspan="2">
+            {{ order.shippingFullname }}<br>
+            {{ order.shippingPhone }}<br>
+            {{ order.email }}
+          </td>
+        </tr>
+        <tr>
+          <td class="checkout-success__table-order-mobile-cell checkout-success__table-order-mobile-cell--title">Інформація про доставку</td>
+          <td class="checkout-success__table-order-mobile-cell">
+            <div class="checkout-success__table-order-cell-block">
+              <svg class="checkout-success__table-order-img checkout-success__table-order-img--{{ order.shippingIcon }}" height="24">
+                <use xlink:href="/resourse/images/checkout-success-sprite-icons.svg#icon-{{ order.shippingIcon }}"></use>
+              </svg>
+              {{ order.shippingMethod }}
+            </div>
+            {{ order.shippingAddress }}
+          </td>
+        </tr>
+        <tr>
+          <td class="checkout-success__table-order-mobile-cell checkout-success__table-order-mobile-cell--title">Спосіб оплати</td>
+          <td class="checkout-success__table-order-mobile-cell">
+            <div class="checkout-success__table-order-payment-value">
+              <svg class="checkout-success__table-order-img checkout-success__table-order-img--{{ order.paymentIcon }}" height="24">
+                <use xlink:href="/resourse/images/checkout-success-sprite-icons.svg#icon-{{ order.paymentIcon }}"></use>
+              </svg>
+              {{ order.paymentMethod }}
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table class="checkout-success__table-order-desktop">
+      <thead class="checkout-success__table-order-desktop-head">
+        <tr>
+          <th class="checkout-success__table-order-desktop-cell checkout-success__table-order-desktop-cell--head">Отримувач</th>
+          <th class="checkout-success__table-order-desktop-cell checkout-success__table-order-desktop-cell--head">Інформація про доставку</th>
+          <th class="checkout-success__table-order-desktop-cell checkout-success__table-order-desktop-cell--head">Спосіб оплати</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="checkout-success__table-order-desktop-cell">
+            <div class="checkout-success__table-order-cell-block">{{ order.customerFullname }}</div>
+            <div class="checkout-success__table-order-cell-block">{{ order.shippingPhone }}</div>
+            {{ order.email }}
+          </td>
+          <td class="checkout-success__table-order-desktop-cell">
+            <div class="checkout-success__table-order-cell-block">
+              <svg class="checkout-success__table-order-img checkout-success__table-order-img--{{ order.shippingIcon }}" height="24">
+                <use xlink:href="/resourse/images/checkout-success-sprite-icons.svg#icon-{{ order.shippingIcon }}"></use>
+              </svg>
+              {{ order.shippingMethod }}
+            </div>
+            {{ order.shippingAddress }}
+          </td>
+          <td class="checkout-success__table-order-desktop-cell">
+            <div class="checkout-success__table-order-payment-value">
+              <svg class="checkout-success__table-order-img checkout-success__table-order-img--{{ order.paymentIcon }}" height="24">
+                <use xlink:href="/resourse/images/checkout-success-sprite-icons.svg#icon-{{ order.paymentIcon }}"></use>
+              </svg>
+              {{ order.paymentMethod }}
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 class="checkout-success__subtitle">Замовлення №{{ order.orderIds }}</h2>
+
+    <table class="checkout-success__table-products-mobile">
+      <tbody>
+        {% for item in products %}
+          <tr>
+            <td class="checkout-success__table-products-mobile-cell checkout-success__table-order-mobile-cell--info" colspan="2">
+              <img class="checkout-success__table-products-img" src="{{ item.image }}" alt="">
+            </td>
+          </tr>
+          <tr>
+            <td class="checkout-success__table-products-mobile-cell checkout-success__table-products-mobile-cell--title">Код&nbsp;продукту</td>
+            <td class="checkout-success__table-products-mobile-cell checkout-success__table-products-cell--code">
+              {{ item.id }}
+            </td>
+          </tr>
+          <tr>
+            <td class="checkout-success__table-products-mobile-cell checkout-success__table-products-mobile-cell--title">Назва</td>
+            <td class="checkout-success__table-products-mobile-cell checkout-success__table-products-cell--name">
+              {{ item.name }}
+            </td>
+          </tr>
+          <tr>
+            <td class="checkout-success__table-products-mobile-cell checkout-success__table-products-mobile-cell--title">Ціна</td>
+            <td class="checkout-success__table-products-mobile-cell">
+              <div class="checkout-success__table-products-price-uah">{{ item.priceUAH }}&nbsp;грн</div>
+              $&nbsp;{{ item.priceUSD }}
+            </td>
+          </tr>
+          <tr>
+            <td class="checkout-success__table-products-mobile-cell checkout-success__table-products-mobile-cell--title">Кількість</td>
+            <td class="checkout-success__table-products-mobile-cell">
+               {{ item.quantity }}&nbsp;шт
+            </td>
+          </tr>
+          <tr>
+            <td class="checkout-success__table-products-mobile-cell checkout-success__table-products-mobile-cell--title">Сума</td>
+            <td class="checkout-success__table-products-mobile-cell">
+              <div class="checkout-success__table-products-price-uah">{{ item.totalUAH }}&nbsp;грн</div>
+              $&nbsp;{{ item.totalUSD }}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+
+    <table class="checkout-success__table-products-desktop">
+      <thead class="checkout-success__table-products-desktop-head">
+        <tr>
+          <th class="checkout-success__table-products-desktop-cell checkout-success__table-products-desktop-cell--head">Фото</th>
+          <th class="checkout-success__table-products-desktop-cell checkout-success__table-products-desktop-cell--head">Код продукту</th>
+          <th class="checkout-success__table-products-desktop-cell checkout-success__table-products-desktop-cell--head">Назва</th>
+          <th class="checkout-success__table-products-desktop-cell checkout-success__table-products-desktop-cell--head">Ціна</th>
+          <th class="checkout-success__table-products-desktop-cell checkout-success__table-products-desktop-cell--head">Кількість</th>
+          <th class="checkout-success__table-products-desktop-cell checkout-success__table-products-desktop-cell--head">Сума</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in products %}
+          {% set cellClass = loop.last ? '' : 'checkout-success__table-products-desktop-cell--border-bottom' %}
+
+          <tr>
+            <td class="checkout-success__table-products-desktop-cell {{ cellClass }}">
+              <img class="checkout-success__table-products-img" src="{{ item.image }}" alt="">
+            </td>
+            <td class="checkout-success__table-products-desktop-cell checkout-success__table-products-cell--code {{ cellClass }}">
+              {{ item.id }}
+            </td>
+            <td class="checkout-success__table-products-desktop-cell checkout-success__table-products-cell--name {{ cellClass }}">
+              {{ item.name }}
+            </td>
+            <td class="checkout-success__table-products-desktop-cell {{ cellClass }}">
+              <div class="checkout-success__table-products-price-uah">{{ item.priceUAH }}&nbsp;грн</div>
+              $&nbsp;{{ item.priceUSD }}
+            </td>
+            <td class="checkout-success__table-products-desktop-cell {{ cellClass }}">{{ item.quantity }}&nbsp;шт</td>
+            <td class="checkout-success__table-products-desktop-cell {{ cellClass }}">
+              <div class="checkout-success__table-products-price-uah">{{ item.totalUAH }}&nbsp;грн</div>
+              $&nbsp;{{ item.totalUSD }}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <table class="checkout-success__table-total">
+      <tbody>
+        <tr>
+          <td class="checkout-success__table-total-cell">Кількість товарів</td>
+          <td class="checkout-success__table-total-cell checkout-success__table-total-cell--quantity-value">
+            {{ order.quantity }} шт
+          </td>
+        </tr>
+        <tr>
+          <td class="checkout-success__table-total-cell">Загальна сума</td>
+          <td class="checkout-success__table-total-cell">
+            <div class="checkout-success__table-total-wrapper-total">
+              <div class="checkout-success__table-total-total">
+                <div class="checkout-success__table-total-total-uah">{{ order.totalUAH }}&nbsp;грн</div>
+                $&nbsp;{{ order.totalUAH }}
+                </div>
+              </div>
+          </td>
+        </tr>
+        {% if order.commissionUAH %}
+          <tr>
+            <td class="checkout-success__table-total-cell">Комісія за переказ</td>
+            <td class="checkout-success__table-total-cell checkout-success__table-total-cell--commission-value">
+              {{ order.commissionUAH }}&nbsp;грн
+            </td>
+          </tr>
+        {% endif %}
+        <tr>
+          <td class="checkout-success__table-total-cell checkout-success__table-total--to-pay-title">До оплати</td>
+          <td class="checkout-success__table-total-cell checkout-success__table-total--to-pay-value">
+            {{ order.toPayUAH }}&nbsp;грн
+          </td>
+        </tr>
+      <tbody>
+    </table>
+
+    <a class="checkout-success__link-home" href="/">Продовжити покупки</a>
+  </div>
+</main>
+
+{{ footer }}

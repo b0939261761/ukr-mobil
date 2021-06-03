@@ -11,7 +11,7 @@ const buildCss = () => {
     './catalog/view/theme/default/template/shared/components/pagination/pagination.css'
   ])
     .pipe(sourcemaps.init())
-    .pipe(concat('news_list.min.css'))
+    .pipe(concat('news-list.min.css'))
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest('./resourse/styles'));
 };

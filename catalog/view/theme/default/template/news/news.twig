@@ -4,7 +4,7 @@
   {{ breadcrumbs }}
 
   <div class="news">
-    <div class="news__content {{ products | length > 1 ? 'news__content--products' : '' }}">
+    <div class="news__content {{ products | length ? 'news__content--products' : '' }}">
       <div class="news__date">
         <svg class="news__date-img">
           <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-calendar"></use>
@@ -17,13 +17,13 @@
       {{ content }}
     </div>
 
-    {% if products | length > 1 %}
+    {% if products | length %}
       <div class="news__right-menu">{{ rightMenu }}</div>
     {% else %}
       {{ rightMenu }}
     {% endif %}
 
-    {% if products | length > 1 %}
+    {% if products | length %}
       <div class="news__products">
         {% for product in products %}
           <div class="product-slide">

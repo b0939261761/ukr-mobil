@@ -39,4 +39,3 @@ const onClickBtnOpenOptionsSwiperNewList = ({ target }) => {
 if (btnOpenOptionsSwiperNewList) {
   btnOpenOptionsSwiperNewList.forEach(el => el.addEventListener('click', onClickBtnOpenOptionsSwiperNewList));
 }
-

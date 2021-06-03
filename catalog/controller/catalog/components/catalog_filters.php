@@ -125,7 +125,7 @@ class ControllerCatalogComponentsCatalogFilters extends Controller {
 
 
 // file_put_contents('./catalog/controller/catalog/components/__LOG__.json', "-----------\n" . json_encode($this->request)."\n\n", FILE_APPEND);
-file_put_contents('./catalog/controller/catalog/components/__LOG__.txt', $sql);
+// file_put_contents('./catalog/controller/catalog/components/__LOG__.txt', $sql);
 
     return $this->db->query($sql)->rows;
   }

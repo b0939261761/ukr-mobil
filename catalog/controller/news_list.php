@@ -1,6 +1,6 @@
 <?
 class ControllerNewsList extends Controller {
-  private $limit = 3;
+  private $limit = 8;
 
   public function index() {
     $page = (int)($this->request->get['page'] ?? 1);
@@ -18,7 +18,7 @@ class ControllerNewsList extends Controller {
     $this->document->addMeta(['property' => 'og:image', 'content' => $this->main->getLinkLogo()]);
 
     $this->document->addCustomStyle('/resourse/styles/news_list.min.css');
-    $this->document->addPreload('/resourse/scripts/news_list.min.js', 'script');
+    $this->document->addPreload('/resourse/scripts/news-list.min.js', 'script');
     $this->document->addCustomScript('/resourse/scripts/news_list.min.js');
 
     $data['news'] = $this->getNewsList($page);

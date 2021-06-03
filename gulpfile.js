@@ -6,19 +6,21 @@ import page404 from './gulp/404.js';
 import tracking from './gulp/tracking.js';
 import about from './gulp/about.js';
 import information from './gulp/information.js';
-import news_list from './gulp/news_list.js';
+import newsList from './gulp/news_list.js';
 import news from './gulp/news.js';
+import checkoutSuccess from './gulp/checkout_success.js';
 
 export default cb => {
-  // shared();
-  home();
+  shared();
+  // home();
   // catalog();
   // sitemap();
   // page404();
   // tracking();
   // about();
   // information();
-  // news_list();
-  news();
+  // newsList();
+  // news();
+  checkoutSuccess();
   cb();
 };
