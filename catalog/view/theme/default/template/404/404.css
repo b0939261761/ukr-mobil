@@ -73,6 +73,7 @@
   border-radius: 10px;
   text-decoration: none;
   padding: 0 18px;
+  transition: background-color .3s;
 }
 
 .page404__link-home:hover {

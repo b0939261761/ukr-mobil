@@ -98,6 +98,9 @@ class ControllerHomeComponentsNew extends Controller {
       LEFT JOIN oc_currency c ON c.currency_id = 980
     ";
 
+    file_put_contents('./catalog/controller/startup/__LOG__.txt', $sql);
+
+
     $items = $this->db->query($sql)->rows;
 
     foreach ($items as &$item) {

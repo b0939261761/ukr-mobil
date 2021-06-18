@@ -1,136 +1,134 @@
 <?php
 namespace Cart;
 class Customer {
-	private $customer_id;
-	private $firstname;
-	private $lastname;
-	private $customer_group_id;
-	private $email;
-	private $telephone;
-	private $newsletter;
-	private $address_id;
+  private $id;
+  private $firstName;
+  private $lastName;
+  private $groupId = 1;
+  private $email;
+  private $phone;
+  private $isNewsLetter;
 
-	public function __construct($registry) {
-		$this->config = $registry->get('config');
-		$this->db = $registry->get('db');
-		$this->request = $registry->get('request');
-		$this->session = $registry->get('session');
+  public function __construct($registry) {
+    $this->config = $registry->get('config');
+    $this->db = $registry->get('db');
+    $this->request = $registry->get('request');
+    $this->session = $registry->get('session');
 
-		if (isset($this->session->data['customer_id'])) {
-			$customer_query = $this->db->query("SELECT * FROM " . DB_PREFIX . "customer WHERE customer_id = '" . (int)$this->session->data['customer_id'] . "' AND status = '1'");
+    $this->db->query("DELETE FROM oc_cart WHERE customer_id = 0 AND TIMESTAMPDIFF(HOUR, date_added, NOW()) > 1");
+    $this->db->query("DELETE FROM oc_customer_login WHERE TIMESTAMPDIFF(DAY, date_modified, NOW()) > 1");
 
-			if ($customer_query->num_rows) {
-				$this->customer_id = $customer_query->row['customer_id'];
-				$this->firstname = $customer_query->row['firstname'];
-				$this->lastname = $customer_query->row['lastname'];
-				$this->customer_group_id = $customer_query->row['customer_group_id'];
-				$this->email = $customer_query->row['email'];
-				$this->telephone = $customer_query->row['telephone'];
-				$this->newsletter = $customer_query->row['newsletter'];
-				$this->address_id = $customer_query->row['address_id'];
+    $customerId = (int)($this->session->data['customerId'] ?? 0);
+    if (!$customerId) return;
+    $sql = "
+      SELECT
+        customer_id AS id,
+        firstname AS firstName,
+        lastname AS lastName,
+        customer_group_id AS groupId,
+        email,
+        SUBSTRING(telephone, 4, 9) AS phone,
+        newsletter AS isNewsLetter
+      FROM oc_customer
+      WHERE customer_id = {$customerId} AND status = 1
+    ";
 
-				$this->db->query("UPDATE " . DB_PREFIX . "customer SET language_id = '" . (int)$this->config->get('config_language_id') . "', ip = '" . $this->db->escape($this->request->server['REMOTE_ADDR']) . "' WHERE customer_id = '" . (int)$this->customer_id . "'");
+    $customer = $this->db->query($sql)->row;
+    if (empty($customer)) {
+      unset($this->session->data['customerId']);
+      return;
+    }
+    $this->initFields($customer);
+    $this->updateCart();
+  }
 
-				$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "customer_ip WHERE customer_id = '" . (int)$this->session->data['customer_id'] . "' AND ip = '" . $this->db->escape($this->request->server['REMOTE_ADDR']) . "'");
+  private function updateCart() {
+    $sessionId = $this->db->escape($this->session->getId());
+    $customerId = $this->getId();
 
-				if (!$query->num_rows) {
-					$this->db->query("INSERT INTO " . DB_PREFIX . "customer_ip SET customer_id = '" . (int)$this->session->data['customer_id'] . "', ip = '" . $this->db->escape($this->request->server['REMOTE_ADDR']) . "', date_added = NOW()");
-				}
-			} else {
-				$this->logout();
-			}
-		}
-	}
+    $sql = "UPDATE oc_cart SET session_id = '{$sessionId}' WHERE customer_id = {$customerId}";
+    $this->db->query($sql);
 
-  public function login($email, $password, $override = false) {
-		if ($override) {
-			$customer_query = $this->db->query("SELECT * FROM " . DB_PREFIX . "customer WHERE LOWER(email) = '" . $this->db->escape(utf8_strtolower($email)) . "' AND status = '1'");
-		} else {
-      $customer_query = $this->db->query("SELECT * FROM " . DB_PREFIX . "customer WHERE LOWER(email) = '"
-        . $this->db->escape(utf8_strtolower($email))
-        . "' AND (password = SHA1(CONCAT(salt, SHA1(CONCAT(salt, SHA1('"
-        . $this->db->escape($password) . "'))))) OR password = '"
-        . $this->db->escape(md5($password)) . "') AND status = '1'");
-		}
+    $sql = "
+      INSERT INTO oc_cart (session_id, customer_id, product_id, quantity)
+        SELECT * FROM (
+          SELECT session_id, {$customerId}, product_id, quantity AS newQuantity
+            FROM oc_cart WHERE customer_id = 0 AND session_id = '{$sessionId}'
+        ) t
+        ON DUPLICATE KEY UPDATE quantity = quantity + newQuantity
+    ";
 
-		if ($customer_query->num_rows) {
-			$this->session->data['customer_id'] = $customer_query->row['customer_id'];
+    $this->db->query($sql);
 
-			$this->customer_id = $customer_query->row['customer_id'];
-			$this->firstname = $customer_query->row['firstname'];
-			$this->lastname = $customer_query->row['lastname'];
-			$this->customer_group_id = $customer_query->row['customer_group_id'];
-			$this->email = $customer_query->row['email'];
-			$this->telephone = $customer_query->row['telephone'];
-			$this->newsletter = $customer_query->row['newsletter'];
-			$this->address_id = $customer_query->row['address_id'];
+    $sql = "DELETE FROM oc_cart WHERE customer_id = 0 AND session_id = '{$sessionId}'";
+    $this->db->query($sql);
+  }
 
-			$this->db->query("UPDATE " . DB_PREFIX . "customer SET language_id = '" . (int)$this->config->get('config_language_id') . "', ip = '" . $this->db->escape($this->request->server['REMOTE_ADDR']) . "' WHERE customer_id = '" . (int)$this->customer_id . "'");
+  private function initFields($customer) {
+    $this->id = (int)($customer['id'] ?? 0);
+    $this->firstName = $customer['firstName'];
+    $this->lastName = $customer['lastName'] ?? '';
+    $this->groupId = $customer['groupId'] ?? 1;
+    $this->email = $customer['email'] ?? '';
+    $this->phone = $customer['phone'] ?? '';
+    $this->isNewsLetter = $customer['isNewsLetter'] ?? false;
+  }
 
-			return true;
-		} else {
-			return false;
-		}
-	}
+  public function reset() {
+    unset($this->session->data['customerId']);
+    $this->initFields(null);
+  }
 
-	public function logout() {
-		unset($this->session->data['customer_id']);
+  public function getId() {
+    return $this->id;
+  }
 
-		$this->customer_id = '';
-		$this->firstname = '';
-		$this->lastname = '';
-		$this->customer_group_id = '';
-		$this->email = '';
-		$this->telephone = '';
-		$this->newsletter = '';
-		$this->address_id = '';
-	}
+  public function getFirstName() {
+    return $this->firstName;
+  }
 
-	public function isLogged() {
-		return $this->customer_id;
-	}
+  public function getLastName() {
+    return $this->lastName;
+  }
 
-	public function getId() {
-		return $this->customer_id;
-	}
+  public function getGroupId() {
+    return $this->groupId;
+  }
 
-	public function getFirstName() {
-		return $this->firstname;
-	}
+  public function getEmail() {
+    return $this->email;
+  }
 
-	public function getLastName() {
-		return $this->lastname;
-	}
+  public function setEmail($email) {
+    $this->email = $email;
+    return $this;
+  }
 
-	public function getGroupId() {
-		return $this->customer_group_id || 1;
-	}
+  public function getPhone() {
+    return $this->phone;
+  }
 
-	public function getEmail() {
-		return $this->email;
-	}
+  public function setPhone($phone) {
+    $this->phone = $phone;
+    return $this;
+  }
 
-	public function getTelephone() {
-		return $this->telephone;
-	}
+  public function getIsNewsletter() {
+    return $this->isNewsLetter;
+  }
 
-	public function getNewsletter() {
-		return $this->newsletter;
-	}
+  // public function getAddressId() {
+  //   return $this->address_id;
+  // }
 
-	public function getAddressId() {
-		return $this->address_id;
-	}
+  // public function getBalance() {
+  //   $query = $this->db->query("SELECT SUM(amount) AS total FROM " . DB_PREFIX . "customer_transaction WHERE customer_id = '" . (int)$this->customer_id . "'");
 
-	public function getBalance() {
-		$query = $this->db->query("SELECT SUM(amount) AS total FROM " . DB_PREFIX . "customer_transaction WHERE customer_id = '" . (int)$this->customer_id . "'");
+  //   return $query->row['total'];
+  // }
 
-		return $query->row['total'];
-	}
-
-	public function getRewardPoints() {
-		$query = $this->db->query("SELECT SUM(points) AS total FROM " . DB_PREFIX . "customer_reward WHERE customer_id = '" . (int)$this->customer_id . "'");
-
-		return $query->row['total'];
-	}
+  // public function getRewardPoints() {
+  //   $query = $this->db->query("SELECT SUM(points) AS total FROM " . DB_PREFIX . "customer_reward WHERE customer_id = '" . (int)$this->customer_id . "'");
+  //   return $query->row['total'];
+  // }
 }

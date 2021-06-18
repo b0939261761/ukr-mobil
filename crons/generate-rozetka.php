@@ -1,7 +1,6 @@
 <?
 require_once(__DIR__ . '/../config.php');
 require_once(DIR_SYSTEM . 'startup.php');
-require_once(DIR_APPLICATION . 'model/tool/image.php');
 
 $registry = new Registry();
 
@@ -12,7 +11,7 @@ $db = new DB(DB_DRIVER, DB_HOSTNAME, DB_USERNAME, DB_PASSWORD, DB_DATABASE, DB_P
 $url = new Url(HTTPS_SERVER, HTTPS_SERVER);
 
 $registry->set('db', $db);
-$modelImage = new ModelToolImage();
+$image = new Image();
 
 $qualityDescriptionList = [
   '1797370' => "High Copy — це високоякісна копія оригінальної запчастини. "
@@ -166,8 +165,7 @@ foreach (json_decode($products['products'], true) as $product) {
   $content .= "<currencyId>UAH</currencyId>";
   $content .= "<categoryId>{$product['rzId']}</categoryId>";
 
-  foreach ($product['images'] as $image) $content .= "<picture>"
-    . "{$modelImage->resize($image)}</picture>";
+  foreach ($product['images'] as $item) $content .= "<picture>{$image->resize($item)}</picture>";
 
   $content .= "<name>{$product['name']}</name>";
   $content .= "<vendor>{$product['brand']}</vendor>";

@@ -31,7 +31,6 @@ const buildSvg = () => {
 
 const buildCss = () => {
   gulp.src([
-    './catalog/view/theme/default/template/shared/components/breadcrumbs/breadcrumbs.css',
     './catalog/view/theme/default/template/shared/components/right_menu/right_menu.css',
     './catalog/view/theme/default/template/about/about.css'
   ])

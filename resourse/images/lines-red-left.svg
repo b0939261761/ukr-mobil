@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="29" height="38" viewBox="0 0 29 38" fill="none">
+  <mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="29" height="38">
+    <rect x="-0.5" y="0.5" width="28" height="37" rx="9.5" transform="matrix(-1 0 0 1 28 0)" fill="white" stroke="#BC191D"/>
+  </mask>
+  <g mask="url(#mask0)">
+    <g opacity="0.2">
+      <rect x="5" y="26" width="5" height="2" fill="#BC191D"/>
+      <circle cx="9" cy="9" r="3" stroke="#BC191D" stroke-width="2"/>
+      <circle cx="25" cy="14" r="3" stroke="#BC191D" stroke-width="2"/>
+      <circle cx="13" cy="27" r="3" stroke="#BC191D" stroke-width="2"/>
+      <path d="M8.79395 19.4045L17.9998 13L19.3679 14.5981L9.99987 21.0001L8.79395 19.4045Z" fill="#BC191D"/>
+      <path d="M0.75 32.4941C0.347916 32.223 0.26683 31.6644 0.575203 31.2901L4.93314 26H6.71861L7.31229 26.4083L1.5 33L0.75 32.4941Z" fill="#BC191D"/>
+      <rect x="18" y="13" width="4" height="2" fill="#BC191D"/>
+      <rect y="8" width="6" height="2" fill="#BC191D"/>
+      <rect y="19" width="10" height="2" fill="#BC191D"/>
+    </g>
+  </g>
+</svg>

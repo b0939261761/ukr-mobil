@@ -1,0 +1,97 @@
+.page-recovery__error {
+  font-size: 14px;
+  color: #bc191d;
+  margin-bottom: 24px;
+}
+
+.page-recovery__form {
+  max-width: 500px;
+  display: grid;
+  grid-row-gap: 24px;
+}
+
+.page-recovery__title {
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 21px;
+}
+
+@media (min-width: 1080px) {
+  .page-recovery__title {
+    font-size: 18px;
+    line-height: 24px;
+  }
+}
+
+.page-recovery__buttons {
+  padding-top: 16px;
+  display: flex;
+}
+
+.page-recovery__back {
+  color: #bc191d;
+  background-color: #fff;
+  font-size: 12px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #bc191d;
+  width: 133px;
+  min-height: 40px;
+  border-radius: 10px;
+  padding: 0 18px;
+  text-decoration: none;
+  transition-property: background-color, color;
+  transition-duration: .3s;
+  margin-right: 8px;
+}
+
+.page-recovery__back:hover {
+  background-color: #bc191d;
+  color: #fff;
+}
+
+@media (min-width: 1080px) {
+  .page-recovery__submit {
+    min-height: 48px;
+  }
+}
+
+.page-recovery__submit {
+  color: #fff;
+  background: #bc191d url(/resourse/images/lines-right.svg) right center no-repeat;
+  font-size: 14px;
+  font-weight: bold;
+  border: 1px solid #bc191d;
+  width: 133px;
+  min-height: 40px;
+  border-radius: 10px;
+  padding: 0 18px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background-color .3s;
+}
+
+.page-recovery__submit:hover {
+  background-color: #af161a;
+}
+
+@media (min-width: 1080px) {
+  .page-recovery__submit {
+    min-height: 48px;
+  }
+}
+
+.page-recovery__response-error {
+  font-size: 14px;
+  color: #bc191d;
+  transition: opacity .3s;
+  opacity: 1;
+}
+
+.page-recovery__response-error--hide {
+  opacity: 0;
+}
+
+/*# sourceMappingURL=recovery.min.css.map */

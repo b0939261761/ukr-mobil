@@ -1,0 +1,327 @@
+{{ header }}
+
+<main class="container">
+  {{ breadcrumbs }}
+
+  <h1 class="page-title page-title">{{ headingH1 }}</h1>
+  <div>
+
+  <form class="checkout" id="checkoutForm">
+    <fieldset class="checkout__section">
+      <legent class="checkout__section-title">Контактні дані</legent>
+        <div class="checkout__section-form">
+          <label class="checkout-text-input">
+            <span class="checkout-text-input__title">
+              Ім’я отримувача<span class="checkout-text-input__title-required">*</span>
+            </span>
+            <input id="checkoutFirstName" class="checkout-text-input__input" placeholder="Іван" value="{{ firstName }}" required />
+          </label>
+
+          <label class="checkout-text-input">
+            <span class="checkout-text-input__title">
+              Прізвище отримувача<span class="checkout-text-input__title-required">*</span>
+            </span>
+            <input id="checkoutLastName" class="checkout-text-input__input" placeholder="Іванов" value="{{ lastName }}" required />
+          </label>
+
+          <label class="checkout-text-input">
+            <span class="checkout-text-input__title">
+              Телефон отримувача<span class="checkout-text-input__title-required">*</span>
+            </span>
+            <input
+              id="checkoutPhone"
+              class="checkout-text-input__input"
+              value="{{ phone }}"
+              required
+              pattern="\+38\(0\d{2}\)\d{3}-\d{2}-\d{2}"
+            />
+          </label>
+
+          <label class="checkout-text-input">
+            <span class="checkout-text-input__title">
+              Email отримувача<span class="checkout-text-input__title-required">*</span>
+            </span>
+            <input id="checkoutEmail" type="email" class="checkout-text-input__input"  placeholder="user@example.com" value="{{ email }}" required />
+          </label>
+      </div>
+    </fieldset>
+
+    <fieldset class="checkout__section">
+      <legent class="checkout__section-title">Спосіб доставки</legent>
+
+
+      <style>
+        .checkout {
+          display: grid;
+          width:
+        }
+
+        .checkout-shipping-method {
+          width: 200px;
+          display: block;
+          position: relative;
+        }
+
+        .checkout-shipping-method__input {
+          position: absolute;
+          height: 0;
+          width: 0;
+        }
+
+        .checkout-shipping-method__button {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          border: 1px dashed #b2bac7;
+          padding: 14px 8px;
+          border-radius: 10px;
+          text-align: center;
+          font-weight: bold;
+          cursor: pointer;
+          font-size: 12px;
+          line-height: 21px;
+          transition: border-color .3s ease;
+        }
+
+        input:checked ~ .checkout-shipping-method__button,
+        .checkout-shipping-method__button:hover {
+          border: 1px solid #bc191d;
+        }
+
+        .checkout-shipping-method__title {
+            min-height: 42px;
+            margin-bottom: 16px;
+          }
+
+          .checkout-shipping-method__img {
+            max-width: 100%;
+            margin-bottom: 16px;
+          }
+
+          .checkout-shipping-method__term {
+            font-weight: normal;
+            color: #999;
+
+          }
+
+          .checkout-shipping-method__date {
+            font-weight: bold;
+            color: #303031;
+          }
+
+          .checkout-shipping-method__price {
+            font-weight: bold;
+          }
+
+      </style>
+
+
+        <label class="checkout-shipping-method">
+          <input
+            type="radio"
+            name="shipping-method"
+            class="checkout-shipping-method__input"
+            value="Самовивіз з м. Рівне"
+          >
+          <span class="checkout-shipping-method__button">
+            <span class="checkout-shipping-method__title">Самовивіз з м. Рівне</span>
+            <svg class="checkout-shipping-method__img" height="32">
+              <use xlink:href="/resourse/images/checkout-sprite-icons.svg#icon-car"></use>
+            </svg>
+            <span class="checkout-shipping-method__term">Заберіть&nbsp;<!--
+              --><span class="checkout-shipping-method__date">сьогодні</span>
+            </span>
+            <span class="checkout-shipping-method__price">Безкоштовно</span>
+          </span>
+        </label>
+
+        <label class="checkout-shipping-method">
+          <input
+            type="radio"
+            name="shipping-method"
+            class="checkout-shipping-method__input"
+            value="Курьерская доставка &quot;Новая Почта&quot;"
+          >
+          <span class="checkout-shipping-method__button">
+            <span class="checkout-shipping-method__title">Кур'єрська доставка «Нова пошта»</span>
+            <svg class="checkout-shipping-method__img" height="32">
+              <use xlink:href="/resourse/images/checkout-sprite-icons.svg#icon-courier-new-post"></use>
+            </svg>
+            <span class="checkout-shipping-method__term">Заберіть&nbsp;<!--
+              --><span class="checkout-shipping-method__date">сьогодні</span>
+            </span>
+            <span class="checkout-shipping-method__price">Безкоштовно</span>
+          </span>
+        </label>
+
+
+
+      <div class="radiogroup" id="order-delivery" role="radiogroup" aria-invalid="false">
+        <div class="checkout-delivery__box">
+            <div class="checkout-delivery__methods">
+
+
+
+                <ul class="delivery-methods">
+
+
+
+
+                </ul>
+            </div>
+            {# <div class="checkout-delivery__description checkout-delivery__description-self active">
+                <div class="description-item"><svg class="icon-location">
+                        <use xlink:href="#icon-location"></use>
+                    </svg><b>Адреса магазину</b><span class="adreess">м.Хмельницький, вул.: Курчатова, 6</span></div>
+                <div class="description-item"><svg class="icon-clock">
+                        <use xlink:href="#icon-clock"></use>
+                    </svg><b>Графік роботи магазину</b>
+                    <div class="schedule"><span>Пн-Пт: 9:00-18:00</span><span>Сб: 9:00-16:00</span><span>Нд: вихідний</span></div>
+                </div>
+            </div>
+            <div class="checkout-delivery__description checkout-delivery__description-courier">
+                <div class="form__block form__block-delivery">
+                    <div class="form__block-wrapper">
+                        <div class="form-group"><label class="control-label">Введіть Ваше місто:</label><input class="form-control" value="Рівне">
+                            <div class="help-block"></div>
+                        </div>
+                        <div class="form-group"><label class="control-label">Введіть повну адресу</label><input class="form-control" type="text" placeholder="м. Рівне, вул.: Гагаріна">
+                            <div class="help-block"></div>
+                        </div>
+                        <div class="form-group form-group-info"><label class="control-label">Додаткова інформація</label><input class="form-control" type="text" placeholder="Під’їзд"><input class="form-control" type="text" placeholder="Поверх "><input class="form-control" type="text" placeholder="Квартира">
+                            <div class="help-block"></div>
+                        </div>
+                        <div class="form-group form-group-time"><span>Час доставки</span>
+                            <ul>
+                                <li class="active">з 09:00-15:00</li>
+                                <li>з 15:00-18:00</li>
+                                <li>Нд: 13:00-19:00</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="checkout-delivery__description checkout-delivery__description-newpost">
+                <div class="form__block form__block-delivery">
+                    <div class="form__block-wrapper">
+                        <div class="form-group"><label class="control-label">Введіть область</label><input class="form-control" type="text" placeholder="Введіть область">
+                            <div class="help-block"></div>
+                        </div>
+                        <div class="form-group"><label class="control-label">Введіть Ваше місто:</label><input class="form-control" value="Рівне">
+                            <div class="help-block"></div>
+                        </div>
+                        <div class="form-group"><label class="control-label">Оберіть № віділення</label>
+                            <div class="dropdown-menu" id="menuDelivery">
+                                <div class="dropdown-menu__value">Оберіть № віділення<span class="close-aside"><svg class="icon-arrow">
+                                            <use xlink:href="#icon-arrow"></use>
+                                        </svg></span></div>
+                                <div class="dropdown-menu__list">
+                                    <ul>
+                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
+                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
+                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
+                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
+                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
+                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
+                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
+                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
+                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
+                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
+                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
+                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
+                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="help-block"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="checkout-delivery__description checkout-delivery__description-ukrpost">
+                <div class="form__block form__block-delivery">
+                    <div class="form__block-wrapper">
+                        <div class="form-group"><label class="control-label">Введіть область</label><input class="form-control" type="text" placeholder="Введіть область">
+                            <div class="help-block"></div>
+                        </div>
+                        <div class="form-group"><label class="control-label">Введіть Ваше місто:</label><input class="form-control" value="Рівне">
+                            <div class="help-block"></div>
+                        </div>
+                        <div class="form-group"><label class="control-label">Оберіть № віділення</label>
+                            <div class="dropdown-menu" id="menuDelivery">
+                                <div class="dropdown-menu__value">Оберіть № віділення<span class="close-aside"><svg class="icon-arrow">
+                                            <use xlink:href="#icon-arrow"></use>
+                                        </svg></span></div>
+                                <div class="dropdown-menu__list">
+                                    <ul>
+                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
+                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
+                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
+                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
+                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
+                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
+                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
+                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
+                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
+                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
+                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
+                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
+                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="help-block"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="checkout-delivery__description checkout-delivery__description-justin">
+                <div class="form__block form__block-delivery">
+                    <div class="form__block-wrapper">
+                        <div class="form-group"><label class="control-label">Введіть область</label><input class="form-control" type="text" placeholder="Введіть область">
+                            <div class="help-block"></div>
+                        </div>
+                        <div class="form-group"><label class="control-label">Введіть Ваше місто:</label><input class="form-control" value="Рівне">
+                            <div class="help-block"></div>
+                        </div>
+                        <div class="form-group"><label class="control-label">Оберіть № віділення</label>
+                            <div class="dropdown-menu" id="menuDelivery">
+                                <div class="dropdown-menu__value">Оберіть № віділення<span class="close-aside"><svg class="icon-arrow">
+                                            <use xlink:href="#icon-arrow"></use>
+                                        </svg></span></div>
+                                <div class="dropdown-menu__list">
+                                    <ul>
+                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
+                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
+                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
+                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
+                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
+                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
+                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
+                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
+                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
+                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
+                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
+                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
+                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="help-block"></div>
+                        </div>
+                    </div>
+                </div>
+            </div> #}
+        </div>
+      </div>
+
+    </fieldset>
+
+    <button> click</button>
+  </form>
+
+
+  </div>
+</main>
+
+{{ footer }}

@@ -83,3 +83,8 @@ const onClickMobileMenuBtnContact = () => {
 
 const mobileMenuBtnContact = document.getElementById('mobileMenuBtnContact');
 mobileMenuBtnContact.addEventListener('click', onClickMobileMenuBtnContact);
+
+// ------------------------------------------------------------------
+
+const mobileMenuLogin = document.getElementById('mobileMenuLogin');
+if (mobileMenuLogin) mobileMenuLogin.addEventListener('click', () => window.modalWindowLogin());

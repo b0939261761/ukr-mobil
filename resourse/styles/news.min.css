@@ -1,108 +1,3 @@
-.breadcrumbs {
-  display: flex;
-  margin-bottom: 8px;
-  font-size: 12px;
-  line-height: 23px;
-  height: 23px;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-
-.breadcrumbs::-webkit-scrollbar {
-  height: 0;
-}
-
-.breadcrumbs__item {
-  color: #aaa;
-  white-space: nowrap;
-}
-
-.breadcrumbs__item:not(:last-child) {
-  background-image: url(/resourse/images/breadcrumbs-arrow.svg);
-  background-repeat: no-repeat;
-  background-position: right center;
-  padding-right: 16px;
-  margin-right: 8px;
-  background-size: 6px 10px;
-}
-
-.breadcrumbs__btn-mobile {
-  border: none;
-  background-color: transparent;
-  letter-spacing: 3px;
-  text-align: center;
-  padding: 0 0 0 3px;
-  color: inherit;
-}
-
-@media (min-width: 1080px) {
-  .breadcrumbs__item--mobile {
-    display: none;
-  }
-}
-
-.breadcrumbs__item--desktop {
-  display: none;
-}
-
-@media (min-width: 1080px) {
-  .breadcrumbs__item--desktop {
-    display: block;
-  }
-}
-
-.breadcrumbs__link {
-  display: flex;
-  align-items: center;
-  height: 100%;
-  text-decoration: none;
-  color: #aaa;
-}
-
-.breadcrumbs__img-home {
-  height: 16px;
-  width: 17px;
-  fill: currentColor;
-}
-
-/* --------------- */
-
-.modal-window-breadcrumbs {
-  line-height: 21px;
-  text-align: center;
-  margin-top: -50px;
-}
-
-.modal-window-breadcrumbs__item--link {
-  padding-bottom: 16px;
-  position: relative;
-}
-
-.modal-window-breadcrumbs__item--link:not(:first-child) {
-  padding-top: 16px;
-}
-
-.modal-window-breadcrumbs__item--link::before {
-  content: '';
-  transform: rotate(90deg) translateY(50%);
-  bottom: -5px;
-  left: 50%;
-  height: 10px;
-  width: 6px;
-  background-image: url(/resourse/images/breadcrumbs-arrow.svg);
-  position: absolute;
-}
-
-.modal-window-breadcrumbs__item--active {
-  padding-top: 16px;
-  color: #999;
-}
-
-.modal-window-breadcrumbs__link {
-  text-decoration: none;
-  color: #303031;
-}
-
 .right-menu {
   background-color: #fff;
   border-radius: 10px;
@@ -645,20 +540,20 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, 32px);
   grid-gap: 5px;
+  padding-left: 1px;
 }
 
 .product-slide__characteristic-item-color {
-  height: 32px;
-  width: 32px;
-  padding: 4px;
-  background-color: green;
-  border: 1px solid transparent;
-  background-clip: content-box;
+  height: 22px;
+  width: 22px;
+  margin: 4px;
+  border: 1px solid #f6f7f9;
 }
 
 .product-slide__characteristic-item-color--active,
 .product-slide__characteristic-item-color:hover {
-  border-color: #bc191d;
+  outline: 1px solid #bc191d;
+  outline-offset: 4px;
 }
 
 .product-slide__actions {
@@ -689,7 +584,7 @@
   padding: 0 2px;
   height: 38px;
   border-radius: 10px;
-  background-color: transparent;
+  background: transparent url(/resourse/images/lines-red-left.svg) left center no-repeat;
   color: #bc191d;
   transition-property: background-color, color;
   transition-duration: .3s;

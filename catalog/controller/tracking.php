@@ -6,9 +6,6 @@ class ControllerTracking extends Controller {
     $this->document->setDescription("{$data['headingH1']} ✅ UKRMobil ✅ Фиксированные цены ✅ Гарантия ✅ Доставка по всей Украине");
     $this->document->setMicrodataBreadcrumbs();
 
-    $this->document->addPreload('/resourse/libs/imask.min.js', 'script');
-    $this->document->addLibScript('/resourse/libs/imask.min.js');
-
     $this->document->addCustomStyle('/resourse/styles/tracking.min.css');
     $this->document->addPreload('/resourse/scripts/tracking.min.js', 'script');
     $this->document->addCustomScript('/resourse/scripts/tracking.min.js');

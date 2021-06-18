@@ -6,7 +6,7 @@ class ControllerCheckoutSuccess extends Controller {
     $data['order'] = $this->getOrder($orderIdsSQL);
     // if (!empty($data['order']['sent'])) {
     //   header("Location: {$this->url->link('home/home')}");
-    //   exit;
+    //   exit();
     // }
 
     $data['products'] = $this->getOrderProducts($orderIdsSQL);

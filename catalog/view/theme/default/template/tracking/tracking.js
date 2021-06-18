@@ -50,10 +50,6 @@ const onSubmitTrackingForm = async evt => {
   const url = '/index.php?route=tracking/getStatus';
   const body = JSON.stringify({ orderId: orderIdValue, phone: phoveValue });
   try {
-
-
-
-
     const response = await fetch(url, { method: 'POST', body });
     const order = await response.json();
     if (order.states.length) {

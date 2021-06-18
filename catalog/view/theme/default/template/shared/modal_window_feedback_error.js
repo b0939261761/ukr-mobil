@@ -25,7 +25,7 @@ window.modalWindowFeedbackError = () => {
   });
   form.appendChild(formInputDescription);
 
-  const formBtn = window.ModalWindow.createFormBtn();
+  const formBtn = window.ModalWindow.createFormBtn('Надіслати повідомлення');
   form.appendChild(formBtn);
 
   const onSubmit = async evt => {

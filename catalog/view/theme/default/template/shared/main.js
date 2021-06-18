@@ -20,3 +20,5 @@ window.shared.throttle = (callback, wait, immediate = false) => {
     if (!timeout) timeout = setTimeout(run, wait);
   };
 };
+
+window.shared.escapeRegExp = str => str.replace(/[\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');

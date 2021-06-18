@@ -32,7 +32,7 @@ window.modalWindowFeedbackManager = () => {
   });
   form.appendChild(formInputDescription);
 
-  const formBtn = window.ModalWindow.createFormBtn();
+  const formBtn = window.ModalWindow.createFormBtn('Надіслати повідомлення');
   form.appendChild(formBtn);
 
   const onSubmit = async evt => {
@@ -55,7 +55,7 @@ window.modalWindowFeedbackManager = () => {
       if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
     } catch (err) {
       mwResponseText = `Помилка відправлення: ${err.message}`;
-      mwResponseClass = 'success';
+      mwResponseClass = 'error';
     }
 
     const mwResponse = document.createElement('div');

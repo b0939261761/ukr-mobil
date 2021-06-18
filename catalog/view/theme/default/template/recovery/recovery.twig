@@ -1,0 +1,73 @@
+{{ header }}
+
+<main class="container">
+  {{ breadcrumbs }}
+  <h1 class="page-title">{{ headingH1 }}</h1>
+  {% if hasInvalidCode %}
+    <div class="page-recovery__error">
+      Код відновлення помилковий! Зробіть повторно запит на відновлення паролю.
+    </div>
+    <a class="page-recovery__back" href="\">Назад</a>
+  {% else %}
+    <form class="page-recovery__form" id="pageRecoveryForm">
+      <div class="page-recovery__title">Введіть новий пароль</div>
+
+      <label class="custom-input">
+        <div class="custom-input__title">
+          Пароль
+          <span class="custom-input__title-required">*</span>
+        </div>
+        <div class="custom-input__wrapper-input-password">
+          <input
+            id="pageRecoveryPassword"
+            class="custom-input__input custom-input__input--password"
+            name="password"
+            type="password"
+            required
+            minlength="4"
+            maxlength="20"
+          />
+          <button class="custom-input__btn-visible-password" type="button">
+            <svg class="custom-input__btn-visible-password-img">
+              <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-eye"></use>
+            </svg>
+            <span class="custom-input__btn-visible-password-line"></span>
+          </button>
+        </div>
+      </label>
+
+      <label class="custom-input">
+        <div class="custom-input__title">
+          Повторіть пароль
+          <span class="custom-input__title-required">*</span>
+        </div>
+        <div class="custom-input__wrapper-input-password">
+          <input
+            id="pageRecoveryConfirm"
+            class="custom-input__input custom-input__input--password"
+            name="confirm"
+            type="password"
+            required
+          />
+          <button class="custom-input__btn-visible-password" type="button">
+            <svg class="custom-input__btn-visible-password-img">
+              <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-eye"></use>
+            </svg>
+            <span class="custom-input__btn-visible-password-line"></span>
+          </button>
+        </div>
+      </label>
+
+      <div class="page-recovery__buttons">
+        <a class="page-recovery__back" href="\">Назад</a>
+        <button class="page-recovery__submit" type="submit" id="pageRecoverySubmit">Продовжити</button>
+      </div>
+
+      <div class="page-recovery__response-error page-recovery__response-error--hide" id="pageRecoveryResponseError">
+        Помилка відновлення, зробіть повторно запит на відновлення паролю
+      </div>
+    </form>
+  {% endif %}
+</main>
+
+{{ footer }}

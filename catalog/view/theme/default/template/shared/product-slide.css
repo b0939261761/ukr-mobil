@@ -403,20 +403,20 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, 32px);
   grid-gap: 5px;
+  padding-left: 1px;
 }
 
 .product-slide__characteristic-item-color {
-  height: 32px;
-  width: 32px;
-  padding: 4px;
-  background-color: green;
-  border: 1px solid transparent;
-  background-clip: content-box;
+  height: 22px;
+  width: 22px;
+  margin: 4px;
+  border: 1px solid #f6f7f9;
 }
 
 .product-slide__characteristic-item-color--active,
 .product-slide__characteristic-item-color:hover {
-  border-color: #bc191d;
+  outline: 1px solid #bc191d;
+  outline-offset: 4px;
 }
 
 .product-slide__actions {
@@ -447,7 +447,7 @@
   padding: 0 2px;
   height: 38px;
   border-radius: 10px;
-  background-color: transparent;
+  background: transparent url(/resourse/images/lines-red-left.svg) left center no-repeat;
   color: #bc191d;
   transition-property: background-color, color;
   transition-duration: .3s;

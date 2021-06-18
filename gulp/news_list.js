@@ -4,7 +4,6 @@ import concat from 'gulp-concat';
 
 const buildCss = () => {
   gulp.src([
-    './catalog/view/theme/default/template/shared/components/breadcrumbs/breadcrumbs.css',
     './catalog/view/theme/default/template/shared/components/right_menu/right_menu.css',
     './catalog/view/theme/default/template/news_list/news_list.css',
     './catalog/view/theme/default/template/shared/btn-load-more.css',

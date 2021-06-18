@@ -13,6 +13,10 @@ class ControllerSharedComponentsMobileMenu extends Controller {
     $data['linkContact'] = $this->url->link('information', ['information_id' => 'contact']);
     $data['linkPriceList'] = $this->url->link('price_list');
 
+    $data['isLogged'] = $this->customer->getId();
+    $data['linkAccount'] = $this->url->link('account');
+    $data['linkCheckout'] = $this->url->link('checkout');
+
     $data['currency'] = $this->main->getCurrency();
     return $this->load->view('shared/components/mobile_menu/mobile_menu', $data);
   }

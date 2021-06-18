@@ -1,0 +1,63 @@
+.modal-window-login__tabs {
+  text-align: center;
+  margin-top: -50px;
+  margin-bottom: var(--modal-window--ident);
+}
+
+.modal-window-login__tab {
+  background-color: transparent;
+  border: none;
+  font-family: inherit;
+  font-size: 14px;
+  padding: 0 0 4px;
+  margin: 0 16px;
+  border-bottom: 2px solid transparent;
+  transition-property: color, border-color;
+  transition-duration: .3s;
+}
+
+.modal-window-login__tab:not(.modal-window-login__tab--active) {
+  cursor: pointer;
+  color: #999;
+}
+
+.modal-window-login__tab--active,
+.modal-window-login__tab:hover {
+  color: #bc191d;
+  border-color: currentColor;
+}
+
+.modal-window-login__wrapper-btn-forgotten {
+  text-align: center;
+}
+
+.modal-window-login__btn-forgotten {
+  background-color: transparent;
+  border: none;
+  color: #bc191d;
+  text-decoration: underline;
+  font-family: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.modal-window-login__btn-forgotten:hover {
+  text-decoration: none;
+}
+
+.modal-window-login__recaptcha {
+  overflow: hidden;
+}
+
+.modal-window-login__recaptcha--error {
+  border: 1px solid #bc191d;
+}
+
+.modal-window-login__term-to-agree {
+  font-size: 14px;
+}
+
+.modal-window-login__term-to-link {
+  color: #bc191d;
+}

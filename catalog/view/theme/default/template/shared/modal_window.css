@@ -113,6 +113,10 @@
   grid-gap: var(--modal-window--ident);
 }
 
+.modal-window__form--hide {
+  display: none;
+}
+
 .form-input {
   display: block;
   color: #303031;
@@ -131,6 +135,10 @@
 
 .form-input__title-required {
   color: #bc191d;
+}
+
+.form-input__wrapper-input-password {
+  position: relative;
 }
 
 .form-input__input {
@@ -152,6 +160,11 @@
   }
 }
 
+.form-input__input--password {
+  display: block;
+  padding-right: 50px;
+}
+
 .form-input__input::placeholder,
 .form-input__textarea::placeholder {
   line-height: inherit;
@@ -163,6 +176,77 @@
 .form-input__textarea:focus::placeholder {
   opacity: 0;
 }
+
+.form-input__btn-visible-password {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 40px;
+  background-color: transparent;
+  border: none;
+  color: #999;
+  cursor: pointer;
+}
+
+.form-input__btn-visible-password-img {
+  width: 18px;
+  height: 100%;
+  fill: currentColor;
+}
+
+.form-input__btn-visible-password-line {
+  content: '';
+  height: 2px;
+  background-color: currentColor;
+  position: absolute;
+  width: calc(100% - 16px);
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%) rotate(135deg);
+  opacity: 0;
+  transition: opacity .3s;
+}
+
+.form-input__btn-visible-password--active .form-input__btn-visible-password-line,
+.form-input__btn-visible-password:hover .form-input__btn-visible-password-line {
+  opacity: 1;
+}
+
+/* .form-ckeckbox {
+  display: flex;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.form-ckeckbox__input {
+  width: 28px;
+  height: 28px;
+  appearance: none;
+  border: 1px solid #edeff2;
+  border-radius: 3px;
+  margin: 0 8px 0 0;
+  flex-shrink: 0;
+  cursor: inherit;
+}
+
+.form-ckeckbox__check-img {
+  position: absolute;
+  width: 15px;
+  left: 8px;
+  height: 100%;
+  fill: #bc191d;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .3s;
+}
+
+.form-ckeckbox__input:checked + .form-ckeckbox__check-img {
+  opacity: 1;
+} */
 
 .form-input__textarea {
   padding: 17px 12px;
@@ -196,7 +280,7 @@
 }
 
 .form-btn:hover {
-  background-image: none;
+  background-color: #af161a;
 }
 
 .form-btn:disabled {

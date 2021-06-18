@@ -38,19 +38,32 @@
             </li>
 
             <li>
-              <a class="mobile-menu__action-bar-btn" href="javascript:void(0);">
+              {% if isLogged %}
+                <a class="mobile-menu__action-bar-btn" href="{{ linkAccount }}">
+                  <span class="mobile-menu__action-bar-btn-wrapper-img">
+                    <svg class="mobile-menu__action-bar-btn-img">
+                      <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-user"></use>
+                    </svg>
+                    <svg class="mobile-menu__action-bar-btn-counter">
+                      <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-check"></use>
+                    </svg>
+                  </span>
 
-                <span class="mobile-menu__action-bar-btn-wrapper-img">
-                  <svg class="mobile-menu__action-bar-btn-img">
-                    <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-user"></use>
-                  </svg>
-                  <svg class="mobile-menu__action-bar-btn-counter">
-                    <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-check"></use>
-                  </svg>
-                </span>
+                  Особистий кабнет
+                </a>
+              {% else %}
+                <button class="mobile-menu__action-bar-btn" id="mobileMenuLogin">
+                  <span class="mobile-menu__action-bar-btn-wrapper-img">
+                    <svg class="mobile-menu__action-bar-btn-img">
+                      <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-user"></use>
+                    </svg>
+                  </span>
 
-                Особистий кабнет
-              </a>
+                  Вхід
+                </button>
+              {% endif %}
+
+
             </li>
 
             <li class="mobile-menu__action-bar-item">

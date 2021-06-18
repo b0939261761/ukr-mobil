@@ -9,6 +9,10 @@ import information from './gulp/information.js';
 import newsList from './gulp/news_list.js';
 import news from './gulp/news.js';
 import checkoutSuccess from './gulp/checkout_success.js';
+import checkout from './gulp/checkout.js';
+import account from './gulp/account.js';
+import recovery from './gulp/recovery.js';
+import registerSuccess from './gulp/register_success.js';
 
 export default cb => {
   shared();
@@ -21,6 +25,10 @@ export default cb => {
   // information();
   // newsList();
   // news();
-  checkoutSuccess();
+  // checkoutSuccess();
+  // checkout();
+  // account();
+  // recovery();
+  registerSuccess();
   cb();
 };

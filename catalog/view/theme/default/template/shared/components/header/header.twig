@@ -57,7 +57,9 @@
     <link rel="preload" as="image" href="/resourse/images/shared-sprite-icons.svg" type="image/svg+xml">
     <link rel="preload" as="script" href="/resourse/libs/jquery.min.js">
     <link rel="preload" as="script" href="/resourse/libs/jquery.menu-aim.js">
+    <link rel="preload" as="script" href="/resourse/libs/imask.min.js">
     <link rel="preload" as="script" href="/resourse/scripts/shared.min.js">
+
     {% for preload in preloads %}
       <link rel="preload" href="{{ preload.href }}" as="{{ preload.as }}" type="{{ preload.type }}"/>
     {% endfor %}
@@ -75,8 +77,6 @@
       </iframe>
     </noscript>
     <!-- End Google Tag Manager (noscript) -->
-
-      {# {{ headerBanner }} #}
 
     <header class="header" id="header">
       {{ headerBanner }}

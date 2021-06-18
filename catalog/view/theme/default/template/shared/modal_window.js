@@ -4,14 +4,53 @@ window.ModalWindow = class {
     document.body.classList.add('body--window-modal-open');
     this.modalWindow.classList.add('modal-window--open');
     this.modalWindow.focus();
-
-    setTimeout(() => {
-    },
-    50);
   }
 
+  static createResponse(text, type) {
+    const response = document.createElement('div');
+    response.classList.add('modal-window__response', `modal-window__response--${type}`);
+    response.innerHTML = text;
+    return response;
+  }
+
+  static createFormElement() {
+    const form = document.createElement('form');
+    form.classList.add('modal-window__form');
+    return form;
+  }
+
+  // static createFormCheckBox({
+  //   title, name, required
+  // }) {
+  //   const formInput = document.createElement('label');
+  //   formInput.classList.add('form-ckeckbox');
+
+  //   const inputNameInput = document.createElement('input');
+  //   inputNameInput.classList.add('form-ckeckbox__input');
+  //   inputNameInput.type = 'checkbox';
+  //   inputNameInput.name = name;
+  //   if (required) inputNameInput.required = true;
+  //   formInput.appendChild(inputNameInput);
+
+  //   const xmlns = 'http://www.w3.org/2000/svg';
+  //   const xlink = 'http://www.w3.org/1999/xlink';
+  //   const checkImg = document.createElementNS(xmlns, 'svg');
+  //   checkImg.classList.add('form-ckeckbox__check-img');
+  //   formInput.appendChild(checkImg);
+
+  //   const checkImgUse = document.createElementNS(xmlns, 'use');
+  //   checkImgUse.setAttributeNS(xlink, 'href', '/resourse/images/shared-sprite-icons.svg#icon-check');
+  //   checkImg.appendChild(checkImgUse);
+
+  //   const formInputTitle = document.createElement('span');
+  //   formInputTitle.classList.add('form-input__title1');
+  //   formInput.appendChild(formInputTitle);
+  //   formInputTitle.appendChild(document.createTextNode(title));
+  //   return formInput;
+  // }
+
   static createFormInput({
-    title, name, placeholder, required, type, element = 'input'
+    title, name, placeholder, required, type, element = 'input', maxLength
   }) {
     const formInput = document.createElement('label');
     formInput.classList.add('form-input');
@@ -32,18 +71,135 @@ window.ModalWindow = class {
     const inputNameInput = document.createElement(element);
     inputNameInput.classList.add(`form-input__${element}`);
     inputNameInput.name = name;
-    inputNameInput.placeholder = placeholder;
+    if (placeholder) inputNameInput.placeholder = placeholder;
     if (required) inputNameInput.required = true;
+    if (maxLength) inputNameInput.maxLength = maxLength;
     if (type) inputNameInput.type = type;
     formInput.appendChild(inputNameInput);
 
     return formInput;
   }
 
-  static createFormBtn() {
+  static createFormInputPhone({
+    title, name, required
+  }) {
+    const formInput = document.createElement('label');
+    formInput.classList.add('form-input');
+
+    const formInputTitle = document.createElement('div');
+    formInputTitle.classList.add('form-input__title');
+    formInput.appendChild(formInputTitle);
+
+    formInputTitle.appendChild(document.createTextNode(title));
+
+    if (required) {
+      const inputNameTitleRequired = document.createElement('span');
+      inputNameTitleRequired.classList.add('form-input__title-required');
+      inputNameTitleRequired.textContent = '*';
+      formInputTitle.appendChild(inputNameTitleRequired);
+    }
+
+    const inputNameInput = document.createElement('input');
+    inputNameInput.classList.add('form-input__input');
+    inputNameInput.name = name;
+    inputNameInput.pattern = '\\+38\\(0\\d{2}\\)\\d{3}-\\d{2}-\\d{2}';
+    if (required) inputNameInput.required = true;
+    formInput.appendChild(inputNameInput);
+
+    const mask = IMask(inputNameInput, { mask: '+38(\\000)000-00-00', lazy: false });
+    const invalidText = 'Неправильний номер телефону. Формат 38(0xx)xxx-xx-xx';
+
+    inputNameInput.addEventListener('invalid', () => inputNameInput.setCustomValidity(invalidText));
+    inputNameInput.addEventListener('input', () => inputNameInput.setCustomValidity(''));
+
+    return { element: formInput, mask };
+  }
+
+  static createFormInputPassword({
+    title, name, required, confirmElement, isConfirm = false, minLength, maxLength
+  }) {
+    const formInput = document.createElement('label');
+    formInput.classList.add('form-input');
+
+    const formInputTitle = document.createElement('div');
+    formInputTitle.classList.add('form-input__title');
+    formInput.appendChild(formInputTitle);
+
+    formInputTitle.appendChild(document.createTextNode(title));
+
+    if (required) {
+      const inputNameTitleRequired = document.createElement('span');
+      inputNameTitleRequired.classList.add('form-input__title-required');
+      inputNameTitleRequired.textContent = '*';
+      formInputTitle.appendChild(inputNameTitleRequired);
+    }
+
+    const inputWrapperInput = document.createElement('div');
+    inputWrapperInput.classList.add('form-input__wrapper-input-password');
+    formInput.appendChild(inputWrapperInput);
+
+    const inputNameInput = document.createElement('input');
+    inputNameInput.classList.add('form-input__input', 'form-input__input--password');
+    inputNameInput.name = name;
+    if (required) inputNameInput.required = true;
+    if (minLength) inputNameInput.minLength = minLength;
+    if (maxLength) inputNameInput.maxLength = maxLength;
+    inputNameInput.type = 'password';
+    inputWrapperInput.appendChild(inputNameInput);
+
+    const confirmInput = confirmElement && confirmElement.querySelector('.form-input__input');
+
+    const onInput = ({ target }) => {
+      if (confirmElement) {
+        confirmElement.pattern = window.shared.escapeRegExp(target.value);
+      }
+      inputNameInput.setCustomValidity('');
+    };
+
+    const onInvalid = () => {
+      if (isConfirm) inputNameInput.setCustomValidity('Паролі неспівпадають');
+    };
+
+    inputNameInput.addEventListener('input', onInput);
+    inputNameInput.addEventListener('invalid', onInvalid);
+
+    const btnVisible = document.createElement('button');
+    btnVisible.classList.add('form-input__btn-visible-password');
+    btnVisible.type = 'button';
+    inputWrapperInput.appendChild(btnVisible);
+
+    const onClickBtnVisible = () => {
+      if (btnVisible.classList.contains('form-input__btn-visible-password--active')) {
+        btnVisible.classList.remove('form-input__btn-visible-password--active');
+        inputNameInput.type = 'password';
+      } else {
+        btnVisible.classList.add('form-input__btn-visible-password--active');
+        inputNameInput.type = 'text';
+      }
+    };
+    btnVisible.addEventListener('click', onClickBtnVisible);
+
+    const xmlns = 'http://www.w3.org/2000/svg';
+    const xlink = 'http://www.w3.org/1999/xlink';
+    const btnVisiblePasswordImg = document.createElementNS(xmlns, 'svg');
+    btnVisiblePasswordImg.classList.add('form-input__btn-visible-password-img');
+    btnVisible.appendChild(btnVisiblePasswordImg);
+
+    const btnVisiblePasswordImgUse = document.createElementNS(xmlns, 'use');
+    btnVisiblePasswordImgUse.setAttributeNS(xlink, 'href', '/resourse/images/shared-sprite-icons.svg#icon-eye');
+    btnVisiblePasswordImg.appendChild(btnVisiblePasswordImgUse);
+
+    const line = document.createElement('span');
+    line.classList.add('form-input__btn-visible-password-line');
+    btnVisible.appendChild(line);
+
+    return formInput;
+  }
+
+  static createFormBtn(title) {
     const formBtn = document.createElement('button');
     formBtn.classList.add('form-btn');
-    formBtn.textContent = 'Надіслати повідомлення';
+    formBtn.textContent = title;
     return formBtn;
   }
 

@@ -537,20 +537,20 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, 32px);
   grid-gap: 5px;
+  padding-left: 1px;
 }
 
 .product-slide__characteristic-item-color {
-  height: 32px;
-  width: 32px;
-  padding: 4px;
-  background-color: green;
-  border: 1px solid transparent;
-  background-clip: content-box;
+  height: 22px;
+  width: 22px;
+  margin: 4px;
+  border: 1px solid #f6f7f9;
 }
 
 .product-slide__characteristic-item-color--active,
 .product-slide__characteristic-item-color:hover {
-  border-color: #bc191d;
+  outline: 1px solid #bc191d;
+  outline-offset: 4px;
 }
 
 .product-slide__actions {
@@ -581,7 +581,7 @@
   padding: 0 2px;
   height: 38px;
   border-radius: 10px;
-  background-color: transparent;
+  background: transparent url(/resourse/images/lines-red-left.svg) left center no-repeat;
   color: #bc191d;
   transition-property: background-color, color;
   transition-duration: .3s;
@@ -706,68 +706,25 @@
   cursor: default;
 }
 
-.page404 {
-  display: flex;
-  flex-direction: column;
-  margin: 24px 0 37px;
-}
-
-@media (min-width: 768px) {
-  .page404 {
-    margin: 60px 0;
-    flex-direction: row;
-  }
-}
-
-.page404__image {
-  margin: 0 auto 24px;
-}
-
-@media (min-width: 768px) {
-  .page404__image {
-    margin: 0 34px 0 0;
-  }
-}
-
-.page404__content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-@media (min-width: 768px) {
-  .page404__content {
-    align-items: flex-start;
-  }
-}
-
-.page-title--page404 {
-  margin: 0 0 8px;
-}
-
-.page404__text {
-  margin: 0 0 8px;
-  font-size: 12px;
-  line-height: 1.5;
-}
-
-@media (min-width: 768px) {
-  .page404__text {
-    margin-bottom: 16px;
-  }
+.register-success__title {
+  margin: 0 0 16px;
+  font-size: 18px;
+  line-height: 24px;
 }
 
 @media (min-width: 1080px) {
-  .page404__text {
-    font-size: 14px;
+  .register-success__title {
+    font-size: 24px;
+    line-height: 34px;
   }
 }
 
-.page404__link-catalog {
-  color: #bc191d;
+.register-success__content {
+  margin: 0 0 16px;
+  font-size: 14px;
 }
 
-.page404__link-home {
+.register-success__link {
   color: #fff;
   background: #bc191d url(/resourse/images/lines-right.svg) right center no-repeat;
   font-size: 12px;
@@ -776,14 +733,14 @@
   justify-content: center;
   align-items: center;
   border: 1px solid #bc191d;
-  width: 133px;
-  height: 38px;
+  width: 160px;
+  height: 48px;
   border-radius: 10px;
   text-decoration: none;
-  padding: 0 18px;
+  transition: background-color .3s;
 }
 
-.page404__link-home:hover {
+.register-success__link-home:hover {
   background-color: #af161a;
 }
 

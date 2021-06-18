@@ -33,16 +33,25 @@
     </svg>
   </a>
 
-  <a class="btn-header-action btn-header-action--user" href="{{ linkLogin }}">
-    <svg class="btn-header-action__img">
-      <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-user"></use>
-    </svg>
-    <svg class="btn-header-action__counter btn-header-action__counter--user">
-      <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-check"></use>
-    </svg>
-  </a>
+  {% if isLogged %}
+    <a class="btn-header-action btn-header-action--user" href="{{ linkAccount }}">
+      <svg class="btn-header-action__img">
+        <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-user"></use>
+      </svg>
 
-  <a class="btn-header-action btn-header-action--cart" href="javascript:void(0);">
+      <svg class="btn-header-action__counter btn-header-action__counter--user">
+        <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-check"></use>
+      </svg>
+    </a>
+  {% else %}
+    <button class="btn-header-action btn-header-action--user" id="headerLogin">
+      <svg class="btn-header-action__img">
+        <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-user"></use>
+      </svg>
+    </button>
+  {% endif %}
+
+  <a class="btn-header-action btn-header-action--cart" href="{{ linkCheckout }}">
     <svg class="btn-header-action__img">
       <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-cart"></use>
     </svg>

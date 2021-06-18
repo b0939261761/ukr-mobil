@@ -32,7 +32,6 @@ const buildSvg = () => {
 
 const buildCss = () => {
   gulp.src([
-    './catalog/view/theme/default/template/shared/components/breadcrumbs/breadcrumbs.css',
     './catalog/view/theme/default/template/checkout_success/checkout_success.css'
   ])
     .pipe(sourcemaps.init())

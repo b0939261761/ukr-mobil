@@ -56,11 +56,10 @@ body {
 }
 
 @media (min-width: 1080px) {
-  .checkout-success {
+  body {
     font-size: 14px;
   }
 }
-
 
 body.body--mobile-menu-open,
 body.body--window-modal-open {
@@ -118,6 +117,218 @@ main {
   .page-title {
     font-size: 34px;
   }
+}
+
+.custom-input {
+  color: #303031;
+}
+
+.custom-input__title {
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+@media (min-width: 1080px) {
+  .custom-input__title {
+    margin-bottom: 16px;
+  }
+}
+
+.custom-input__title-required {
+  color: #bc191d;
+}
+
+.custom-input__wrapper-input-password {
+  position: relative;
+}
+
+.custom-input__input {
+  width: 100%;
+  font-family: inherit;
+  height: 40px;
+  line-height: 40px;
+  border: 1px solid #edeff2;
+  padding: 0 16px;
+  font-size: 14px;
+  border-radius: 10px;
+  color: inherit;
+  transition: border-color .3s;
+}
+
+@media (min-width: 768px) {
+  .custom-input__input {
+    padding: 0 20px;
+  }
+}
+
+@media (min-width: 1080px) {
+  .custom-input__input {
+    height: 48px;
+    line-height: 48px;
+    padding: 0 24px;
+  }
+}
+
+.custom-input__input--password {
+  display: block;
+  padding-right: 45px;
+}
+
+.custom-input__input--invalid {
+  border-color: #bc191d;
+}
+
+.custom-input__input::placeholder {
+  line-height: inherit;
+  transition: opacity .3s ease;
+  color: #999;
+}
+
+.custom-input__input:focus::placeholder {
+  opacity: 0;
+}
+
+.custom-input__btn-visible-password {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  background-color: transparent;
+  border: none;
+  color: #999;
+  width: 40px;
+  cursor: pointer;
+}
+
+.custom-input__btn-visible-password-img {
+  width: 18px;
+  height: 100%;
+  fill: currentColor;
+  pointer-events: none;
+}
+
+.custom-input__btn-visible-password-line {
+  content: '';
+  height: 2px;
+  background-color: currentColor;
+  position: absolute;
+  width: calc(100% - 16px);
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%) rotate(135deg);
+  opacity: 0;
+  transition: opacity .3s;
+  pointer-events: none;
+}
+
+.custom-input__btn-visible-password--active .custom-input__btn-visible-password-line,
+.custom-input__btn-visible-password:hover .custom-input__btn-visible-password-line {
+  opacity: 1;
+}
+
+.breadcrumbs {
+  display: flex;
+  margin-bottom: 8px;
+  font-size: 12px;
+  line-height: 23px;
+  height: 23px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.breadcrumbs::-webkit-scrollbar {
+  height: 0;
+}
+
+.breadcrumbs__item {
+  color: #aaa;
+  white-space: nowrap;
+}
+
+.breadcrumbs__item:not(:last-child) {
+  background-image: url(/resourse/images/breadcrumbs-arrow.svg);
+  background-repeat: no-repeat;
+  background-position: right center;
+  padding-right: 16px;
+  margin-right: 8px;
+  background-size: 6px 10px;
+}
+
+.breadcrumbs__btn-mobile {
+  border: none;
+  background-color: transparent;
+  letter-spacing: 3px;
+  text-align: center;
+  padding: 0 0 0 3px;
+  color: inherit;
+}
+
+@media (min-width: 1080px) {
+  .breadcrumbs__item--mobile {
+    display: none;
+  }
+}
+
+.breadcrumbs__item--desktop {
+  display: none;
+}
+
+@media (min-width: 1080px) {
+  .breadcrumbs__item--desktop {
+    display: block;
+  }
+}
+
+.breadcrumbs__link {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  text-decoration: none;
+  color: #aaa;
+}
+
+.breadcrumbs__img-home {
+  height: 16px;
+  width: 17px;
+  fill: currentColor;
+}
+
+/* --------------- */
+
+.modal-window-breadcrumbs {
+  line-height: 21px;
+  text-align: center;
+  margin-top: -50px;
+}
+
+.modal-window-breadcrumbs__item--link {
+  padding-bottom: 16px;
+  position: relative;
+}
+
+.modal-window-breadcrumbs__item--link:not(:first-child) {
+  padding-top: 16px;
+}
+
+.modal-window-breadcrumbs__item--link::before {
+  content: '';
+  transform: rotate(90deg) translateY(50%);
+  bottom: -5px;
+  left: 50%;
+  height: 10px;
+  width: 6px;
+  background-image: url(/resourse/images/breadcrumbs-arrow.svg);
+  position: absolute;
+}
+
+.modal-window-breadcrumbs__item--active {
+  padding-top: 16px;
+  color: #999;
+}
+
+.modal-window-breadcrumbs__link {
+  text-decoration: none;
+  color: #303031;
 }
 
 .header {
@@ -532,6 +743,7 @@ main {
   width: 40px;
   height: 30px;
   border-radius: 4px;
+  cursor: pointer;
 }
 
 .btn-header-action:hover {
@@ -1772,6 +1984,10 @@ main {
   grid-gap: var(--modal-window--ident);
 }
 
+.modal-window__form--hide {
+  display: none;
+}
+
 .form-input {
   display: block;
   color: #303031;
@@ -1790,6 +2006,10 @@ main {
 
 .form-input__title-required {
   color: #bc191d;
+}
+
+.form-input__wrapper-input-password {
+  position: relative;
 }
 
 .form-input__input {
@@ -1811,6 +2031,11 @@ main {
   }
 }
 
+.form-input__input--password {
+  display: block;
+  padding-right: 50px;
+}
+
 .form-input__input::placeholder,
 .form-input__textarea::placeholder {
   line-height: inherit;
@@ -1822,6 +2047,77 @@ main {
 .form-input__textarea:focus::placeholder {
   opacity: 0;
 }
+
+.form-input__btn-visible-password {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 40px;
+  background-color: transparent;
+  border: none;
+  color: #999;
+  cursor: pointer;
+}
+
+.form-input__btn-visible-password-img {
+  width: 18px;
+  height: 100%;
+  fill: currentColor;
+}
+
+.form-input__btn-visible-password-line {
+  content: '';
+  height: 2px;
+  background-color: currentColor;
+  position: absolute;
+  width: calc(100% - 16px);
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%) rotate(135deg);
+  opacity: 0;
+  transition: opacity .3s;
+}
+
+.form-input__btn-visible-password--active .form-input__btn-visible-password-line,
+.form-input__btn-visible-password:hover .form-input__btn-visible-password-line {
+  opacity: 1;
+}
+
+/* .form-ckeckbox {
+  display: flex;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.form-ckeckbox__input {
+  width: 28px;
+  height: 28px;
+  appearance: none;
+  border: 1px solid #edeff2;
+  border-radius: 3px;
+  margin: 0 8px 0 0;
+  flex-shrink: 0;
+  cursor: inherit;
+}
+
+.form-ckeckbox__check-img {
+  position: absolute;
+  width: 15px;
+  left: 8px;
+  height: 100%;
+  fill: #bc191d;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .3s;
+}
+
+.form-ckeckbox__input:checked + .form-ckeckbox__check-img {
+  opacity: 1;
+} */
 
 .form-input__textarea {
   padding: 17px 12px;
@@ -1855,7 +2151,7 @@ main {
 }
 
 .form-btn:hover {
-  background-image: none;
+  background-color: #af161a;
 }
 
 .form-btn:disabled {
@@ -1885,6 +2181,75 @@ main {
 
 .modal-window__response--error {
   color: #bc191d;
+}
+
+.modal-window-login__tabs {
+  text-align: center;
+  margin-top: -50px;
+  margin-bottom: var(--modal-window--ident);
+}
+
+.modal-window-login__tab {
+  background-color: transparent;
+  border: none;
+  font-family: inherit;
+  font-size: 14px;
+  padding: 0 0 4px;
+  margin: 0 16px;
+  border-bottom: 2px solid transparent;
+  transition-property: color, border-color;
+  transition-duration: .3s;
+}
+
+.modal-window-login__tab:not(.modal-window-login__tab--active) {
+  cursor: pointer;
+  color: #999;
+}
+
+.modal-window-login__tab--active,
+.modal-window-login__tab:hover {
+  color: #bc191d;
+  border-color: currentColor;
+}
+
+.modal-window-login__wrapper-btn-forgotten {
+  text-align: center;
+}
+
+.modal-window-login__btn-forgotten {
+  background-color: transparent;
+  border: none;
+  color: #bc191d;
+  text-decoration: underline;
+  font-family: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.modal-window-login__btn-forgotten:hover {
+  text-decoration: none;
+}
+
+.modal-window-login__recaptcha {
+  overflow: hidden;
+}
+
+.modal-window-login__recaptcha--error {
+  border: 1px solid #bc191d;
+}
+
+.modal-window-login__term-to-agree {
+  font-size: 14px;
+}
+
+.modal-window-login__term-to-link {
+  color: #bc191d;
+}
+
+.modal-window-recovery__title {
+  font-size: 14px;
+  text-align: center;
 }
 
 /*# sourceMappingURL=shared.min.css.map */

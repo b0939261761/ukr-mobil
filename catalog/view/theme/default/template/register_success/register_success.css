@@ -1,0 +1,46 @@
+.register-success__title {
+  margin: 0 0 16px;
+  font-size: 18px;
+  line-height: 24px;
+  text-align: center;
+}
+
+@media (min-width: 1080px) {
+  .register-success__title {
+    font-size: 24px;
+    line-height: 34px;
+  }
+}
+
+.register-success__content {
+  margin: 0 0 16px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.register-success__link {
+  color: #fff;
+  background: #bc191d url(/resourse/images/lines-right.svg) right center no-repeat;
+  font-size: 12px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #bc191d;
+  width: 160px;
+  height: 48px;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: background-color .3s;
+  margin: 0 auto 37px;
+}
+
+@media (min-width: 768px) {
+  .register-success__link {
+    margin-bottom: 60px;
+  }
+}
+
+..register-success__link:hover {
+  background-color: #af161a;
+}

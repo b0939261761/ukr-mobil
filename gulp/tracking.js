@@ -4,8 +4,7 @@ import concat from 'gulp-concat';
 
 const buildCss = () => {
   gulp.src([
-    './catalog/view/theme/default/template/tracking/tracking.css',
-    './catalog/view/theme/default/template/shared/components/breadcrumbs/breadcrumbs.css'
+    './catalog/view/theme/default/template/tracking/tracking.css'
   ])
     .pipe(sourcemaps.init())
     .pipe(concat('tracking.min.css'))

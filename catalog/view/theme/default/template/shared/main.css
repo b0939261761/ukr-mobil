@@ -56,11 +56,10 @@ body {
 }
 
 @media (min-width: 1080px) {
-  .checkout-success {
+  body {
     font-size: 14px;
   }
 }
-
 
 body.body--mobile-menu-open,
 body.body--window-modal-open {
@@ -118,4 +117,111 @@ main {
   .page-title {
     font-size: 34px;
   }
+}
+
+.custom-input {
+  color: #303031;
+}
+
+.custom-input__title {
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+@media (min-width: 1080px) {
+  .custom-input__title {
+    margin-bottom: 16px;
+  }
+}
+
+.custom-input__title-required {
+  color: #bc191d;
+}
+
+.custom-input__wrapper-input-password {
+  position: relative;
+}
+
+.custom-input__input {
+  width: 100%;
+  font-family: inherit;
+  height: 40px;
+  line-height: 40px;
+  border: 1px solid #edeff2;
+  padding: 0 16px;
+  font-size: 14px;
+  border-radius: 10px;
+  color: inherit;
+  transition: border-color .3s;
+}
+
+@media (min-width: 768px) {
+  .custom-input__input {
+    padding: 0 20px;
+  }
+}
+
+@media (min-width: 1080px) {
+  .custom-input__input {
+    height: 48px;
+    line-height: 48px;
+    padding: 0 24px;
+  }
+}
+
+.custom-input__input--password {
+  display: block;
+  padding-right: 45px;
+}
+
+.custom-input__input--invalid {
+  border-color: #bc191d;
+}
+
+.custom-input__input::placeholder {
+  line-height: inherit;
+  transition: opacity .3s ease;
+  color: #999;
+}
+
+.custom-input__input:focus::placeholder {
+  opacity: 0;
+}
+
+.custom-input__btn-visible-password {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  background-color: transparent;
+  border: none;
+  color: #999;
+  width: 40px;
+  cursor: pointer;
+}
+
+.custom-input__btn-visible-password-img {
+  width: 18px;
+  height: 100%;
+  fill: currentColor;
+  pointer-events: none;
+}
+
+.custom-input__btn-visible-password-line {
+  content: '';
+  height: 2px;
+  background-color: currentColor;
+  position: absolute;
+  width: calc(100% - 16px);
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%) rotate(135deg);
+  opacity: 0;
+  transition: opacity .3s;
+  pointer-events: none;
+}
+
+.custom-input__btn-visible-password--active .custom-input__btn-visible-password-line,
+.custom-input__btn-visible-password:hover .custom-input__btn-visible-password-line {
+  opacity: 1;
 }

@@ -7,7 +7,7 @@ class ControllerProductFilter extends Controller {
   }
 
   private function getFilters() {
-    $category = $this->request->request['category'];
+    $category = $this->request->request['category'] ?? 0;
     $search = $this->request->get['search'] ?? '';
 
     $sql = "
@@ -116,12 +116,15 @@ class ControllerProductFilter extends Controller {
     LEFT JOIN products_models pm ON pm.product_id = p.product_id
     LEFT JOIN models m ON m.id = pm.model_id
     LEFT JOIN brands b ON b.id = m.brand_id
-      WHERE b.id IS NOT NULL
+      WHERE
+        b.id IS NOT NULL
+        AND p.status
     ";
 
     if ($category) $sql .= " AND cp.path_id = {$category}";
 
     $sql .= "{$this->getSQLWhereSearch($search)} ORDER BY b.ord, b.name";
+
     return $this->db->query($sql)->rows;
   }
 
@@ -145,7 +148,10 @@ class ControllerProductFilter extends Controller {
     $sql .= "
       LEFT JOIN products_models pm ON pm.product_id = p.product_id
       LEFT JOIN models m ON m.id = pm.model_id
-      WHERE m.id IS NOT NULL AND m.brand_id = {$brand}
+      WHERE
+        m.id IS NOT NULL
+        AND m.brand_id = {$brand}
+        AND p.status
     ";
 
     if ($category) $sql .= " AND cp.path_id = {$category}";

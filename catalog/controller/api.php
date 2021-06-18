@@ -59,17 +59,17 @@ class ControllerApi extends Controller {
 
 
 
-  public function register() {
-    $email = 'b360124@gmail.com';
-    // $email = 'pavlenkoillai@gmail.com';
+  // public function register() {
+  //   $email = 'b360124@gmail.com';
+  //   // $email = 'pavlenkoillai@gmail.com';
 
-    $subject = 'UkrMobil - Дякуємо за реєстрацію';
-    $this->mail->send($email, $subject, 'register');
-    exit();
-  }
+  //   $subject = 'UkrMobil - Дякуємо за реєстрацію';
+  //   $this->mail->send($email, $subject, 'register');
+  //   exit();
+  // }
 
 
-  public function recovery() {
+  public function recoveryEmail() {
     $email = 'b360124@gmail.com';
     // $email = 'pavlenkoillai@gmail.com';
 
@@ -165,6 +165,149 @@ class ControllerApi extends Controller {
       // $this->mail->send($email, 'UkrMobil - Останні надходження', 'vip', ['products' => $products]);
     }
 
+    exit();
+  }
+
+  public function login() {
+    $requestData = json_decode(file_get_contents('php://input'), true);
+    $email = $this->db->escape(utf8_strtolower(trim($requestData['email'] ?? '')));
+    $password = $this->db->escape(trim($requestData['password'] ?? ''));
+
+    if (empty($email) || empty($password)) {
+      http_response_code(401);
+      exit();
+    }
+
+    $sql = "
+      SELECT 1 FROM oc_customer_login
+      WHERE
+        email = '{$email}'
+        AND TIMESTAMPDIFF(HOUR,  date_modified, now()) = 0
+        AND total > 4
+    ";
+
+    $attempts = $this->db->query($sql)->row;
+
+    if (!empty($attempts)) {
+      http_response_code(400);
+      echo 'ATTEMPTS';
+      exit();
+    }
+
+    $sql = "
+      SELECT customer_id AS id
+      FROM oc_customer
+      WHERE
+        LOWER(email) = '{$email}'
+        AND password = SHA1(CONCAT(salt, SHA1(CONCAT(salt, SHA1('{$password}')))))
+        AND status = 1
+    ";
+
+    $customer = $this->db->query($sql)->row;
+
+    if (empty($customer)) {
+      http_response_code(401);
+      $sql = "
+        INSERT INTO oc_customer_login (email) VALUES ('{$email}')
+          ON DUPLICATE KEY UPDATE
+            total = total + 1,
+            date_modified = NOW()
+      ";
+      $this->db->query($sql);
+      exit();
+    }
+
+    $this->session->data['customerId'] = $customer['id'];
+    $this->db->query("DELETE FROM oc_customer_login WHERE email = '{$email}'");
+    exit();
+  }
+
+  public function logout() {
+    unset($this->session->data['customerId']);
+    exit();
+  }
+
+  public function register() {
+    $requestData = json_decode(file_get_contents('php://input'), true);
+    $firstName = $this->db->escape(trim($requestData['firstName'] ?? ''));
+    $lastName = $this->db->escape(trim($requestData['lastName'] ?? ''));
+    $phone = $this->db->escape($requestData['phone'] ?? '');
+    $email = $this->db->escape(utf8_strtolower($requestData['email'] ?? ''));
+    $password = $this->db->escape($requestData['password'] ?? '');
+    $captcha = $requestData['captcha'] ?? '';
+
+    $lengthFirstName = utf8_strlen($firstName);
+    $lengthLastName = utf8_strlen($lastName);
+    $lengthPassword = utf8_strlen($password);
+    if (
+      $lengthFirstName < 1 || $lengthFirstName > 32
+      || $lengthLastName < 1 || $lengthLastName > 32
+      || $lengthPassword < 4 || $lengthPassword > 20
+      || utf8_strlen($email) > 96
+      || utf8_strlen($phone) != 9
+    ) {
+      http_response_code(400);
+      echo 'INVALID';
+      exit();
+    }
+
+    if ($captcha) {
+      $query = http_build_query([
+        'secret'   => CAPTCHA_GOOGLE_SECRET,
+        'response' => $captcha,
+        'remoteip' => $_SERVER['REMOTE_ADDR']
+      ]);
+      $recaptcha = file_get_contents("https://www.google.com/recaptcha/api/siteverify?{$query}");
+      $recaptcha = json_decode($recaptcha, true);
+    }
+
+    if (empty($recaptcha['success'])) {
+      http_response_code(400);
+      echo 'CAPTCHA';
+      exit();
+    }
+
+    if (!empty($this->db->query("SELECT 1 FROM oc_customer WHERE email = '{$email}'")->row)) {
+      http_response_code(400);
+      echo 'USER_EXISTS';
+      exit();
+    }
+
+    $salt = token(9);
+
+    $sql = "
+      INSERT INTO oc_customer (
+        firstname, lastname, email, telephone, salt, password
+      ) VALUES (
+        '{$firstName}', '{$lastName}', '{$email}', '380{$phone}', '{$salt}',
+        SHA1(CONCAT('{$salt}', SHA1(CONCAT('{$salt}', SHA1('{$password}')))))
+      )
+    ";
+
+    $this->db->query($sql);
+    $this->session->data['customerId'] = $this->db->getLastId();
+    $this->mail->send($email, 'UkrMobil - Дякуємо за реєстрацію', 'register');
+    echo $this->url->link('register_success');
+  }
+
+  public function recovery() {
+    $requestData = json_decode(file_get_contents('php://input'), true);
+    $email = $this->db->escape(utf8_strtolower(trim($requestData['email'] ?? '')));
+
+    $sql = "SELECT customer_id AS id FROM oc_customer WHERE email = '{$email}'";
+    $customer = $this->db->query($sql)->row;
+
+    if (empty($customer)) {
+      http_response_code(400);
+      echo 'USER_EXISTS';
+    }
+
+    $code = token(40);
+    $sql = "UPDATE oc_customer SET code = '${code}' WHERE customer_id = {$customer['id']}";
+    $this->db->query($sql);
+
+    $data['linkReset'] = $this->url->link('recovery', ['code' => $code]);
+    $this->mail->send($email, 'UkrMobil - Відновлення пароля', 'recovery', $data);
     exit();
   }
 }

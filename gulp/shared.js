@@ -21,7 +21,8 @@ const buildSvg = () => {
     'notify', // product
     'info', 'news', 'service', 'delivery', 'warranty', 'docs-full', // right-menu
     'calendar', // home, news_list
-    'update' // news_list, catalog
+    'update', // news_list, catalog
+    'eye' // form password,
   ];
 
   gulp.src(iconsName.map(el => `${pathIcons}${el}.svg`))
@@ -35,6 +36,7 @@ const buildSvg = () => {
 const buildCss = () => {
   gulp.src([
     './catalog/view/theme/default/template/shared/main.css',
+    './catalog/view/theme/default/template/shared/components/breadcrumbs/breadcrumbs.css',
     './catalog/view/theme/default/template/shared/components/header/header.css',
     './catalog/view/theme/default/template/shared/components/header_banner/header_banner.css',
     './catalog/view/theme/default/template/shared/components/header_top/header_top.css',
@@ -43,7 +45,9 @@ const buildCss = () => {
     './catalog/view/theme/default/template/shared/components/footer_btn_scroll_to_top/footer_btn_scroll_to_top.css',
     './catalog/view/theme/default/template/shared/components/nav_catalog/nav_catalog.css',
     './catalog/view/theme/default/template/shared/components/mobile_menu/mobile_menu.css',
-    './catalog/view/theme/default/template/shared/modal_window.css'
+    './catalog/view/theme/default/template/shared/modal_window.css',
+    './catalog/view/theme/default/template/shared/modal_window_login.css',
+    './catalog/view/theme/default/template/shared/modal_window_recovery.css'
   ])
     .pipe(sourcemaps.init())
     .pipe(concat('shared.min.css'))
@@ -55,13 +59,16 @@ const buildJs = () => {
   gulp.src([
     './catalog/view/theme/default/template/shared/main.js',
     './catalog/view/theme/default/template/shared/components/header_banner/header_banner.js',
+    './catalog/view/theme/default/template/shared/components/header_bottom/header_bottom.js',
     './catalog/view/theme/default/template/shared/components/footer/footer.js',
     './catalog/view/theme/default/template/shared/components/footer_btn_scroll_to_top/footer_btn_scroll_to_top.js',
     './catalog/view/theme/default/template/shared/components/nav_catalog/nav_catalog.js',
     './catalog/view/theme/default/template/shared/components/mobile_menu/mobile_menu.js',
     './catalog/view/theme/default/template/shared/modal_window.js',
     './catalog/view/theme/default/template/shared/modal_window_feedback_error.js',
-    './catalog/view/theme/default/template/shared/modal_window_feedback_manager.js'
+    './catalog/view/theme/default/template/shared/modal_window_feedback_manager.js',
+    './catalog/view/theme/default/template/shared/modal_window_login.js',
+    './catalog/view/theme/default/template/shared/modal_window_recovery.js'
   ])
     .pipe(sourcemaps.init())
     .pipe(concat('shared.min.js'))

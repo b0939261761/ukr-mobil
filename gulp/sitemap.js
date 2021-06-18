@@ -5,7 +5,6 @@ import concat from 'gulp-concat';
 const buildCss = () => {
   gulp.src([
     './catalog/view/theme/default/template/sitemap/sitemap.css',
-    './catalog/view/theme/default/template/shared/components/breadcrumbs/breadcrumbs.css',
     './catalog/view/theme/default/template/shared/components/pagination/pagination.css'
   ])
     .pipe(sourcemaps.init())
