@@ -215,10 +215,10 @@ window.modalWindowLogin = () => {
       formRegister = createFormRegister();
       content.appendChild(formRegister);
     } else {
-      formRegister.classList.toggle('modal-window__form--hide');
+      formRegister.classList.toggle('modal-window__form--hidden');
     }
 
-    formLogin.classList.toggle('modal-window__form--hide');
+    formLogin.classList.toggle('modal-window__form--hidden');
   };
 
   btnRegister.addEventListener('click', onClickTab);

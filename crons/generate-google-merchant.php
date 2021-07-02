@@ -86,7 +86,7 @@ $sql = "
 ";
 
 foreach ($db->query($sql)->rows as $product) {
-  $link = str_replace('&', '&amp;', $url->link('product/product', ['product_id' => $product['id']]));
+  $link = str_replace('&', '&amp;', $url->link('product', ['product_id' => $product['id']]));
 
   $images = [];
   foreach(json_decode($product['images'], true) as $image) $images[] = $modelImage->resize($image);

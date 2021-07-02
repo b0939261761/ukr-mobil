@@ -5,8 +5,8 @@ btnScrollToTopEl.addEventListener('click', onClickbtnScrollToTop);
 const onHide = entries => {
   entries.forEach(({ isIntersecting }) => {
     isIntersecting
-      ? btnScrollToTopEl.classList.add('footer-btn-scroll-to-top--hide')
-      : btnScrollToTopEl.classList.remove('footer-btn-scroll-to-top--hide');
+      ? btnScrollToTopEl.classList.add('footer-btn-scroll-to-top--hidden')
+      : btnScrollToTopEl.classList.remove('footer-btn-scroll-to-top--hidden');
   });
 };
 

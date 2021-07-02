@@ -5,7 +5,7 @@ if (headerBanner) {
     const { height } = headerBanner.getBoundingClientRect();
     document.body.style.setProperty('--header-banner-top', `${height}px`);
   };
-  const onResizeHeaderBannerThrottle = window.shared.throttle(onResizeHeaderBanner, 1000, true);
+  const onResizeHeaderBannerThrottle = window.shared.throttle(onResizeHeaderBanner, 1000);
   onResizeHeaderBannerThrottle();
 
   window.addEventListener('resize', onResizeHeaderBannerThrottle);

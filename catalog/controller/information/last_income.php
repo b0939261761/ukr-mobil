@@ -61,7 +61,7 @@ class ControllerInformationLastIncome extends Controller {
           'name'     => $product['name'],
           'price'    => "$" . round($product['price'], 2),
           'quantity' => "{$product['quantity']} шт.",
-          'href'     => $this->url->link('product/product', ['product_id' => $product['product_id']])
+          'href'     => $this->url->link('product', ['product_id' => $product['product_id']])
         ];
       }
     }

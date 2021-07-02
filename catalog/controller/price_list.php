@@ -147,7 +147,7 @@ class ControllerPriceList extends Controller {
           $cellStyle->getFont()->setSize(8);
           $cellStyle->getAlignment()->setHorizontal($horizontalCenter);
 
-          $productLink = $this->url->link('product/product', ['product_id' => $product['id']]);
+          $productLink = $this->url->link('product', ['product_id' => $product['id']]);
           $codeValue = "=HYPERLINK(\"{$productLink}\", \"Перейти\")";
           $sheet->getCellByColumnAndRow(1, $iRow)->setValue($codeValue);
 

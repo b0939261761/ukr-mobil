@@ -47,7 +47,7 @@ if (is_file($errorFileImage)) unlink($errorFileImage);
 
 $i = 0;
 foreach ($db->query($sql)->rows as $product) {
-  $link = str_replace('&', '&amp;', $url->link('product/product', ['product_id' => $product['id']]));
+  $link = str_replace('&', '&amp;', $url->link('product', ['product_id' => $product['id']]));
   $loc = "<loc>{$link}</loc>";
   $sitemap .= "<url>{$loc}</url>";
   $images = json_decode($product['images'], true);

@@ -1,0 +1,27 @@
+<form class="header-search" id="headerSearch">
+
+  <div class="header-search__input">
+    <input class="header-search__input-input" name="search" placeholder="Пошук по сайту..." value="{{search}}" />
+    <button class="header-search__input-btn" type="submit">
+      <svg class="header-search__input-btn-img">
+        <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-search"></use>
+      </svg>
+    </button>
+  </div>
+
+  <div class="header-search__backdrop"></div>
+
+  <div class="header-search__wrapper-drop">
+    <div class="header-search__drop">
+      <ul class="header-search__catalogs"></ul>
+      <ul class="header-search__products"></ul>
+
+      <button class="header-search__result" type="submit">
+        Показати всі результати пошуку
+        <svg class="header-search__result-img">
+          <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-thin-arrow"></use>
+        </svg>
+      </button>
+    </div>
+  </div>
+</form>

@@ -279,7 +279,7 @@ class ProductFilterProvider {
     $items = $this->db->query($sql)->rows;
 
     foreach ($items as &$item) {
-      $item['href'] = $this->url->link('product/product', "product_id={$item['product_id']}");
+      $item['href'] = $this->url->link('product', "product_id={$item['product_id']}");
       if ($item['minimum'] < 1) $item['minimum'] = 1;
       $item['image'] = $this->model_tool_image->resize($item['image'], $this->imageWidth, $this->imageHeight);
       $item['price'] = $item['price'] ? $this->currency->format($item['price']) : 0;

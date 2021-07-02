@@ -1,19 +1,11 @@
-const header = document.getElementById('header');
 const mobileMenu = document.getElementById('mobileMenu');
 const btnMobileMenu = document.getElementById('btnMobileMenu');
-
-window.setMobileMenuTop = () => {
-  const { top, height } = header.getBoundingClientRect();
-  mobileMenu.style.setProperty('--mobile-menu-top', `${height + top}px`);
-};
 
 const onClickBtnMobileMenu = () => {
   if (document.body.classList.contains('body--mobile-menu-open')) {
     document.body.classList.remove('body--mobile-menu-catalog-open');
     const navCategoriesList = document.querySelectorAll('.nav-catalog__list--is-visible');
     navCategoriesList.forEach(el => el.classList.remove('nav-catalog__list--is-visible'));
-  } else {
-    window.setMobileMenuTop();
   }
 
   document.body.classList.toggle('body--mobile-menu-open');
@@ -27,7 +19,6 @@ const btnHeaderMenuEl = document.getElementById('btnHeaderMenu');
 
 const onClickBtnHeaderMenu = evt => {
   if (evt.target !== evt.currentTarget) return;
-  if (!document.body.classList.contains('body--mobile-menu-open')) window.setMobileMenuTop();
   document.body.classList.toggle('body--mobile-menu-open');
 };
 
@@ -68,7 +59,7 @@ const wrapperMobileMenuContacts = document.getElementById('wrapperMobileMenuCont
 
 const setMobileMenuContactsHeight = height => wrapperMobileMenuContacts.style.setProperty('--height', height);
 
-const onResizeMobileMenuContacts = () => console.log(wrapperMobileMenuContacts.firstElementChild.scrollHeight) || setMobileMenuContactsHeight(`${wrapperMobileMenuContacts.firstElementChild.scrollHeight}px`);
+const onResizeMobileMenuContacts = () => setMobileMenuContactsHeight(`${wrapperMobileMenuContacts.firstElementChild.scrollHeight}px`);
 const onResizeMobileMenuContactsThrottle = window.shared.throttle(onResizeMobileMenuContacts, 500);
 
 const onClickMobileMenuBtnContact = () => {

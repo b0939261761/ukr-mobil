@@ -56,7 +56,7 @@ if (pageRecoveryForm) {
       }
     } catch (err) {}
 
-    pageRecoveryResponseError.classList.remove('page-recovery__response-error--hide');
+    pageRecoveryResponseError.classList.remove('page-recovery__response-error--hidden');
     pageRecoverySubmit.disabled = false;
   };
 

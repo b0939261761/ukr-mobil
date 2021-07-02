@@ -42,7 +42,8 @@ const buildJs = () => {
     './catalog/view/theme/default/template/home/components/new/new.js',
     './catalog/view/theme/default/template/home/components/promotions/promotions.js',
     './catalog/view/theme/default/template/shared/components/slider_income/slider_income.js',
-    './catalog/view/theme/default/template/home/components/news/news.js'
+    './catalog/view/theme/default/template/home/components/news/news.js',
+    './catalog/view/theme/default/template/shared/product-slide.js',
   ])
     .pipe(sourcemaps.init())
     .pipe(concat('home.min.js'))

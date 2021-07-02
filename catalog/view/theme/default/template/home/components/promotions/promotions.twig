@@ -20,7 +20,7 @@
     <div class="swiper-wrapper reset-swiper-wrapper">
       {% for product in products %}
         <div class="swiper-slide">
-          <div class="product-slide">
+          <div class="product-slide" data-id="{{ product.id }}">
             <a class="product-slide__wrapper-img" href="{{ product.link }}">
               <img class="product-slide__img" src="{{ product.image }}" alt="">
               <div class="product-slide__labels">

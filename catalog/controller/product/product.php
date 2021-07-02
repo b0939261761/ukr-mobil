@@ -59,7 +59,7 @@ class ControllerProductProduct extends BaseController {
           'color' => $value['color'],
           'active' => $value['active'],
           'available' => $value['available'],
-          'link' => $this->url->link('product/product', ['product_id' => $value['product_id_link']])
+          'link' => $this->url->link('product', ['product_id' => $value['product_id_link']])
         ];
       }
 
@@ -73,13 +73,13 @@ class ControllerProductProduct extends BaseController {
   }
 
   public function index() {
-    $this->load->language('product/product');
+    $this->load->language('product');
     $this->load->model('catalog/product');
     $this->load->model('tool/image');
 
     $productId = (int)($this->request->get['product_id'] ?? 0);
     $product_info = $this->model_catalog_product->getProduct($productId);
-    if (!$product_info) $this->response->redirect($this->url->link('error/not_found'));
+    if (!$product_info) $this->response->redirect($this->url->link('404'));
     $description = $product_info['description'];
 
     // Seo Tags Generator.Begin
@@ -228,7 +228,7 @@ class ControllerProductProduct extends BaseController {
         'description' => utf8_substr(trim(strip_tags(html_entity_decode($result['description'], ENT_QUOTES, 'UTF-8'))), 0, $this->config->get('theme_' . $this->config->get('config_theme') . '_product_description_length')) . '..',
         'price' => $price,
         'special' => $special,
-        'href' => $this->url->link('product/product', ['product_id' => $result['product_id']]),
+        'href' => $this->url->link('product', ['product_id' => $result['product_id']]),
       ];
     }
     // ------------------- end related
@@ -261,7 +261,7 @@ class ControllerProductProduct extends BaseController {
     ]);
     $this->document->addMeta([
       'property' => 'og:url',
-      'content'  => $this->url->link('product/product', ['product_id' => $productId])
+      'content'  => $this->url->link('product', ['product_id' => $productId])
     ]);
     $this->document->addMeta([
       'property' => 'og:image',
@@ -276,7 +276,7 @@ class ControllerProductProduct extends BaseController {
     $data['relativeProducts'] = $this->getRelativeProducts($productId);
     $data['header'] = $this->load->controller('common/header');
     $data['footer'] = $this->load->controller('common/footer');
-    $this->response->setOutput($this->load->view('product/product', $data));
+    $this->response->setOutput($this->load->view('product', $data));
   }
 
   private function getMicrodata($data, $productImages, $reviews) {
@@ -286,7 +286,7 @@ class ControllerProductProduct extends BaseController {
     $microdata = [
       '@context'    => 'https://schema.org/',
       '@type'       => 'Product',
-      'url'         => $this->url->link('product/product', ['product_id' => $data['product']['id']]),
+      'url'         => $this->url->link('product', ['product_id' => $data['product']['id']]),
       'category'    => $category,
       'image'       => $this->model_tool_image->resize($productImages[0], 1024, 1024),
       'name'        => $data['headingH1'],
@@ -377,7 +377,7 @@ class ControllerProductProduct extends BaseController {
     $pagination->page = $page;
     $pagination->limit = $limit;
     $query = ['productId' => $productId, 'page' => '{page}'];
-    $pagination->url = $this->url->link('product/product/review', $query);
+    $pagination->url = $this->url->link('product/review', $query);
     $data['pagination'] = $pagination->render();
 
     return $this->load->view('product/review', $data);
@@ -562,7 +562,7 @@ class ControllerProductProduct extends BaseController {
 
     foreach ($relativeProducts as &$item) {
       $item['image'] = $this->model_tool_image->resize($item['image'], 170, 170);
-      $item['link'] = $this->url->link('product/product', ['product_id' => $item['productId']]);
+      $item['link'] = $this->url->link('product', ['product_id' => $item['productId']]);
     }
 
     return $relativeProducts;

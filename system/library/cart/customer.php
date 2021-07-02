@@ -1,7 +1,7 @@
 <?php
 namespace Cart;
 class Customer {
-  private $id;
+  private $id = 0;
   private $firstName;
   private $lastName;
   private $groupId = 1;

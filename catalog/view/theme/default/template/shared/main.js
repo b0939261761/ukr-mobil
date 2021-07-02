@@ -8,7 +8,7 @@ window.shared.throttle = (callback, wait, immediate = false) => {
     const callNow = immediate && initialCall;
 
     const run = () => {
-      callback(args);
+      callback(...args);
       timeout = null;
     };
 
@@ -18,6 +18,20 @@ window.shared.throttle = (callback, wait, immediate = false) => {
     }
 
     if (!timeout) timeout = setTimeout(run, wait);
+  };
+};
+
+window.shared.debounce = (callback, wait, immediate = false) => {
+  let timeout = null;
+
+  return (...args) => {
+    const callNow = immediate && !timeout;
+    const run = () => callback(...args);
+
+    clearTimeout(timeout);
+    timeout = setTimeout(run, wait);
+
+    if (callNow) run();
   };
 };
 

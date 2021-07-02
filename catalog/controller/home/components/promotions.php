@@ -58,7 +58,7 @@ class ControllerHomeComponentsPromotions extends Controller {
 
     $products = $this->db->query($sql)->rows;
     foreach ($products as &$product) {
-      $product['link'] = $this->url->link('product/product', ['product_id' => $product['id']]);
+      $product['link'] = $this->url->link('product', ['product_id' => $product['id']]);
       $product['image'] = $this->image->resize($product['image'], 306, 306);
     }
     return $products;

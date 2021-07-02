@@ -21,7 +21,7 @@
 @media (min-width: 1080px) {
   .mobile-menu__container {
     position: fixed;
-    top: var(--mobile-menu-top);
+    top: var(--header-bottom);
     left: 50%;
     transform: translateX(-50%);
     width: 100%;
@@ -55,8 +55,8 @@
 }
 
 .body--mobile-menu-open .mobile-menu__drop {
-  top: var(--mobile-menu-top);
-  height: calc(100% - var(--mobile-menu-top));
+  top: var(--header-bottom);
+  height: calc(100% - var(--header-bottom));
 }
 
 @media (min-width: 1080px) {

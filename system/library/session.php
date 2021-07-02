@@ -54,14 +54,8 @@ class Session {
 	 *
 	 * @return	string
  	*/
-	public function start($session_id = '') {
-		if (!$session_id) {
-			if (function_exists('random_bytes')) {
-				$session_id = substr(bin2hex(random_bytes(26)), 0, 26);
-			} else {
-				$session_id = substr(bin2hex(openssl_random_pseudo_bytes(26)), 0, 26);
-			}
-		}
+	public function start($session_id) {
+    if (!$session_id) $session_id = substr(bin2hex(random_bytes(26)), 0, 26);
 
 		if (preg_match('/^[a-zA-Z0-9,\-]{22,52}$/', $session_id)) {
 			$this->session_id = $session_id;
@@ -70,7 +64,6 @@ class Session {
 		}
 
 		$this->data = $this->adaptor->read($session_id);
-
 		return $session_id;
 	}
 

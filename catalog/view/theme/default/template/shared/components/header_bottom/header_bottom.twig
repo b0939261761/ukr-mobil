@@ -9,7 +9,7 @@
     </svg>
   </button>
 
-  <img class="header-logo" src="/image/logo.png" alt="">
+  <img class="header-logo" src="/image/logo.png" alt="Логотип">
 
   <button id="btnHeaderMenu" class="btn-header-menu">
     <svg class="btn-header-menu__img">
@@ -18,14 +18,7 @@
     Каталог продукції
   </button>
 
-  <form class="header-search" action="" method="">
-    <input class="header-search__input" name="" placeholder="Пошук по сайту...">
-    <button class="header-search__btn" type="submit" name="" >
-      <svg class="header-search__btn-img">
-        <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-search"></use>
-      </svg>
-    </button>
-  </form>
+  {{ headerSearch }}
 
   <a class="btn-header-action btn-header-action--select" href="javascript:void(0);">
     <svg class="btn-header-action__img">
@@ -51,10 +44,15 @@
     </button>
   {% endif %}
 
-  <a class="btn-header-action btn-header-action--cart" href="{{ linkCheckout }}">
+  <button class="btn-header-action btn-header-action--cart" id="headerCart">
     <svg class="btn-header-action__img">
       <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-cart"></use>
     </svg>
-    <span class="btn-header-action__counter">525</span>
-  </a>
+    <span
+      class="btn-header-action__counter {{ cartCount ? '' : 'btn-header-action__counter--hidden' }}"
+      id="headerCartCounter"
+    >
+      {{ cartCount }}
+    </span>
+  </span>
 </div>

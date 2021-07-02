@@ -23,18 +23,7 @@ class ControllerApi extends Controller {
 
     $image = $this->image->resize($imageName, 60, 60);
     echo str_replace(HTTP_SERVER . 'image', DIR_IMAGE, $image);
-
-    // file_get_contents(imagePath );
-
-    // $path_url = parse_url($image, PHP_URL_PATH);
-    // $path_image = __DIR__ . "/../../..{$path_url}";
-    // $imagedata = file_get_contents($path_image);
-
-    // header("Content-type: image/jpeg");
-    // imagejpeg($img);
   }
-
-
 
   public function feedback() {
     $requestData = json_decode(file_get_contents('php://input'), true);
@@ -156,7 +145,7 @@ class ControllerApi extends Controller {
           'quantity' => $product['quantity'],
           'priceUSD' => $product['priceUSD'],
           'priceUAH' => $product['priceUAH'],
-          'link'     => $this->url->link('product/product', ['product_id' => $product['id']]),
+          'link'     => $this->url->link('product', ['product_id' => $product['id']]),
           'image'    => $this->image->resize($product['image'], 60, 60)
         ];
       }
@@ -308,6 +297,52 @@ class ControllerApi extends Controller {
 
     $data['linkReset'] = $this->url->link('recovery', ['code' => $code]);
     $this->mail->send($email, 'UkrMobil - Відновлення пароля', 'recovery', $data);
+    exit();
+  }
+
+  public function buy() {
+    $requestData = json_decode(file_get_contents('php://input'), true);
+    $phone = $this->db->escape($requestData['phone'] ?? '');
+    $productId = (int)($requestData['productId'] ?? 0);
+
+    if (!$productId || utf8_strlen($phone) != 9) {
+      http_response_code(400);
+      echo 'INVALID';
+      exit();
+    }
+
+    $data['phone'] = '+380' . $phone;
+
+    $sql = "
+      SELECT
+        p.product_id AS id,
+        pd.name,
+        COALESCE(
+          (SELECT price
+            FROM oc_product_special
+            WHERE product_id = p.product_id
+              AND customer_group_id = {$this->customer->getGroupId()}
+              AND (date_start = '0000-00-00' OR date_start < NOW())
+              AND (date_end = '0000-00-00' OR date_end > NOW())
+          ),
+          (SELECT price FROM oc_product_discount
+            WHERE product_id = p.product_id AND customer_group_id = {$this->customer->getGroupId()}),
+          p.price
+        ) AS price
+      FROM oc_product p
+      INNER JOIN oc_product_description pd ON pd.product_id = p.product_id
+      WHERE p.product_id = {$productId}
+    ";
+
+    $data['product'] = $this->db->query($sql)->row;
+
+    if ($this->customer->getId()) {
+      $data['customer']['fullName'] = $this->customer->getFirstName() . ' ' . $this->customer->getLastName();
+      $data['customer']['phone'] = '+380' . $this->customer->getPhone();
+      $data['customer']['email'] = $this->customer->getEmail();
+    }
+
+    $this->mail->send('ukrmobil1@gmail.com', "Купити в 1 клік {$data['phone']}", 'buy', $data);
     exit();
   }
 }

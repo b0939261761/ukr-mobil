@@ -29,7 +29,7 @@
   transition-delay: .3s;
 }
 
-.footer-btn-scroll-to-top--hide {
+.footer-btn-scroll-to-top--hidden {
   opacity: 0;
   visibility: hidden;
 }

@@ -176,7 +176,7 @@ class ControllerStartupSeoPro extends Controller {
       if (isset($this->request->get['page'])) $this->catalog->setPage($this->request->get['page']);
       $this->catalog->setCategoryId($category);
       $this->request->request['categories'] = $this->catalog->getCurrentCatagories();
-    } elseif ($controller == 'product/search') $this->request->get['route'] = $controller;
+    } elseif ($controller == 'search') $this->request->get['route'] = $controller;
 
     // if (in_array($controller, ['product/category', 'product/search', 'catalog/catalog'])) {
     if ($controller == 'catalog/catalog') {
@@ -189,13 +189,13 @@ class ControllerStartupSeoPro extends Controller {
 
     if (isset($this->request->get['search'])) {
       $this->catalog->setSearch($this->request->get['search']);
-      $this->request->get['search'] = $this->catalog->getSearch(); // TODO REMOVE
-      if (empty($this->request->get['search'])) unset($this->request->get['search']); // TODO REMOVE
+      // $this->request->get['search'] = $this->catalog->getSearch(); // TODO REMOVE
+      // if (empty($this->request->get['search'])) unset($this->request->get['search']); // TODO REMOVE
     }
 
 
     if (!isset($this->request->get['route'])) {
-      if (isset($this->request->get['product_id'])) $this->request->get['route'] = 'product/product';
+      if (isset($this->request->get['product_id'])) $this->request->get['route'] = 'product';
       elseif (isset($this->request->get['news_id'])) $this->request->get['route'] = 'news';
       elseif (isset($this->request->get['sitemap_id'])) $this->request->get['route'] = 'sitemap';
       elseif (isset($this->request->get['information_id'])) $this->request->get['route'] = 'information';
@@ -217,8 +217,8 @@ class ControllerStartupSeoPro extends Controller {
     $route = $data['route'];
     unset($data['route']);
 
-    if (in_array($route, ['product/category', 'product/search'])) $isFilters = true;
-    elseif ($route == 'product/product/review') return $link;
+    if (in_array($route, ['product/category', 'search'])) $isFilters = true;
+    elseif ($route == 'product/review') return $link;
     $link = "{$host}index.php?route={$route}";
     if (count($data)) $link .= '&' . http_build_query($data);
 

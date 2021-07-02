@@ -194,7 +194,7 @@ class ControllerNews extends Controller {
     $items = $this->db->query($sql)->rows;
 
     foreach ($items as &$item) {
-      $item['link'] = $this->url->link('product/product', ['product_id' => $item['id']]);
+      $item['link'] = $this->url->link('product', ['product_id' => $item['id']]);
       $item['image'] = $this->image->resize($item['image'], 306, 306);
 
       $item['properties'] = json_decode($item['properties'], true);
@@ -204,7 +204,7 @@ class ControllerNews extends Controller {
         uasort($property['values'], function ($a, $b) { return $a['ord'] - $b['ord']; });
 
         foreach ($property['values'] as &$value) {
-          if (!$value['isActive']) $value['link'] = $this->url->link('product/product', ['product_id' => $value['id']]);
+          if (!$value['isActive']) $value['link'] = $this->url->link('product', ['product_id' => $value['id']]);
         }
       }
     }

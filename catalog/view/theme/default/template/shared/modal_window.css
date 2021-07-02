@@ -19,10 +19,6 @@
   overflow-y: auto;
 }
 
-.modal-window:focus {
-  outline: 5px solid black;
-}
-
 @media (min-width: 768px) {
   .modal-window {
     --modal-window--ident: 20px;
@@ -113,7 +109,7 @@
   grid-gap: var(--modal-window--ident);
 }
 
-.modal-window__form--hide {
+.modal-window__form--hidden {
   display: none;
 }
 

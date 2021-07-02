@@ -9,7 +9,7 @@ class ControllerAccountOrder extends Controller {
     // }
 
     $data['order'] = $this->getOrder($data['orderId']);
-    if (empty($data['order'])) $this->response->redirect($this->url->link('error/not_found'));
+    if (empty($data['order'])) $this->response->redirect($this->url->link('404'));
 
     $data['order']['comment'] = nl2br($data['order']['comment']);
     $data['products'] = $this->getOrderProducts($data['orderId']);
@@ -33,7 +33,7 @@ class ControllerAccountOrder extends Controller {
     $orderNew = $this->getOrder($orderId);
 
     $formatText = \PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT;
-    
+
     $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
     $spreadsheet->getProperties()
       ->setCreator('UkrMobil')

@@ -62,7 +62,9 @@ body {
 }
 
 body.body--mobile-menu-open,
-body.body--window-modal-open {
+body.body--window-modal-open,
+body.body--header-search-open,
+body.body--cart-open {
   overflow: hidden;
 }
 

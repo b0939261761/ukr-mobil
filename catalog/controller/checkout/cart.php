@@ -111,7 +111,7 @@ class ControllerCheckoutCart extends Controller {
       if (!$product['enoughQuantityStore1']) $enoughQuantityStore1 = false;
       if (!$product['enoughQuantityStore2']) $enoughQuantityStore2 = false;
       $product['image'] = $this->model_tool_image->resize($product['image'], 36, 36);
-      $product['link'] = $this->url->link('product/product', ['product_id' => $product['product_id']]);
+      $product['link'] = $this->url->link('product', ['product_id' => $product['product_id']]);
     }
 
     $currency = $this->getCurrency();

@@ -22,7 +22,6 @@ window.modalWindowRecovery = () => {
     const url = '/index.php?route=api/recovery';
 
     let errorText;
-    let hasError = false;
     try {
       const response = await fetch(url, { method: 'POST', body });
       if (response.ok) {
@@ -30,26 +29,24 @@ window.modalWindowRecovery = () => {
         const responseElement = window.ModalWindow.createResponse(responseText, 'success');
         evt.target.parentElement.appendChild(responseElement);
         evt.target.remove();
+        return;
+      }
+
+      const responseText = await response.text();
+      if (response.status === 400 && responseText === 'USER_EXISTS') {
+        errorText = 'Email не знайдено, перевірте та спопробуйте ще раз!';
       } else {
-        hasError = true;
-        const responseText = await response.text();
-        if (response.status === 400 && responseText === 'USER_EXISTS') {
-          errorText = 'Email не знайдено, перевірте та спопробуйте ще раз!';
-        } else {
-          throw new Error(`${response.status} ${response.statusText}`);
-        }
+        throw new Error(`${response.status} ${response.statusText}`);
       }
     } catch (err) {
       errorText = `Помилка відправлення: ${err.message}`;
     }
 
-    if (hasError) {
-      const modalWindowResponse = form.querySelector('.modal-window__response');
-      if (modalWindowResponse) modalWindowResponse.remove();
-      const responseElement = window.ModalWindow.createResponse(errorText, 'error');
-      form.appendChild(responseElement);
-      formBtn.disabled = false;
-    }
+    const modalWindowResponse = form.querySelector('.modal-window__response');
+    if (modalWindowResponse) modalWindowResponse.remove();
+    const responseElement = window.ModalWindow.createResponse(errorText, 'error');
+    form.appendChild(responseElement);
+    formBtn.disabled = false;
   };
 
   form.addEventListener('submit', onSubmit);

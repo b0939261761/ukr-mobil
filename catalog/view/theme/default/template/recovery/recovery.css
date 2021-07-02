@@ -90,6 +90,6 @@
   opacity: 1;
 }
 
-.page-recovery__response-error--hide {
+.page-recovery__response-error--hidden {
   opacity: 0;
 }

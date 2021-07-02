@@ -81,7 +81,7 @@ window.ModalWindow = class {
   }
 
   static createFormInputPhone({
-    title, name, required
+    title, name, required, value
   }) {
     const formInput = document.createElement('label');
     formInput.classList.add('form-input');
@@ -108,6 +108,8 @@ window.ModalWindow = class {
 
     const mask = IMask(inputNameInput, { mask: '+38(\\000)000-00-00', lazy: false });
     const invalidText = 'Неправильний номер телефону. Формат 38(0xx)xxx-xx-xx';
+
+    if (value) mask.unmaskedValue = value;
 
     inputNameInput.addEventListener('invalid', () => inputNameInput.setCustomValidity(invalidText));
     inputNameInput.addEventListener('input', () => inputNameInput.setCustomValidity(''));
@@ -146,8 +148,6 @@ window.ModalWindow = class {
     if (maxLength) inputNameInput.maxLength = maxLength;
     inputNameInput.type = 'password';
     inputWrapperInput.appendChild(inputNameInput);
-
-    const confirmInput = confirmElement && confirmElement.querySelector('.form-input__input');
 
     const onInput = ({ target }) => {
       if (confirmElement) {

@@ -4,6 +4,7 @@ class Catalog {
   private $currentCategories;
   private $categoryId;
   private $search;
+  private $searchSQL;
 
   // private $brand;
   // private $model;
@@ -53,11 +54,24 @@ class Catalog {
 
   public function setSearch($search) {
     $search = preg_replace('/\s+/', ' ', str_replace('\\', '', trim($search)));
-    if ($search) $this->search = $search;
+    if (!$search) return;
+    $this->search = $search;
+
+    foreach (explode(' ', $search) as $word) {
+      $implode[] = strlen($word) < 3
+        ? "(pd.name LIKE '{$word}%' OR pd.name LIKE '% {$word}%')"
+        : "pd.name LIKE '%{$word}%'";
+    }
+
+    $this->searchSQL = implode(' AND ', $implode);
   }
 
   public function getSearch() {
     return $this->search;
+  }
+
+  public function getSearchSQL() {
+    return $this->searchSQL;
   }
 
   public function setPage($page) {
@@ -208,7 +222,7 @@ class Catalog {
     $this->items = $this->db->query($sql)->rows;
 
     foreach ($this->items as &$item) {
-      $item['link'] = $this->url->link('product/product', ['product_id' => $item['id']]);
+      $item['link'] = $this->url->link('product', ['product_id' => $item['id']]);
       $item['image'] = $this->image->resize($item['image'], 306, 306);
 
       $item['properties'] = json_decode($item['properties'], true);
@@ -218,7 +232,7 @@ class Catalog {
         uasort($property['values'], function ($a, $b) { return $a['ord'] - $b['ord']; });
 
         foreach ($property['values'] as &$value) {
-          if (!$value['isActive']) $value['link'] = $this->url->link('product/product', ['product_id' => $value['id']]);
+          if (!$value['isActive']) $value['link'] = $this->url->link('product', ['product_id' => $value['id']]);
         }
       }
     }

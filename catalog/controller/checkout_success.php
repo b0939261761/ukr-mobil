@@ -110,7 +110,7 @@ class ControllerCheckoutSuccess extends Controller {
     $products = $this->db->query($sql)->rows;
     foreach ($products as &$product) {
       $image = $product['image'];
-      $product['link'] = $this->url->link('product/product', ['product_id' => $product['id']]);
+      $product['link'] = $this->url->link('product', ['product_id' => $product['id']]);
       $product['image'] = $this->image->resize($image, 87, 87);
       $product['imageEmail'] = $this->image->resize($image, 60, 60);
     }

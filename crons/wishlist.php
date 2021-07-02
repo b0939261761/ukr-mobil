@@ -78,7 +78,7 @@ foreach ($db->query($sql)->rows as $item) {
       'name'     => $product['name'],
       'priceUSD' => $product['priceUSD'],
       'priceUAH' => $product['priceUAH'],
-      'link'     => $url->link('product/product', ['product_id' => $product['id']]),
+      'link'     => $url->link('product', ['product_id' => $product['id']]),
       'image'    => $image->resize($product['image'], 60, 60)
     ];
   }

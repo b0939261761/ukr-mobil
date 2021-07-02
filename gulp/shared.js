@@ -22,7 +22,9 @@ const buildSvg = () => {
     'info', 'news', 'service', 'delivery', 'warranty', 'docs-full', // right-menu
     'calendar', // home, news_list
     'update', // news_list, catalog
-    'eye' // form password,
+    'eye', // form password,
+    'plus', 'minus', // cart
+    'thin-arrow' // header-search
   ];
 
   gulp.src(iconsName.map(el => `${pathIcons}${el}.svg`))
@@ -36,6 +38,7 @@ const buildSvg = () => {
 const buildCss = () => {
   gulp.src([
     './catalog/view/theme/default/template/shared/main.css',
+    './catalog/view/theme/default/template/shared/header_search/header_search.css',
     './catalog/view/theme/default/template/shared/components/breadcrumbs/breadcrumbs.css',
     './catalog/view/theme/default/template/shared/components/header/header.css',
     './catalog/view/theme/default/template/shared/components/header_banner/header_banner.css',
@@ -47,7 +50,9 @@ const buildCss = () => {
     './catalog/view/theme/default/template/shared/components/mobile_menu/mobile_menu.css',
     './catalog/view/theme/default/template/shared/modal_window.css',
     './catalog/view/theme/default/template/shared/modal_window_login.css',
-    './catalog/view/theme/default/template/shared/modal_window_recovery.css'
+    './catalog/view/theme/default/template/shared/modal_window_recovery.css',
+    './catalog/view/theme/default/template/shared/cart/cart.css',
+    './catalog/view/theme/default/template/shared/cart_toast/cart_toast.css'
   ])
     .pipe(sourcemaps.init())
     .pipe(concat('shared.min.css'))
@@ -59,7 +64,9 @@ const buildJs = () => {
   gulp.src([
     './catalog/view/theme/default/template/shared/main.js',
     './catalog/view/theme/default/template/shared/components/header_banner/header_banner.js',
+    './catalog/view/theme/default/template/shared/header_search/header_search.js',
     './catalog/view/theme/default/template/shared/components/header_bottom/header_bottom.js',
+    './catalog/view/theme/default/template/shared/components/header/header.js',
     './catalog/view/theme/default/template/shared/components/footer/footer.js',
     './catalog/view/theme/default/template/shared/components/footer_btn_scroll_to_top/footer_btn_scroll_to_top.js',
     './catalog/view/theme/default/template/shared/components/nav_catalog/nav_catalog.js',
@@ -68,7 +75,11 @@ const buildJs = () => {
     './catalog/view/theme/default/template/shared/modal_window_feedback_error.js',
     './catalog/view/theme/default/template/shared/modal_window_feedback_manager.js',
     './catalog/view/theme/default/template/shared/modal_window_login.js',
-    './catalog/view/theme/default/template/shared/modal_window_recovery.js'
+    './catalog/view/theme/default/template/shared/modal_window_recovery.js',
+    './catalog/view/theme/default/template/shared/modal_window_buy.js',
+    './catalog/view/theme/default/template/shared/cart/cart.js',
+    './catalog/view/theme/default/template/shared/cart_toast/cart_toast.js'
+
   ])
     .pipe(sourcemaps.init())
     .pipe(concat('shared.min.js'))

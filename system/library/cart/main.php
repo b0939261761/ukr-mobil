@@ -34,5 +34,4 @@ class Main {
     $sql = "SELECT value FROM oc_currency WHERE currency_id = 980";
     return $this->currency = $this->db->query($sql)->row['value'] ?? 0;
   }
-
 }

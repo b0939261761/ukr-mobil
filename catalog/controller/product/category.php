@@ -139,7 +139,7 @@ class ControllerProductCategory extends Ego\Controllers\BaseController {
     }
 
     $category = $this->getCategory($data['queryUrl']['category']);
-    if (!$category) $this->response->redirect($this->url->link('error/not_found'));
+    if (!$category) $this->response->redirect($this->url->link('404'));
 
     $seo = $this->getSEO($category, $seoFiltersIds);
     $data['headingH1'] = $seo['headingH1'];
