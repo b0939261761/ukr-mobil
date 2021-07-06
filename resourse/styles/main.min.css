@@ -460,13 +460,13 @@ button, input {
   }
 }
 
-.btn-header-action--select,
+.btn-header-action--favorites,
 .btn-header-action--user {
   display: none;
 }
 
 @media (min-width: 768px) {
-  .btn-header-action--select,
+  .btn-header-action--favorites,
   .btn-header-action--user {
     display: flex;
   }

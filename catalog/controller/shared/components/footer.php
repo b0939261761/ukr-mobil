@@ -19,6 +19,7 @@ class ControllerSharedComponentsFooter extends Controller {
     $data['mobileMenu'] = $this->load->controller('shared/components/mobile_menu');
     $data['cart'] = $this->load->controller('shared/cart');
     $data['customerPhone'] = $this->customer->getPhone();
+    $data['isLogged'] = $this->customer->getId();
 
     return $this->load->view('shared/components/footer/footer', $data);
   }

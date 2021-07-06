@@ -1,8 +1,6 @@
 <?
 class ControllerStartupStartup extends Controller {
   public function index() {
-    $this->registry->set('url', new Url(HTTP_SERVER, HTTPS_SERVER));
-
     $this->registry->set('customer', new Cart\Customer($this->registry));
     $this->registry->set('image', new Image());
     $this->registry->set('mail', new Mail());

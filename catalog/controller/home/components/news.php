@@ -2,6 +2,7 @@
 class ControllerHomeComponentsNews extends Controller {
   public function index() {
     $data['news'] = $this->getNews();
+    $data['linkNews'] = $this->url->link('news_list');
     return $this->load->view('home/components/news/news', $data);
   }
 
@@ -22,7 +23,7 @@ class ControllerHomeComponentsNews extends Controller {
 
     $news = $this->db->query($sql)->rows;
     foreach ($news as &$item) {
-      $item['link'] = $this->url->link('information/news/read', ['news_id' => $item['id']]);
+      $item['link'] = $this->url->link('news', ['news_id' => $item['id']]);
       $item['image'] = $this->image->resize($item['image'], 386, 230);
     }
     return $news;

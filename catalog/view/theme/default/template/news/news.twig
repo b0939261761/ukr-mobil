@@ -46,13 +46,21 @@
                   <span class="product-slide__label product-slide__label--special">{{ product.dateExpected }}</span>
                 {% endif %}
               </div>
-
-              <button class="product-slide__btn-like" type="button" title="Додати до вибранного">
-                <svg class="product-slide__btn-like-img">
-                  <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-heart"></use>
-                </svg>
-              </button>
             </a>
+
+            <button class="product-slide__btn-favorite" title="Додати до вибранного" {{ isLogged ? '' : 'disabled' }}>
+              <svg class="product-slide__btn-favorite-img">
+                <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-heart"></use>
+              </svg>
+
+              {% if not isLogged %}
+                <span class="product-slide__btn-popup product-slide__btn-popup--favorite">
+                  Будь ласка,
+                  <span class="product-slide__btn-popup-btn">авторизуйтесь</span>
+                  щоб додати товар у список бажань
+                </span>
+              {% endif %}
+            </button>
 
             <div class="product-slide__code">Код товару: {{ product.id }}</div>
             <a class="product-slide__name" href="{{ product.link }}">{{ product.name }}</a>
@@ -152,11 +160,19 @@
                   В кошик
                 </button>
               {% else %}
-                <button class="product-slide__btn-notify">
-                  <svg class="product-slide__btn-notify-img">
+                <button class="product-slide__btn-wishlist" {{ isLogged ? '' : 'disabled' }}>
+                  <svg class="product-slide__btn-wishlist-img">
                     <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-notify"></use>
                   </svg>
                   Повідомити про наявність
+
+                  {% if not isLogged %}
+                    <span class="product-slide__btn-popup product-slide__btn-popup--wishlist">
+                      Будь ласка,
+                      <span class="product-slide__btn-popup-btn">авторизуйтесь</span>,
+                      щоб отримати повідомлення при появі товару на складі.
+                    </span>
+                  {% endif %}
                 </button>
               {% endif %}
             </div>

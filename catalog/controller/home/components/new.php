@@ -2,6 +2,7 @@
 class ControllerHomeComponentsNew extends Controller {
   public function index() {
     $data['products'] = $this->getProducts();
+    $data['isLogged'] = $this->customer->getId();
     return $this->load->view('home/components/new/new', $data);
   }
 

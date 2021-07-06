@@ -2,8 +2,7 @@ window.ModalWindow = class {
   constructor(titleText, bodyInner) {
     this.createModal(titleText, bodyInner);
     document.body.classList.add('body--window-modal-open');
-    this.modalWindow.classList.add('modal-window--open');
-    this.modalWindow.focus();
+    setTimeout(() => this.modalWindow.classList.add('modal-window--open'), 10);
   }
 
   static createResponse(text, type) {

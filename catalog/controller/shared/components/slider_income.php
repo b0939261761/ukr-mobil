@@ -49,6 +49,7 @@ class ControllerSharedComponentsSliderIncome extends Controller {
         p.image,
         p.quantityStore1,
         p.quantityStore2,
+        p.quantityStore1 + p.quantityStore2 AS quantity,
         p.price AS priceUSD,
         ROUND(p.price * c.value) AS priceUAH,
         IF(p.price = p.priceOld, 100, ROUND(p.priceOld * c.value)) AS priceOldUAH
@@ -63,6 +64,7 @@ class ControllerSharedComponentsSliderIncome extends Controller {
     }
 
     $data['linkIncome'] = $this->url->link('income/income');
+    $data['isLogged'] = $this->customer->getId();
     return $this->load->view('shared/components/slider_income/slider_income', $data);
   }
 }

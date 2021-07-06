@@ -1,5 +1,5 @@
 .checkout__section {
-  width: 900px;
+  max-width: 900px;
   border-radius: 10px;
   background-color: #fff;
   padding: 16px;
@@ -88,6 +88,87 @@
 
 .checkout-text-input__input:focus::placeholder {
   opacity: 0;
+}
+
+/* ------------------ */
+
+
+.checkout-shipping-method-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 8px;
+}
+
+@media (min-width: 480px) {
+  .checkout-shipping-method-list {
+    grid-gap: 16px;
+  }
+}
+
+@media (min-width: 768px) {
+  .checkout-shipping-method-list {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (min-width: 1080px) {
+  .checkout-shipping-method-list {
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 16px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .checkout-shipping-method-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1440px) {
+  .checkout-shipping-method-list {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.checkout-shipping-method {
+  position: relative;
+  height: 100%;
+}
+
+.checkout-shipping-method__input {
+  position: absolute;
+  height: 0;
+  width: 0;
+}
+
+.checkout-shipping-method__button {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  border: 1px dashed #b2bac7;
+  padding: 14px 8px;
+  border-radius: 10px;
+  text-align: center;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 21px;
+  transition: border-color .3s ease;
+}
+
+.checkout-shipping-method__button:hover,
+input:checked ~ .checkout-shipping-method__button {
+  border: 1px solid #bc191d;
+}
+
+.checkout-shipping-method__title {
+  margin-bottom: 16px;
+}
+
+.checkout-shipping-method__img {
+  max-width: 100%;
+  margin-top: auto;
 }
 
 /*# sourceMappingURL=checkout.min.css.map */

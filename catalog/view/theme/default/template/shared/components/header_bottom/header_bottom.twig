@@ -20,11 +20,19 @@
 
   {{ headerSearch }}
 
-  <a class="btn-header-action btn-header-action--select" href="javascript:void(0);">
-    <svg class="btn-header-action__img">
-      <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-heart"></use>
-    </svg>
-  </a>
+  {% if isLogged %}
+    <a class="btn-header-action btn-header-action--favorites" href="{{ linkAccountFavorites }}">
+      <svg class="btn-header-action__img">
+        <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-heart"></use>
+      </svg>
+    </a>
+  {% else %}
+    <button class="btn-header-action btn-header-action--favorites" id="headerFavorites">
+      <svg class="btn-header-action__img">
+        <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-heart"></use>
+      </svg>
+    </button>
+  {% endif %}
 
   {% if isLogged %}
     <a class="btn-header-action btn-header-action--user" href="{{ linkAccount }}">

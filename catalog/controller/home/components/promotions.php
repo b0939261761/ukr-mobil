@@ -2,6 +2,7 @@
 class ControllerHomeComponentsPromotions extends Controller {
   public function index() {
     $data['products'] = $this->getProducts();
+    $data['isLogged'] = $this->customer->getId();
     return $this->load->view('home/components/promotions/promotions', $data);
   }
 
@@ -48,6 +49,7 @@ class ControllerHomeComponentsPromotions extends Controller {
         p.price != p.priceOld AS isPromotions,
         p.quantityStore1,
         p.quantityStore2,
+        p.quantityStore1 + p.quantityStore2 AS quantity,
         p.price AS priceUSD,
         ROUND(p.price * c.value) AS priceUAH,
         ROUND(p.priceOld * c.value) AS priceOldUAH

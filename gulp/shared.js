@@ -51,6 +51,7 @@ const buildCss = () => {
     './catalog/view/theme/default/template/shared/modal_window.css',
     './catalog/view/theme/default/template/shared/modal_window_login.css',
     './catalog/view/theme/default/template/shared/modal_window_recovery.css',
+    './catalog/view/theme/default/template/shared/modal_window_favorites.css',
     './catalog/view/theme/default/template/shared/cart/cart.css',
     './catalog/view/theme/default/template/shared/cart_toast/cart_toast.css'
   ])
@@ -77,6 +78,8 @@ const buildJs = () => {
     './catalog/view/theme/default/template/shared/modal_window_login.js',
     './catalog/view/theme/default/template/shared/modal_window_recovery.js',
     './catalog/view/theme/default/template/shared/modal_window_buy.js',
+    './catalog/view/theme/default/template/shared/modal_window_favorites.js',
+    './catalog/view/theme/default/template/shared/modal_window_wishlist.js',
     './catalog/view/theme/default/template/shared/cart/cart.js',
     './catalog/view/theme/default/template/shared/cart_toast/cart_toast.js'
 

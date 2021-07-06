@@ -51,108 +51,137 @@
 
 
       <style>
-        .checkout {
-          display: grid;
-          width:
-        }
-
-        .checkout-shipping-method {
-          width: 200px;
-          display: block;
-          position: relative;
-        }
-
-        .checkout-shipping-method__input {
-          position: absolute;
-          height: 0;
-          width: 0;
-        }
-
-        .checkout-shipping-method__button {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          border: 1px dashed #b2bac7;
-          padding: 14px 8px;
-          border-radius: 10px;
-          text-align: center;
-          font-weight: bold;
-          cursor: pointer;
-          font-size: 12px;
-          line-height: 21px;
-          transition: border-color .3s ease;
-        }
-
-        input:checked ~ .checkout-shipping-method__button,
-        .checkout-shipping-method__button:hover {
-          border: 1px solid #bc191d;
-        }
-
-        .checkout-shipping-method__title {
-            min-height: 42px;
-            margin-bottom: 16px;
-          }
-
-          .checkout-shipping-method__img {
-            max-width: 100%;
-            margin-bottom: 16px;
-          }
-
-          .checkout-shipping-method__term {
-            font-weight: normal;
-            color: #999;
-
-          }
-
-          .checkout-shipping-method__date {
-            font-weight: bold;
-            color: #303031;
-          }
-
-          .checkout-shipping-method__price {
-            font-weight: bold;
-          }
 
       </style>
 
 
-        <label class="checkout-shipping-method">
-          <input
-            type="radio"
-            name="shipping-method"
-            class="checkout-shipping-method__input"
-            value="Самовивіз з м. Рівне"
-          >
-          <span class="checkout-shipping-method__button">
-            <span class="checkout-shipping-method__title">Самовивіз з м. Рівне</span>
-            <svg class="checkout-shipping-method__img" height="32">
-              <use xlink:href="/resourse/images/checkout-sprite-icons.svg#icon-car"></use>
-            </svg>
-            <span class="checkout-shipping-method__term">Заберіть&nbsp;<!--
-              --><span class="checkout-shipping-method__date">сьогодні</span>
-            </span>
-            <span class="checkout-shipping-method__price">Безкоштовно</span>
-          </span>
-        </label>
 
-        <label class="checkout-shipping-method">
-          <input
-            type="radio"
-            name="shipping-method"
-            class="checkout-shipping-method__input"
-            value="Курьерская доставка &quot;Новая Почта&quot;"
-          >
-          <span class="checkout-shipping-method__button">
-            <span class="checkout-shipping-method__title">Кур'єрська доставка «Нова пошта»</span>
-            <svg class="checkout-shipping-method__img" height="32">
-              <use xlink:href="/resourse/images/checkout-sprite-icons.svg#icon-courier-new-post"></use>
-            </svg>
-            <span class="checkout-shipping-method__term">Заберіть&nbsp;<!--
-              --><span class="checkout-shipping-method__date">сьогодні</span>
+'Новая Почта'                       => 'new-post',
+        ''          => 'car',
+        'Самовывоз из г. Ровно'             => 'car',
+        'Курьерская доставка "Новая почта"' => 'courier-new-post',
+        'Курьерская доставка г. Ровно'      => 'courier',
+        'Укрпочта'                          => 'ukrpost',
+        'Justin'                            => 'justin'
+
+      <ul class="checkout-shipping-method-list">
+        <li>
+          <label class="checkout-shipping-method">
+            <input
+              type="radio"
+              name="shipping-method"
+              class="checkout-shipping-method__input"
+              value="Самовивіз з м. Рівне"
+            >
+            <span class="checkout-shipping-method__button">
+              <span class="checkout-shipping-method__title">Самовивіз з м.&nbsp;Рівне</span>
+              <svg class="checkout-shipping-method__img" height="32">
+                <use xlink:href="/resourse/images/checkout-sprite-icons.svg#icon-car"></use>
+              </svg>
             </span>
-            <span class="checkout-shipping-method__price">Безкоштовно</span>
-          </span>
-        </label>
+          </label>
+        </li>
+
+        <li>
+          <label class="checkout-shipping-method">
+            <input
+              type="radio"
+              name="shipping-method"
+              class="checkout-shipping-method__input"
+              value="Самовывоз из г. Черновцы"
+            >
+            <span class="checkout-shipping-method__button">
+              <span class="checkout-shipping-method__title">Самовивіз з м.&nbsp;Чернівці</span>
+              <svg class="checkout-shipping-method__img" height="32">
+                <use xlink:href="/resourse/images/checkout-sprite-icons.svg#icon-car"></use>
+              </svg>
+            </span>
+          </label>
+        </li>
+
+        <li>
+          <label class="checkout-shipping-method">
+            <input
+              type="radio"
+              name="shipping-method"
+              class="checkout-shipping-method__input"
+              value="Кур'єрська доставка «Нова пошта»"
+            >
+            <span class="checkout-shipping-method__button">
+              <span class="checkout-shipping-method__title">Кур'єрська доставка «Нова пошта»</span>
+              <svg class="checkout-shipping-method__img" height="32">
+                <use xlink:href="/resourse/images/checkout-sprite-icons.svg#icon-courier-new-post"></use>
+              </svg>
+            </span>
+          </label>
+        </li>
+
+        <li>
+          <label class="checkout-shipping-method">
+            <input
+              type="radio"
+              name="shipping-method"
+              class="checkout-shipping-method__input"
+              value="Курьерская доставка м. Рівне"
+            >
+            <span class="checkout-shipping-method__button">
+              <span class="checkout-shipping-method__title">Кур'єрська доставка м.&nbsp;Рівне</span>
+              <svg class="checkout-shipping-method__img" height="32">
+                <use xlink:href="/resourse/images/checkout-sprite-icons.svg#icon-courier"></use>
+              </svg>
+            </span>
+          </label>
+        </li>
+
+        <li>
+          <label class="checkout-shipping-method">
+            <input
+              type="radio"
+              name="shipping-method"
+              class="checkout-shipping-method__input"
+              value="Відправка службою &quot;Новая Почта&quot;"
+            >
+            <span class="checkout-shipping-method__button">
+              <span class="checkout-shipping-method__title">Кур'єрська доставка «Нова пошта»</span>
+              <svg class="checkout-shipping-method__img" height="32">
+                <use xlink:href="/resourse/images/checkout-sprite-icons.svg#icon-courier-new-post"></use>
+              </svg>
+            </span>
+          </label>
+        </li>
+        <li>
+          <label class="checkout-shipping-method">
+            <input
+              type="radio"
+              name="shipping-method"
+              class="checkout-shipping-method__input"
+              value="Курьерская доставка &quot;Новая Почта&quot;"
+            >
+            <span class="checkout-shipping-method__button">
+              <span class="checkout-shipping-method__title">Кур'єрська доставка «Нова пошта»</span>
+              <svg class="checkout-shipping-method__img" height="32">
+                <use xlink:href="/resourse/images/checkout-sprite-icons.svg#icon-courier-new-post"></use>
+              </svg>
+            </span>
+          </label>
+        </li>
+        <li>
+          <label class="checkout-shipping-method">
+            <input
+              type="radio"
+              name="shipping-method"
+              class="checkout-shipping-method__input"
+              value="Курьерская доставка &quot;Новая Почта&quot;"
+            >
+            <span class="checkout-shipping-method__button">
+              <span class="checkout-shipping-method__title">Кур'єрська доставка «Нова пошта»</span>
+              <svg class="checkout-shipping-method__img" height="32">
+                <use xlink:href="/resourse/images/checkout-sprite-icons.svg#icon-courier-new-post"></use>
+              </svg>
+            </span>
+          </label>
+        </li>
+      </ul>
 
 
 

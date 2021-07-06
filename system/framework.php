@@ -76,9 +76,7 @@ $response->setCompression($config->get('config_compression'));
 $registry->set('response', $response);
 
 // Database
-if ($config->get('db_autostart')) {
-	$registry->set('db', new DB($config->get('db_engine'), $config->get('db_hostname'), $config->get('db_username'), $config->get('db_password'), $config->get('db_database'), $config->get('db_port')));
-}
+$registry->set('db', new DB(DB_DRIVER, DB_HOSTNAME, DB_USERNAME, DB_PASSWORD, DB_DATABASE, DB_PORT));
 
 // Session
 $session = new Session($config->get('session_engine'), $registry);
@@ -100,15 +98,16 @@ $registry->set('language', $language);
 // OpenBay Pro
 // $registry->set('openbay', new Openbay($registry));
 
-// Document
-$registry->set('document', new Document());
+
+$registry->set('document', new Document()); // Document
+$registry->set('url', new Url(HTTP_SERVER, HTTPS_SERVER));
 
 // Config Autoload
-if ($config->has('config_autoload')) {
-	foreach ($config->get('config_autoload') as $value) {
-		$loader->config($value);
-	}
-}
+// if ($config->has('config_autoload')) {
+// 	foreach ($config->get('config_autoload') as $value) {
+// 		$loader->config($value);
+// 	}
+// }
 
 // Language Autoload
 if ($config->has('language_autoload')) {
@@ -117,19 +116,19 @@ if ($config->has('language_autoload')) {
 	}
 }
 
-// Library Autoload
-if ($config->has('library_autoload')) {
-	foreach ($config->get('library_autoload') as $value) {
-		$loader->library($value);
-	}
-}
+// // Library Autoload
+// if ($config->has('library_autoload')) {
+// 	foreach ($config->get('library_autoload') as $value) {
+// 		$loader->library($value);
+// 	}
+// }
 
-// Model Autoload
-if ($config->has('model_autoload')) {
-	foreach ($config->get('model_autoload') as $value) {
-		$loader->model($value);
-	}
-}
+// // Model Autoload
+// if ($config->has('model_autoload')) {
+// 	foreach ($config->get('model_autoload') as $value) {
+// 		$loader->model($value);
+// 	}
+// }
 
 // Route
 $route = new Router($registry);
@@ -141,8 +140,7 @@ if ($config->has('action_pre_action')) {
 	}
 }
 
-// Dispatch
-$route->dispatch(new Action($config->get('action_router')), new Action('404'));
+$route->dispatch(new Action('startup/router'), new Action('404')); // Dispatch
 
 // Output
 $response->output();

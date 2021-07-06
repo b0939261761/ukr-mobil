@@ -29,12 +29,21 @@
 
           <ul class="mobile-menu__action-bar">
             <li>
-              <a class="mobile-menu__action-bar-btn" href="javascript:void(0);">
-                <svg class="mobile-menu__action-bar-btn-img">
-                  <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-heart"></use>
-                </svg>
-                Cписок обраного
-              </a>
+              {% if isLogged %}
+                <a class="mobile-menu__action-bar-btn" href="{{ linkAccountFavorites }}">
+                  <svg class="mobile-menu__action-bar-btn-img">
+                    <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-heart"></use>
+                  </svg>
+                  Cписок обраного
+                </a>
+              {% else %}
+                <button class="mobile-menu__action-bar-btn" id="mobileMenuFavorites">
+                  <svg class="mobile-menu__action-bar-btn-img">
+                    <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-heart"></use>
+                  </svg>
+                  Cписок обраного
+                </button>
+              {% endif %}
             </li>
 
             <li>

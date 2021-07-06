@@ -345,4 +345,86 @@ class ControllerApi extends Controller {
     $this->mail->send('ukrmobil1@gmail.com', "Купити в 1 клік {$data['phone']}", 'buy', $data);
     exit();
   }
+
+  public function getFavorites() {
+    $requestData = json_decode(file_get_contents('php://input'), true);
+    $productId = (int)($requestData['productId'] ?? 0);
+
+    if (!$this->customer->getId() || !$productId) {
+      http_response_code(400);
+      echo 'INVALID';
+      exit();
+    }
+
+    $sql = "
+      SELECT f.id, f.name, IF(fp.favorite_id IS NULL, false, true) AS isInsert
+      FROM favorite f
+      LEFT JOIN favorite_product fp ON fp.favorite_id = f.id AND product_id = {$productId}
+      WHERE customer_id = {$this->customer->getId()}
+    ";
+    header('Content-Type: application/json');
+    echo json_encode($this->db->query($sql)->rows);
+  }
+
+  public function addFavoriteProduct() {
+    $requestData = json_decode(file_get_contents('php://input'), true);
+    $productId = (int)($requestData['productId'] ?? 0);
+    $favoriteId = (int)($requestData['favoriteId'] ?? 0);
+
+    if (!$this->customer->getId() || !$favoriteId || !$productId) {
+      http_response_code(400);
+      echo 'INVALID';
+      exit();
+    }
+
+    $sql = "
+      INSERT INTO favorite_product (favorite_id, product_id)
+        SELECT id, {$productId} FROM favorite
+        WHERE id = {$favoriteId} AND customer_id = {$this->customer->getId()}
+      ON DUPLICATE KEY UPDATE favorite_id = favorite_id
+    ";
+
+    $this->db->query($sql);
+    exit();
+  }
+
+  public function removeFavoriteProduct() {
+    $requestData = json_decode(file_get_contents('php://input'), true);
+    $productId = (int)($requestData['productId'] ?? 0);
+    $favoriteId = (int)($requestData['favoriteId'] ?? 0);
+
+    if (!$this->customer->getId() || !$favoriteId || !$productId) {
+      http_response_code(400);
+      echo 'INVALID';
+      exit();
+    }
+
+    $sql = "
+      DELETE FROM favorite_product
+      WHERE product_id = {$productId}
+        AND favorite_id = (SELECT id FROM favorite WHERE id = {$favoriteId} AND customer_id = {$this->customer->getId()})
+    ";
+    $this->db->query($sql);
+    exit();
+  }
+
+  public function wishlist() {
+    $requestData = json_decode(file_get_contents('php://input'), true);
+    $productId = (int)($requestData['productId'] ?? 0);
+
+    if (!$this->customer->getId() || !$productId) {
+      http_response_code(400);
+      echo 'INVALID';
+      exit();
+    }
+
+    $sql = "
+      INSERT INTO oc_customer_wishlist (customer_id, product_id)
+        VALUES ({$this->customer->getId()}, {$productId})
+        ON DUPLICATE KEY UPDATE date_added = NOW()
+    ";
+
+    $this->db->query($sql);
+    exit();
+  }
 }

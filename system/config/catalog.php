@@ -1,31 +1,20 @@
 <?php
-// Site
-$_['site_url']           = HTTP_SERVER;
-$_['site_ssl']           = HTTPS_SERVER;
+// // Site
+// $_['site_url']           = HTTP_SERVER;
+// $_['site_ssl']           = HTTPS_SERVER;
 
 // Url
-$_['url_autostart']      = false;
+// $_['url_autostart']      = false;
 
-// Database
-$_['db_autostart']       = true;
-$_['db_engine']          = DB_DRIVER; // mpdo, mssql, mysql, mysqli or postgre
-$_['db_hostname']        = DB_HOSTNAME;
-$_['db_username']        = DB_USERNAME;
-$_['db_password']        = DB_PASSWORD;
-$_['db_database']        = DB_DATABASE;
-$_['db_port']            = DB_PORT;
 
-// Cache
-$_['cache_engine']         = 'file'; // apc, file, mem or memcached
-$_['cache_expire']         = 3600;
 
 // Session
-$_['session_autostart']  = true;
-$_['session_engine']     = 'db';
-$_['session_name']       = 'OCSESSID';
+// $_['session_autostart']  = true;
+// $_['session_engine']     = 'db';
+// $_['session_name']       = 'OCSESSID';
 
 // Template
-$_['template_engine']    = 'twig';
+// $_['template_engine']    = 'twig';
 $_['template_directory'] = 'default/template/';
 $_['template_cache']     = false;
 
@@ -35,14 +24,16 @@ $_['template_cache']     = false;
 // );
 
 // Actions
-$_['action_pre_action']  = array(
+$_['action_pre_action']  = [
 	// 'startup/session',
 	'startup/startup',
 	'startup/error',
 	'startup/event',
 	// 'startup/maintenance',
 	'startup/seo_pro'
-);
+];
+
+$_['action_default']       = 'home/home';
 
 // Action Events
 // $_['action_event'] = array(

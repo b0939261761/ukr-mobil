@@ -21,7 +21,7 @@
           {% endif %}
         </div>
 
-        <button class="catalog-item__btn-like" title="Додати до вибранного">
+        <button class="catalog-item__btn-like" title="Додати до вибранного" {{ isLogged ? '' : 'disabled' }}>
           <svg class="catalog-item__btn-like-img">
             <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-heart"></use>
           </svg>

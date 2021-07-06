@@ -28,6 +28,8 @@ class ControllerNews extends Controller {
     $data['date'] = $news['date'];
     $data['products'] = $this->getProducts($news);
 
+    $data['isLogged'] = $this->customer->getId();
+
     $breacrumbsData = ['breadcrumbs' => $breacrumbs];
     $data['breadcrumbs'] = $this->load->view('shared/components/breadcrumbs/breadcrumbs', $breacrumbsData);
     $data['rightMenu'] = $this->load->controller('shared/components/right_menu');
