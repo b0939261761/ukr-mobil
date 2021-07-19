@@ -14,7 +14,7 @@ const buildSvg = () => {
   const pathCommonIcons = './catalog/view/theme/default/images/icons/common/';
   const commonIconsName = [
     'new-post', 'car', 'courier-new-post', 'courier', 'ukrpost', 'justin',
-    'google', 'apple', 'privat', 'cash-delivery', 'card', 'cash-less', 'debt-pay'
+    'google', 'apple', 'privat', 'cash-delivery', 'card', 'cash-less', 'debt-pay', 'mono'
   ];
 
   const iconsAll = [

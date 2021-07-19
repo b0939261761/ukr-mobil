@@ -4,6 +4,6 @@ class ControllerIncomeIncome extends Controller {
     $data['header'] = $this->load->controller('shared/components/header');
     $data['footer'] = $this->load->controller('common/footer');
 
-    $this->response->setOutput($this->load->view('income/income', $data));
+    $this->response->setOutput($this->load->view('income', $data));
   }
 }

@@ -38,7 +38,7 @@
                 />
                 <button
                   class="cart__item-quantity-btn cart__item-quantity-btn--plus"
-                  {{ product.quantity < product.productQuantity ? '' : 'disabled' }}
+                  {{ product.quantity < product.quantityStore ? '' : 'disabled' }}
                 >
                   <svg class="cart__item-quantity-img-plus">
                     <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-plus"></use>

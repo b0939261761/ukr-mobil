@@ -20,7 +20,7 @@ window.cartToast = imageSrc => {
 
   const link = document.createElement('a');
   link.classList.add('cart-toast__text-link');
-  link.href = '/checkout';
+  link.href = '/index.php?route=checkout';
   link.textContent = 'кошика';
   text.appendChild(link);
 

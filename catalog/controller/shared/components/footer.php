@@ -17,7 +17,9 @@ class ControllerSharedComponentsFooter extends Controller {
 
     $data['footerBtnScrollToTop'] = $this->load->controller('shared/components/footer_btn_scroll_to_top');
     $data['mobileMenu'] = $this->load->controller('shared/components/mobile_menu');
-    $data['cart'] = $this->load->controller('shared/cart');
+
+    if ($_GET['route'] !== 'checkout') $data['cart'] = $this->load->controller('shared/cart');
+
     $data['customerPhone'] = $this->customer->getPhone();
     $data['isLogged'] = $this->customer->getId();
 

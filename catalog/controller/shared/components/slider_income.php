@@ -63,7 +63,7 @@ class ControllerSharedComponentsSliderIncome extends Controller {
       $product['image'] = $this->image->resize($product['image'], 306, 306);
     }
 
-    $data['linkIncome'] = $this->url->link('income/income');
+    $data['linkIncome'] = $this->url->link('income');
     $data['isLogged'] = $this->customer->getId();
     return $this->load->view('shared/components/slider_income/slider_income', $data);
   }

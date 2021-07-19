@@ -54,23 +54,24 @@ class ControllerCheckoutSuccess extends Controller {
     $order = $this->db->query($sql)->row;
     if ($order) {
       $shippingIcons = [
-        'Новая Почта'                       => 'new-post',
-        'Самовывоз из г. Черновцы'          => 'car',
-        'Самовывоз из г. Ровно'             => 'car',
-        'Курьерская доставка "Новая почта"' => 'courier-new-post',
-        'Курьерская доставка г. Ровно'      => 'courier',
-        'Укрпочта'                          => 'ukrpost',
-        'Justin'                            => 'justin'
+        'Нова Пошта'                       => 'new-post',
+        'Самовивіз з м. Чернівці'          => 'car',
+        'Самовивіз з м. Рівне'             => 'car',
+        'Кур\'єрська доставка "Нова пошта"' => 'courier-new-post',
+        'Кур\'єрська доставка м. Рівне'     => 'courier',
+        'Укрпошта'                         => 'ukrpost',
+        'Justin'                           => 'justin'
       ];
 
       $paymentIcons = [
-        'Наложеный платеж'                             => 'cash-delivery',
-        'Оплата картой онлайн (LiqPay)'                => 'card',
-        'Оплата на карту Приват Банка'                 => 'privat',
-        'Безналичная оплата на счет юридического лица' => 'cash-less',
-        'В долг'                                       => 'debt-pay',
-        'google'                                       => 'google',
-        'apple'                                        => 'apple'
+        'Наложений платіж'               => 'cash-delivery',
+        'Оплата карткою онлайн (LiqPay)' => 'card',
+        'Оплата на карту Приват Банку'   => 'privat',
+        'Оплата на карту Моно Банка'     => 'mono',
+        'Безготівковий розрахунок'       => 'cash-less',
+        'В борг'                         => 'debt-pay',
+        'Google Pay'                     => 'google',
+        'Apple Pay'                      => 'apple'
       ];
 
       $order['orderIds'] = $orderIdsSQL;

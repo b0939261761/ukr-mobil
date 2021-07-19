@@ -170,6 +170,7 @@
   align-items: center;
   border: 1px solid #edeff2;
   border-radius: 10px;
+  overflow: hidden;
 }
 
 .cart__item-image {

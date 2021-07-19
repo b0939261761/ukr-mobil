@@ -52,15 +52,17 @@
     </button>
   {% endif %}
 
-  <button class="btn-header-action btn-header-action--cart" id="headerCart">
-    <svg class="btn-header-action__img">
-      <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-cart"></use>
-    </svg>
-    <span
-      class="btn-header-action__counter {{ cartCount ? '' : 'btn-header-action__counter--hidden' }}"
-      id="headerCartCounter"
-    >
-      {{ cartCount }}
-    </span>
-  </span>
+  {% if not isHideCart %}
+    <button class="btn-header-action btn-header-action--cart" id="headerCart">
+      <svg class="btn-header-action__img">
+        <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-cart"></use>
+      </svg>
+      <span
+        class="btn-header-action__counter {{ cartCount ? '' : 'btn-header-action__counter--hidden' }}"
+        id="headerCartCounter"
+      >
+        {{ cartCount }}
+      </span>
+    </button>
+  {% endif %}
 </div>

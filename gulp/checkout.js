@@ -8,13 +8,13 @@ import svgstore from 'gulp-svgstore';
 const buildSvg = () => {
   const pathIcons = './catalog/view/theme/default/images/icons/checkout/';
   const iconsName = [
-
+    'location', 'clock'
   ];
 
   const pathCommonIcons = './catalog/view/theme/default/images/icons/common/';
   const commonIconsName = [
     'new-post', 'car', 'courier-new-post', 'courier', 'ukrpost', 'justin',
-    'google', 'apple', 'privat', 'cash-delivery', 'card', 'cash-less', 'debt-pay'
+    'google', 'apple', 'privat', 'cash-delivery', 'card', 'cash-less', 'debt-pay', 'mono'
   ];
 
   const iconsAll = [
@@ -42,6 +42,7 @@ const buildCss = () => {
 
 const buildJs = () => {
   gulp.src([
+    './catalog/view/theme/default/template/shared/new_post.js',
     './catalog/view/theme/default/template/checkout/checkout.js'
   ])
     .pipe(sourcemaps.init())

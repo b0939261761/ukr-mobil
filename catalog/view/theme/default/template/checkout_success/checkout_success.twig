@@ -20,7 +20,7 @@
         <tr>
           <td class="checkout-success__table-order-mobile-cell checkout-success__table-order-mobile-cell--info" colspan="2">
             {{ order.shippingFullname }}<br>
-            {{ order.shippingPhone }}<br>
+            +{{ order.shippingPhone }}<br>
             {{ order.email }}
           </td>
         </tr>
@@ -61,8 +61,8 @@
       <tbody>
         <tr>
           <td class="checkout-success__table-order-desktop-cell">
-            <div class="checkout-success__table-order-cell-block">{{ order.customerFullname }}</div>
-            <div class="checkout-success__table-order-cell-block">{{ order.shippingPhone }}</div>
+            <div class="checkout-success__table-order-cell-block">{{ order.shippingFullname }}</div>
+            <div class="checkout-success__table-order-cell-block">+{{ order.shippingPhone }}</div>
             {{ order.email }}
           </td>
           <td class="checkout-success__table-order-desktop-cell">
@@ -186,7 +186,7 @@
             <div class="checkout-success__table-total-wrapper-total">
               <div class="checkout-success__table-total-total">
                 <div class="checkout-success__table-total-total-uah">{{ order.totalUAH }}&nbsp;грн</div>
-                $&nbsp;{{ order.totalUAH }}
+                $&nbsp;{{ order.totalUSD }}
                 </div>
               </div>
           </td>

@@ -9,4 +9,4 @@ if (headerFavorites) headerFavorites.addEventListener('click', () => window.moda
 // ==============================================
 
 const headerCart = document.getElementById('headerCart');
-headerCart.addEventListener('click', () => window.cartOpen());
+if (headerCart) headerCart.addEventListener('click', () => window.cartOpen());

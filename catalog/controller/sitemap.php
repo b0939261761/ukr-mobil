@@ -28,7 +28,7 @@ class ControllerSitemap extends Controller {
       ];
     } elseif ($sitemapId == 'income') {
       $data['mainLink'] = [
-        'link' => $this->url->link('income/income'),
+        'link' => $this->url->link('income'),
         'name' => 'Надходження'
       ];
     } elseif ($sitemapId == 'contacts') {

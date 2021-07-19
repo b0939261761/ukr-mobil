@@ -4,353 +4,583 @@
   {{ breadcrumbs }}
 
   <h1 class="page-title page-title">{{ headingH1 }}</h1>
-  <div>
 
   <form class="checkout" id="checkoutForm">
-    <fieldset class="checkout__section">
-      <legent class="checkout__section-title">Контактні дані</legent>
-        <div class="checkout__section-form">
-          <label class="checkout-text-input">
-            <span class="checkout-text-input__title">
-              Ім’я отримувача<span class="checkout-text-input__title-required">*</span>
-            </span>
-            <input id="checkoutFirstName" class="checkout-text-input__input" placeholder="Іван" value="{{ firstName }}" required />
-          </label>
+    <div class="checkout-col1">
+      <fieldset class="checkout__section">
+        <legent class="checkout__section-title">Контактні дані</legent>
+          <div class="checkout__section-form">
+            <label class="checkout-text-input">
+              <span class="checkout-text-input__title">
+                Ім’я отримувача<span class="checkout-text-input__title-required">*</span>
+              </span>
+              <input id="checkoutFirstName" class="checkout-text-input__input" placeholder="Іван" value="{{ firstName }}" required />
+            </label>
 
-          <label class="checkout-text-input">
-            <span class="checkout-text-input__title">
-              Прізвище отримувача<span class="checkout-text-input__title-required">*</span>
-            </span>
-            <input id="checkoutLastName" class="checkout-text-input__input" placeholder="Іванов" value="{{ lastName }}" required />
-          </label>
+            <label class="checkout-text-input">
+              <span class="checkout-text-input__title">
+                Прізвище отримувача<span class="checkout-text-input__title-required">*</span>
+              </span>
+              <input id="checkoutLastName" class="checkout-text-input__input" placeholder="Іванов" value="{{ lastName }}" required />
+            </label>
 
-          <label class="checkout-text-input">
-            <span class="checkout-text-input__title">
-              Телефон отримувача<span class="checkout-text-input__title-required">*</span>
-            </span>
-            <input
-              id="checkoutPhone"
-              class="checkout-text-input__input"
-              value="{{ phone }}"
-              required
-              pattern="\+38\(0\d{2}\)\d{3}-\d{2}-\d{2}"
-            />
-          </label>
+            <label class="checkout-text-input">
+              <span class="checkout-text-input__title">
+                Телефон отримувача<span class="checkout-text-input__title-required">*</span>
+              </span>
+              <input
+                id="checkoutPhone"
+                class="checkout-text-input__input"
+                value="{{ phone }}"
+                required
+              />
+            </label>
 
-          <label class="checkout-text-input">
-            <span class="checkout-text-input__title">
-              Email отримувача<span class="checkout-text-input__title-required">*</span>
-            </span>
-            <input id="checkoutEmail" type="email" class="checkout-text-input__input"  placeholder="user@example.com" value="{{ email }}" required />
-          </label>
-      </div>
-    </fieldset>
-
-    <fieldset class="checkout__section">
-      <legent class="checkout__section-title">Спосіб доставки</legent>
-
-
-      <style>
-
-      </style>
-
-
-
-'Новая Почта'                       => 'new-post',
-        ''          => 'car',
-        'Самовывоз из г. Ровно'             => 'car',
-        'Курьерская доставка "Новая почта"' => 'courier-new-post',
-        'Курьерская доставка г. Ровно'      => 'courier',
-        'Укрпочта'                          => 'ukrpost',
-        'Justin'                            => 'justin'
-
-      <ul class="checkout-shipping-method-list">
-        <li>
-          <label class="checkout-shipping-method">
-            <input
-              type="radio"
-              name="shipping-method"
-              class="checkout-shipping-method__input"
-              value="Самовивіз з м. Рівне"
-            >
-            <span class="checkout-shipping-method__button">
-              <span class="checkout-shipping-method__title">Самовивіз з м.&nbsp;Рівне</span>
-              <svg class="checkout-shipping-method__img" height="32">
-                <use xlink:href="/resourse/images/checkout-sprite-icons.svg#icon-car"></use>
-              </svg>
-            </span>
-          </label>
-        </li>
-
-        <li>
-          <label class="checkout-shipping-method">
-            <input
-              type="radio"
-              name="shipping-method"
-              class="checkout-shipping-method__input"
-              value="Самовывоз из г. Черновцы"
-            >
-            <span class="checkout-shipping-method__button">
-              <span class="checkout-shipping-method__title">Самовивіз з м.&nbsp;Чернівці</span>
-              <svg class="checkout-shipping-method__img" height="32">
-                <use xlink:href="/resourse/images/checkout-sprite-icons.svg#icon-car"></use>
-              </svg>
-            </span>
-          </label>
-        </li>
-
-        <li>
-          <label class="checkout-shipping-method">
-            <input
-              type="radio"
-              name="shipping-method"
-              class="checkout-shipping-method__input"
-              value="Кур'єрська доставка «Нова пошта»"
-            >
-            <span class="checkout-shipping-method__button">
-              <span class="checkout-shipping-method__title">Кур'єрська доставка «Нова пошта»</span>
-              <svg class="checkout-shipping-method__img" height="32">
-                <use xlink:href="/resourse/images/checkout-sprite-icons.svg#icon-courier-new-post"></use>
-              </svg>
-            </span>
-          </label>
-        </li>
-
-        <li>
-          <label class="checkout-shipping-method">
-            <input
-              type="radio"
-              name="shipping-method"
-              class="checkout-shipping-method__input"
-              value="Курьерская доставка м. Рівне"
-            >
-            <span class="checkout-shipping-method__button">
-              <span class="checkout-shipping-method__title">Кур'єрська доставка м.&nbsp;Рівне</span>
-              <svg class="checkout-shipping-method__img" height="32">
-                <use xlink:href="/resourse/images/checkout-sprite-icons.svg#icon-courier"></use>
-              </svg>
-            </span>
-          </label>
-        </li>
-
-        <li>
-          <label class="checkout-shipping-method">
-            <input
-              type="radio"
-              name="shipping-method"
-              class="checkout-shipping-method__input"
-              value="Відправка службою &quot;Новая Почта&quot;"
-            >
-            <span class="checkout-shipping-method__button">
-              <span class="checkout-shipping-method__title">Кур'єрська доставка «Нова пошта»</span>
-              <svg class="checkout-shipping-method__img" height="32">
-                <use xlink:href="/resourse/images/checkout-sprite-icons.svg#icon-courier-new-post"></use>
-              </svg>
-            </span>
-          </label>
-        </li>
-        <li>
-          <label class="checkout-shipping-method">
-            <input
-              type="radio"
-              name="shipping-method"
-              class="checkout-shipping-method__input"
-              value="Курьерская доставка &quot;Новая Почта&quot;"
-            >
-            <span class="checkout-shipping-method__button">
-              <span class="checkout-shipping-method__title">Кур'єрська доставка «Нова пошта»</span>
-              <svg class="checkout-shipping-method__img" height="32">
-                <use xlink:href="/resourse/images/checkout-sprite-icons.svg#icon-courier-new-post"></use>
-              </svg>
-            </span>
-          </label>
-        </li>
-        <li>
-          <label class="checkout-shipping-method">
-            <input
-              type="radio"
-              name="shipping-method"
-              class="checkout-shipping-method__input"
-              value="Курьерская доставка &quot;Новая Почта&quot;"
-            >
-            <span class="checkout-shipping-method__button">
-              <span class="checkout-shipping-method__title">Кур'єрська доставка «Нова пошта»</span>
-              <svg class="checkout-shipping-method__img" height="32">
-                <use xlink:href="/resourse/images/checkout-sprite-icons.svg#icon-courier-new-post"></use>
-              </svg>
-            </span>
-          </label>
-        </li>
-      </ul>
-
-
-
-      <div class="radiogroup" id="order-delivery" role="radiogroup" aria-invalid="false">
-        <div class="checkout-delivery__box">
-            <div class="checkout-delivery__methods">
-
-
-
-                <ul class="delivery-methods">
-
-
-
-
-                </ul>
-            </div>
-            {# <div class="checkout-delivery__description checkout-delivery__description-self active">
-                <div class="description-item"><svg class="icon-location">
-                        <use xlink:href="#icon-location"></use>
-                    </svg><b>Адреса магазину</b><span class="adreess">м.Хмельницький, вул.: Курчатова, 6</span></div>
-                <div class="description-item"><svg class="icon-clock">
-                        <use xlink:href="#icon-clock"></use>
-                    </svg><b>Графік роботи магазину</b>
-                    <div class="schedule"><span>Пн-Пт: 9:00-18:00</span><span>Сб: 9:00-16:00</span><span>Нд: вихідний</span></div>
-                </div>
-            </div>
-            <div class="checkout-delivery__description checkout-delivery__description-courier">
-                <div class="form__block form__block-delivery">
-                    <div class="form__block-wrapper">
-                        <div class="form-group"><label class="control-label">Введіть Ваше місто:</label><input class="form-control" value="Рівне">
-                            <div class="help-block"></div>
-                        </div>
-                        <div class="form-group"><label class="control-label">Введіть повну адресу</label><input class="form-control" type="text" placeholder="м. Рівне, вул.: Гагаріна">
-                            <div class="help-block"></div>
-                        </div>
-                        <div class="form-group form-group-info"><label class="control-label">Додаткова інформація</label><input class="form-control" type="text" placeholder="Під’їзд"><input class="form-control" type="text" placeholder="Поверх "><input class="form-control" type="text" placeholder="Квартира">
-                            <div class="help-block"></div>
-                        </div>
-                        <div class="form-group form-group-time"><span>Час доставки</span>
-                            <ul>
-                                <li class="active">з 09:00-15:00</li>
-                                <li>з 15:00-18:00</li>
-                                <li>Нд: 13:00-19:00</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="checkout-delivery__description checkout-delivery__description-newpost">
-                <div class="form__block form__block-delivery">
-                    <div class="form__block-wrapper">
-                        <div class="form-group"><label class="control-label">Введіть область</label><input class="form-control" type="text" placeholder="Введіть область">
-                            <div class="help-block"></div>
-                        </div>
-                        <div class="form-group"><label class="control-label">Введіть Ваше місто:</label><input class="form-control" value="Рівне">
-                            <div class="help-block"></div>
-                        </div>
-                        <div class="form-group"><label class="control-label">Оберіть № віділення</label>
-                            <div class="dropdown-menu" id="menuDelivery">
-                                <div class="dropdown-menu__value">Оберіть № віділення<span class="close-aside"><svg class="icon-arrow">
-                                            <use xlink:href="#icon-arrow"></use>
-                                        </svg></span></div>
-                                <div class="dropdown-menu__list">
-                                    <ul>
-                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
-                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
-                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
-                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
-                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
-                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
-                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
-                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
-                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
-                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
-                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
-                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
-                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="help-block"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="checkout-delivery__description checkout-delivery__description-ukrpost">
-                <div class="form__block form__block-delivery">
-                    <div class="form__block-wrapper">
-                        <div class="form-group"><label class="control-label">Введіть область</label><input class="form-control" type="text" placeholder="Введіть область">
-                            <div class="help-block"></div>
-                        </div>
-                        <div class="form-group"><label class="control-label">Введіть Ваше місто:</label><input class="form-control" value="Рівне">
-                            <div class="help-block"></div>
-                        </div>
-                        <div class="form-group"><label class="control-label">Оберіть № віділення</label>
-                            <div class="dropdown-menu" id="menuDelivery">
-                                <div class="dropdown-menu__value">Оберіть № віділення<span class="close-aside"><svg class="icon-arrow">
-                                            <use xlink:href="#icon-arrow"></use>
-                                        </svg></span></div>
-                                <div class="dropdown-menu__list">
-                                    <ul>
-                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
-                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
-                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
-                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
-                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
-                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
-                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
-                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
-                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
-                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
-                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
-                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
-                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="help-block"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="checkout-delivery__description checkout-delivery__description-justin">
-                <div class="form__block form__block-delivery">
-                    <div class="form__block-wrapper">
-                        <div class="form-group"><label class="control-label">Введіть область</label><input class="form-control" type="text" placeholder="Введіть область">
-                            <div class="help-block"></div>
-                        </div>
-                        <div class="form-group"><label class="control-label">Введіть Ваше місто:</label><input class="form-control" value="Рівне">
-                            <div class="help-block"></div>
-                        </div>
-                        <div class="form-group"><label class="control-label">Оберіть № віділення</label>
-                            <div class="dropdown-menu" id="menuDelivery">
-                                <div class="dropdown-menu__value">Оберіть № віділення<span class="close-aside"><svg class="icon-arrow">
-                                            <use xlink:href="#icon-arrow"></use>
-                                        </svg></span></div>
-                                <div class="dropdown-menu__list">
-                                    <ul>
-                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
-                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
-                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
-                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
-                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
-                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
-                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
-                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
-                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
-                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
-                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
-                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
-                                        <li>Відділення №2, вул. Чорновола, б. 14/16</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="help-block"></div>
-                        </div>
-                    </div>
-                </div>
-            </div> #}
+            <label class="checkout-text-input">
+              <span class="checkout-text-input__title">
+                Email отримувача<span class="checkout-text-input__title-required">*</span>
+              </span>
+              <input id="checkoutEmail" class="checkout-text-input__input" placeholder="user@example.com" value="{{ email }}" required />
+            </label>
         </div>
-      </div>
+      </fieldset>
 
-    </fieldset>
+      <fieldset class="checkout__section">
+        <legent class="checkout__section-title">Спосіб доставки</legent>
 
-    <button> click</button>
+        <ul class="checkout-block-list">
+          <li class="{{ cart.enoughQuantityStore1 ? '' : 'checkout-block-item--hide' }}" id="checkoutItemShippingMethodStore1">
+            <label class="checkout-block">
+              <input
+                type="radio"
+                name="shipping-method"
+                class="checkout-block__input"
+                value="Самовивіз з м. Рівне"
+                data-shipping-description-id="checkoutShippingDescriptionRivne"
+              >
+              <span class="checkout-block__button">
+                <span class="checkout-block__title">Самовивіз<br>м.&nbsp;Рівне</span>
+                <svg class="checkout-block__img" height="32">
+                  <use xlink:href="/resourse/images/checkout-sprite-icons.svg#icon-car"></use>
+                </svg>
+              </span>
+            </label>
+          </li>
+
+          <li class="{{ cart.enoughQuantityStore2 ? '' : 'checkout-block-item--hide' }}" id="checkoutItemShippingMethodStore2">
+            <label class="checkout-block">
+              <input
+                type="radio"
+                name="shipping-method"
+                class="checkout-block__input"
+                value="Самовивіз з м. Чернівці"
+                data-shipping-description-id="checkoutShippingDescriptionChernivtsi"
+              >
+              <span class="checkout-block__button">
+                <span class="checkout-block__title">Самовивіз<br>м.&nbsp;Чернівці</span>
+                <svg class="checkout-block__img" height="32">
+                  <use xlink:href="/resourse/images/checkout-sprite-icons.svg#icon-car"></use>
+                </svg>
+              </span>
+            </label>
+          </li>
+
+          <li>
+            <label class="checkout-block">
+              <input
+                type="radio"
+                name="shipping-method"
+                class="checkout-block__input"
+                value="Кур'єрська доставка &quot;Нова пошта&quot;"
+                id="checkoutShippingDescriptionCourierNewPost"
+              >
+              <span class="checkout-block__button">
+                <span class="checkout-block__title">Кур'єрська доставка<br>«Нова пошта»</span>
+                <svg class="checkout-block__img" height="32">
+                  <use xlink:href="/resourse/images/checkout-sprite-icons.svg#icon-courier-new-post"></use>
+                </svg>
+              </span>
+            </label>
+          </li>
+
+          <li>
+            <label class="checkout-block">
+              <input
+                type="radio"
+                name="shipping-method"
+                class="checkout-block__input"
+                value="Кур'єрська доставка м. Рівне"
+              >
+              <span class="checkout-block__button">
+                <span class="checkout-block__title">Кур'єрська доставка<br>м.&nbsp;Рівне</span>
+                <svg class="checkout-block__img" height="32">
+                  <use xlink:href="/resourse/images/checkout-sprite-icons.svg#icon-courier"></use>
+                </svg>
+              </span>
+            </label>
+          </li>
+
+          <li>
+            <label class="checkout-block">
+              <input
+                type="radio"
+                name="shipping-method"
+                class="checkout-block__input"
+                value="Нова Пошта"
+                id="checkoutShippingMethodNewPost"
+                checked
+              >
+              <span class="checkout-block__button">
+                <span class="checkout-block__title">Відправка службою<br>«Нова Пошта»</span>
+                <svg class="checkout-block__img" height="32">
+                  <use xlink:href="/resourse/images/checkout-sprite-icons.svg#icon-new-post"></use>
+                </svg>
+              </span>
+            </label>
+          </li>
+
+
+          <li>
+            <label class="checkout-block">
+              <input
+                type="radio"
+                name="shipping-method"
+                class="checkout-block__input"
+                value="Укрпошта"
+              >
+              <span class="checkout-block__button">
+                <span class="checkout-block__title">Відправка службою<br>«Укрпошта»</span>
+                <svg class="checkout-block__img" height="32">
+                  <use xlink:href="/resourse/images/checkout-sprite-icons.svg#icon-ukrpost"></use>
+                </svg>
+              </span>
+            </label>
+          </li>
+          <li>
+            <label class="checkout-block">
+              <input
+                type="radio"
+                name="shipping-method"
+                class="checkout-block__input"
+                value="Justin"
+              >
+              <span class="checkout-block__button">
+                <span class="checkout-block__title">Відправка службою<br>«Justin»</span>
+                <svg class="checkout-block__img" height="32">
+                  <use xlink:href="/resourse/images/checkout-sprite-icons.svg#icon-justin"></use>
+                </svg>
+              </span>
+            </label>
+          </li>
+        </ul>
+
+        <div class="wrapper-checkout-shipping-description" >
+          <div class="checkout-shipping-description-car checkout-shipping-description-car--hidden" id="checkoutShippingDescriptionRivne">
+            <div class="checkout-shipping-description-car__item">
+              <svg class="checkout-shipping-description-car__item-img">
+                <use xlink:href="/resourse/images/checkout-sprite-icons.svg#icon-location"></use>
+              </svg>
+              <div class="checkout-shipping-description-car__item-title">Адреса магазину</div>
+              <div>м. Рівне. вул. Гетьмана Полуботка, 8</div>
+            </div>
+
+            <div class="checkout-shipping-description-car__item">
+              <svg class="checkout-shipping-description-car__item-img">
+                <use xlink:href="/resourse/images/checkout-sprite-icons.svg#icon-clock"></use>
+              </svg>
+              <div class="checkout-shipping-description-car__item-title">Графік роботи магазину</div>
+              <div class="checkout-shipping-description-car__schedule-list">
+                <span class="checkout-shipping-description-car__schedule-item">Пн - Пт: 09:00 - 18:00</span>
+                <span class="checkout-shipping-description-car__schedule-item">Cб: 09:00 - 15:00</span>
+                <span class="checkout-shipping-description-car__schedule-item">Нд: Вихідний</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="checkout-shipping-description-car checkout-shipping-description-car--hidden" id="checkoutShippingDescriptionChernivtsi">
+            <div class="checkout-shipping-description-car__item">
+              <svg class="checkout-shipping-description-car__item-img">
+                <use xlink:href="/resourse/images/checkout-sprite-icons.svg#icon-location"></use>
+              </svg>
+              <div class="checkout-shipping-description-car__item-title">Адреса магазину</div>
+              <div>м. Чернівці. вул. Рилєєва, 9</div>
+            </div>
+
+            <div class="checkout-shipping-description-car__item">
+              <svg class="checkout-shipping-description-car__item-img">
+                <use xlink:href="/resourse/images/checkout-sprite-icons.svg#icon-clock"></use>
+              </svg>
+              <div class="checkout-shipping-description-car__item-title">Графік роботи магазину</div>
+              <div class="checkout-shipping-description-car__schedule-list">
+                <span class="checkout-shipping-description-car__schedule-item">Пн: 10:00 - 16:00</span>
+                <span class="checkout-shipping-description-car__schedule-item">Вт - Пт: 09:30 - 17:00</span>
+                <span class="checkout-shipping-description-car__schedule-item">Cб: 09:30 - 17:00</span>
+                <span class="checkout-shipping-description-car__schedule-item">Нд: Вихідний</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="checkout-shipping-description-form" id="checkoutShippingDescriptionForm">
+
+            <label class="custom-select" id="checkoutBlockRegion">
+              <span class="custom-select__title">
+                Область<span class="custom-select__title__title-required">*</span>
+              </span>
+              <span class="custom-select__wrapper-select">
+              <select class="custom-select__select" name="region" data-selected-value="{{ region }}" required>
+                <option value="" disabled selected>Виберіть область</option>
+              </select>
+
+              <svg class="custom-select__img">
+                <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-arrow-up"></use>
+              </svg>
+              </span>
+            </label>
+
+
+            <label class="custom-select" id="checkoutBlockCity">
+              <span class="custom-select__title">
+                Населений пункт<span class="custom-select__title__title-required">*</span>
+              </span>
+              <span class="custom-select__wrapper-select">
+              <select class="custom-select__select" name="city"  data-selected-value="{{ city }}" required>
+                <option value="" disabled selected>Виберіть населений пункт</option>
+              </select>
+
+              <svg class="custom-select__img">
+                <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-arrow-up"></use>
+              </svg>
+              </span>
+            </label>
+
+            <label class="custom-select" id="checkoutBlockWarehouse">
+              <span class="custom-select__title">
+                Відділення<span class="custom-select__title__title-required">*</span>
+              </span>
+              <span class="custom-select__wrapper-select">
+              <select class="custom-select__select" name="warehouse" data-selected-value="{{ warehouse }}" required>
+                <option value="" disabled selected>Виберіть відділення</option>
+              </select>
+
+              <svg class="custom-select__img">
+                <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-arrow-up"></use>
+              </svg>
+              </span>
+            </label>
+
+            <label class="checkout-text-input checkout-text-input--hidden" id="checkoutBlockAddress">
+              <span class="checkout-text-input__title">
+                Повна адреса<span class="checkout-text-input__title-required">*</span>
+              </span>
+              <input id="checkoutFirstName" class="checkout-text-input__input" placeholder="вул. Сонячна, 37а кв. 12" />
+            </label>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="checkout__section" id="checkoutSectionPayment">
+        <legent class="checkout__section-title">Метод оплати</legent>
+
+        <ul class="checkout-block-list">
+          <li>
+            <label class="checkout-block">
+              <input
+                type="radio"
+                name="payment-method"
+                class="checkout-block__input"
+                value="Google Pay"
+              >
+              <span class="checkout-block__button">
+                <span class="checkout-block__title">Google Pay</span>
+                <svg class="checkout-block__img" height="32">
+                  <use xlink:href="/resourse/images/checkout-sprite-icons.svg#icon-google"></use>
+                </svg>
+              </span>
+            </label>
+          </li>
+
+          <li>
+            <label class="checkout-block">
+              <input
+                type="radio"
+                name="payment-method"
+                class="checkout-block__input"
+                value="Apple Pay"
+              >
+              <span class="checkout-block__button">
+                <span class="checkout-block__title">Apple Pay</span>
+                <svg class="checkout-block__img" height="32">
+                  <use xlink:href="/resourse/images/checkout-sprite-icons.svg#icon-apple"></use>
+                </svg>
+              </span>
+            </label>
+          </li>
+
+          <li>
+            <label class="checkout-block">
+              <input
+                type="radio"
+                name="payment-method"
+                class="checkout-block__input"
+                value="Оплата на карту Приват Банку"
+                checked
+              >
+              <span class="checkout-block__button">
+                <span class="checkout-block__title">Оплата на карту<br>Приват Банку</span>
+                <svg class="checkout-block__img" height="32">
+                  <use xlink:href="/resourse/images/checkout-sprite-icons.svg#icon-privat"></use>
+                </svg>
+              </span>
+            </label>
+          </li>
+
+          <li>
+            <label class="checkout-block">
+              <input
+                type="radio"
+                name="payment-method"
+                class="checkout-block__input"
+                value="Оплата на карту Моно Банка"
+              >
+              <span class="checkout-block__button">
+                <span class="checkout-block__title">Оплата на карту<br>Моно Банка</span>
+                <svg class="checkout-block__img" height="32">
+                  <use xlink:href="/resourse/images/checkout-sprite-icons.svg#icon-mono"></use>
+                </svg>
+              </span>
+            </label>
+          </li>
+
+          <li>
+            <label class="checkout-block">
+              <input
+                type="radio"
+                name="payment-method"
+                class="checkout-block__input"
+                value="Наложений платіж"
+              >
+              <span class="checkout-block__button">
+                <span class="checkout-block__title">Наложений платіж</span>
+                <svg class="checkout-block__img" height="32">
+                  <use xlink:href="/resourse/images/checkout-sprite-icons.svg#icon-cash-delivery"></use>
+                </svg>
+              </span>
+            </label>
+          </li>
+
+          <li>
+            <label class="checkout-block">
+              <input
+                type="radio"
+                name="payment-method"
+                class="checkout-block__input"
+                value="Оплата карткою онлайн (LiqPay)"
+              >
+              <span class="checkout-block__button">
+                <span class="checkout-block__title">Оплата карткою<br>LiqPay</span>
+                <svg class="checkout-block__img" height="32">
+                  <use xlink:href="/resourse/images/checkout-sprite-icons.svg#icon-card"></use>
+                </svg>
+              </span>
+            </label>
+          </li>
+
+          <li>
+            <label class="checkout-block">
+              <input
+                type="radio"
+                name="payment-method"
+                class="checkout-block__input"
+                value="Безготівковий розрахунок"
+              >
+              <span class="checkout-block__button">
+                <span class="checkout-block__title">Безготівковий розрахунок</span>
+                <svg class="checkout-block__img" height="32">
+                  <use xlink:href="/resourse/images/checkout-sprite-icons.svg#icon-cash-less"></use>
+                </svg>
+              </span>
+            </label>
+          </li>
+
+          {% if isLogged %}
+            <li>
+              <label class="checkout-block">
+                <input
+                  type="radio"
+                  name="payment-method"
+                  class="checkout-block__input"
+                  value="В борг"
+                >
+                <span class="checkout-block__button">
+                  <span class="checkout-block__title">В борг</span>
+                  <svg class="checkout-block__img" height="32">
+                    <use xlink:href="/resourse/images/checkout-sprite-icons.svg#icon-debt-pay"></use>
+                  </svg>
+                </span>
+              </label>
+            </li>
+          {% endif %}
+
+        </ul>
+
+        <ul class="checkout-payment-description-list">
+          <li>При отриманні посилки Ви платите за доставку</li>
+          <li class="checkout-payment-description-item--hidden" id="checkoutPaymentDescriptionItemCashDelivery">
+            Додатково ви оплачуєте 4% комісію (мінімум 10 грн.)
+            За переказ коштів по накладеному платежу. Комісія за накладений платіж буде включена в суму замовлення.
+          </li>
+        </ul>
+      </fieldset>
+
+      <fieldset class="checkout__section">
+        <legent class="checkout__section-title">Коментар до замовлення</legent>
+        <textarea name="comment" class="checkout-comment" placeholder="Текст коментаря..." id="checkoutComment"></textarea>
+      </fieldset>
+
+      <label class="custom-checkbox">
+        <input class="custom-checkbox__input" type="checkbox" id="checkoutNotCallback"/>
+        <svg class="custom-checkbox__check-img">
+          <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-check"></use>
+        </svg>
+        <span>Не передзвонювати мені, я впевнений (на) в замовленні</span>
+      </label>
+    </div>
+
+    <div>
+      <fieldset class="checkout__section" id="checkoutSectionCart">
+        <legent class="checkout__section-title">Ваше замовлення</legent>
+
+        {% if cart.products %}
+          <div class="checkout__cart" id="checkoutCart">
+            <ul class="checkout__cart-list">
+              {% for product in cart.products %}
+                <li class="checkout__cart-item" data-id="{{ product.id }}">
+                  <a class="checkout__cart-item-wrapper-image" href="{{ product.link }}">
+                    <img class="checkout__cart-item-image" src="{{ product.image }}">
+                  </a>
+                  <a class="checkout__cart-item-name" href="{{ product.link }}">{{ product.name }}</a>
+
+                  <div class="checkout__cart-item-wrapper-price">
+                    <div class="checkout__cart-item-price">
+                      {% if product.isPromotions %}
+                        <div class="checkout__cart-item-price-old">{{ product.priceOldUAH }} грн</div>
+                      {% endif %}
+                      <div>
+                        <div class="checkout__cart-item-price-uah">{{ product.priceUAH }} грн</div>
+                        $ {{ product.priceUSD }}
+                      </div>
+                    </div>
+
+                    <div class="checkout__cart-item-quantity">
+                      <button
+                        class="checkout__cart-item-quantity-btn checkout__cart-item-quantity-btn--minus"
+                        type="button"
+                        {{ product.quantity > 1 ? '' : 'disabled' }}
+                      >
+                        <svg class="checkout__cart-item-quantity-img-minus">
+                          <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-minus"></use>
+                        </svg>
+                      </button>
+                      <input
+                        class="checkout__cart-item-quantity-input"
+                        value="{{ product.quantity }}"
+                        readonly
+                      />
+                      <button
+                        class="checkout__cart-item-quantity-btn checkout__cart-item-quantity-btn--plus"
+                        type="button"
+                        {{ product.quantity < product.quantityStore ? '' : 'disabled' }}
+                      >
+                        <svg class="checkout__cart-item-quantity-img-plus">
+                          <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-plus"></use>
+                        </svg>
+                      </button>
+                    </div>
+                    <div class="checkout__cart-item-total">
+                      <div>
+                        <div class="checkout__cart-item-price-uah">
+                           <span class="checkout__cart-item-price-uah-value">{{ product.totalUAH }}</span>&nbsp;грн
+                        </div>
+                        $&nbsp;<span class="checkout__cart-item-price-usd-value">{{ product.totalUSD }}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <button class="checkout__cart-item-remove" type="button">
+                    <svg class="checkout__cart-item-remove-img">
+                      <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-close"></use>
+                    </svg>
+                  </button>
+                </li>
+              {% endfor %}
+            </ul>
+
+            <div
+              id="checkoutNotification"
+              class="checkout__notification {{ cart.enoughQuantityStore1 and cart.enoughQuantityStore2 ? 'checkout__notification--hide' : '' }}"
+            >
+              <svg class="checkout__notification-img">
+                <use xlink:href="/resourse/images/shared-sprite-icons.svg#icon-warning"></use>
+              </svg>
+              <div class="checkout__notification-list" id="checkoutNotificationList">
+                {% if not cart.enoughQuantityStore1 %}
+                  <span>
+                    Самовивіз з м. Рівне недоступний через недостатню кількість товару на складі
+                  </span>
+                {% endif %}
+                {% if not cart.enoughQuantityStore2 %}
+                  <span>
+                    Самовивіз з м. Чернівці недоступний через недостатню кількість товару на складі
+                  </span>
+                {% endif %}
+              </div>
+            </div>
+
+            <table class="checkout__cart-table-total">
+              <tbody>
+                <tr>
+                  <td class="checkout__cart-table-total-cell">Кількість товарів</td>
+                  <td class="checkout__cart-table-total-cell checkout__cart-table-total-cell--quantity-value">
+                    <span id="checkoutQuantity">{{ cart.quantity }}</span>&nbsp;шт
+                  </td>
+                </tr>
+                <tr>
+                  <td class="checkout__cart-table-total-cell">Загальна сума</td>
+                  <td class="checkout__cart-table-total-cell">
+                    <div class="checkout__cart-table-total-wrapper-total">
+                      <div class="checkout__cart-table-total-total">
+                        <div class="checkout__cart-table-total-total-uah">
+                          <span id="checkoutTotalUAH">{{ cart.totalUAH }}</span>&nbsp;грн
+                        </div>
+                        $&nbsp;<span id="checkoutTotalUSD">{{ cart.totalUSD }}</span>
+                        </div>
+                      </div>
+                  </td>
+                </tr>
+                <tr class="checkout__cart-table-total-row-hide" id="checkoutCartTableTotalCommissionRow">
+                  <td class="checkout__cart-table-total-cell">Комісія за переказ</td>
+                  <td class="checkout__cart-table-total-cell checkout__cart-table-total-cell--commission-value">
+                    <span id="checkoutCommissionUAH">{{ cart.commissionUAH }}</span>&nbsp;грн
+                  </td>
+                </tr>
+                <tr>
+                  <td class="checkout__cart-table-total-cell checkout__cart-table-total--to-pay-title">До оплати</td>
+                  <td class="checkout__cart-table-total-cell checkout__cart-table-total--to-pay-value">
+                    <span id="checkoutToPay">{{ cart.totalUAH }}</span>&nbsp;грн
+                  </td>
+                </tr>
+              <tbody>
+            </table>
+
+            <button class="checkout__btn-order">Оформити замовлення</button>
+          </div>
+        {% else %}
+          <div class="checkout__cart-empty">Ваш кошик пустий!</div>
+        {% endif %}
+      </fieldset>
+
+    </div>
   </form>
-
-
-  </div>
 </main>
 
 {{ footer }}

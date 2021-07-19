@@ -99,33 +99,30 @@
   margin-right: 8px;
 }
 
-.checkout-success__table-order-img--new-post {
-  width: 24px;
-  fill: #bc191d;
-}
-
 .checkout-success__table-order-img--car {
   width: 28px;
-  fill: #bc191d;
 }
 
 .checkout-success__table-order-img--courier-new-post,
 .checkout-success__table-order-img--courier {
   width: 22px;
-  fill: #bc191d;
 }
 
 .checkout-success__table-order-img--ukrpost {
   width: 17px;
-  fill: #ffc627;
 }
 
-.checkout-success__table-order-img--justin {
+.checkout-success__table-order-img--justin,
+.checkout-success__table-order-img--mono {
   width: 58px;
-  fill: #304ffe;
 }
 
-.checkout-success__table-order-img--google {
+.checkout-success__table-order-img--new-post,
+.checkout-success__table-order-img--google,
+.checkout-success__table-order-img--privat,
+.checkout-success__table-order-img--card,
+.checkout-success__table-order-img--cash-less,
+.checkout-success__table-order-img--debt-pay {
   width: 24px;
 }
 
@@ -133,20 +130,8 @@
   width: 20px;
 }
 
-.checkout-success__table-order-img--privat {
-  width: 24px;
-}
-
 .checkout-success__table-order-img--cash-delivery {
-  fill: #bc191d;
   width: 28px;
-}
-
-.checkout-success__table-order-img--card,
-.checkout-success__table-order-img--cash-less,
-.checkout-success__table-order-img--debt-pay {
-  fill: #bc191d;
-  width: 24px;
 }
 
 .checkout-success__subtitle {

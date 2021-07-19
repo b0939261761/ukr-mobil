@@ -1,5 +1,6 @@
 const setHeaderCartCounter = count => {
   const headerCartCounter = document.getElementById('headerCartCounter');
+  if (!headerCartCounter) return;
   if (count) {
     headerCartCounter.textContent = count;
     headerCartCounter.classList.remove('btn-header-action__counter--hidden');
@@ -12,6 +13,7 @@ const setHeaderCartCounter = count => {
 
 const initCart = () => {
   const cart = document.getElementById('cart');
+  if (!cart) return;
   const onCartClose = () => document.body.classList.remove('body--cart-open');
   cart.addEventListener('click', evt => evt.target === evt.currentTarget && onCartClose());
 
@@ -76,8 +78,8 @@ const initCart = () => {
       const response = await fetch(url, { method: 'POST', body });
       if (response.ok) {
         const responseJSON = await response.json();
-        setHeaderCartCounter(responseJSON.quantity);
-        if (!responseJSON.quantity) {
+        setHeaderCartCounter(responseJSON.totalQuantity);
+        if (!responseJSON.totalQuantity) {
           onCartClose();
           window.cartGet();
           return;

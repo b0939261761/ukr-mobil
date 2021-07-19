@@ -8,6 +8,9 @@ class Customer {
   private $email;
   private $phone;
   private $isNewsLetter;
+  private $region;
+  private $city;
+  private $warehouse;
 
   public function __construct($registry) {
     $this->config = $registry->get('config');
@@ -28,7 +31,10 @@ class Customer {
         customer_group_id AS groupId,
         email,
         SUBSTRING(telephone, 4, 9) AS phone,
-        newsletter AS isNewsLetter
+        newsletter AS isNewsLetter,
+        region,
+        city,
+        warehouse
       FROM oc_customer
       WHERE customer_id = {$customerId} AND status = 1
     ";
@@ -72,6 +78,9 @@ class Customer {
     $this->email = $customer['email'] ?? '';
     $this->phone = $customer['phone'] ?? '';
     $this->isNewsLetter = $customer['isNewsLetter'] ?? false;
+    $this->region = $customer['region'] ?? '';
+    $this->city = $customer['city'] ?? '';
+    $this->warehouse = $customer['warehouse'] ?? '';
   }
 
   public function reset() {
@@ -117,18 +126,21 @@ class Customer {
     return $this->isNewsLetter;
   }
 
-  // public function getAddressId() {
-  //   return $this->address_id;
-  // }
+  public function getRegion() {
+    return $this->region;
+  }
+
+  public function getCity() {
+    return $this->city;
+  }
+
+  public function getWarehouse() {
+    return $this->warehouse;
+  }
 
   // public function getBalance() {
   //   $query = $this->db->query("SELECT SUM(amount) AS total FROM " . DB_PREFIX . "customer_transaction WHERE customer_id = '" . (int)$this->customer_id . "'");
 
-  //   return $query->row['total'];
-  // }
-
-  // public function getRewardPoints() {
-  //   $query = $this->db->query("SELECT SUM(points) AS total FROM " . DB_PREFIX . "customer_reward WHERE customer_id = '" . (int)$this->customer_id . "'");
   //   return $query->row['total'];
   // }
 }

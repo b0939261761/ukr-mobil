@@ -77,6 +77,13 @@ class ControllerApi extends Controller {
     exit();
   }
 
+  public function plain() {
+    $email = 'b360124@gmail.com';
+    $subject = 'UkrMobil - Оформлено 5 замовлень';
+    $this->mail->send($email, $subject, 'plain');
+    exit();
+  }
+
   public function income() {
     $email = 'b360124@gmail.com';
     // $email = 'pavlenkoillai@gmail.com';
@@ -179,8 +186,7 @@ class ControllerApi extends Controller {
 
     if (!empty($attempts)) {
       http_response_code(400);
-      echo 'ATTEMPTS';
-      exit();
+      exit('ATTEMPTS');
     }
 
     $sql = "
@@ -236,8 +242,7 @@ class ControllerApi extends Controller {
       || utf8_strlen($phone) != 9
     ) {
       http_response_code(400);
-      echo 'INVALID';
-      exit();
+      exit('INVALID');
     }
 
     if ($captcha) {
@@ -252,14 +257,12 @@ class ControllerApi extends Controller {
 
     if (empty($recaptcha['success'])) {
       http_response_code(400);
-      echo 'CAPTCHA';
-      exit();
+      exit('CAPTCHA');
     }
 
     if (!empty($this->db->query("SELECT 1 FROM oc_customer WHERE email = '{$email}'")->row)) {
       http_response_code(400);
-      echo 'USER_EXISTS';
-      exit();
+      exit('USER_EXISTS');
     }
 
     $salt = token(9);
@@ -288,7 +291,7 @@ class ControllerApi extends Controller {
 
     if (empty($customer)) {
       http_response_code(400);
-      echo 'USER_EXISTS';
+      exit('USER_EXISTS');
     }
 
     $code = token(40);
@@ -307,8 +310,7 @@ class ControllerApi extends Controller {
 
     if (!$productId || utf8_strlen($phone) != 9) {
       http_response_code(400);
-      echo 'INVALID';
-      exit();
+      exit('INVALID');
     }
 
     $data['phone'] = '+380' . $phone;
@@ -352,8 +354,7 @@ class ControllerApi extends Controller {
 
     if (!$this->customer->getId() || !$productId) {
       http_response_code(400);
-      echo 'INVALID';
-      exit();
+      exit('INVALID');
     }
 
     $sql = "
@@ -373,8 +374,7 @@ class ControllerApi extends Controller {
 
     if (!$this->customer->getId() || !$favoriteId || !$productId) {
       http_response_code(400);
-      echo 'INVALID';
-      exit();
+      exit('INVALID');
     }
 
     $sql = "
@@ -395,8 +395,7 @@ class ControllerApi extends Controller {
 
     if (!$this->customer->getId() || !$favoriteId || !$productId) {
       http_response_code(400);
-      echo 'INVALID';
-      exit();
+      exit('INVALID');
     }
 
     $sql = "
@@ -414,8 +413,7 @@ class ControllerApi extends Controller {
 
     if (!$this->customer->getId() || !$productId) {
       http_response_code(400);
-      echo 'INVALID';
-      exit();
+      exit('INVALID');
     }
 
     $sql = "
@@ -425,6 +423,15 @@ class ControllerApi extends Controller {
     ";
 
     $this->db->query($sql);
+    exit();
+  }
+
+  public function newsletter() {
+    if (!$this->customer->getId()) {
+      http_response_code(400);
+      exit('INVALID');
+    }
+    $this->db->query("UPDATE oc_customer SET newsletter = 1 WHERE customer_id = {$this->customer->getId()}");
     exit();
   }
 }
